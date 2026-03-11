@@ -47,7 +47,7 @@
       setupUser =
         user:
         let
-          passwordPath = config.age.secrets."user-${user}-clear.age".path;
+          passwordPath = config.age.secrets."user_${user}_clear.age".path;
           smbpasswd = "${config.services.samba.package}/bin/smbpasswd";
         in
         ''
