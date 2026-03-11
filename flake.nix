@@ -23,6 +23,7 @@
         server = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            ./agenix.nix
             ./configuration.nix
             ./podman.nix
             ./samba.nix
