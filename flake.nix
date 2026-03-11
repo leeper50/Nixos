@@ -3,8 +3,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     agenix = {
-    url = "github:yaxitech/ragenix";
-    inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:yaxitech/ragenix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -26,7 +26,7 @@
             agenix.nixosModules.default
             ./agenix.nix
             ./configuration.nix
-            ./podman.nix
+            ./docker.nix
             ./samba.nix
             home-manager.nixosModules.home-manager
             {
