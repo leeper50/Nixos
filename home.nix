@@ -8,7 +8,7 @@
       "test" = "sudo nixos-rebuild test";
     };
     stateVersion = "25.11";
-    username = "admin";
+    username = "walter";
   };
   programs = {
     bat.enable = true;
