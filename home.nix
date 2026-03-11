@@ -17,6 +17,8 @@
       git = true;
       icons = "always";
     };
+    fastfetch.enable = true;
+    htop.enable = true;
     git = {
       enable = true;
       lfs.enable = true;
