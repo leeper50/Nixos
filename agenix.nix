@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  secrets = import ../secrets/secrets.nix;  # adjust path as needed
+  secrets = import ./secrets/secrets.nix;  # adjust path as needed
 in
 {
   # pull all secrets into the config
