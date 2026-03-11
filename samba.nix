@@ -5,6 +5,8 @@
     allowInterfaces = [ "enp1s0" ];
     enable = true;
     hostName = "server";
+    nssmdns4 = true;
+    nssmdns6 = false;
     openFirewall = true;
   };
   services.samba-wsdd = {
