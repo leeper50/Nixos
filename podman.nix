@@ -2,7 +2,7 @@
 
 let
   adguard_version = "4956b35b590286e5872fb4336d84a7862a2030c6efb4ca16442580c37d7ba32d";
-  storage = "/home/admin/podman";
+  storage = "/home/walter/podman";
 in
 {
   networking.firewall = {
