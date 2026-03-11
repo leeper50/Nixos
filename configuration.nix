@@ -98,6 +98,7 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     btrfs-progs
+    busybox
     curl
     git
     podman
