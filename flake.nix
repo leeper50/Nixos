@@ -6,10 +6,6 @@
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    disko = {
-      url = "github:nix-community/disko/latest";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,7 +14,6 @@
   outputs =
     {
       agenix,
-      disko,
       home-manager,
       nixpkgs,
       ...
@@ -29,12 +24,10 @@
           system = "x86_64-linux";
           modules = [
             agenix.nixosModules.default
-            disko.nixosModules.disko
             ./modules/agenix.nix
             ./modules/power.nix
             ./modules/samba.nix
             ./system/gk55/configuration.nix
-            ./system/gk55/disko.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
