@@ -15,8 +15,9 @@
   };
   services.samba = {
     enable = true;
+    nsswins = true;
     openFirewall = true;
-    winbindd.enable = false;
+    winbindd.enable = true;
     settings = {
       global = {
         "guest account" = "nobody";
