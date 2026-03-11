@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 {
   # Samba configurations
   services.avahi.enable = true;

@@ -1,12 +1,15 @@
-{ config, pkgs, ... }:
+{ ... }:
 
-let 
+let
   adguard_version = "4956b35b590286e5872fb4336d84a7862a2030c6efb4ca16442580c37d7ba32d";
   storage = "/home/admin/podman";
 in
 {
   networking.firewall = {
-    allowedTCPPorts = [ 53 3000 ];
+    allowedTCPPorts = [
+      53
+      3000
+    ];
     allowedUDPPorts = [ 53 ];
   };
   virtualisation = {
@@ -24,13 +27,13 @@ in
       autoStart = true;
       image = "adguard/adguardhome@sha256:${adguard_version}";
       ports = [
-          "53:53/tcp"
-          "53:53/udp"
-          "3000:3000/tcp"
+        "53:53/tcp"
+        "53:53/udp"
+        "3000:3000/tcp"
       ];
       volumes = [
-          "${storage}/adguard/work:/opt/adguardhome/work"
-          "${storage}/adguard/conf:/opt/adguardhome/conf"
+        "${storage}/adguard/work:/opt/adguardhome/work"
+        "${storage}/adguard/conf:/opt/adguardhome/conf"
       ];
     };
   };
