@@ -15,18 +15,11 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable networking
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.eth0.forwarding" = 1;
-  };
   networking = {
     defaultGateway = "10.0.0.1";
     firewall = {
       allowPing = true;
       enable = true;
-      # Always let docker images access host services
-      extraInputRules = ''
-        ip saddr 172.16.0.0/12 accept
-      '';
     };
     hostName = "server";
     interfaces.enp1s0 = {
@@ -43,7 +36,7 @@
       "9.9.9.9"
     ];
     networkmanager.enable = true;
-    # nftables.enable = true;
+    nftables.enable = true;
   };
 
   # Set your time zone
@@ -98,10 +91,7 @@
     busybox
     curl
     git
-    podman
-    podman-tui
     samba
-    tailscale
   ];
 
   # This value determines the NixOS release from which the default
