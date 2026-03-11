@@ -1,10 +1,10 @@
 { config, pkgs, ... }:
 {
-  age.secrets.hashed_password = {
-    file = ./secrets/user-walter-hash.age;
-    owner = "walter";
-    group = "walter";
-  };
+  # age.secrets.hashed_password = {
+  #   file = ./secrets/user_walter_hash.age;
+  #   owner = "walter";
+  #   group = "walter";
+  # };
 
   imports = [
     ./hardware-configuration.nix
@@ -84,7 +84,7 @@
         "walter"
         "wheel"
       ];
-      hashedPasswordFile = config.age.secrets.hashed_password.path;
+      hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
       isNormalUser = true;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC"

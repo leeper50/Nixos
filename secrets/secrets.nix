@@ -5,6 +5,6 @@ let
   ];
 in
 {
-  "user-walter-clear.age".publicKeys = keys;
-  "user-walter-hash.age".publicKeys = keys;
+  "user_walter_clear.age".publicKeys = keys;
+  "user_walter_hash.age".publicKeys = keys;
 }

@@ -24,7 +24,7 @@
           system = "x86_64-linux";
           modules = [
             agenix.nixosModules.default
-            # ./agenix.nix
+            ./agenix.nix
             ./configuration.nix
             ./podman.nix
             ./samba.nix
