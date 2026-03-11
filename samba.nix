@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   # Samba configurations
   services.avahi = {
