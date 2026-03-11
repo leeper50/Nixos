@@ -1,7 +1,12 @@
 { ... }:
 {
   # Samba configurations
-  services.avahi.enable = true;
+  services.avahi = {
+    allowInterfaces = [ "enp1s0" ];
+    enable = true;
+    hostName = "server";
+    openFirewall = true;
+  };
   services.samba-wsdd = {
     enable = true;
     openFirewall = true;
