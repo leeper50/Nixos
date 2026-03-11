@@ -39,7 +39,7 @@ in
       allowPing = true;
       enable = true;
     };
-    hostName = "server";
+    hostName = "gk55";
     interfaces.enp1s0 = {
       ipv4.addresses = [
         {

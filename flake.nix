@@ -20,19 +20,19 @@
     }:
     {
       nixosConfigurations = {
-        server = nixpkgs.lib.nixosSystem {
+        gk55 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             agenix.nixosModules.default
-            ./agenix.nix
-            ./configuration.nix
-            ./power.nix
-            ./samba.nix
+            ./modules/agenix.nix
+            ./modules/power.nix
+            ./modules/samba.nix
+            ./system/gk55/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.walter = ./home.nix;
+              home-manager.users.walter = ./modules/home.nix;
             }
           ];
         };

@@ -4,7 +4,6 @@
   services.avahi = {
     allowInterfaces = [ "enp1s0" ];
     enable = true;
-    hostName = "server";
     nssmdns4 = true;
     nssmdns6 = false;
     openFirewall = true;
@@ -29,7 +28,6 @@
         "hosts allow" = "10. 127.0.0.1 localhost";
         "hosts deny" = "0.0.0.0/0";
         "min protocol" = "SMB2";
-        "netbios name" = "server";
         "security" = "user";
         "server signing" = "auto";
         "server string" = "NixOS File Server";
@@ -42,8 +40,7 @@
         writable = "yes";
         "create mask" = "0664";
         "directory mask" = "0775";
-        "force group" = "users";
-        "valid users" = "walter";
+        "valid users" = "@users";
         "vfs objects" = "fruit streams_xattr";
         "fruit:encoding" = "native";
         "fruit:metadata" = "stream";
