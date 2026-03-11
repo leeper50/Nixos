@@ -79,7 +79,7 @@ in
 
   users.users = {
     root = user_settings;
-    walter = user_settings ++ {
+    walter = user_settings // {
       description = "Administrator";
       extraGroups = [
         "networkmanager"
