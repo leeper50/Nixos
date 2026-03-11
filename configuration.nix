@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  age.secrets.nextcloud = {
+  age.secrets.hashed_password = {
     file = ./secrets/user-walter-hash.age;
     owner = "walter";
     group = "walter";
@@ -84,7 +84,7 @@
         "walter"
         "wheel"
       ];
-      hashedPasswordFile = config.age.secrets."user-walter-hash.age".path;
+      hashedPasswordFile = config.age.secrets.hashed_password.path;
       isNormalUser = true;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC"
