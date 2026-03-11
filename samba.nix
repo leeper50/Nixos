@@ -25,12 +25,6 @@
         "force group" = "users";
       };
     };
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = smbnix
-      netbios name = smbnix
-      map to guest = bad user
-    '';
   };
   # add user passwords
   # systemd.services.samba-smbd.postStart =
