@@ -15,6 +15,9 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable networking
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.eth0.forwarding" = 1;
+  };
   networking = {
     defaultGateway = "10.0.0.1";
     firewall = {
@@ -40,7 +43,7 @@
       "9.9.9.9"
     ];
     networkmanager.enable = true;
-    nftables.enable = true;
+    # nftables.enable = true;
   };
 
   # Set your time zone

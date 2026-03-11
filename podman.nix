@@ -5,13 +5,20 @@ let
   storage = "/home/walter/podman";
 in
 {
-  # networking.firewall = {
-  #   allowedTCPPorts = [
-  #     53
-  #     3000
-  #   ];
-  #   allowedUDPPorts = [ 53 ];
-  # };
+  networking.firewall = {
+    allowedTCPPorts = [
+      53
+      3000
+      5300
+    ];
+    allowedUDPPorts = [ 53 5300 ];
+  };
+  networking = {
+    firewall.extraCommands = ''
+      iptables -A PREROUTING -t nat -i enp1s0 -p TCP --dport 53 -j REDIRECT --to-port 5300
+      iptables -A PREROUTING -t nat -i enp1s0 -p UDP --dport 53 -j REDIRECT --to-port 5300
+    '';
+  };
   virtualisation = {
     podman = {
       enable = true;
@@ -30,8 +37,8 @@ in
       };
       image = "adguard/adguardhome@sha256:${adguard_version}";
       ports = [
-        "0.0.0.0:53:53/tcp"
-        "0.0.0.0:53:53/udp"
+        "0.0.0.0:5300:53/tcp"
+        "0.0.0.0:5300:53/udp"
         "0.0.0.0:3000:3000/tcp"
       ];
       volumes = [
