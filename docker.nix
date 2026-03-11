@@ -5,13 +5,13 @@ let
   storage = "/home/walter/containers";
 in
 {
-  networking.firewall = {
-    allowedTCPPorts = [
-      53
-      3000
-    ];
-    allowedUDPPorts = [ 53 ];
-  };
+  # networking.firewall = {
+  #   allowedTCPPorts = [
+  #     53
+  #     3000
+  #   ];
+  #   allowedUDPPorts = [ 53 ];
+  # };
   virtualisation = {
     docker = {
       enable = true;
@@ -33,9 +33,9 @@ in
       autoStart = true;
       image = "adguard/adguardhome@sha256:${adguard_version}";
       ports = [
-        "0.0.0.0:53:53/tcp"
-        "0.0.0.0:53:53/udp"
-        "0.0.0.0:3000:3000/tcp"
+        "53:53/tcp"
+        "53:53/udp"
+        "3000:3000/tcp"
       ];
       volumes = [
         "${storage}/adguardhome/work:/opt/adguardhome/work"
