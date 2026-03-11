@@ -23,7 +23,7 @@
         server = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            agenix.homeManagerModules.default
+            agenix.nixosModules.default
             ./agenix.nix
             ./configuration.nix
             ./podman.nix
