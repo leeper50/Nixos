@@ -1,6 +1,6 @@
 { ... }:
 {
-  adguardhome = {
+  services.adguardhome = {
     enable = true;
     openFirewall = true;
   };
