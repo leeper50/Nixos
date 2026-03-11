@@ -2,13 +2,18 @@
   description = "Home Manager configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    agenix = {
+      url = "github:yaxitech/ragenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs =
-    inputs@{
+    {
+      agenix,
       home-manager,
       nixpkgs,
       ...
@@ -18,6 +23,7 @@
         server = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            agenix.nixosModules.default
             ./agenix.nix
             ./configuration.nix
             ./podman.nix
