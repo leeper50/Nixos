@@ -25,6 +25,9 @@ in
   virtualisation.oci-containers.containers = {
     adguard = {
       autoStart = true;
+      capabilities = {
+        CAP_NET_BIND_SERVICE = true;
+      };
       image = "adguard/adguardhome@sha256:${adguard_version}";
       ports = [
         "53:53/tcp"

@@ -1,11 +1,5 @@
 { config, pkgs, ... }:
 {
-  # age.secrets.hashed_password = {
-  #   file = ./secrets/user_walter_hash.age;
-  #   owner = "walter";
-  #   group = "walter";
-  # };
-
   imports = [
     ./hardware-configuration.nix
   ];
