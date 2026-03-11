@@ -1,6 +1,7 @@
 { ... }:
 {
   disko.devices = {
+    disk = {
       sdb = {
         type = "disk";
         device = "/dev/sdb";
