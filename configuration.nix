@@ -26,10 +26,10 @@
       '';
     };
     hostName = "server";
-    interfaces.eno1 = {
+    interfaces.enp1s0 = {
       ipv4.addresses = [
         {
-          address = "10.0.0.10";
+          address = "10.0.0.20";
           prefixLength = 24;
         }
       ];
