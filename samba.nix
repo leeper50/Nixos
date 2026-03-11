@@ -8,25 +8,31 @@
     nssmdns4 = true;
     nssmdns6 = false;
     openFirewall = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      workstation = true;
+    };
   };
   services.samba-wsdd = {
     enable = true;
+    interface = "enp1s0";
     openFirewall = true;
+    workgroup = "WORKGROUP";
   };
   services.samba = {
     enable = true;
-    nsswins = true;
     openFirewall = true;
-    winbindd.enable = true;
     settings = {
       global = {
-        "guest account" = "nobody";
         "hosts allow" = "10. 127.0.0.1 localhost";
         "hosts deny" = "0.0.0.0/0";
-        "map to guest" = "bad user";
+        "min protocol" = "SMB2";
         "netbios name" = "server";
         "security" = "user";
-        "server string" = "server";
+        "server signing" = "auto";
+        "server string" = "NixOS File Server";
         "smb3 unix extensions" = "yes";
         "workgroup" = "WORKGROUP";
       };
@@ -37,6 +43,11 @@
         "create mask" = "0664";
         "directory mask" = "0775";
         "force group" = "users";
+        "valid users" = "walter";
+        "vfs objects" = "fruit streams_xattr";
+        "fruit:encoding" = "native";
+        "fruit:metadata" = "stream";
+        "fruit:posix_rename" = "yes";
       };
     };
   };
