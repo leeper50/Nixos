@@ -1,3 +1,4 @@
+{ config, pkgs, ... }:
 {
   # Samba configurations
   services.avahi.enable = true;
@@ -33,18 +34,21 @@
   };
   # add user passwords
   systemd.services.samba-smbd.postStart =
-  let
-    users = [ "walter" ];
-    setupUser = user: let
-      passwordPath = config.age.secrets."user-${user}-clear.age".path;
-      smbpasswd = "${config.services.samba.package}/bin/smbpasswd";
-    in ''
-      (echo $(< ${passwordPath});
-       echo $(< ${passwordPath})) | \
-        ${smbpasswd} -s -a ${user}
+    let
+      users = [ "walter" ];
+      setupUser =
+        user:
+        let
+          passwordPath = config.age.secrets."user-${user}-clear.age".path;
+          smbpasswd = "${config.services.samba.package}/bin/smbpasswd";
+        in
+        ''
+          (echo $(< ${passwordPath});
+           echo $(< ${passwordPath})) | \
+            ${smbpasswd} -s -a ${user}
+        '';
+    in
+    ''
+      ${builtins.concatStringsSep "\n" (map setupUser users)}
     '';
-  in
-  ''
-    ${builtins.concatStringsSep "\n" (map setupUser users)}
-  '';
 }
