@@ -1,7 +1,7 @@
 { ... }:
 {
   home = {
-    enableFishIntegration = true;
+    shell.enableFishIntegration = true;
     shellAliases = {
       "hm" = "home-manager --flake /etc/nixos.#$(hostname)";
       "switch" = "sudo nixos-rebuild switch";
