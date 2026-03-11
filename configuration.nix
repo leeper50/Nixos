@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   age.secrets.nextcloud = {
     file = ./secrets/user-walter-hash.age;
