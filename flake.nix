@@ -28,8 +28,6 @@
             ./configuration.nix
             ./podman.nix
             ./samba.nix
-            # ./secrets/secrets.nix
-            ./user-walter.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
