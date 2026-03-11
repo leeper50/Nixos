@@ -5,7 +5,8 @@ Solid, secure, and extensible nixos configuration for a NAS now that truenas is
 
 ## How to use
 1. Change the username to one you want to use. Must change files `flake.nix` and `configuration.nix`.
-2. Grab your nixos target's public system ssh key `cat /etc/ssh/ssh_host_ed25519_key.pub`. Put this in the `secrets/secret.nix` key list.
+2. Replace the public keys in the `secrets/secrets.nix` file with your own.
+Grab your nixos server's public ssh key using this command `cat /etc/ssh/ssh_host_ed25519_key.pub`.
 3. Setup your desired secrets in the format user_$username_hash.age or user_$username_clear.age.
 Enter the secrets directory and run the command `agenix -e filename.age` to edit.
 The hashed password is used for the linux user's account. Use `openssl passwd` to generated the hash.
