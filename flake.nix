@@ -26,6 +26,7 @@
             agenix.nixosModules.default
             ./agenix.nix
             ./configuration.nix
+            ./power.nix
             ./samba.nix
             home-manager.nixosModules.home-manager
             {
