@@ -24,7 +24,6 @@
           system = "x86_64-linux";
           modules = [
             agenix.nixosModules.default
-            ./adguardhome.nix
             ./agenix.nix
             ./configuration.nix
             ./samba.nix
