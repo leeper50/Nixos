@@ -1,74 +1,35 @@
 { ... }:
 {
   disko.devices = {
-    disk = {
-      main = {
+      sdb = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
-            ESP = {
-              priority = 1;
-              size = "1G";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [
-                  "umask=0077"
-                ];
-              };
-            };
-            root = {
-              priority = 2;
-              end = "-8.8G";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
-              };
-            };
-            swap = {
-              priority = 3;
+            storage = {
               size = "100%";
               content = {
-                type = "swap";
+                type = "btrfs";
+                extraArgs = [ "-f" "-d" "raid1" "-m" "raid1" "/dev/sdc1" ];
+                mountpoint = "/mnt/data";
               };
             };
           };
         };
       };
-      # sdb = {
-      #   type = "disk";
-      #   device = "/dev/sdb";
-      #   content = {
-      #     type = "gpt";
-      #     partitions = {
-      #       storage = {
-      #         size = "100%";
-      #         content = {
-      #           type = "btrfs";
-      #           extraArgs = [ "-f" "-d" "raid1" "-m" "raid1" "/dev/sdc1" ];
-      #           mountpoint = "/mnt/data";
-      #         };
-      #       };
-      #     };
-      #   };
-      # };
-      # sdc = {
-      #   type = "disk";
-      #   device = "/dev/sdc";
-      #   content = {
-      #     type = "gpt";
-      #     partitions = {
-      #       storage = {
-      #         size = "100%";
-      #       };
-      #     };
-      #   };
-      # };
+      sdc = {
+        type = "disk";
+        device = "/dev/sdc";
+        content = {
+          type = "gpt";
+          partitions = {
+            storage = {
+              size = "100%";
+            };
+          };
+        };
+      };
     };
   };
 }
