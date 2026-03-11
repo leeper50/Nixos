@@ -17,6 +17,18 @@
       git = true;
       icons = "always";
     };
+    git = {
+      enable = true;
+      lfs.enable = true;
+      settings = {
+        core.autocrlf = false;
+        init.defaultBranch = "main";
+        user = {
+          email = "wleeper13@outlook.com";
+          name = "Walter Leeper";
+        };
+      };
+    };
     fish.enable = true;
     ripgrep.enable = true;
   };
