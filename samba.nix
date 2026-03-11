@@ -8,12 +8,19 @@
   };
   services.samba = {
     enable = true;
-    nmbd.enable = true;
     openFirewall = true;
     winbindd.enable = false;
     settings = {
       global = {
+        "guest account" = "nobody";
+        "hosts allow" = "10. 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "map to guest" = "bad user";
+        "netbios name" = "server";
+        "security" = "user";
+        "server string" = "server";
         "smb3 unix extensions" = "yes";
+        "workgroup" = "WORKGROUP";
       };
       media = {
         path = "/mnt/data/Media";
