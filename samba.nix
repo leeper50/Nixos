@@ -8,9 +8,8 @@
   };
   services.samba = {
     enable = true;
-    enableNmbd = false;
-    enableWinbindd = false;
-    securityType = "user";
+    nmbd.enable = false;
+    winbindd.enable = false;
     openFirewall = true;
     settings = {
       global = {
