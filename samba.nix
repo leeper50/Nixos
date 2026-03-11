@@ -8,9 +8,9 @@
   };
   services.samba = {
     enable = true;
-    nmbd.enable = false;
-    winbindd.enable = false;
+    nmbd.enable = true;
     openFirewall = true;
+    winbindd.enable = false;
     settings = {
       global = {
         "smb3 unix extensions" = "yes";
