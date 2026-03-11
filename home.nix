@@ -8,7 +8,6 @@
       "try" = "sudo git pull && sudo nixos-rebuild test";
     };
     stateVersion = "25.11";
-    username = "walter";
   };
   programs = {
     bat.enable = true;
