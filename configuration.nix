@@ -9,7 +9,7 @@
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable networking
   networking = {
@@ -36,6 +36,7 @@
       "10.0.0.1"
       "9.9.9.9"
     ];
+    networkmanager.enable = true;
     nftables.enable = true;
   };
 
@@ -44,6 +45,17 @@
 
   # Select internationalisation properties
   i18n.defaultLocale = "en_US.utf8";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
 
   # Configure keymap in X11
   services.xserver = {
