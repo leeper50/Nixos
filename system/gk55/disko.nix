@@ -17,14 +17,13 @@
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [
-                  "fmask=0077"
-                  "dmask=0077"
+                  "umask=0077"
                 ];
               };
             };
             root = {
               priority = 2;
-              size = "109.4G";
+              end = "-8.8G";
               content = {
                 type = "filesystem";
                 format = "ext4";
@@ -33,7 +32,7 @@
             };
             swap = {
               priority = 3;
-              size = "8.8G";
+              size = "100%";
               content = {
                 type = "swap";
               };
@@ -41,35 +40,35 @@
           };
         };
       };
-      sdb = {
-        type = "disk";
-        device = "/dev/sdb";
-        content = {
-          type = "gpt";
-          partitions = {
-            storage = {
-              size = "100%";
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" "-d" "raid1" "-m" "raid1" "/dev/sdc1" ];
-                mountpoint = "/mnt/data";
-              };
-            };
-          };
-        };
-      };
-      sdc = {
-        type = "disk";
-        device = "/dev/sdc";
-        content = {
-          type = "gpt";
-          partitions = {
-            storage = {
-              size = "100%";
-            };
-          };
-        };
-      };
+      # sdb = {
+      #   type = "disk";
+      #   device = "/dev/sdb";
+      #   content = {
+      #     type = "gpt";
+      #     partitions = {
+      #       storage = {
+      #         size = "100%";
+      #         content = {
+      #           type = "btrfs";
+      #           extraArgs = [ "-f" "-d" "raid1" "-m" "raid1" "/dev/sdc1" ];
+      #           mountpoint = "/mnt/data";
+      #         };
+      #       };
+      #     };
+      #   };
+      # };
+      # sdc = {
+      #   type = "disk";
+      #   device = "/dev/sdc";
+      #   content = {
+      #     type = "gpt";
+      #     partitions = {
+      #       storage = {
+      #         size = "100%";
+      #       };
+      #     };
+      #   };
+      # };
     };
   };
 }
