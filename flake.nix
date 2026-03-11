@@ -26,7 +26,7 @@
             ./configuration.nix
             ./podman.nix
             ./samba.nix
-            ./secrets.nix
+            ./secrets/secrets.nix
             ./user-walter.nix
             home-manager.nixosModules.home-manager
             {
