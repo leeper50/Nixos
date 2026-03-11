@@ -4,7 +4,7 @@
     shell.enableFishIntegration = true;
     shellAliases = {
       "hm" = "home-manager --flake /etc/nixos.#$(hostname)";
-      "switch" = "sudo nixos-rebuild switch";
+      "update" = "sudo nixos-rebuild switch";
       "test" = "sudo nixos-rebuild test";
     };
     stateVersion = "25.11";
