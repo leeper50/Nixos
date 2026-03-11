@@ -4,6 +4,6 @@ let
   keys = [ email primary ];
 in
 {
-  "secrets/user-walter-clear.age".publicKeys = keys;
-  "secrets/user-walter-hash.age".publicKeys = keys;
+  "user-walter-clear.age".publicKeys = keys;
+  "user-walter-hash.age".publicKeys = keys;
 }
