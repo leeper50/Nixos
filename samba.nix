@@ -13,7 +13,7 @@
     openFirewall = true;
     settings = {
       global = {
-        "smb3 unix estensions" = "yes";
+        "smb3 unix extensions" = "yes";
       };
       media = {
         path = "/mnt/data/Media";
