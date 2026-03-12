@@ -45,7 +45,7 @@ in
       ipv4.addresses = [
         {
           address = "10.0.0.33";
-          prefixLength = 24;
+          prefixLength = 8;
         }
       ];
     };
