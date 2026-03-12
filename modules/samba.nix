@@ -40,6 +40,7 @@
         writable = "yes";
         "create mask" = "0664";
         "directory mask" = "0775";
+        "strict locking" = "no";
         "valid users" = "@users";
         "vfs objects" = "fruit streams_xattr";
         "fruit:encoding" = "native";
