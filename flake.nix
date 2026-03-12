@@ -28,10 +28,11 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.walter = ./modules/home.nix;
+              home-manager.users.walter = ./common/home.nix;
             }
-            ./modules/agenix.nix
-            ./modules/power.nix
+            ./common/agenix.nix
+            ./common/power.nix
+            ./modules/avahi.nix
             ./modules/ssh.nix
             ./system/gk55/configuration.nix
           ];
@@ -44,10 +45,11 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.walter = ./modules/home.nix;
+              home-manager.users.walter = ./common/home.nix;
             }
-            ./modules/agenix.nix
-            ./modules/power.nix
+            ./common/agenix.nix
+            ./common/power.nix
+            ./modules/avahi.nix
             ./modules/samba.nix
             ./modules/ssh.nix
             ./system/ser8/configuration.nix
