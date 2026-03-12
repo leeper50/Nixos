@@ -35,16 +35,16 @@
     { device = "/dev/disk/by-uuid/6806cc8f-b956-419b-91f9-4fc41d61291f"; }
   ];
 
-  # fileSystems."/mnt/data" = {
-  #   device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";
-  #   fsType = "btrfs";
-  #   options = [
-  #     "degraded"
-  #     "nofail"
-  #     "noatime"
-  #     "space_cache=v2"
-  #   ];
-  # };
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";
+    fsType = "btrfs";
+    options = [
+      "degraded"
+      "nofail"
+      "noatime"
+      "space_cache=v2"
+    ];
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
