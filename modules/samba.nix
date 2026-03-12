@@ -2,7 +2,6 @@
 {
   # Samba configurations
   services.avahi = {
-    allowInterfaces = [ "enp1s0" ];
     enable = true;
     nssmdns4 = true;
     nssmdns6 = false;
@@ -16,7 +15,6 @@
   };
   services.samba-wsdd = {
     enable = true;
-    interface = "enp1s0";
     openFirewall = true;
     workgroup = "WORKGROUP";
   };
