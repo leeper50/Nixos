@@ -34,7 +34,7 @@
         "smb3 unix extensions" = "yes";
         "workgroup" = "WORKGROUP";
       };
-      media = {
+      Media = {
         path = "/mnt/data/Media";
         browseable = "yes";
         writable = "yes";
