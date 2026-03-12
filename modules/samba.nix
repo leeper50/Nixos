@@ -25,10 +25,11 @@
       global = {
         "hosts allow" = "10. 127.0.0.1 localhost";
         "hosts deny" = "0.0.0.0/0";
-        "min protocol" = "SMB2";
+        "min protocol" = "SMB3";
         "security" = "user";
         "server signing" = "auto";
         "server string" = "NixOS File Server";
+        "smb encrypt" = "required";
         "smb3 unix extensions" = "yes";
         "workgroup" = "WORKGROUP";
       };
