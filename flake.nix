@@ -24,31 +24,33 @@
           system = "x86_64-linux";
           modules = [
             agenix.nixosModules.default
-            ./modules/agenix.nix
-            ./modules/power.nix
-            ./system/gk55/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.walter = ./modules/home.nix;
             }
+            ./modules/agenix.nix
+            ./modules/power.nix
+            ./modules/ssh.nix
+            ./system/gk55/configuration.nix
           ];
         };
         ser8 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             agenix.nixosModules.default
-            ./modules/agenix.nix
-            ./modules/power.nix
-            ./modules/samba.nix
-            ./system/ser8/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.walter = ./modules/home.nix;
             }
+            ./modules/agenix.nix
+            ./modules/power.nix
+            ./modules/samba.nix
+            ./modules/ssh.nix
+            ./system/ser8/configuration.nix
           ];
         };
       };

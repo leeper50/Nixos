@@ -75,7 +75,6 @@ in
   };
 
   programs.fish.enable = true;
-  services.openssh.enable = true;
 
   users.users = {
     root = user_settings;
