@@ -97,7 +97,9 @@ in
     btrfs-progs
     busybox
     curl
+    ethtool
     git
+    iperf
     samba
   ];
 
