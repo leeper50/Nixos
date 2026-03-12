@@ -26,7 +26,6 @@
             agenix.nixosModules.default
             ./modules/agenix.nix
             ./modules/power.nix
-            ./modules/samba.nix
             ./system/gk55/configuration.nix
             home-manager.nixosModules.home-manager
             {
