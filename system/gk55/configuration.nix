@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -6,7 +6,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking = {
     hostName = "gk55";
@@ -19,17 +18,6 @@
       ];
     };
   };
-
-  nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    btrfs-progs
-    busybox
-    curl
-    ethtool
-    git
-    iperf
-    samba
-  ];
 
   system.stateVersion = "25.11";
 }
