@@ -40,17 +40,17 @@
         gk55 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = commonModules ++ [
-            ./modules/avahi.nix
-            ./modules/ssh.nix
+            ./services/avahi.nix
+            ./services/ssh.nix
             ./system/gk55/configuration.nix
           ];
         };
         ser8 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = commonModules ++ [
-            ./modules/avahi.nix
-            ./modules/samba.nix
-            ./modules/ssh.nix
+            ./services/avahi.nix
+            ./services/samba.nix
+            ./services/ssh.nix
             ./system/ser8/configuration.nix
           ];
         };
