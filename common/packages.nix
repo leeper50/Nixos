@@ -9,5 +9,8 @@
     ethtool
     git
     iperf
+    ncdu
+    rclone
+    rsync
   ];
 }
