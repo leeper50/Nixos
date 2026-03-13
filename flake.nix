@@ -28,7 +28,11 @@
           home-manager.users.walter = ./common/home.nix;
         }
         ./common/agenix.nix
+        ./common/base_networking.nix
+        ./common/cleanup.nix
+        ./common/locales.nix
         ./common/power.nix
+        ./common/users.nix
       ];
     in
     {
