@@ -38,6 +38,7 @@
         comment = "Home directories";
         browseable = "no";
         writable = "yes";
+        path = "/mnt/data/SambaHomes/%S";
         "create mask" = "0700";
         "directory mask" = "0700";
         "strict locking" = "no";
