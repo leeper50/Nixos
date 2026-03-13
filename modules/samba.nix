@@ -21,6 +21,7 @@
         "workgroup" = "WORKGROUP";
       };
       Media = {
+        comment = "Bulk media storage";
         path = "/mnt/data/Media";
         browseable = "yes";
         writable = "yes";
@@ -28,6 +29,19 @@
         "directory mask" = "0775";
         "strict locking" = "no";
         "valid users" = "@users";
+        "vfs objects" = "fruit streams_xattr";
+        "fruit:encoding" = "native";
+        "fruit:metadata" = "stream";
+        "fruit:posix_rename" = "yes";
+      };
+      homes = {
+        comment = "Home directories";
+        browseable = "no";
+        writable = "yes";
+        "create mask" = "0700";
+        "directory mask" = "0700";
+        "strict locking" = "no";
+        "valid users" = "%S";
         "vfs objects" = "fruit streams_xattr";
         "fruit:encoding" = "native";
         "fruit:metadata" = "stream";
