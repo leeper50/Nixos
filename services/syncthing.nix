@@ -8,7 +8,6 @@ in
     enable = true;
     guiAddress = "10.0.0.33:8384";
     openDefaultPorts = true;
-    user = "walter";
     settings = {
       gui = {
         user = "walter";
