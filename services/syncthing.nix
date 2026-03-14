@@ -5,13 +5,16 @@ in
 {
   networking.firewall.allowedTCPPorts = [ 8384 ];
   services.syncthing = {
+    dataDir = "${data}/Sync";
     enable = true;
+    group = "users";
     guiAddress = "10.0.0.33:8384";
+    guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
     openDefaultPorts = true;
+    user = "walter";
     settings = {
       gui = {
         user = "walter";
-        guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
       };
       devices = {
         "walter-laptop" = {
