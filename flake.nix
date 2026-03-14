@@ -52,6 +52,7 @@
             ./services/avahi.nix
             ./services/samba.nix
             ./services/ssh.nix
+            ./services/syncthing.nix
             ./system/ser8/configuration.nix
           ];
         };
