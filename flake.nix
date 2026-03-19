@@ -42,6 +42,7 @@
           system = "x86_64-linux";
           modules = commonModules ++ [
             ./services/avahi.nix
+            ./services/cockpit.nix
             ./services/ssh.nix
             ./system/gk55/configuration.nix
           ];
@@ -50,6 +51,7 @@
           system = "x86_64-linux";
           modules = commonModules ++ [
             ./services/avahi.nix
+            ./services/cockpit.nix
             ./services/samba.nix
             ./services/ssh.nix
             ./services/syncthing.nix
