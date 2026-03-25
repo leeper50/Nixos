@@ -50,6 +50,17 @@ in
           path = "${data}/Sync/GlobalShare";
           type = "receiveonly";
         };
+        "Notes" = {
+          devices = [
+            "walter-laptop"
+            "walter-macbook"
+            "walter-pc"
+            "walter-phone"
+          ];
+          id = "extbw-xzgpn";
+          path = "${data}/Sync/Notes";
+          type = "receiveonly";
+        };
       };
     };
   };
