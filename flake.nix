@@ -1,17 +1,14 @@
 {
   description = "Home Manager configuration";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     agenix = {
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixpkgs-unstable = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
     };
   };
   outputs =
@@ -19,7 +16,6 @@
       agenix,
       home-manager,
       nixpkgs,
-      nixpkgs-unstable,
       ...
     }:
     let
@@ -29,25 +25,17 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.walter = ./common/home.nix;
+          home-manager.users.walter = home-manager/home.nix;
         }
         {
-          nixpkgs.overlays = [
-            (_: prev: {
-              unstable = import nixpkgs-unstable {
-                inherit (prev) system;
-                config = prev.config;
-              };
-            })
-          ];
         }
-        ./common/agenix.nix
-        ./common/base_networking.nix
-        ./common/cleanup.nix
-        ./common/locales.nix
-        ./common/packages.nix
-        ./common/power.nix
-        ./common/users.nix
+        ./nixos/common/agenix.nix
+        ./nixos/common/base_networking.nix
+        ./nixos/common/cleanup.nix
+        ./nixos/common/locales.nix
+        ./nixos/common/packages.nix
+        ./nixos/common/power.nix
+        ./nixos/common/users.nix
       ];
     in
     {
@@ -55,21 +43,21 @@
         gk55 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = commonModules ++ [
-            ./services/avahi.nix
-            ./services/cockpit.nix
-            ./services/ssh.nix
+            ./nixos/services/avahi.nix
+            ./nixos/services/cockpit.nix
+            ./nixos/services/ssh.nix
             ./system/gk55/configuration.nix
           ];
         };
         ser8 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = commonModules ++ [
-            ./services/avahi.nix
-            ./services/cockpit.nix
-            # ./services/netbird.nix
-            ./services/samba.nix
-            ./services/ssh.nix
-            ./services/syncthing.nix
+            ./nixos/services/avahi.nix
+            ./nixos/services/cockpit.nix
+            # ./nixos/services/netbird.nix
+            ./nixos/services/samba.nix
+            ./nixos/services/ssh.nix
+            ./nixos/services/syncthing.nix
             ./system/ser8/configuration.nix
           ];
         };
