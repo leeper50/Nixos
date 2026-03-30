@@ -2,7 +2,7 @@
 {
   services.fail2ban.enable = true;
   services.openssh = {
-    allowSFTP = false;
+    allowSFTP = true;
     enable = true;
     extraConfig = ''
       AllowAgentForwarding no
