@@ -10,12 +10,16 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-unstable = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
   };
   outputs =
     {
       agenix,
       home-manager,
       nixpkgs,
+      nixpkgs-unstable,
       ...
     }:
     let
@@ -26,6 +30,16 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.walter = ./common/home.nix;
+        }
+        {
+          nixpkgs.overlays = [
+            (_: prev: {
+              unstable = import nixpkgs-unstable {
+                inherit (prev) system;
+                config = prev.config;
+              };
+            })
+          ];
         }
         ./common/agenix.nix
         ./common/base_networking.nix
