@@ -52,6 +52,7 @@
           modules = commonModules ++ [
             ./services/avahi.nix
             ./services/cockpit.nix
+            ./services/netbird.nix
             ./services/samba.nix
             ./services/ssh.nix
             ./services/syncthing.nix
