@@ -6,59 +6,115 @@
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    firefox-addons = {
+      url = "github:osipog/nix-firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
-    {
-      agenix,
-      home-manager,
-      nixpkgs,
-      ...
-    }:
+    inputs:
     let
-      commonModules = [
-        agenix.nixosModules.default
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.walter = home-manager/home.nix;
-        }
-        {
-        }
-        ./nixos/common/agenix.nix
-        ./nixos/common/base_networking.nix
-        ./nixos/common/cleanup.nix
-        ./nixos/common/locales.nix
-        ./nixos/common/packages.nix
-        ./nixos/common/power.nix
-        ./nixos/common/users.nix
+      inherit (inputs)
+        agenix
+        darwin
+        firefox-addons
+        home-manager
+        nixpkgs
+        plasma-manager
+        self
+        stylix
+        ;
+      allowedUnfree = [
+        "1password-x-password-manager"
+        "1password"
+        "claude-code"
+        "firefox-bin-unwrapped"
+        "firefox-bin"
+        "google-chrome"
+        "obsidian"
+        "teamspeak6-client"
+        "vivaldi"
+        "vscode-extension-anthropic-claude-code"
       ];
+      lib = nixpkgs.lib;
+      mkPkgs =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [
+            firefox-addons.overlays.default
+          ];
+          config = {
+            allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfree;
+          };
+        };
     in
     {
+      darwinConfigurations = {
+        "macbook" = darwin.lib.darwinSystem {
+          pkgs = mkPkgs "aarch64-darwin";
+          specialArgs = inputs;
+          modules = [
+            home-manager.darwinModules.home-manager
+            stylix.darwinModules.stylix
+            ./darwin
+            ./darwin/homebrew
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ stylix.homeModules.stylix ];
+              home-manager.users.walter = {
+                imports = ./home;
+              };
+            }
+          ];
+        };
+      };
+      homeConfigurations = {
+        "workstation" = home-manager.lib.homeManagerConfiguration {
+          pkgs = mkPkgs "x86_64-linux";
+          extraSpecialArgs = inputs;
+          modules = [
+            ./home
+            plasma-manager.homeModules.plasma-manager
+            stylix.homeModules.stylix
+          ];
+        };
+      };
       nixosConfigurations = {
         gk55 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = commonModules ++ [
-            ./nixos/services/avahi.nix
-            ./nixos/services/cockpit.nix
-            ./nixos/services/ssh.nix
-            ./system/gk55/configuration.nix
+          specialArgs = inputs;
+          modules = [
+            ./hosts/gk55
+            ./nixos
           ];
         };
         ser8 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = commonModules ++ [
-            ./nixos/services/avahi.nix
-            ./nixos/services/cockpit.nix
-            # ./nixos/services/netbird.nix
+          specialArgs = inputs;
+          modules = [
+            ./hosts/ser8
+            ./nixos
             ./nixos/services/samba.nix
-            ./nixos/services/ssh.nix
             ./nixos/services/syncthing.nix
-            ./system/ser8/configuration.nix
           ];
         };
       };

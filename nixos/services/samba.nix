@@ -1,4 +1,12 @@
 { config, ... }:
+let
+  macSettings = {
+    "fruit:encoding" = "native";
+    "fruit:metadata" = "stream";
+    "fruit:posix_rename" = "yes";
+    "vfs objects" = "fruit streams_xattr";
+  };
+in
 {
   services.samba-wsdd = {
     enable = true;
@@ -29,11 +37,7 @@
         "directory mask" = "0775";
         "strict locking" = "no";
         "valid users" = "@users";
-        "vfs objects" = "fruit streams_xattr";
-        "fruit:encoding" = "native";
-        "fruit:metadata" = "stream";
-        "fruit:posix_rename" = "yes";
-      };
+      } // macSettings;
       homes = {
         comment = "Home directories";
         browseable = "no";
@@ -43,11 +47,7 @@
         "directory mask" = "0700";
         "strict locking" = "no";
         "valid users" = "%S";
-        "vfs objects" = "fruit streams_xattr";
-        "fruit:encoding" = "native";
-        "fruit:metadata" = "stream";
-        "fruit:posix_rename" = "yes";
-      };
+      } // macSettings;
     };
   };
   # add user passwords
