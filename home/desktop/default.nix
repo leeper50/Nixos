@@ -137,13 +137,6 @@ in
       };
     };
 
-    plasma = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
-      workspace = {
-        iconTheme = "Papirus-Dark";
-      };
-    };
-
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
     };

@@ -72,16 +72,17 @@
           pkgs = mkPkgs "aarch64-darwin";
           specialArgs = inputs;
           modules = [
-            home-manager.darwinModules.home-manager
-            stylix.darwinModules.stylix
             ./darwin
             ./darwin/homebrew
+            home-manager.darwinModules.home-manager
+            stylix.darwinModules.stylix
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = inputs;
               home-manager.sharedModules = [ stylix.homeModules.stylix ];
               home-manager.users.walter = {
-                imports = ./home;
+                imports = [ ./home ];
               };
             }
           ];
@@ -93,7 +94,7 @@
           extraSpecialArgs = inputs;
           modules = [
             ./home
-            plasma-manager.homeModules.plasma-manager
+            ./home/desktop/plasma.nix
             stylix.homeModules.stylix
           ];
         };
