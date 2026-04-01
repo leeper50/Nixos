@@ -43,7 +43,9 @@ in
       haruna
       qview
       teamspeak6-client
-      vivaldi
+      (vivaldi.override {
+        proprietaryCodecs = true;
+      })
       vivaldi-ffmpeg-codecs
       vlc
     ]
