@@ -16,6 +16,7 @@
       nixfmt
       parallel
       powerline-fonts
+      tailscale
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       chezmoi
