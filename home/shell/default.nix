@@ -16,7 +16,6 @@
         set -gx TERM xterm-256color
         set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
         set -gx MANROFFOPT -c
-        set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
         fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
         if type -q nixos-rebuild
             set -gx FLAKE_DIR /etc/nixos
