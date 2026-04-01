@@ -1,10 +1,56 @@
-{ plasma-manager, ... }:
+{ plasma-manager, pkgs, ... }:
 {
   imports = [
     plasma-manager.homeModules.plasma-manager
   ];
+  home.packages = [ pkgs.nixos-icons ];
   programs.plasma = {
     enable = true;
+    panels = [
+      {
+        height = 44;
+        location = "bottom";
+        screen = 0;
+        widgets = [
+          {
+            kickoff = {
+              sortAlphabetically = true;
+              icon = "nix-snowflake-white";
+            };
+          }
+          {
+            iconTasks = {
+              launchers = [
+                "applications:vivaldi-stable.desktop"
+                "applications:org.kde.dolphin.desktop"
+                "applications:kitty.desktop"
+                "applications:codium.desktop"
+                "applications:systemsettings.desktop"
+              ];
+            };
+          }
+          "org.kde.plasma.marginsseparator"
+          {
+            systemTray.items = {
+              shown = [
+                "org.kde.plasma.networkmanagement"
+                "org.kde.plasma.volume"
+              ];
+              hidden = [
+                "org.kde.plasma.battery"
+                "org.kde.plasma.bluetooth"
+              ];
+            };
+          }
+          {
+            digitalClock = {
+              calendar.firstDayOfWeek = "sunday";
+              time.format = "24h";
+            };
+          }
+        ];
+      }
+    ];
     workspace = {
       iconTheme = "Papirus-Dark";
     };

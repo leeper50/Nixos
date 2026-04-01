@@ -32,6 +32,7 @@ in
       oxipng
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
+      libsForQt5.qt5.qttools
       audacious
       audacious-plugins
       deskflow
