@@ -22,6 +22,7 @@ in
       bitwarden-desktop
       btop
       czkawka
+      ffmpeg-full
       joplin-desktop
       libavif
       libjxl
@@ -41,7 +42,7 @@ in
       haruna
       qview
       teamspeak6-client
-      vivaldi-ffmpeg-codecs
+
       vlc
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
@@ -100,7 +101,7 @@ in
         { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violent monkey
         { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
       ];
-      package = pkgs.vivaldi;
+      package = pkgs.vivaldi.override { proprietaryCodecs = true; };
     };
 
     kitty = {
