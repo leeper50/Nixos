@@ -36,9 +36,36 @@
         rcat = "command cat";
         rs = "sudo systemctl";
         s = "systemctl";
-        try = "sudo nixos-rebuild test --flake $FLAKE_DIR/.#(hostname)";
       };
       functions = {
+        build = ''
+          set original_dir (pwd)
+          if type -q nixos-rebuild
+              cd $FLAKE_DIR
+              sudo git pull
+              sudo nixos-rebuild test --flake $FLAKE_DIR/.#(hostname)
+              cd $original_dir
+          else if type -q darwin-rebuild
+              cd $FLAKE_DIR
+              git pull
+              sudo darwin-rebuild build --flake $FLAKE_DIR/.#(hostname)
+              cd $original_dir
+          else if type -q home-manager
+              set unmanaged_files \
+                  ~/.gtkrc-2.0 \
+                  ~/.config/gtk-3.0/gtk.css \
+                  ~/.config/gtk-3.0/settings.ini \
+                  ~/.config/gtk-4.0/gtk.css \
+                  ~/.config/gtk-4.0/settings.ini
+              rm -f $unmanaged_files
+              cd $FLAKE_DIR
+              git pull
+              home-manager build --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
+              cd $original_dir
+          else
+              return 1
+          end
+        '';
         dl = ''
           if type -q yt-dlp
               argparse a i t p -- $argv
