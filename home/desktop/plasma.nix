@@ -6,9 +6,18 @@
   home.packages = [ pkgs.nixos-icons ];
   programs.plasma = {
     enable = true;
+    kwin = {
+      blur = {
+        enable = true;
+        noiseStrength = 5;
+        strength = 15;
+      };
+      cornerBarrier = false;
+      edgeBarrier = 0;
+    };
     panels = [
       {
-        height = 44;
+        height = 48;
         location = "bottom";
         screen = 0;
         widgets = [
