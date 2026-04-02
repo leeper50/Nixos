@@ -7,10 +7,12 @@
   programs.plasma = {
     enable = true;
     kwin = {
-      blur = {
-        enable = true;
-        noiseStrength = 5;
-        strength = 15;
+      effects = {
+        blur = {
+          enable = true;
+          noiseStrength = 5;
+          strength = 15;
+        };
       };
       cornerBarrier = false;
       edgeBarrier = 0;
