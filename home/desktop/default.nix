@@ -22,6 +22,7 @@ in
       bitwarden-desktop
       btop
       czkawka
+      feishin
       ffmpeg-full
       joplin-desktop
       libavif
@@ -30,14 +31,17 @@ in
       mumble
       obsidian
       oxipng
+      sqlitebrowser
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       libsForQt5.qt5.qttools
       audacious
       audacious-plugins
       deskflow
+      easyeffects
       feishin
       filezilla
+      freac
       freetube
       gimp
       haruna
@@ -48,6 +52,7 @@ in
       })
       vivaldi-ffmpeg-codecs
       vlc
+      wowup-cf
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       gimp2

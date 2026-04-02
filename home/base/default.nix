@@ -12,11 +12,16 @@
       base16-schemes
       bc
       fastfetch
+      iperf
       nixd
       nixfmt
       parallel
       powerline-fonts
+      syncthing
       tailscale
+    ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      hwinfo
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       chezmoi

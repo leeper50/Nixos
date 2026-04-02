@@ -3,7 +3,7 @@
   imports = [
     plasma-manager.homeModules.plasma-manager
   ];
-  home.packages = [ pkgs.nixos-icons ];
+  home.packages = with pkgs; [ nixos-icons ];
   programs.plasma = {
     enable = true;
     kwin = {

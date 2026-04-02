@@ -52,6 +52,7 @@
         "teamspeak6-client"
         "vivaldi"
         "vscode-extension-anthropic-claude-code"
+        "wowup-cf"
       ];
       lib = nixpkgs.lib;
       mkPkgs =
