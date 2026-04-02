@@ -24,6 +24,9 @@ in
       czkawka
       feishin
       ffmpeg-full
+      fira-code
+      fira-code-symbols
+      fira-sans
       joplin-desktop
       libavif
       libjxl
@@ -86,7 +89,6 @@ in
       }
       // lib.optionalAttrs pkgs.stdenv.isLinux {
         env = {
-          TERM = "xterm-256color";
           WINIT_X11_SCALE_FACTOR = "1";
         };
         window.class = {
@@ -120,6 +122,7 @@ in
         map ctrl+right previous_window
         map alt+left send_text all \x1b\x62
         map alt+right send_text all \x1b\x66
+        symbol_map U+23FB-U+23FE,U+2665,U+26A1,U+2B58,U+E000-U+E00A,U+E0A0-U+E0A3,U+E0B0-U+E0C8,U+E0CA,U+E0CC-U+E0D2,U+E0D4,U+E0D6,U+E0D8,U+E0DA,U+E0DC,U+E0DE,U+E0E0-U+E0E3,U+E0E5,U+E0E7,U+E0E9-U+E0EE,U+F000-U+F2E0,U+F300-U+F31C,U+F400-U+F4A9,U+F500-U+F8FF Symbols Nerd Font Mono
       '';
       settings = {
         confirm_os_window_close = 0;
@@ -127,7 +130,6 @@ in
         enabled_layouts = "splits:split_axis=auto";
         remember_window_size = "yes";
       };
-      themeFile = "Monokai";
     };
 
     mpv = lib.mkIf pkgs.stdenv.isLinux {
@@ -285,16 +287,17 @@ in
     };
   };
 
+  fonts.fontconfig.enable = true;
   stylix = {
     enable = true;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/material.yaml";
     fonts = {
       serif = {
         package = pkgs.liberation_ttf;
         name = "Liberation Serif";
       };
       sansSerif = {
-        package = pkgs.fira;
+        package = pkgs.fira-sans;
         name = "Fira Sans";
       };
       monospace = {
