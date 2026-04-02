@@ -7,7 +7,6 @@
       _1password-gui
       bitwarden-cli
       bitwarden-desktop
-      btop
       czkawka
       feishin
       ffmpeg-full
@@ -15,12 +14,10 @@
       fira-code-symbols
       fira-sans
       handbrake
-      joplin-desktop
       libavif
       libjxl
       libwebp
       mumble
-      obsidian
       oxipng
       sqlitebrowser
     ]
@@ -30,7 +27,6 @@
       audacious-plugins
       deskflow
       easyeffects
-      feishin
       filezilla
       freac
       freetube
@@ -86,6 +82,8 @@
       };
     };
 
+    btop.enable = true;
+
     chromium = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       extensions = [
@@ -102,6 +100,8 @@
       ];
       package = pkgs.chromium;
     };
+
+    joplin-desktop.enable = true;
 
     kitty = {
       enable = true;
@@ -138,6 +138,8 @@
         volume = 30;
       };
     };
+
+    obsidian.enable = true;
 
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
