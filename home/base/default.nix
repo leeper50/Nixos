@@ -11,6 +11,7 @@
       age
       base16-schemes
       bc
+      chezmoi
       fastfetch
       iperf
       nixd
@@ -24,7 +25,6 @@
       hwinfo
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
-      chezmoi
       dbgate
       duti
     ];
