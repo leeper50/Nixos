@@ -10,8 +10,8 @@
       effects = {
         blur = {
           enable = true;
-          noiseStrength = 5;
-          strength = 15;
+          noiseStrength = 1;
+          strength = 10;
         };
       };
       cornerBarrier = false;

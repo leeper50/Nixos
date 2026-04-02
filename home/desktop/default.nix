@@ -119,6 +119,7 @@ in
     kitty = {
       enable = true;
       extraConfig = ''
+        background_blur 1
         disable_ligatures always
         map ctrl+left next_window
         map ctrl+right previous_window
@@ -324,5 +325,6 @@ in
       };
       gtk.enable = true;
     };
+    opacity.terminal = 0.8;
   };
 }
