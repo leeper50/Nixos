@@ -27,6 +27,7 @@ in
       fira-code
       fira-code-symbols
       fira-sans
+      handbrake
       joplin-desktop
       libavif
       libjxl
