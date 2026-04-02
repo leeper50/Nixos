@@ -144,6 +144,10 @@
         '';
       };
     };
+    fzf = {
+      enable = true;
+      enableFishIntegration = true;
+    };
     helix = {
       enable = true;
       languages = {
