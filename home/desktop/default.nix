@@ -118,6 +118,7 @@ in
     kitty = {
       enable = true;
       extraConfig = ''
+        disable_ligatures always
         map ctrl+left next_window
         map ctrl+right previous_window
         map alt+left send_text all \x1b\x62
@@ -289,8 +290,8 @@ in
 
   fonts.fontconfig.enable = true;
   stylix = {
-    enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/material.yaml";
+    enable = true;
     fonts = {
       serif = {
         package = pkgs.liberation_ttf;
@@ -309,11 +310,18 @@ in
         name = "Noto Color Emoji";
       };
     };
-    targets.gtk.enable = true;
     icons = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       package = pkgs.papirus-icon-theme;
       dark = "Papirus-Dark";
+    };
+    image = ./wallpaper.jxl;
+    targets = {
+      firefox = {
+        colorTheme.enable = true;
+        profileNames = [ "default" ];
+      };
+      gtk.enable = true;
     };
   };
 }
