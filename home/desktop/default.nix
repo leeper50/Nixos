@@ -13,7 +13,6 @@
       fira-code
       fira-code-symbols
       fira-sans
-      handbrake
       libavif
       libjxl
       libwebp
@@ -31,6 +30,7 @@
       freac
       freetube
       gimp
+      handbrake
       haruna
       qview
       teamspeak6-client
