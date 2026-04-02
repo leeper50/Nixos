@@ -1,5 +1,8 @@
 { lib, pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    pistol
+  ];
   programs = {
     bat.enable = true;
     eza = {
@@ -149,6 +152,18 @@
       enable = true;
       enableFishIntegration = true;
     };
+    git = {
+      enable = true;
+      lfs.enable = true;
+      settings = {
+        core.autocrlf = false;
+        init.defaultBranch = "main";
+        user = {
+          email = "wleeper13@outlook.com";
+          name = "Walter Leeper";
+        };
+      };
+    };
     helix = {
       enable = true;
       languages = {
@@ -199,19 +214,39 @@
         };
       };
     };
-    git = {
+    htop.enable = true;
+    lf = {
       enable = true;
-      lfs.enable = true;
+      previewer.source = pkgs.writeShellScript "pv.sh" ''
+        #!/bin/sh
+        file="$1"
+        w="$2"
+        h="$3"
+        x="$4"
+        y="$5"
+        draw() {
+          kitten icat --stdin no --transfer-mode memory --place "''${w}x''${h}@''${x}x''${y}" "$1" </dev/null >/dev/tty
+          exit 1
+        }
+        case "$(file -Lb --mime-type "$file")" in 
+          image/*)
+            draw "$file"
+            ;;
+          video/*)
+            # vidthumb is from here:
+            # https://raw.githubusercontent.com/duganchen/kitty-pistol-previewer/main/vidthumb
+            draw "$(vidthumb "$file")"
+            ;;
+        esac
+        pistol "$file"
+      '';
       settings = {
-        core.autocrlf = false;
-        init.defaultBranch = "main";
-        user = {
-          email = "wleeper13@outlook.com";
-          name = "Walter Leeper";
-        };
+        cleaner = "${pkgs.writeShellScript "lf-cleaner.sh" ''
+          kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
+        ''}";
+        icons = true;
       };
     };
-    htop.enable = true;
     ripgrep.enable = true;
     tealdeer = {
       enable = true;
