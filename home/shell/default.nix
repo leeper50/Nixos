@@ -8,6 +8,7 @@
       icons = "always";
     };
     fastfetch.enable = true;
+    fd.enable = true;
     fish = {
       enable = true;
       shellInit = ''
