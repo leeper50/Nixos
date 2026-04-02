@@ -1,17 +1,4 @@
 { lib, pkgs, ... }:
-let
-  colors = {
-    background = "rgb(39, 40, 34)";
-    blue = "rgb(102, 217, 239)";
-    green = "rgb(166, 226, 46)";
-    orange = "rgb(253, 151, 31)";
-    pink = "rgb(249, 36, 114)";
-    selectionBg = "rgba(39, 40, 34, 0.8)";
-    selectionFg = "rgba(248, 248, 242, 0.8)";
-    white = "rgb(248, 248, 242)";
-    yellow = "rgb(230, 219, 116)";
-  };
-in
 {
   gtk.gtk4.theme = null;
   home.packages =
@@ -256,36 +243,16 @@ in
       };
     };
 
-    zathura = lib.mkIf pkgs.stdenv.isLinux {
+    zathura = {
       enable = true;
+      mappings = {
+        "<Left>" = "navigate previous";
+        "<Right>" = "navigate next";
+      };
       options = {
-        completion-bg = lib.mkForce colors.background;
-        completion-fg = lib.mkForce colors.white;
-        completion-group-bg = lib.mkForce colors.background;
-        completion-group-fg = lib.mkForce colors.green;
-        completion-highlight-bg = lib.mkForce colors.selectionFg;
-        completion-highlight-fg = lib.mkForce colors.selectionBg;
-        default-bg = lib.mkForce colors.background;
-        default-fg = lib.mkForce colors.white;
-        highlight-active-color = lib.mkForce colors.selectionFg;
-        highlight-color = lib.mkForce colors.selectionBg;
-        inputbar-bg = lib.mkForce colors.background;
-        inputbar-fg = lib.mkForce colors.white;
-        notification-bg = lib.mkForce colors.background;
-        notification-error-bg = lib.mkForce colors.background;
-        notification-error-fg = lib.mkForce colors.pink;
-        notification-fg = lib.mkForce colors.blue;
-        notification-warning-bg = lib.mkForce colors.background;
-        notification-warning-fg = lib.mkForce colors.white;
-        recolor = lib.mkForce true;
-        recolor-darkcolor = lib.mkForce colors.white;
-        recolor-keephue = lib.mkForce true;
-        recolor-lightcolor = lib.mkForce colors.background;
-        render-loading = lib.mkForce true;
-        render-loading-bg = lib.mkForce colors.background;
-        render-loading-fg = lib.mkForce colors.white;
-        statusbar-bg = lib.mkForce colors.background;
-        statusbar-fg = lib.mkForce colors.white;
+        adjust-window = "best-fit";
+        pages-per-row = 2;
+        recolor = true;
       };
     };
   };
