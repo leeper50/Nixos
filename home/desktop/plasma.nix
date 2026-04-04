@@ -9,6 +9,14 @@
   };
   programs.plasma = {
     enable = true;
+    input.keyboard = {
+      numlockOnStartup = "on";
+      options = [ "ctrl:nocaps" ];
+    };
+    kscreenlocker = {
+      appearance.wallpaper = ./wallpaper.jxl;
+      autoLock = false;
+    };
     kwin = {
       effects = {
         blur = {
