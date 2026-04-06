@@ -21,7 +21,6 @@
       sqlitebrowser
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
-      libsForQt5.qt5.qttools
       audacious
       audacious-plugins
       deskflow
@@ -32,6 +31,7 @@
       gimp
       handbrake
       haruna
+      libsForQt5.qt5.qttools
       qview
       teamspeak6-client
       (vivaldi.override {
@@ -45,7 +45,6 @@
       gimp2
       vlc-bin
     ];
-
   programs = {
     alacritty = {
       enable = true;
@@ -81,9 +80,7 @@
         };
       };
     };
-
     btop.enable = true;
-
     chromium = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       extensions = [
@@ -100,9 +97,7 @@
       ];
       package = pkgs.chromium;
     };
-
     joplin-desktop.enable = true;
-
     kitty = {
       enable = true;
       extraConfig = ''
@@ -121,7 +116,6 @@
         remember_window_size = "yes";
       };
     };
-
     mpv = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       bindings = {
@@ -138,13 +132,10 @@
         volume = 30;
       };
     };
-
     obsidian.enable = true;
-
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
     };
-
     vesktop = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       settings = {
@@ -177,7 +168,6 @@
         };
       };
     };
-
     vscode = {
       enable = true;
       package = pkgs.vscodium;
@@ -244,7 +234,6 @@
         };
       };
     };
-
     zathura = {
       enable = true;
       mappings = {
@@ -258,7 +247,6 @@
       };
     };
   };
-
   fonts.fontconfig.enable = true;
   stylix = {
     base16Scheme = "${pkgs.base16-schemes}/share/themes/material.yaml";
