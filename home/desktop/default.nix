@@ -249,7 +249,7 @@
   };
   fonts.fontconfig.enable = true;
   stylix = {
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/material.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
     enable = true;
     fonts = {
       serif = {

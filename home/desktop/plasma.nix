@@ -75,6 +75,7 @@
     ];
     workspace = {
       iconTheme = "Papirus-Dark";
+      splashScreen.theme = "None";
     };
   };
 }
