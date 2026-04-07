@@ -24,7 +24,7 @@
           strength = 10;
         };
       };
-      cornerBarrier = false;
+      cornerBarrier = true;
       edgeBarrier = 0;
     };
     panels = [
