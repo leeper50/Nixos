@@ -25,6 +25,7 @@
       lldb_22
       markdown-oxide
       onefetch
+      python314
       ragenix
       rclone
       restic

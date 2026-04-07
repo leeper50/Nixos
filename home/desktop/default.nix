@@ -177,6 +177,7 @@
             anthropic.claude-code
             arrterian.nix-env-selector
             bradlc.vscode-tailwindcss
+            charliermarsh.ruff
             dbaeumer.vscode-eslint
             esbenp.prettier-vscode
             golang.go
