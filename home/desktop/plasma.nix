@@ -56,8 +56,6 @@
               shown = [
                 "org.kde.plasma.networkmanagement"
                 "org.kde.plasma.volume"
-              ];
-              hidden = [
                 "org.kde.plasma.battery"
                 "org.kde.plasma.bluetooth"
               ];
@@ -72,6 +70,34 @@
         ];
       }
     ];
+    powerdevil = {
+      AC = {
+        autoSuspend.action = "nothing";
+        powerButtonAction = "showLogoutScreen";
+        powerProfile = "powerSaving";
+        turnOffDisplay.idleTimeout = "never";
+      };
+      battery = {
+        autoSuspend.action = "nothing";
+        powerButtonAction = "showLogoutScreen";
+        powerProfile = "powerSaving";
+        turnOffDisplay.idleTimeout = "never";
+      };
+      lowBattery = {
+        autoSuspend.action = "nothing";
+        powerButtonAction = "showLogoutScreen";
+        powerProfile = "powerSaving";
+        turnOffDisplay.idleTimeout = "never";
+      };
+    };
+    session = {
+      general = {
+        askForConfirmationOnLogout = true;
+      };
+      sessionRestore = {
+        restoreOpenApplicationsOnLogin = "startWithEmptySession";
+      };
+    };
     workspace = {
       iconTheme = "Papirus-Dark";
       splashScreen.theme = "None";
