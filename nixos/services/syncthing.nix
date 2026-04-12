@@ -54,6 +54,7 @@ in
             "walter-macbook"
             "walter-pc"
             "walter-phone"
+            "walter-tablet"
           ];
           id = "extbw-xzgpn";
           path = "${data}/Sync/Notes";
