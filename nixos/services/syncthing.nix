@@ -5,9 +5,9 @@ in
 {
   networking.firewall.allowedTCPPorts = [ 8384 ];
   services.syncthing = {
-    configDir = "${data}/Sync";
-    databaseDir = "${data}/Sync";
-    dataDir = "${data}/Sync";
+    configDir = "${data}/Sync/.config/syncthing";
+    databaseDir = "${data}/Sync/.config/syncthing";
+    dataDir = "${data}/Sync/";
     enable = true;
     group = "users";
     guiAddress = "0.0.0.0:8384";
