@@ -218,20 +218,25 @@
             "[typescript]" = {
               "editor.defaultFormatter" = "vscode.typescript-language-features";
             };
-            "#js/ts.updateImportsOnFileMove.enabled" = "always";
             "claudeCode.preferredLocation" = "sidebar";
             "diffEditor.ignoreTrimWhitespace" = false;
             "editor.fontLigatures" = true;
+            "editor.formatOnSave" = true;
             "files.associations" = {
               "*.css" = "tailwindcss";
             };
             "files.autoSave" = "afterDelay";
             "git.autofetch" = true;
-            "git.confirmSync" = false;
+            "git.autoStash" = true;
+            "git.confirmSync" = true;
             "git.enableSmartCommit" = true;
+            "git.fetchOnPull" = true;
+            "js/ts.updateImportsOnFileMove.enabled" = "always";
             "prettier.tabWidth" = 4;
             "prettier.useTabs" = true;
             "svelte.enable-ts-plugin" = true;
+            "telemetry.telemetryLevel" = "error";
+            "terminal.integrated.initialHint" = false;
             "update.showReleaseNotes" = false;
             "vsicons.dontShowNewVersionMessage" = true;
             "workbench.iconTheme" = "vscode-icons";
