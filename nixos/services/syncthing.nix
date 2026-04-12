@@ -11,7 +11,6 @@ in
     enable = true;
     group = "users";
     guiAddress = "0.0.0.0:8384";
-    guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
     openDefaultPorts = true;
     user = "walter";
     settings = {
