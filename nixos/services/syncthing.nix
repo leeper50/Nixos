@@ -7,17 +7,14 @@ in
   services.syncthing = {
     configDir = "${data}/Sync/.config/syncthing";
     databaseDir = "${data}/Sync/.config/syncthing";
-    dataDir = "${data}/Sync/";
+    dataDir = "${data}/Sync";
     enable = true;
     group = "users";
-    guiAddress = "0.0.0.0:8384";
+    guiAddress = "${config.networking.hostName}:8384";
     guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
     openDefaultPorts = true;
     user = "walter";
     settings = {
-      gui = {
-        user = "walter";
-      };
       devices = {
         "walter-laptop" = {
           id = "I6OKPJS-YLFUWSN-GRHUNMS-2R2JJTH-UOB737Y-N6CBWX5-6DJXTDA-BUVWNA2";
