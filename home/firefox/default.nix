@@ -16,17 +16,15 @@ in
         isDefault = true;
         extensions = {
           force = true;
-          packages = [
-            pkgs.firefoxAddons."1password-x-password-manager"
-            pkgs.firefoxAddons.decentraleyes
-            pkgs.firefoxAddons.indie-wiki-buddy
-            pkgs.firefoxAddons.istilldontcareaboutcookies
-            pkgs.firefoxAddons.mute-sites-by-default
-            pkgs.firefoxAddons.reddit-enhancement-suite
-            pkgs.firefoxAddons.redirect-to-wiki-gg
-            pkgs.firefoxAddons.surge
-            pkgs.firefoxAddons.ublock-origin
-            pkgs.firefoxAddons.violentmonkey
+          packages = with pkgs.nur.repos.rycee.firefox-addons; [
+            bitwarden
+            decentraleyes
+            indie-wiki-buddy
+            istilldontcareaboutcookies
+            reddit-enhancement-suite
+            redirect-to-wiki-gg
+            ublock-origin
+            violentmonkey
           ];
           settings = {
             "uBlock0@raymondhill.net".settings = {

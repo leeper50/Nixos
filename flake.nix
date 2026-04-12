@@ -10,8 +10,8 @@
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    firefox-addons = {
-      url = "github:osipog/nix-firefox-addons";
+    nur = {
+      url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
@@ -34,36 +34,22 @@
       inherit (inputs)
         agenix
         darwin
-        firefox-addons
+        nur
         home-manager
         nixpkgs
         plasma-manager
         self
         stylix
         ;
-      allowedUnfree = [
-        "1password-x-password-manager"
-        "1password"
-        "claude-code"
-        "firefox-bin-unwrapped"
-        "firefox-bin"
-        "google-chrome"
-        "obsidian"
-        "teamspeak6-client"
-        "vivaldi"
-        "vscode-extension-anthropic-claude-code"
-        "wowup-cf"
-      ];
-      lib = nixpkgs.lib;
       mkPkgs =
         system:
         import nixpkgs {
           inherit system;
           overlays = [
-            firefox-addons.overlays.default
+            nur.overlays.default
           ];
           config = {
-            allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfree;
+            allowUnfree = true;
           };
         };
     in
