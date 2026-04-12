@@ -7,6 +7,7 @@
       _1password-gui
       bitwarden-cli
       bitwarden-desktop
+      corefonts
       czkawka
       faugus-launcher
       feishin
@@ -33,6 +34,7 @@
       gimp
       handbrake
       haruna
+      libreoffice-fresh
       libsForQt5.qt5.qttools
       qview
       teamspeak6-client
@@ -45,6 +47,7 @@
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       gimp2
+      libreoffice-bin
       vlc-bin
     ];
   programs = {
