@@ -10,7 +10,7 @@ in
     dataDir = "${data}/Sync";
     enable = true;
     group = "users";
-    guiAddress = "${config.networking.hostName}:8384";
+    guiAddress = "0.0.0.0:8384";
     guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
     openDefaultPorts = true;
     user = "walter";
