@@ -8,6 +8,7 @@
       bitwarden-cli
       bitwarden-desktop
       czkawka
+      faugus-launcher
       feishin
       ffmpeg-full
       fira-code
@@ -18,6 +19,7 @@
       libwebp
       mumble
       oxipng
+      protonplus
       sqlitebrowser
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
@@ -84,9 +86,9 @@
     chromium = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       extensions = [
-        { id = "aeblfdkhhhdcdjpifhhbdiojplfjncoa"; } # 1password
         { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
         { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
+        { id = "nngceckbapebfimnlniiiahkandclblb"; } # bitwarden
         { id = "ldpochfccmkkmhdbclfhpagapcfdljkj"; } # decentraleyes
         { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; } # i-still-dont-care-about-cookies
         { id = "fkagelmloambgokoeokbpihmgpkbgbfm"; } # indie wiki buddy
@@ -174,7 +176,7 @@
       profiles = {
         default = {
           extensions = with pkgs.vscode-extensions; [
-            anthropic.claude-code
+            # anthropic.claude-code # hash-mismatch. uncomment later.
             arrterian.nix-env-selector
             bradlc.vscode-tailwindcss
             charliermarsh.ruff
