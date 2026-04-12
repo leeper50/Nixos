@@ -9,7 +9,6 @@
       bitwarden-desktop
       corefonts
       czkawka
-      faugus-launcher
       feishin
       ffmpeg-full
       fira-code
@@ -20,7 +19,6 @@
       libwebp
       mumble
       oxipng
-      protonplus
       sqlitebrowser
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
@@ -28,6 +26,7 @@
       audacious-plugins
       deskflow
       easyeffects
+      faugus-launcher
       filezilla
       freac
       freetube
@@ -36,6 +35,7 @@
       haruna
       libreoffice-fresh
       libsForQt5.qt5.qttools
+      protonplus
       qview
       teamspeak6-client
       (vivaldi.override {
