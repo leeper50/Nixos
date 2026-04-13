@@ -157,6 +157,7 @@
       lfs.enable = true;
       settings = {
         core.autocrlf = false;
+        credential.helper = "store";
         init.defaultBranch = "main";
         user = {
           email = "wleeper13@outlook.com";
