@@ -67,6 +67,11 @@
           {
             digitalClock = {
               calendar.firstDayOfWeek = "sunday";
+              date = {
+                enable = true;
+                format = "isoDate";
+                position = "adaptive";
+              };
               time.format = "24h";
             };
           }
