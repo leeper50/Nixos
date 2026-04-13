@@ -111,6 +111,7 @@
           modules = [
             ./hosts/swarm
             ./nixos
+            ./nixos/services/docker.nix
           ];
         };
       };
