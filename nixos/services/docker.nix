@@ -1,5 +1,6 @@
-{ ... }:
+{ lib, ... }:
 {
+  networking.nftables.enable = lib.mkForce false;
   virtualisation.docker = {
     enable = true;
     daemon.settings = {
