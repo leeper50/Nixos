@@ -6,6 +6,7 @@ let
   keys = [
     gk55
     ser8
+    swarm
     personal
   ];
 in
