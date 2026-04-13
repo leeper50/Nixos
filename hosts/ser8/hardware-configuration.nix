@@ -10,11 +10,12 @@
 
   boot.initrd.availableKernelModules = [
     "ata_piix"
-    "uhci_hcd"
-    "virtio_pci"
-    "virtio_scsi"
     "sd_mod"
     "sr_mod"
+    "uhci_hcd"
+    "virtio_net"
+    "virtio_pci"
+    "virtio_scsi"
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];

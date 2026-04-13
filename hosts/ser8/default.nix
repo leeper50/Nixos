@@ -7,8 +7,11 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
+  systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";
+  virtualisation.libvirtd.enable = true;
 
   networking = {
     hostName = "ser8";
@@ -21,7 +24,7 @@
       ];
     };
   };
-  
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";

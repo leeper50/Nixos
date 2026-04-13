@@ -8,10 +8,10 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
-  virtualisation.libvirtd.enable = true;
+  services.spice-vdagentd.enable = true;
   systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";
+  virtualisation.libvirtd.enable = true;
 
   networking = {
     hostName = "swarm";
