@@ -101,6 +101,11 @@
         restoreOpenApplicationsOnLogin = "startWithEmptySession";
       };
     };
+    shortcuts = {
+      "kwin" = {
+        "Show Desktop" = [ ];
+      };
+    };
     workspace = {
       iconTheme = "Papirus-Dark";
       splashScreen.theme = "None";
