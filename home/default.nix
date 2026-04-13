@@ -6,6 +6,7 @@
     ./dev
     ./desktop
     ./firefox
+    ./games
     ./shell
   ];
 }

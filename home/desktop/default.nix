@@ -17,7 +17,6 @@
       libavif
       libjxl
       libwebp
-      mumble
       oxipng
       sqlitebrowser
     ]
@@ -25,8 +24,6 @@
       audacious
       audacious-plugins
       deskflow
-      easyeffects
-      faugus-launcher
       filezilla
       freac
       freetube
@@ -35,15 +32,12 @@
       haruna
       libreoffice-fresh
       libsForQt5.qt5.qttools
-      protonplus
       qview
-      teamspeak6-client
       (vivaldi.override {
         proprietaryCodecs = true;
       })
       vivaldi-ffmpeg-codecs
       vlc
-      wowup-cf
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       gimp2
@@ -138,41 +132,6 @@
       };
     };
     obsidian.enable = true;
-    prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
-    };
-    vesktop = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
-      settings = {
-        arRPC = false;
-        clickTrayToShowHide = true;
-        discordBranch = "stable";
-        hardwareAcceleration = true;
-        hardwareVideoAcceleration = true;
-        minimizeToTray = true;
-        tray = true;
-      };
-      vencord = {
-        settings = {
-          autoUpdate = false;
-          autoUpdateNotification = false;
-          notifyAboutUpdates = false;
-          plugins = {
-            AnonymiseFileNames.enabled = true;
-            CtrlEnterSend.enabled = true;
-            Dearrow.enabled = true;
-            FakeNitro.enabled = true;
-            FixImagesQuality.enabled = true;
-            ShowMeYourName.enabled = true;
-            SilentTyping.enabled = true;
-            VoiceChatDoubleClick.enabled = true;
-            VolumeBooster.enabled = true;
-            YoutubeAdblock.enabled = true;
-          };
-          useQuickCss = true;
-        };
-      };
-    };
     vscode = {
       enable = true;
       package = pkgs.vscodium;
