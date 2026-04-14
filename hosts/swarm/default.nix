@@ -9,6 +9,14 @@
   boot.loader.grub.useOSProber = true;
 
   services.qemuGuest.enable = true;
+  systemd.services.qemu-guest-agent = {
+    serviceConfig = {
+      ReadOnlyPaths = [ "/" ];
+      ProtectSystem = lib.mkForce "false";
+      ProtectHome = lib.mkForce "false";
+    };
+  };
+
   services.spice-vdagentd.enable = true;
   systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";
   virtualisation.libvirtd.enable = true;
