@@ -30,7 +30,7 @@
       '';
       shellAliases = {
         cat = "bat -pp";
-        clean = "nix-collect-garbage";
+        clean = "sudo nix-collect-garbage -d";
         cz = "chezmoi";
         helix = "hx";
         hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
