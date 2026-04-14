@@ -23,6 +23,8 @@
           noiseStrength = 1;
           strength = 10;
         };
+        shakeCursor.enable = false;
+        zoom.enable = false;
       };
       cornerBarrier = true;
       edgeBarrier = 0;
@@ -81,18 +83,21 @@
     powerdevil = {
       AC = {
         autoSuspend.action = "nothing";
+        dimDisplay.enable = false;
         powerButtonAction = "showLogoutScreen";
         powerProfile = "powerSaving";
         turnOffDisplay.idleTimeout = "never";
       };
       battery = {
         autoSuspend.action = "nothing";
+        dimDisplay.enable = false;
         powerButtonAction = "showLogoutScreen";
         powerProfile = "powerSaving";
         turnOffDisplay.idleTimeout = "never";
       };
       lowBattery = {
         autoSuspend.action = "nothing";
+        dimDisplay.enable = false;
         powerButtonAction = "showLogoutScreen";
         powerProfile = "powerSaving";
         turnOffDisplay.idleTimeout = "never";
