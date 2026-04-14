@@ -19,7 +19,6 @@
       parallel
       powerline-fonts
       syncthing
-      tailscale
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       hwinfo
