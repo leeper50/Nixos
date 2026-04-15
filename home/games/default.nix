@@ -1,4 +1,7 @@
 { lib, pkgs, ... }:
+let
+  retroarch_dir = "~/Sync/Desktops/Retroarch";
+in
 {
   home.packages =
     with pkgs;
@@ -22,6 +25,40 @@
     };
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
+    };
+    retroarch = {
+      enable = true;
+      cores = {
+        bsnes-hd.enable = true;
+        citra.enable = true;
+        dolphin.enable = true;
+        melonds.enable = true;
+        mesen.enable = true;
+        mgba.enable = true;
+        mupen64plus.enable = true;
+        pcsx2.enable = true;
+        ppsspp.enable = true;
+        swanstation.enable = true;
+      };
+      package = pkgs.retroarch-bare;
+      settings = {
+        materialui_menu_color_theme = "9";
+        menu_use_preferred_system_color_theme = "false";
+        netplay_nickname = "Ishyaboi";
+        ozone_menu_color_theme = "9";
+        video_driver = "vulkan";
+        video_fullscreen = "true";
+        # Paths
+        content_database_path = "${retroarch_dir}/ContentDatabase";
+        cheat_database_path = "${retroarch_dir}/Cheats";
+        playlist_directory = "${retroarch_dir}/Playlists";
+        rgui_config_directory = "${retroarch_dir}/Config";
+        savefile_directory = "${retroarch_dir}/Saves";
+        savestate_directory = "${retroarch_dir}/States";
+        screenshot_directory = "${retroarch_dir}/Screenshots";
+        system_directory = "${retroarch_dir}/Bios";
+        thumbnails_directory = "${retroarch_dir}/Thumbnails";
+      };
     };
     vesktop = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
