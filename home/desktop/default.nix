@@ -187,7 +187,7 @@
             "files.autoSave" = "afterDelay";
             "git.autofetch" = true;
             "git.autoStash" = true;
-            "git.confirmSync" = true;
+            "git.confirmSync" = false;
             "git.enableSmartCommit" = true;
             "git.fetchOnPull" = true;
             "js/ts.updateImportsOnFileMove.enabled" = "always";

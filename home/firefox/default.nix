@@ -19,8 +19,10 @@ in
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
             decentraleyes
+            foxyproxy-standard
             indie-wiki-buddy
             istilldontcareaboutcookies
+            new-tab-override
             reddit-enhancement-suite
             redirect-to-wiki-gg
             ublock-origin
