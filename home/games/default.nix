@@ -47,12 +47,13 @@ in
       };
       package = pkgs.retroarch-bare;
       settings = {
-        materialui_menu_color_theme = "9";
         menu_use_preferred_system_color_theme = "false";
         netplay_nickname = "Ishyaboi";
-        ozone_menu_color_theme = "9";
         video_driver = "vulkan";
         video_fullscreen = "true";
+        menu_driver = "xmb";
+        xmb_menu_color_theme = "1";
+        xmb_theme = "2";
         # Paths
         content_database_path = "${retroarch_dir}/ContentDatabase";
         cheat_database_path = "${retroarch_dir}/Cheats";
