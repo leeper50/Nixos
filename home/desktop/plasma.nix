@@ -112,8 +112,17 @@
       };
     };
     shortcuts = {
+      "kmix" = {
+        "mic_mute" = [
+          "Meta+Shift+A"
+          "Microphone Mute"
+        ];
+      };
       "kwin" = {
         "Show Desktop" = [ ];
+      };
+      "plasmashell" = {
+        "show dashboard" = [ ];
       };
     };
     workspace = {
