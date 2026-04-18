@@ -7,13 +7,16 @@ in
     with pkgs;
     [
       azahar
+      eden
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
+      cemu
       faugus-launcher
       protonplus
       protontricks
       rpcs3
+      ryubing
       teamspeak6-client
       wowup-cf
       xenia-canary
