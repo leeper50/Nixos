@@ -8,10 +8,10 @@ in
     [
       azahar
       dolphin-emu
-      eden
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
+      eden
       lutris
       rpcs3
       ryubing
@@ -25,7 +25,7 @@ in
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
     };
-    retroarch = {
+    retroarch = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       cores = {
         bsnes-hd.enable = true;
