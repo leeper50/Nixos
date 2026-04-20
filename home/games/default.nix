@@ -37,10 +37,10 @@ in
       cores = {
         bsnes-hd.enable = true;
         citra.enable = true;
+        desmume.enable = true;
         dolphin.enable = true;
         flycast.enable = true;
         genesis-plus-gx.enable = true;
-        melonds.enable = true;
         mesen.enable = true;
         mgba.enable = true;
         mupen64plus.enable = true;
