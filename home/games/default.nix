@@ -12,10 +12,7 @@ in
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
-      cemu
-      faugus-launcher
-      protonplus
-      protontricks
+      lutris
       rpcs3
       ryubing
       teamspeak6-client
@@ -25,11 +22,6 @@ in
     ++ lib.optionals pkgs.stdenv.isDarwin [
     ];
   programs = {
-    lutris = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
-      protonPackages = [ pkgs.proton-ge-bin ];
-      winePackages = [ pkgs.wineWow64Packages.full ];
-    };
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
     };
