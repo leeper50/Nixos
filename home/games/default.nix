@@ -7,6 +7,7 @@ in
     with pkgs;
     [
       azahar
+      dolphin-emu
       eden
       mumble
     ]
