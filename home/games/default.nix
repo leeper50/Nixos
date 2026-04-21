@@ -51,6 +51,7 @@ in
         xmb_menu_color_theme = "1";
         xmb_theme = "2";
         # Paths
+        audio_filter_dir = "${retroarch_dir}/Filters/Audio";
         content_database_path = "${retroarch_dir}/ContentDatabase";
         cheat_database_path = "${retroarch_dir}/Cheats";
         playlist_directory = "${retroarch_dir}/Playlists";
@@ -61,6 +62,8 @@ in
         screenshot_directory = "${retroarch_dir}/Screenshots";
         system_directory = "${retroarch_dir}/Bios";
         thumbnails_directory = "${retroarch_dir}/Thumbnails";
+        video_filter_dir = "${retroarch_dir}/Filters/Video";
+        video_shader_dir = "${retroarch_dir}/Shaders";
       };
     };
     vesktop = lib.mkIf pkgs.stdenv.isLinux {
