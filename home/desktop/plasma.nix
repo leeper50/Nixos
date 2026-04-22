@@ -28,6 +28,16 @@
       };
       cornerBarrier = true;
       edgeBarrier = 0;
+      titlebarButtons = {
+        left = [
+          "keep-above-windows"
+        ];
+        right = [
+          "minimize"
+          "maximize"
+          "close"
+        ];
+      };
     };
     panels = [
       {
@@ -119,6 +129,7 @@
         ];
       };
       "kwin" = {
+        "Keep Window Above Others" = "Alt+Shift+T";
         "Show Desktop" = [ ];
       };
       "plasmashell" = {
