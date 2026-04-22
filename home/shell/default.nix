@@ -7,6 +7,10 @@
     bat.enable = true;
     eza = {
       enable = true;
+      enableFishIntegration = true;
+      extraOptions = [
+        "--color"
+      ];
       git = true;
       icons = "always";
     };
@@ -30,12 +34,10 @@
       '';
       shellAliases = {
         cat = "bat -pp";
-        clean = "sudo nix-collect-garbage -d";
         cz = "chezmoi";
         helix = "hx";
         hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
-        l = "eza --color --git --icons";
-        la = "eza --color --git --icons -a";
+        l = "eza";
         ncdu = "rclone ncdu";
         rcat = "command cat";
         rs = "sudo systemctl";
@@ -66,6 +68,15 @@
               git pull
               home-manager build --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
               cd $original_dir
+          else
+              return 1
+          end
+        '';
+        clean = ''
+          if type -q nixos-rebuild; or type -q darwin-rebuild
+              sudo nix-collect-garbage -d
+          else if type -q home-manager
+              nix-collect-garbage -d
           else
               return 1
           end
