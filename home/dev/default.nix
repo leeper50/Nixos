@@ -17,7 +17,7 @@
       go
       golangci-lint-langserver
       gopls
-      gotools
+      (lib.lowPrio gotools)
       htop
       jdk25
       kotlin
@@ -56,6 +56,8 @@
       languages = {
         language-server = {
           typos.command = "typos-lsp";
+          golang-ci.command = "golangci-lint-langserver";
+          gopls.command = "gopls";
         };
         language = [
           {
@@ -63,6 +65,10 @@
             formatter = {
               command = "goimports";
             };
+            language-servers = [
+              "golang-ci"
+              "gopls"
+            ];
             name = "go";
           }
           {
