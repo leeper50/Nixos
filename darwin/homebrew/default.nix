@@ -8,7 +8,6 @@
       "freac"
       "onlyoffice"
       "parsec"
-      "surge"
       "qview"
       "vivaldi"
     ];
