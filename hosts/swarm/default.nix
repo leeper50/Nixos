@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -24,6 +24,8 @@
       ];
     };
   };
+
+  environment.systemPackages = with pkgs; [ nfs-utils ];
 
   system.stateVersion = "25.11";
 }
