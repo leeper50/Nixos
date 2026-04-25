@@ -10,7 +10,8 @@
     server = {
       enable = true;
       exports = ''
-        /nfs/docker  10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash,fsid=0)
+        /nfs          10.0.0.0/24(ro,fsid=0,no_subtree_check)
+        /nfs/docker   10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)
       '';
     };
   };
@@ -18,6 +19,7 @@
   networking.firewall.allowedTCPPorts = [ 2049 ];
 
   systemd.tmpfiles.rules = [
+    "d /nfs        0755 root root -"
     "d /nfs/docker 0755 root root -"
   ];
 }
