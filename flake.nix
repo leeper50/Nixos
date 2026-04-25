@@ -101,6 +101,7 @@
           modules = [
             ./hosts/ser8
             ./nixos
+            ./nixos/services/nfs.nix
             ./nixos/services/samba.nix
             ./nixos/services/syncthing.nix
           ];
