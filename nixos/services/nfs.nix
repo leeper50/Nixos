@@ -8,6 +8,7 @@
       };
     };
     server = {
+      createMountPoints = true;
       enable = true;
       exports = ''
         /nfs          10.0.0.0/24(ro,fsid=0,no_subtree_check)
@@ -17,9 +18,4 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 2049 ];
-
-  systemd.tmpfiles.rules = [
-    "d /nfs        0755 root root -"
-    "d /nfs/docker 0755 root root -"
-  ];
 }
