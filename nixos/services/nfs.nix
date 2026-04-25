@@ -19,6 +19,11 @@
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "d /export        0755 root root -"
+    "d /export/docker 0777 root root -"
+  ];
+
   networking.firewall = {
     allowedTCPPorts = [
       111
