@@ -18,7 +18,7 @@
     "virtio_scsi"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "nfsv4" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {

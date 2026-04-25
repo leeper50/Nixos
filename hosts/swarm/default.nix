@@ -25,12 +25,5 @@
     };
   };
 
-  fileSystems."/mnt/docker" = {
-    device = "nas.local:/docker";
-    fsType = "nfs";
-    options = [ "rw" "nfsvers=4" "soft" "timeo=30" ];
-  };
-  boot.supportedFilesystems = [ "nfs" ];
-
   system.stateVersion = "25.11";
 }
