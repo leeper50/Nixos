@@ -95,11 +95,11 @@
             ./nixos
           ];
         };
-        ser8 = nixpkgs.lib.nixosSystem {
+        nas = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
-            ./hosts/ser8
+            ./hosts/nas
             ./nixos
             ./nixos/services/nfs.nix
             ./nixos/services/samba.nix

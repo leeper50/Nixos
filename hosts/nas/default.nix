@@ -14,7 +14,7 @@
   virtualisation.libvirtd.enable = true;
 
   networking = {
-    hostName = "ser8";
+    hostName = "nas";
     interfaces.ens18 = {
       ipv4.addresses = [
         {
