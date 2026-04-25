@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -24,14 +24,6 @@
       ];
     };
   };
-
-  fileSystems."/mnt/docker" = {
-    device = "nas.local:/docker";
-    fsType = "nfs";
-  };
-  boot.supportedFilesystems = [ "nfs" ];
-
-  environment.systemPackages = with pkgs; [ nfs-utils ];
 
   system.stateVersion = "25.11";
 }

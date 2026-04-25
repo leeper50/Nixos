@@ -1,5 +1,17 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
+  boot.supportedFilesystems = [ "nfs" ];
+  fileSystems."/mnt/docker" = {
+    device = "nas.local:/docker";
+    fsType = "nfs";
+    options = [
+      "rw"
+      "nfsvers=4"
+      "soft"
+      "timeo=30"
+    ];
+  };
+  environment.systemPackages = with pkgs; [ nfs-utils ];
   networking.nftables.enable = lib.mkForce false;
   virtualisation.docker = {
     enable = true;
