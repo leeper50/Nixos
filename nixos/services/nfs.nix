@@ -2,10 +2,10 @@
 {
   services.nfs = {
     settings = {
-      "[nfsd]" = ''
-        vers2=n
-        vers3=n
-      '';
+      nfsd = {
+        vers2 = "n";
+        vers3 = "n";
+      };
     };
     server = {
       enable = true;
