@@ -177,6 +177,10 @@
             "[typescript]" = {
               "editor.defaultFormatter" = "vscode.typescript-language-features";
             };
+            "[yaml]" = {
+              "prettier.tabWidth" = 2;
+              "prettier.useTabs" = false;
+            };
             "claudeCode.preferredLocation" = "sidebar";
             "diffEditor.ignoreTrimWhitespace" = false;
             "editor.fontLigatures" = true;
