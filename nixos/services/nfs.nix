@@ -4,7 +4,6 @@
     settings = {
       nfsd = {
         vers2 = "n";
-        vers3 = "n";
       };
     };
     server = {
