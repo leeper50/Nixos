@@ -57,13 +57,6 @@
               sudo darwin-rebuild build --flake $FLAKE_DIR/.#(hostname)
               cd $original_dir
           else if type -q home-manager
-              set unmanaged_files \
-                  ~/.gtkrc-2.0 \
-                  ~/.config/gtk-3.0/gtk.css \
-                  ~/.config/gtk-3.0/settings.ini \
-                  ~/.config/gtk-4.0/gtk.css \
-                  ~/.config/gtk-4.0/settings.ini
-              rm -f $unmanaged_files
               cd $FLAKE_DIR
               git pull
               home-manager build --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
@@ -139,13 +132,6 @@
               sudo darwin-rebuild switch --flake $FLAKE_DIR/.#(hostname)
               cd $original_dir
           else if type -q home-manager
-              set unmanaged_files \
-                  ~/.gtkrc-2.0 \
-                  ~/.config/gtk-3.0/gtk.css \
-                  ~/.config/gtk-3.0/settings.ini \
-                  ~/.config/gtk-4.0/gtk.css \
-                  ~/.config/gtk-4.0/settings.ini
-              rm -f $unmanaged_files
               cd $FLAKE_DIR
               git pull
               home-manager switch --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup

@@ -1,6 +1,15 @@
 { lib, pkgs, ... }:
 {
   gtk.gtk4.theme = null;
+  home.activation.removeStylixGtkFiles = lib.mkIf pkgs.stdenv.isLinux (
+    lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+      rm -f $HOME/.gtkrc-2.0 \
+            $HOME/.config/gtk-3.0/gtk.css \
+            $HOME/.config/gtk-3.0/settings.ini \
+            $HOME/.config/gtk-4.0/gtk.css \
+            $HOME/.config/gtk-4.0/settings.ini
+    ''
+  );
   home.packages =
     with pkgs;
     [
