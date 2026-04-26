@@ -111,6 +111,16 @@
             ./nixos/services/syncthing.nix
           ];
         };
+        node-1 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          modules = [
+            disko.nixosModules.disko
+            ./hosts/node-1
+            ./nixos
+            ./nixos/services/docker.nix
+          ];
+        };
         swarm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
