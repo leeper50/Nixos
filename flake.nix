@@ -121,6 +121,26 @@
             ./nixos/services/docker.nix
           ];
         };
+        node-2 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          modules = [
+            disko.nixosModules.disko
+            ./hosts/node-2
+            ./nixos
+            ./nixos/services/docker.nix
+          ];
+        };
+        node-3 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          modules = [
+            disko.nixosModules.disko
+            ./hosts/node-3
+            ./nixos
+            ./nixos/services/docker.nix
+          ];
+        };
       };
     };
 }
