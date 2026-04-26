@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -9,6 +10,7 @@ in
   stylix.targets.firefox.profileNames = [ "default" ];
   programs.firefox = {
     enable = true;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
     package = firefoxPackage;
     languagePacks = [ "en-US" ];
     profiles = {
