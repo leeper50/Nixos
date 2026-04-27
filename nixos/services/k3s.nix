@@ -10,7 +10,11 @@
     cifs-utils
     nfs-utils
   ];
-  networking.firewall.allowedTCPPorts = [ 6443 ];
+  networking.firewall.allowedTCPPorts = [
+    2379
+    2380
+    6443
+  ];
   services.k3s = {
     enable = true;
     role = "server";
