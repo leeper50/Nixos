@@ -5,16 +5,20 @@ let
   node-2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINvE1NTqdE7/ZCv+U25coA5rFxIDVUarbCPt3+1J10Lo root@node-2";
   node-3 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6RmulzmQsxyfgJlX5leCdgcUCvoHnbbaOHoqOwYlfs root@node-3";
   personal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC";
-  keys = [
-    gk55
-    nas
+  swarm_keys = [
     node-1
     node-2
     node-3
     personal
   ];
+  keys = [
+    gk55
+    nas
+  ]
+  ++ swarm_keys;
 in
 {
+  "k3s_token.age".publicKeys = swarm_keys;
   "user_walter_clear.age".publicKeys = keys;
   "user_walter_hash.age".publicKeys = keys;
 }

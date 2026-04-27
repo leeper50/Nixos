@@ -118,7 +118,7 @@
             disko.nixosModules.disko
             ./hosts/node-1
             ./nixos
-            ./nixos/services/docker.nix
+            ./nixos/services/k3s.nix
           ];
         };
         node-2 = nixpkgs.lib.nixosSystem {
@@ -128,7 +128,7 @@
             disko.nixosModules.disko
             ./hosts/node-2
             ./nixos
-            ./nixos/services/docker.nix
+            ./nixos/services/k3s.nix
           ];
         };
         node-3 = nixpkgs.lib.nixosSystem {
@@ -138,7 +138,7 @@
             disko.nixosModules.disko
             ./hosts/node-3
             ./nixos
-            ./nixos/services/docker.nix
+            ./nixos/services/k3s.nix
           ];
         };
       };

@@ -44,6 +44,9 @@
       vscode-json-languageserver
       yaml-language-server
     ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      k3s
+    ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       wireguard-tools
     ];
