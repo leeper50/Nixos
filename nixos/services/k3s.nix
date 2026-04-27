@@ -12,11 +12,33 @@
     nfs-utils
     openiscsi
   ];
-  networking.firewall.allowedTCPPorts = [
-    2379
-    2380
-    6443
-  ];
+  networking.firewall = {
+    allowedTCPPorts = [
+      # k3s
+      2379 # etcd client
+      2380 # etcd peer
+      6443 # k3s API server
+      10250 # kubelet metrics
+      10251 # k3s scheduler
+      10252 # k3s controller manager
+
+      # Flannel CNI (k3s default)
+      8472 # VXLAN - needs UDP too (see below)
+
+      # Longhorn
+      9500 # longhorn-manager API (longhorn-backend)
+      9501 # longhorn-manager internal
+      9502 # longhorn-admission-webhook ← this is your immediate problem
+      9503 # longhorn-conversion-webhook
+
+      # iSCSI
+      3260
+    ];
+    allowedUDPPorts = [
+      8472 # Flannel VXLAN
+      51820 # WireGuard (if using k3s with WireGuard flannel backend)
+    ];
+  };
   services.k3s = {
     enable = true;
     role = "server";
