@@ -14,7 +14,13 @@
   ];
   networking.firewall = {
     allowedTCPPorts = [
-      # k3s
+      # Flannel CNI
+      8472 # VXLAN
+
+      # iSCSI
+      3260
+
+      # K3s
       2379 # etcd client
       2380 # etcd peer
       6443 # k3s API server
@@ -22,21 +28,24 @@
       10251 # k3s scheduler
       10252 # k3s controller manager
 
-      # Flannel CNI (k3s default)
-      8472 # VXLAN - needs UDP too (see below)
-
       # Longhorn
       9500 # longhorn-manager API (longhorn-backend)
       9501 # longhorn-manager internal
-      9502 # longhorn-admission-webhook ← this is your immediate problem
+      9502 # longhorn-admission-webhook
       9503 # longhorn-conversion-webhook
 
-      # iSCSI
-      3260
+      # Metallb
+      7946
     ];
     allowedUDPPorts = [
-      8472 # Flannel VXLAN
-      51820 # WireGuard (if using k3s with WireGuard flannel backend)
+      # Flannel CNI
+      8472 # VXLAN
+
+      # Metallb
+      7946
+
+      # WireGuard
+      51820
     ];
   };
   services.k3s = {
