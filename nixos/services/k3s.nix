@@ -28,7 +28,7 @@
           [ ]
         else
           [
-            "--server https://node-1:6443"
+            "--server https://node-1.local:6443"
           ]
       )
     );
