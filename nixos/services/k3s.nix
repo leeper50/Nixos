@@ -5,6 +5,7 @@
 }:
 
 {
+  boot.supportedFilesystems = [ "nfs" ];
   environment.systemPackages = with pkgs; [
     cifs-utils
     k3s
@@ -41,8 +42,9 @@
   };
   services.openiscsi = {
     enable = true;
-    name = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}.local";
+    name = "iqn.2020-08.org.linux-iscsi.${config.networking.hostName}.local:storage";
   };
+  services.rpcbind.enable = true;
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
   ];
