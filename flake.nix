@@ -111,36 +111,19 @@
             ./nixos/services/syncthing.nix
           ];
         };
-        node-1 = nixpkgs.lib.nixosSystem {
+      }
+      // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" ] (
+        name:
+        nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
             disko.nixosModules.disko
-            ./hosts/node-1
+            ./hosts/${name}
             ./nixos
             ./nixos/services/k3s.nix
           ];
-        };
-        node-2 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            disko.nixosModules.disko
-            ./hosts/node-2
-            ./nixos
-            ./nixos/services/k3s.nix
-          ];
-        };
-        node-3 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            disko.nixosModules.disko
-            ./hosts/node-3
-            ./nixos
-            ./nixos/services/k3s.nix
-          ];
-        };
-      };
+        }
+      );
     };
 }
