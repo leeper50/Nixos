@@ -112,7 +112,7 @@
           ];
         };
       }
-      // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" ] (
+      // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" "node-4" ] (
         name:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
