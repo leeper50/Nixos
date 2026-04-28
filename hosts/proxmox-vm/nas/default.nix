@@ -1,15 +1,15 @@
 { ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
-  boot.kernel.sysctl = {
-    "vm.vfs_cache_pressure" = 500;
-    "vm.swappiness" = 10;
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";
+    fsType = "btrfs";
+    options = [
+      "degraded"
+      "nofail"
+      "noatime"
+      "space_cache=v2"
+    ];
   };
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.enable = true;
-  boot.loader.grub.useOSProber = true;
   networking = {
     hostName = "nas";
     interfaces.ens18 = {
@@ -26,9 +26,5 @@
     interval = "weekly";
     fileSystems = [ "/mnt/data" ];
   };
-  services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true;
-  systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";
-  virtualisation.libvirtd.enable = true;
   system.stateVersion = "25.11";
 }

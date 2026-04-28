@@ -104,7 +104,9 @@
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
+            disko.nixosModules.disko
             ./hosts/proxmox-vm/nas
+            ./hosts/proxmox-vm
             ./nixos
             ./nixos/services/nfs.nix
             ./nixos/services/samba.nix
