@@ -31,6 +31,9 @@
         else
             set -gx FLAKE_DIR $HOME/Nix
         end
+        if type -q kubectl
+          alias k kubectl
+        end
       '';
       shellAliases = {
         cat = "bat -pp";
