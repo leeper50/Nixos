@@ -17,7 +17,7 @@
     "virtio_scsi"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "virtio_balloon" ];
   boot.extraModulePackages = [ ];
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

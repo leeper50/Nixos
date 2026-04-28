@@ -4,6 +4,10 @@
     ./hardware-configuration.nix
     ./disk-config.nix
   ];
+  boot.kernel.sysctl = {
+    "vm.vfs_cache_pressure" = 500;
+    "vm.swappiness" = 10;
+  };
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   services.qemuGuest.enable = true;
