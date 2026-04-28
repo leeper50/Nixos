@@ -119,7 +119,8 @@
           specialArgs = inputs;
           modules = [
             disko.nixosModules.disko
-            ./hosts/${name}
+            ./hosts/proxmox-vm/${name}
+            ./hosts/proxmox-vm
             ./nixos
             ./nixos/services/k3s.nix
           ];
