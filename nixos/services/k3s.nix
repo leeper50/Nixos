@@ -28,12 +28,6 @@
       10251 # k3s scheduler
       10252 # k3s controller manager
 
-      # Longhorn
-      9500 # longhorn-manager API (longhorn-backend)
-      9501 # longhorn-manager internal
-      9502 # longhorn-admission-webhook
-      9503 # longhorn-conversion-webhook
-
       # Metallb
       7946
     ];
