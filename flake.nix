@@ -104,7 +104,7 @@
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
-            ./hosts/nas
+            ./hosts/proxmox-vm/nas
             ./nixos
             ./nixos/services/nfs.nix
             ./nixos/services/samba.nix
