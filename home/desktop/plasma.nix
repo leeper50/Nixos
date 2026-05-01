@@ -136,6 +136,24 @@
         "show dashboard" = [ ];
       };
     };
+    window-rules = [
+      {
+        description = "Fullscreen EU4";
+        match = {
+          window-class = "eu4";
+        };
+        apply = {
+          fullscreen = {
+            value = true;
+            apply = "initially";
+          };
+          maximize = {
+            value = true;
+            apply = "initially";
+          };
+        };
+      }
+    ];
     workspace = {
       iconTheme = "Papirus-Dark";
       splashScreen.theme = "None";
