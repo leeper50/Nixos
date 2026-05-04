@@ -24,9 +24,9 @@ let
         portainer = {
           image = "portainer/portainer-ee:2.21.5";
           ports = [
-            "9000:9000"
-            "9443:9443"
-            "8000:8000"
+            { target = 9000; published = 9000; protocol = "tcp"; mode = "host"; }
+            { target = 9443; published = 9443; protocol = "tcp"; mode = "host"; }
+            { target = 8000; published = 8000; protocol = "tcp"; mode = "host"; }
           ];
           volumes = [ "portainer_data:/data" ];
           networks = [ "agent_network" ];
