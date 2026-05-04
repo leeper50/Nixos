@@ -32,6 +32,7 @@
     wantedBy = [ "multi-user.target" ];
     path = [
       pkgs.inotify-tools
+      pkgs.procps
       pkgs.util-linux
     ];
     script = ''
