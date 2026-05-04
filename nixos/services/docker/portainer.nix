@@ -24,24 +24,9 @@ let
         portainer = {
           image = "portainer/portainer-ee:2.39.1";
           ports = [
-            {
-              target = 9000;
-              published = 9000;
-              protocol = "tcp";
-              mode = "host";
-            }
-            {
-              target = 9443;
-              published = 9443;
-              protocol = "tcp";
-              mode = "host";
-            }
-            {
-              target = 8000;
-              published = 8000;
-              protocol = "tcp";
-              mode = "host";
-            }
+            "9000:9000/tcp"
+            "9443:9443/tcp"
+            "8000:8000/tcp"
           ];
           volumes = [
             "/var/run/docker.sock:/var/run/docker.sock"
