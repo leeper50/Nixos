@@ -7,6 +7,13 @@
 {
   imports = [ ./docker.nix ];
 
+  boot.kernelModules = [
+    "ip_vs"
+    "ip_vs_rr"
+    "ip_vs_wrr"
+    "ip_vs_sh"
+  ];
+
   networking.firewall = {
     allowedTCPPorts = [
       2377 # swarm cluster management
