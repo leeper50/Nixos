@@ -123,7 +123,7 @@
             ./hosts/proxmox-lxc/${name}
             ./hosts/proxmox-lxc
             ./nixos
-            ./nixos/services/k3s.nix
+            ./nixos/services/swarm.nix
           ];
         }
       );

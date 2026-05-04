@@ -1,13 +1,17 @@
-{ ... }:
+{ lib, ... }:
 let
-  secrets = import ../../secrets/secrets.nix; # adjust path as needed
+  secrets = import ../../secrets/secrets.nix;
+  # Filter out secrets whose .age files don't exist yet so the flake evaluates
+  # cleanly while a secret is declared in secrets.nix but not yet created.
+  presentSecrets = lib.filterAttrs
+    (name: _: builtins.pathExists (../../secrets + "/${name}"))
+    secrets;
 in
 {
-  # pull all secrets into the config
   age.secrets = builtins.mapAttrs (name: attrs: {
-    file = ../../secrets/${name}; # adjust path based on your module location
+    file = ../../secrets/${name};
     owner = attrs.owner or "root";
     group = attrs.group or "root";
     mode = attrs.mode or "0400";
-  }) secrets;
+  }) presentSecrets;
 }
