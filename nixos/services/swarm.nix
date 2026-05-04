@@ -39,7 +39,7 @@
         for netns in /run/docker/netns/*; do
           if [ -e "$netns" ]; then
             nsname=$(basename "$netns")
-            nsenter --net="$netns" sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward" 2>/dev/null && \
+            nsenter --net="$netns" sysctl -w net.ipv4.ip_forward=1 2>/dev/null && \
               echo "Applied ip_forward to $nsname" || \
               echo "Failed to apply to $nsname"
           fi
