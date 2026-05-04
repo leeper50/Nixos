@@ -69,7 +69,7 @@ in
 
       ${pkgs.jq}/bin/jq \
         --arg key "$(cat "$LICENSE_FILE")" \
-        '.services.portainer.command = "--license-key " + $key + " -H tcp://tasks.agent:9001 --tlsskip"' \
+        '.services.portainer.command = "--license-key " + $key + " -H tcp://tasks.agent:9001"' \
         ${baseStackFile} > "$TMPFILE"
 
       ${pkgs.docker}/bin/docker stack deploy \
