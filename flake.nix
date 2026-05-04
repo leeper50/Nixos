@@ -123,8 +123,9 @@
             ./hosts/proxmox-lxc/${name}
             ./hosts/proxmox-lxc
             ./nixos
-            ./nixos/services/swarm.nix
-            ./nixos/services/portainer.nix
+            ./nixos/services/docker
+            ./nixos/services/docker/portainer.nix
+            ./nixos/services/docker/swarm.nix
           ];
         }
       );

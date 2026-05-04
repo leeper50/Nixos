@@ -5,8 +5,6 @@
   ...
 }:
 {
-  imports = [ ./docker.nix ];
-
   boot.kernelModules = [
     "ip_vs"
     "ip_vs_rr"

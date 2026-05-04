@@ -10,7 +10,7 @@ let
       version = "3.2";
       services = {
         agent = {
-          image = "portainer/agent:2.21.5";
+          image = "portainer/agent:2.39.1";
           volumes = [
             "/var/run/docker.sock:/var/run/docker.sock"
             "/var/lib/docker/volumes:/var/lib/docker/volumes"
@@ -22,11 +22,26 @@ let
           };
         };
         portainer = {
-          image = "portainer/portainer-ee:2.21.5";
+          image = "portainer/portainer-ee:2.39.1";
           ports = [
-            { target = 9000; published = 9000; protocol = "tcp"; mode = "host"; }
-            { target = 9443; published = 9443; protocol = "tcp"; mode = "host"; }
-            { target = 8000; published = 8000; protocol = "tcp"; mode = "host"; }
+            {
+              target = 9000;
+              published = 9000;
+              protocol = "tcp";
+              mode = "host";
+            }
+            {
+              target = 9443;
+              published = 9443;
+              protocol = "tcp";
+              mode = "host";
+            }
+            {
+              target = 8000;
+              published = 8000;
+              protocol = "tcp";
+              mode = "host";
+            }
           ];
           volumes = [
             "/var/run/docker.sock:/var/run/docker.sock"
