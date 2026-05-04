@@ -12,7 +12,6 @@ in
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       eden
-      rpcs3
       ryubing
       teamspeak6-client
       wowup-cf
