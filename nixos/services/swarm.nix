@@ -36,14 +36,14 @@
     ];
     script = ''
       apply_ipforward() {
-        for netns in /run/docker/netns/*; do
-          if [ -e "$netns" ]; then
-            nsname=$(basename "$netns")
-            nsenter --net="$netns" sysctl -w net.ipv4.ip_forward=1 2>/dev/null &&
-              echo "Applied ip_forward to $nsname" ||
-              echo "Failed to apply to $nsname"
-          fi
-        done
+      	for netns in /run/docker/netns/*; do
+      		if [ -e "$netns" ]; then
+      			nsname=$(basename "$netns")
+      			nsenter --net="$netns" sysctl -w net.ipv4.ip_forward=1 2>/dev/null &&
+      				echo "Applied ip_forward to $nsname" ||
+      				echo "Failed to apply to $nsname"
+      		fi
+      	done
       }
 
       echo "Applying ip_forward to existing namespaces..."
@@ -51,8 +51,8 @@
 
       echo "Monitoring for new namespaces..."
       while inotifywait -e create -e moved_to /run/docker/netns/ 2>/dev/null; do
-        sleep 2
-        apply_ipforward
+      	sleep 2
+      	apply_ipforward
       done
     '';
     serviceConfig = {
