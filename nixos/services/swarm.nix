@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [ ./docker.nix ];
 
@@ -19,7 +24,7 @@
     requires = [ "docker.service" ];
     wantedBy = [ "multi-user.target" ];
     script = ''
-      if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | grep -q active; then
+      if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | grep -qx active; then
         ${pkgs.docker}/bin/docker swarm init \
           --advertise-addr 10.0.0.21 \
           --default-addr-pool 172.31.0.0/16 \
@@ -41,15 +46,13 @@
     requires = [ "docker.service" ];
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
-    # Token path is hardcoded rather than via config.age.secrets so this evaluates
-    # cleanly before swarm_token.age has been created and rekeyed.
     script = ''
       TOKEN_FILE="/run/agenix/swarm_token.age"
       if [ ! -f "$TOKEN_FILE" ]; then
         echo "swarm_token.age not yet available — deploy after rekeying"
         exit 0
       fi
-      if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | grep -q active; then
+      if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | grep -qx active; then
         ${pkgs.docker}/bin/docker swarm join \
           --token "$(cat "$TOKEN_FILE")" \
           10.0.0.21:2377
