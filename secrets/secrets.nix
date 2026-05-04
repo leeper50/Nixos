@@ -1,16 +1,14 @@
 let
   gk55 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGHhitPnvUzImWRb80A31LvBoQru3BXUMb+lgDUKkE0 root@nixos";
   nas = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISsnpyceiNgLPCVpZiCuZ06a9Zpl3kUKmCCqRI6RFn2 root@nas";
-  node-1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFR09vP5ljQEV1guQ+jOAIe3DKNnEzAbRpSf9/m1rc4C root@node-1";
-  node-2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINvE1NTqdE7/ZCv+U25coA5rFxIDVUarbCPt3+1J10Lo root@node-2";
-  node-3 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6RmulzmQsxyfgJlX5leCdgcUCvoHnbbaOHoqOwYlfs root@node-3";
-  node-4 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINobVoMCJN2aTgxCLsnSXusiQbx9UZvS7mYgHuVcfjEz root@node-4";
+  node-1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBFeYUBJfc4KaXEi4ZU+9iIhGo6d7Q26U0DaDeGlLFu6 root@node-1";
+  node-2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHAXbx862PzPMJZAzGkl+bfghtbWCSONNJf3l+34HCbg root@node-2";
+  node-3 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIFWricdYPgzpDg/AEdjw4cUSCBM2LBOP3JexKsn3p41 root@node-3";
   personal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC";
   k3_swarm_keys = [
     node-1
     node-2
     node-3
-    node-4
     personal
   ];
   all_keys = [

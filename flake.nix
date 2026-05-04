@@ -114,15 +114,14 @@
           ];
         };
       }
-      // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" "node-4" ] (
+      // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" ] (
         name:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
-            disko.nixosModules.disko
-            ./hosts/proxmox-vm/${name}
-            ./hosts/proxmox-vm
+            ./hosts/proxmox-lxc/${name}
+            ./hosts/proxmox-lxc
             ./nixos
             ./nixos/services/k3s.nix
           ];

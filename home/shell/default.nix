@@ -26,10 +26,7 @@
         set -gx MANROFFOPT -c
         set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
         fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
-        if type -q nixos-rebuild
-            set -gx FLAKE_DIR /etc/nixos
-        else
-            set -gx FLAKE_DIR $HOME/Nix
+        set -gx FLAKE_DIR $HOME/Nix
         end
         if type -q kubectl
           alias k kubectl
@@ -51,7 +48,7 @@
           set original_dir (pwd)
           if type -q nixos-rebuild
               cd $FLAKE_DIR
-              sudo git pull
+              git pull
               sudo nixos-rebuild test --flake $FLAKE_DIR/.#(hostname)
               cd $original_dir
           else if type -q darwin-rebuild
