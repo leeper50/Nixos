@@ -25,6 +25,43 @@
     ];
   };
 
+  systemd.services.docker-netns-ipforward = {
+    description = "Enable IP forwarding in Docker network namespaces";
+    after = [ "docker.service" ];
+    requires = [ "docker.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [
+      pkgs.inotify-tools
+      pkgs.util-linux
+    ];
+    script = ''
+      apply_ipforward() {
+        for netns in /run/docker/netns/*; do
+          if [ -e "$netns" ]; then
+            nsname=$(basename "$netns")
+            nsenter --net="$netns" sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward" 2>/dev/null && \
+              echo "Applied ip_forward to $nsname" || \
+              echo "Failed to apply to $nsname"
+          fi
+        done
+      }
+
+      echo "Applying ip_forward to existing namespaces..."
+      apply_ipforward
+
+      echo "Monitoring for new namespaces..."
+      while inotifywait -e create -e moved_to /run/docker/netns/ 2>/dev/null; do
+        sleep 2
+        apply_ipforward
+      done
+    '';
+    serviceConfig = {
+      Type = "simple";
+      Restart = "always";
+      RestartSec = 10;
+    };
+  };
+
   systemd.services.docker-swarm-init = lib.mkIf (config.networking.hostName == "node-1") {
     description = "Initialize Docker Swarm";
     after = [ "docker.service" ];
