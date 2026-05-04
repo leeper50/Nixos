@@ -27,7 +27,6 @@
         set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
         fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
         set -gx FLAKE_DIR $HOME/Nix
-        end
         if type -q kubectl
           alias k kubectl
         end
