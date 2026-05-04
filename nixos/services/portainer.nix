@@ -28,7 +28,10 @@ let
             { target = 9443; published = 9443; protocol = "tcp"; mode = "host"; }
             { target = 8000; published = 8000; protocol = "tcp"; mode = "host"; }
           ];
-          volumes = [ "portainer_data:/data" ];
+          volumes = [
+            "/var/run/docker.sock:/var/run/docker.sock"
+            "portainer_data:/data"
+          ];
           networks = [ "agent_network" ];
           deploy = {
             mode = "replicated";
