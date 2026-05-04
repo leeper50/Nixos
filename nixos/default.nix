@@ -25,7 +25,6 @@
 
     # Services
     ./services/avahi.nix
-    ./services/cockpit.nix
     ./services/ssh.nix
   ];
 }
