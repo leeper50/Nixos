@@ -124,6 +124,7 @@
             ./hosts/proxmox-lxc
             ./nixos
             ./nixos/services/swarm.nix
+            ./nixos/services/portainer.nix
           ];
         }
       );

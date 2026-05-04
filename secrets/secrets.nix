@@ -19,6 +19,7 @@ let
 in
 {
   "k3s_token.age".publicKeys = all_keys;
+  "portainer_license.age".publicKeys = [ node-1 personal ];
   "swarm_token.age".publicKeys = k3_swarm_keys;
   "user_walter_clear.age".publicKeys = all_keys;
   "user_walter_hash.age".publicKeys = all_keys;
