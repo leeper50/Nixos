@@ -49,7 +49,7 @@ let
         periphery = {
           image = "ghcr.io/moghtech/komodo-periphery:2.1.2";
           environment = {
-            PERIPHERY_SSL_ENABLED = "false";
+            PERIPHERY_SSL_ENABLED = "true";
           };
           volumes = [
             "/var/run/docker.sock:/var/run/docker.sock"
