@@ -124,9 +124,9 @@
             ./hosts/proxmox-lxc
             ./nixos
             ./nixos/services/docker
-            ./nixos/services/docker/keepalived.nix
-            ./nixos/services/docker/portainer.nix
+            ./nixos/services/docker/komodo.nix
             ./nixos/services/docker/swarm.nix
+            ./nixos/services/keepalived.nix
           ];
         }
       );
