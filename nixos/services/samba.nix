@@ -28,6 +28,16 @@ in
         "smb3 unix extensions" = "yes";
         "workgroup" = "WORKGROUP";
       };
+      docker = {
+        comment = "Docker volumes";
+        path = "/mnt/docker";
+        browseable = "yes";
+        writable = "yes";
+        "create mask" = "0664";
+        "directory mask" = "0775";
+        "strict locking" = "no";
+        "valid users" = "@users";
+      };
       Media = {
         comment = "Bulk media storage";
         path = "/mnt/data/Media";
@@ -37,7 +47,8 @@ in
         "directory mask" = "0775";
         "strict locking" = "no";
         "valid users" = "@users";
-      } // macSettings;
+      }
+      // macSettings;
       homes = {
         comment = "Home directories";
         browseable = "no";
@@ -47,7 +58,8 @@ in
         "directory mask" = "0700";
         "strict locking" = "no";
         "valid users" = "%S";
-      } // macSettings;
+      }
+      // macSettings;
     };
   };
   # add user passwords

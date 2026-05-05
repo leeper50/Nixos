@@ -2,11 +2,11 @@
 {
   boot.supportedFilesystems = [ "nfs" ];
   fileSystems."/mnt/docker" = {
-    device = "nas.local:/docker";
+    device = "nas.local:/mnt/docker";
     fsType = "nfs";
     options = [
       "rw"
-      "nfsvers=4"
+      "nfsvers=3"
       "soft"
       "timeo=30"
     ];

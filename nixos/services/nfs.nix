@@ -4,14 +4,15 @@
     settings = {
       nfsd = {
         vers2 = "n";
+        vers4 = "n";
       };
     };
     server = {
       createMountPoints = true;
       enable = true;
       exports = ''
-        /export          10.0.0.0/24(rw,fsid=0,no_subtree_check)
-        /export/docker   10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)
+        /mnt/docker      10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)
+        /mnt/data/Media  10.0.0.0/24(rw,sync,no_subtree_check,root_squash)
       '';
       lockdPort = 4001;
       mountdPort = 4002;
@@ -20,8 +21,7 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /export        0755 root root -"
-    "d /export/docker 0777 root root -"
+    "d /mnt/docker 0777 root root -"
   ];
 
   networking.firewall = {
