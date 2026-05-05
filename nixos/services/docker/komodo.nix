@@ -26,6 +26,7 @@ let
         core = {
           image = "ghcr.io/moghtech/komodo-core:latest";
           environment = {
+            KOMODO_INIT_ADMIN_USERNAME = "walter";
             KOMODO_DATABASE_URI = "mongodb://mongo:27017";
             KOMODO_LOCAL_AUTH = "true";
           };
