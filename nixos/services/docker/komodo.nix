@@ -24,7 +24,7 @@ let
           };
         };
         core = {
-          image = "ghcr.io/moghtech/komodo-core:latest";
+          image = "ghcr.io/moghtech/komodo-core:v2.1.2";
           environment = {
             KOMODO_INIT_ADMIN_USERNAME = "walter";
             KOMODO_DATABASE_URI = "mongodb://mongo:27017";
@@ -47,7 +47,7 @@ let
           };
         };
         periphery = {
-          image = "ghcr.io/moghtech/komodo-periphery:latest";
+          image = "ghcr.io/moghtech/komodo-periphery:v2.1.2";
           environment = {
             PERIPHERY_SSL_ENABLED = "false";
           };
