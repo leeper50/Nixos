@@ -85,7 +85,6 @@ in
     9120 # Komodo UI
     8120 # Komodo Periphery
   ];
-
   systemd.services.komodo-stack = lib.mkIf (config.networking.hostName == "node-1") {
     description = "Deploy Komodo stack";
     after = [ "docker-swarm-init.service" ];
@@ -117,4 +116,7 @@ in
       RemainAfterExit = true;
     };
   };
+  systemd.tmpfiles.rules = [
+    "d /etc/komodo 0777 root root -"
+  ];
 }
