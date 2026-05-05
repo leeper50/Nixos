@@ -31,7 +31,10 @@ in
       state = if config.networking.hostName == "node-1" then "MASTER" else "BACKUP";
       virtualRouterId = 51;
       priority = thisNode.priority;
-      virtualIps = [ { addr = "10.0.0.20/8"; } ];
+      virtualIps = [
+        { addr = "10.0.1.1/8"; } # DNS
+        { addr = "10.0.1.2/8"; } # Traefik
+      ];
       unicastSrcIp = thisNode.addr;
       unicastPeers = peerAddrs;
     };
