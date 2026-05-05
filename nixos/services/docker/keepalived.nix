@@ -32,8 +32,7 @@ in
       virtualRouterId = 51;
       priority = thisNode.priority;
       virtualIps = [
-        { addr = "10.0.1.1/8"; } # DNS
-        { addr = "10.0.1.2/8"; } # Traefik
+        { addr = "10.0.1.1/8"; }
       ];
       unicastSrcIp = thisNode.addr;
       unicastPeers = peerAddrs;
