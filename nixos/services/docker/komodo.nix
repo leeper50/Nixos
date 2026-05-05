@@ -26,9 +26,8 @@ let
         core = {
           image = "ghcr.io/moghtech/komodo-core:latest";
           environment = {
-            KOMODO_MONGO_URI = "mongodb://mongo:27017";
-            KOMODO_LOCAL_LOGIN_ENABLED = "true";
-            KOMODO_ADMIN_USERNAME = "admin";
+            KOMODO_DATABASE_URI = "mongodb://mongo:27017";
+            KOMODO_LOCAL_AUTH = "true";
           };
           volumes = [ "komodo-repo:/repo" ];
           networks = [ "komodo" ];
@@ -48,7 +47,9 @@ let
         };
         periphery = {
           image = "ghcr.io/moghtech/komodo-periphery:latest";
-          environment = { };
+          environment = {
+            PERIPHERY_SSL_ENABLED = "false";
+          };
           volumes = [
             "/var/run/docker.sock:/var/run/docker.sock"
             "/proc:/proc"
@@ -90,11 +91,10 @@ in
     requires = [ "docker-swarm-init.service" ];
     wantedBy = [ "multi-user.target" ];
     script = ''
-      PASSKEY_FILE="/run/agenix/komodo_passkey.age"
       ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
 
-      if [ ! -f "$PASSKEY_FILE" ] || [ ! -f "$ADMIN_PASS_FILE" ]; then
-        echo "komodo secrets not yet available — deploy after rekeying"
+      if [ ! -f "$ADMIN_PASS_FILE" ]; then
+        echo "komodo_admin_password.age not yet available — deploy after rekeying"
         exit 0
       fi
 
@@ -102,13 +102,8 @@ in
       trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
 
       ${pkgs.jq}/bin/jq \
-        --arg passkey "$(cat "$PASSKEY_FILE")" \
         --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
-        '
-          .services.core.environment.KOMODO_PASSKEY = $passkey |
-          .services.core.environment.KOMODO_ADMIN_PASSWORD = $admin_pass |
-          .services.periphery.environment.KOMODO_PASSKEY = $passkey
-        ' \
+        '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass' \
         ${baseStackFile} > "$TMPFILE"
 
       ${pkgs.docker}/bin/docker stack deploy \

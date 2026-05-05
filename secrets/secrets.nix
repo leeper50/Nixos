@@ -18,14 +18,6 @@ let
   ++ swarm_keys;
 in
 {
-  "komodo_passkey.age" = {
-    publicKeys = swarm_keys;
-    hosts = [
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
   "komodo_admin_password.age" = {
     publicKeys = [
       node-1
