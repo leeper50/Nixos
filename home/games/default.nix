@@ -7,10 +7,10 @@ in
     with pkgs;
     [
       azahar
-      dolphin-emu
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
+      dolphin-emu
       eden
       ryubing
       teamspeak6-client

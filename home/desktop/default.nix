@@ -19,7 +19,6 @@
       corefonts
       czkawka
       feishin
-      ffmpeg-full
       fira-code
       fira-code-symbols
       fira-sans
@@ -33,6 +32,7 @@
       audacious
       audacious-plugins
       deskflow
+      ffmpeg-full
       filezilla
       freac
       freetube
@@ -49,7 +49,6 @@
       vlc
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
-      gimp2
       libreoffice-bin
       vlc-bin
     ];
@@ -216,7 +215,7 @@
         };
       };
     };
-    zathura = {
+    zathura = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       mappings = {
         "<Left>" = "navigate previous";
