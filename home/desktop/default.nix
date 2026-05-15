@@ -45,6 +45,7 @@
       (vivaldi.override {
         proprietaryCodecs = true;
       })
+      theclicker
       vivaldi-ffmpeg-codecs
       vlc
     ]
@@ -140,7 +141,7 @@
       };
     };
     obsidian.enable = true;
-    vscodium = {
+    vscode = {
       enable = true;
       profiles = {
         default = {
@@ -202,6 +203,7 @@
             "git.enableSmartCommit" = true;
             "git.fetchOnPull" = true;
             "js/ts.updateImportsOnFileMove.enabled" = "always";
+            "nix.serverPath" = "nixd";
             "prettier.tabWidth" = 4;
             "prettier.useTabs" = true;
             "svelte.enable-ts-plugin" = true;
