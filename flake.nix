@@ -86,6 +86,7 @@
           extraSpecialArgs = inputs;
           modules = [
             ./home
+            ./home/desktop/hyprland.nix
             ./home/desktop/plasma.nix
             stylix.homeModules.stylix
           ];
