@@ -109,7 +109,6 @@ in
       bind = [
         "$mod, Return, exec, kitty"
         "$mod, period, exec, rofimoji --selector fuzzel --action copy"
-        "$mod SHIFT, E, exit"
         "$mod, Q, killactive"
         "$mod, E, exec, dolphin"
         "$mod, V, togglefloating"
@@ -158,7 +157,6 @@ in
         "$mod, mouse:273, resizewindow"
       ];
 
-      # Repeatable binds for held-down media keys
       bindel = [
         ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
@@ -183,19 +181,20 @@ in
     settings = [
       {
         layer = "top";
-        position = "bottom";
-        height = 48;
+        position = "top";
+        height = 36;
+        spacing = 24;
+
         modules-left = [
           "hyprland/workspaces"
         ];
-        modules-center = [ ];
+        modules-center = [ "clock" ];
         modules-right = [
           "tray"
           "network"
-          "pulseaudio"
           "battery"
+          "pulseaudio"
           "power-profiles-daemon"
-          "clock"
         ];
 
         "hyprland/workspaces" = {
@@ -237,7 +236,7 @@ in
         };
 
         clock = {
-          format = "{:%Y-%m-%d}";
+          format = "{:%Y-%m-%d | %H:%m}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
 
@@ -248,7 +247,7 @@ in
         };
 
         "power-profiles-daemon" = {
-          format = "{icon}";
+          format = "{icon}  ";
           tooltip-format = "{profile}";
           format-icons = {
             "balanced" = "🌿";
@@ -302,14 +301,6 @@ in
       };
     };
   };
-
-  # services.hyprpaper = {
-  #   enable = true;
-  #   settings = {
-  #     preload = [ "${./wallpaper.jxl}" ];
-  #     wallpaper = [ ",${./wallpaper.jxl}" ];
-  #   };
-  # };
 
   programs.hyprlock = {
     enable = true;
