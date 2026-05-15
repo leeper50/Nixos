@@ -57,7 +57,7 @@
                 "applications:vivaldi-stable.desktop"
                 "applications:org.kde.dolphin.desktop"
                 "applications:kitty.desktop"
-                "applications:codium.desktop"
+                "applications:code.desktop"
                 "applications:systemsettings.desktop"
               ];
             };
