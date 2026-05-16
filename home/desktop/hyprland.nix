@@ -250,9 +250,9 @@ in
           format = "{icon}  ";
           tooltip-format = "{profile}";
           format-icons = {
-            "balanced" = "🌿";
-            "performance" = "⚖️";
-            "power-saver" = "🚀";
+            "balanced" = "⚖️";
+            "performance" = "🚀";
+            "power-saver" = "🌿";
           };
         };
 
