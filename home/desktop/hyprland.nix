@@ -25,6 +25,7 @@ in
     brightnessctl
     grim
     pavucontrol
+    playerctl
     rofimoji
     slurp
     wl-clipboard
@@ -115,22 +116,19 @@ in
         "$mod, D, exec, fuzzel"
         "$mod, F, fullscreen"
         "$mod, L, exec, hyprlock"
-        "ALT SHIFT, T, pin"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        "$mod SHIFT, A, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle"
         # screenshot: select area, copy to clipboard
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
-        # focus
+        # Focus
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
-        # move window
+        # Move window
         "$mod SHIFT, left, movewindow, l"
         "$mod SHIFT, right, movewindow, r"
         "$mod SHIFT, up, movewindow, u"
         "$mod SHIFT, down, movewindow, d"
-        # workspaces
+        # Workspaces
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -140,7 +138,7 @@ in
         "$mod, 7, workspace, 7"
         "$mod, 8, workspace, 8"
         "$mod, 9, workspace, 9"
-        # move window to workspace
+        # Move window to workspace
         "$mod SHIFT, 1, movetoworkspace, 1"
         "$mod SHIFT, 2, movetoworkspace, 2"
         "$mod SHIFT, 3, movetoworkspace, 3"
@@ -150,6 +148,12 @@ in
         "$mod SHIFT, 7, movetoworkspace, 7"
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
+        # Audio & Media controls
+        "$mod SHIFT, A, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SINK@ toggle"
+        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
       ];
 
       bindm = [
