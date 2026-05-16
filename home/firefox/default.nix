@@ -1,16 +1,17 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
 let
-  firefoxPackage = pkgs.firefox-bin;
+  firefoxPackage = if pkgs.stdenv.isLinux then pkgs.librewolf else pkgs.firefox-bin;
 in
 {
   stylix.targets.firefox.profileNames = [ "default" ];
   programs.firefox = {
     enable = true;
-    configPath = "${config.xdg.configHome}/mozilla/firefox";
+    configPath = if pkgs.stdenv.isLinux then ".config/librewolf/librewolf" else ".mozilla/firefox";
     package = firefoxPackage;
     languagePacks = [ "en-US" ];
     profiles = {
