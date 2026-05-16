@@ -37,56 +37,10 @@ in
     configType = "hyprlang";
     enable = true;
     package = null; # null package for non-nixos hosts
-    xwayland.enable = true;
-
     settings = {
-      # Machine-specific monitor settings (https://wiki.hyprland.org/Configuring/Monitors/)
-      source = [ "~/.config/hypr/monitors.conf" ];
-
-      env = [
-        "GDK_BACKEND,wayland,x11"
-        "MOZ_ENABLE_WAYLAND,1"
-        "NIXOS_OZONE_WL,1"
-        "QT_QPA_PLATFORM,wayland;xcb"
-        "QT_QPA_PLATFORMTHEME,kde"
-        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
-      ];
-
-      exec-once = [
-        # Source my wacky things
-        ". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target"
-        "easyeffect --hide-window"
-      ];
-
-      input = {
-        follow_mouse = 1;
-        numlock_by_default = true;
-        touchpad.natural_scroll = false;
-      };
-
-      general = {
-        border_size = 2;
-        gaps_in = 5;
-        gaps_out = 10;
-        layout = "dwindle";
-      };
-
-      decoration = {
-        active_opacity = 1.0;
-        blur = {
-          enabled = true;
-          noise = 0.01;
-          passes = 2;
-          size = 10;
-        };
-        inactive_opacity = 0.95;
-        rounding = 4;
-        shadow.enabled = true;
-      };
+      "$mod" = "SUPER";
 
       animations = {
-        enabled = true;
-        bezier = "easeOut, 0.05, 0.9, 0.1, 1.05";
         animation = [
           "windows, 1, 7, easeOut"
           "windowsOut, 1, 7, default, popin 80%"
@@ -94,40 +48,31 @@ in
           "fade, 1, 7, default"
           "workspaces, 1, 6, default"
         ];
+        bezier = "easeOut, 0.05, 0.9, 0.1, 1.05";
+        enabled = true;
       };
-
-      dwindle = {
-        preserve_split = true;
-      };
-
-      misc = {
-        force_default_wallpaper = 0;
-        disable_hyprland_logo = true;
-      };
-
-      "$mod" = "SUPER";
 
       bind = [
-        "$mod, Return, exec, kitty"
-        "$mod, period, exec, rofimoji --selector fuzzel --action copy"
-        "$mod, Q, killactive"
-        "$mod, E, exec, dolphin"
-        "$mod, V, togglefloating"
         "$mod, D, exec, fuzzel"
+        "$mod, E, exec, dolphin"
         "$mod, F, fullscreen"
         "$mod, L, exec, hyprlock"
+        "$mod, period, exec, rofimoji --selector fuzzel --action copy"
+        "$mod, Q, killactive"
+        "$mod, Return, exec, kitty"
+        "$mod, V, togglefloating"
         # screenshot: select area, copy to clipboard
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
         # Focus
+        "$mod, down, movefocus, d"
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
         # Move window
+        "$mod SHIFT, down, movewindow, d"
         "$mod SHIFT, left, movewindow, l"
         "$mod SHIFT, right, movewindow, r"
         "$mod SHIFT, up, movewindow, u"
-        "$mod SHIFT, down, movewindow, d"
         # Workspaces
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
@@ -149,11 +94,11 @@ in
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
         # Audio & Media controls
-        "$mod SHIFT, A, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
         ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SINK@ toggle"
         ", XF86AudioNext, exec, playerctl next"
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
+        "$mod SHIFT, A, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
       ];
 
       bindm = [
@@ -162,26 +107,72 @@ in
       ];
 
       bindel = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-        ", XF86KbdBrightnessUp, exec, brightnessctl -d '*::kbd_backlight' set +10%"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86KbdBrightnessDown, exec, brightnessctl -d '*::kbd_backlight' set 10%-"
+        ", XF86KbdBrightnessUp, exec, brightnessctl -d '*::kbd_backlight' set +10%"
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+        ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
       ];
 
+      env = [
+        "GDK_BACKEND,wayland,x11"
+        "MOZ_ENABLE_WAYLAND,1"
+        "NIXOS_OZONE_WL,1"
+        "QT_QPA_PLATFORM,wayland;xcb"
+        "QT_QPA_PLATFORMTHEME,kde"
+        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+      ];
+
+      exec-once = [
+        # Source my wacky things
+        ". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target"
+        "easyeffect --hide-window"
+      ];
+
+      decoration = {
+        active_opacity = 1.0;
+        blur = {
+          enabled = true;
+          noise = 0.01;
+          passes = 2;
+          size = 10;
+        };
+        inactive_opacity = 0.95;
+        rounding = 4;
+        shadow.enabled = true;
+      };
+
+      dwindle = {
+        preserve_split = true;
+      };
+
+      general = {
+        border_size = 2;
+        gaps_in = 5;
+        gaps_out = 10;
+        layout = "dwindle";
+      };
+
+      input = {
+        follow_mouse = 1;
+        numlock_by_default = true;
+        touchpad.natural_scroll = false;
+      };
+
+      misc = {
+        disable_hyprland_logo = true;
+        force_default_wallpaper = 0;
+      };
+
+      # Machine-specific monitor settings (https://wiki.hyprland.org/Configuring/Monitors/)
+      source = [ "~/.config/hypr/monitors.conf" ];
     };
+    xwayland.enable = true;
   };
 
   programs.waybar = {
     enable = true;
-    style = ''
-      * { font-size: 15px; }
-    '';
-    systemd = {
-      enable = true;
-      targets = [ "hyprland-session.target" ];
-    };
     settings = [
       {
         layer = "top";
@@ -192,7 +183,9 @@ in
         modules-left = [
           "hyprland/workspaces"
         ];
-        modules-center = [ "clock" ];
+        modules-center = [
+          "clock"
+        ];
         modules-right = [
           "tray"
           "network"
@@ -201,22 +194,7 @@ in
           "power-profiles-daemon"
         ];
 
-        "hyprland/workspaces" = {
-          format = "{name}";
-          on-click = "activate";
-          sort-by-number = true;
-        };
-
-        "hyprland/window" = {
-          max-length = 60;
-          separate-outputs = true;
-        };
-
         battery = {
-          states = {
-            warning = 30;
-            critical = 15;
-          };
           format = "{capacity}% {icon}";
           format-charging = "{capacity}% +";
           format-icons = [
@@ -229,19 +207,34 @@ in
             "▇"
             "█"
           ];
+          states = {
+            critical = 15;
+            warning = 30;
+          };
           tooltip = true;
         };
 
         bluetooth = {
           format = "BT {status}";
           format-connected = "BT {device_alias}";
-          tooltip-format-connected = "{controller_alias}\n{device_enumerate}";
           on-click = "blueman-manager";
+          tooltip-format-connected = "{controller_alias}\n{device_enumerate}";
         };
 
         clock = {
           format = "{:%Y-%m-%d | %H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+        };
+
+        "hyprland/workspaces" = {
+          format = "{name}";
+          on-click = "activate";
+          sort-by-number = true;
+        };
+
+        "hyprland/window" = {
+          max-length = 60;
+          separate-outputs = true;
         };
 
         network = {
@@ -252,12 +245,12 @@ in
 
         "power-profiles-daemon" = {
           format = "{icon}  ";
-          tooltip-format = "{profile}";
           format-icons = {
             "balanced" = "⚖️";
             "performance" = "🚀";
             "power-saver" = "🌿";
           };
+          tooltip-format = "{profile}";
         };
 
         pulseaudio = {
@@ -273,17 +266,24 @@ in
         };
       }
     ];
+    style = ''
+      * { font-size: 15px; }
+    '';
+    systemd = {
+      enable = true;
+      targets = [ "hyprland-session.target" ];
+    };
   };
 
   programs.fuzzel = {
     enable = true;
     settings = {
       main = {
-        terminal = "kitty";
-        icons-enabled = true;
         font = lib.mkForce "Fira Code:size=14";
-        width = 40;
+        icons-enabled = true;
         lines = 15;
+        terminal = "kitty";
+        width = 40;
       };
     };
   };
@@ -312,9 +312,9 @@ in
     settings = {
       background = lib.mkForce [
         {
-          path = "${./wallpaper.jxl}";
-          blur_size = 4;
           blur_passes = 3;
+          blur_size = 4;
+          path = "${./wallpaper.jxl}";
         }
       ];
       general = {
