@@ -61,6 +61,8 @@ in
         "$mod, Q, killactive"
         "$mod, Return, exec, kitty"
         "$mod, V, togglefloating"
+        "$mod, W, exec, kitty"
+        "alt, F4, killactive"
         # screenshot: select area, copy to clipboard
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
         # Focus
@@ -144,11 +146,12 @@ in
       };
 
       dwindle = {
-        preserve_split = true;
+        precise_mouse_move = true;
+        smart_split = true;
       };
 
       general = {
-        border_size = 2;
+        border_size = 1;
         gaps_in = 5;
         gaps_out = 10;
         layout = "dwindle";
@@ -162,7 +165,10 @@ in
 
       misc = {
         disable_hyprland_logo = true;
+        enable_swallow = true;
         force_default_wallpaper = 0;
+        swallow_regex = "^kitty";
+        vrr = 1;
       };
 
       # Machine-specific monitor settings (https://wiki.hyprland.org/Configuring/Monitors/)
