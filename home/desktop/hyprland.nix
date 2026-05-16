@@ -109,8 +109,8 @@ in
       ];
 
       bindel = [
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_SINK@ 5%-"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_SINK@ 5%+"
         ", XF86KbdBrightnessDown, exec, brightnessctl -d '*::kbd_backlight' set 10%-"
         ", XF86KbdBrightnessUp, exec, brightnessctl -d '*::kbd_backlight' set +10%"
         ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
@@ -197,6 +197,7 @@ in
           "network"
           "battery"
           "pulseaudio"
+          "pulseaudio#microphone"
           "power-profiles-daemon"
         ];
 
@@ -263,7 +264,17 @@ in
           format = "{volume}% - {desc}";
           format-muted = "Muted - {desc}";
           on-click = "${cycle-audio-output}";
-          scroll-step = 2;
+          scroll-step = 5;
+        };
+
+        "pulseaudio#microphone" = {
+          format = "{format_source}";
+          format-source = "{volume}% - 🎤";
+          format-source-muted = "Muted - 🎤";
+          on-click = "wpctl set-mute @DEFAULT_SOURCE@ toggle";
+          on-scroll-up = "wpctl set-volume -l 1.0 @DEFAULT_SOURCE@ 5%+";
+          on-scroll-down = "wpctl set-volume @DEFAULT_SOURCE@ 5%-";
+          tooltip-format = "{source_desc}";
         };
 
         tray = {
