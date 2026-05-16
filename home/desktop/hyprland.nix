@@ -129,7 +129,7 @@ in
       exec-once = [
         # Source my wacky things
         ". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target"
-        "easyeffect --hide-window"
+        "easyeffects --hide-window"
       ];
 
       decoration = {
