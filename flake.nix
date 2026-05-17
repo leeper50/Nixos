@@ -1,7 +1,6 @@
 {
   description = "Home Manager configuration";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     agenix = {
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,12 +13,13 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "github:nix-community/home-manager/";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nur = {
+      url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
@@ -39,9 +39,9 @@
         agenix
         darwin
         disko
-        nur
         home-manager
         nixpkgs
+        nur
         plasma-manager
         self
         stylix
@@ -69,13 +69,13 @@
             home-manager.darwinModules.home-manager
             stylix.darwinModules.stylix
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = inputs;
               home-manager.sharedModules = [ stylix.homeModules.stylix ];
               home-manager.users.walter = {
                 imports = [ ./home ];
               };
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
             }
           ];
         };
@@ -105,13 +105,13 @@
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
-            disko.nixosModules.disko
-            ./hosts/proxmox-vm/nas
             ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/nas
             ./nixos
             ./nixos/services/nfs.nix
             ./nixos/services/samba.nix
             ./nixos/services/syncthing.nix
+            disko.nixosModules.disko
           ];
         };
       }
@@ -121,8 +121,8 @@
           system = "x86_64-linux";
           specialArgs = inputs;
           modules = [
-            ./hosts/proxmox-lxc/${name}
             ./hosts/proxmox-lxc
+            ./hosts/proxmox-lxc/${name}
             ./nixos
             ./nixos/services/docker
             ./nixos/services/docker/komodo.nix
