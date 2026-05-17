@@ -1,2 +1,12 @@
-/result
-build.sh
+*
+# Root files
+!flake.lock
+!flake.nix
+!README.md
+
+# Subfolders
+!darwin/
+!home/
+!hosts/
+!nixos/
+!secrets/
