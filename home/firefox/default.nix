@@ -22,7 +22,6 @@ in
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
             decentraleyes
-            foxyproxy-standard
             indie-wiki-buddy
             istilldontcareaboutcookies
             new-tab-override
@@ -134,6 +133,13 @@ in
         };
       };
       PostQuantumKeyAgreementEnabled = true;
+      Proxy = {
+        AutoConfigUrl = "https://c.dellhplaptop.xyz/public/proxy.pac";
+        Locked = false;
+        Mode = "autoConfig";
+        SocksVersion = "5";
+        UseProxyForDNS = true;
+      };
       SanitizeOnShutdown = {
         Cache = true;
         FormData = true;
