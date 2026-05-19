@@ -8,17 +8,18 @@
     registerHostname = "19280085.xyz";
     registerName = "DaBois";
     registerUrl = "https://19280085.xyz";
+    user = "walter";
     welcometext = "Merry Christmas!!";
   };
 
-  # Set secret using agenix
+  # Set serverpassword using agenix
   systemd.services.murmur = {
     serviceConfig = {
       ExecStartPre =
         let
           script = pkgs.writeShellScript "murmur-inject-password" ''
             PASSWORD=$(cat ${config.age.secrets."mumble_server_password.age".path})
-            CONFIG=/run/murmur/murmurd.ini
+            CONFIG=/home/walter/.murmurd/mumble-server.ini
             # Remove any existing serverpassword line, then append the real one
             sed -i '/^serverpassword=/d' "$CONFIG"
             echo "serverpassword=$PASSWORD" >> "$CONFIG"
