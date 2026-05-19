@@ -6,9 +6,9 @@
     nssmdns6 = false;
     openFirewall = true;
     publish = {
-      enable = true;
       addresses = true;
       domain = true;
+      enable = true;
       workstation = true;
     };
   };

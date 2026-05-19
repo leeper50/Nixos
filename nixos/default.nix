@@ -16,15 +16,12 @@
 
     # Configs
     ./configs/agenix.nix
-    ./configs/base_networking.nix
     ./configs/cleanup.nix
     ./configs/locales.nix
     ./configs/packages.nix
-    ./configs/power.nix
     ./configs/users.nix
 
     # Services
-    ./services/avahi.nix
     ./services/ssh.nix
   ];
 }

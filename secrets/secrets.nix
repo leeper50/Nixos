@@ -5,6 +5,7 @@ let
   node-2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF99jYxJYq1frbpyemmxb7+G4+N0Q0XF77sNDiQcphc4 root@node-2";
   node-3 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMqG4JLWJ+lFKdOqTnY/gNHMoYLx82NjaTmwE7Lo1tJG root@node-3";
   personal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC";
+  racknerd = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOG4Vck8uHGDMltzh1/UYFh9vEOz2q7t0Xo6MRlvxDA root@racknerd-8bb595e";
   swarm_keys = [
     node-1
     node-2
@@ -14,6 +15,7 @@ let
   all_keys = [
     gk55
     nas
+    racknerd
   ]
   ++ swarm_keys;
 in
@@ -24,6 +26,13 @@ in
       personal
     ];
     hosts = [ "node-1" ];
+  };
+  "mumble_server_password.age" = {
+    publicKeys = [
+      personal
+      racknerd
+    ];
+    hosts = [ "racknerd" ];
   };
   "swarm_token.age" = {
     publicKeys = swarm_keys;

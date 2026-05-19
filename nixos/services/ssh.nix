@@ -1,20 +1,16 @@
 { ... }:
 {
-  services.fail2ban.enable = true;
+  services.fail2ban = {
+    enable = true;
+    bantime = "24h";
+  };
   services.openssh = {
     allowSFTP = true;
     enable = true;
-    extraConfig = ''
-      AllowAgentForwarding no
-      AllowTcpForwarding no
-      ClientAliveCountMax 0
-      ClientAliveInterval 300
-      MaxAuthTries 3
-      MaxSessions 2
-      TCPKeepAlive no
-    '';
     ports = [ 22 ];
     settings = {
+      AllowAgentForwarding = false;
+      AllowTcpForwarding = "no";
       Ciphers = [
         "chacha20-poly1305@openssh.com"
         "aes128-gcm@openssh.com"
@@ -23,6 +19,8 @@
         "aes192-ctr"
         "aes256-ctr"
       ];
+      ClientAliveCountMax = 2;
+      ClientAliveInterval = 300;
       KbdInteractiveAuthentication = true;
       KexAlgorithms = [
         "mlkem768x25519-sha256"
@@ -33,6 +31,7 @@
         "ecdh-sha2-nistp384"
         "ecdh-sha2-nistp521"
       ];
+      LoginGraceTime = 20;
       LogLevel = "VERBOSE";
       Macs = [
         "hmac-sha2-512-etm@openssh.com"
@@ -42,8 +41,15 @@
         "umac-128-etm@openssh.com"
         "umac-128@openssh.com"
       ];
+      MaxAuthTries = 3;
+      MaxSessions = 2;
       PasswordAuthentication = false;
       PermitRootLogin = "no";
+      PermitTunnel = "no";
+      PubkeyAuthentication = true;
+      TCPKeepAlive = false;
+      UseDns = false;
+      X11Forwarding = false;
     };
   };
 }

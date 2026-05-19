@@ -98,7 +98,15 @@
           specialArgs = inputs;
           modules = [
             ./hosts/gk55
+
+            # Global settings
             ./nixos
+
+            # Specific settings
+            ./nixos/configs/local_networking.nix
+
+            # Services
+            ./nixos/services/avahi.nix
           ];
         };
         nas = nixpkgs.lib.nixosSystem {
@@ -107,11 +115,32 @@
           modules = [
             ./hosts/proxmox-vm
             ./hosts/proxmox-vm/nas
+
+            # Global settings
             ./nixos
+
+            # Specific settings
+            ./nixos/configs/local_networking.nix
+
+            # Services
+            ./nixos/services/avahi.nix
             ./nixos/services/nfs.nix
             ./nixos/services/samba.nix
             ./nixos/services/syncthing.nix
             disko.nixosModules.disko
+          ];
+        };
+        racknerd = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          modules = [
+            ./hosts/racknerd
+
+            # Global settings
+            ./nixos
+
+            # Services
+            ./nixos/services/murmur.nix
           ];
         };
       }
@@ -123,11 +152,20 @@
           modules = [
             ./hosts/proxmox-lxc
             ./hosts/proxmox-lxc/${name}
+
+            # Global settings
             ./nixos
+
+            # Specific settings
+            ./nixos/configs/local_networking.nix
+
+            # Services
+            ./nixos/services/avahi.nix
             ./nixos/services/docker
             ./nixos/services/docker/komodo.nix
             ./nixos/services/docker/swarm.nix
             ./nixos/services/keepalived.nix
+            ./nixos/services/power.nix
           ];
         }
       );

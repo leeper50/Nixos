@@ -1,0 +1,41 @@
+{ pkgs, ... }:
+{
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
+  boot.tmp.cleanOnBoot = true;
+
+  environment.systemPackages = with pkgs; [
+    openssl
+  ];
+
+  networking = {
+    firewall = {
+      enable = true;
+      trustedInterfaces = [ "tailscale0" ];
+      extraCommands = ''
+        iptables -A DOCKER-USER ! -i tailscale0 -p tcp --dport 8120 -j DROP
+      '';
+    };
+    hostName = "racknerd";
+  };
+
+  services = {
+    microsocks = {
+      enable = true;
+      ip = "100.92.216.84";
+    };
+    tailscale.enable = true;
+  };
+
+  system.stateVersion = "23.11";
+
+  virtualisation.docker = {
+    enable = true;
+    liveRestore = false;
+  };
+  virtualisation.oci-containers.backend = "docker";
+
+  zramSwap.enable = false;
+}
