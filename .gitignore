@@ -1,12 +1,20 @@
 *
 # Root files
+!.gitignore
 !flake.lock
 !flake.nix
 !README.md
 
-# Subfolders
+# Folders
 !darwin/
 !home/
 !hosts/
 !nixos/
 !secrets/
+
+# Files in folders
+!darwin/**
+!home/**
+!hosts/**
+!nixos/**
+!secrets/**
