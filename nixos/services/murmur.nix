@@ -18,7 +18,7 @@
         let
           script = pkgs.writeShellScript "murmur-inject-password" ''
             PASSWORD=$(cat ${config.age.secrets."mumble_server_password.age".path})
-            CONFIG=${config.services.murmur.dataDir}/murmur.ini
+            CONFIG=/run/murmur/murmurd.ini
             # Remove any existing serverpassword line, then append the real one
             sed -i '/^serverpassword=/d' "$CONFIG"
             echo "serverpassword=$PASSWORD" >> "$CONFIG"
