@@ -235,36 +235,32 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
     enable = true;
     fonts = {
-      serif = {
-        package = pkgs.liberation_ttf;
-        name = "Liberation Serif";
-      };
-      sansSerif = {
-        package = pkgs.fira-sans;
-        name = "Fira Sans";
+      emoji = {
+        name = "Noto Color Emoji";
+        package = pkgs.noto-fonts-color-emoji;
       };
       monospace = {
-        package = pkgs.fira-code;
         name = "Fira Code";
+        package = pkgs.fira-code;
       };
-      emoji = {
-        package = pkgs.noto-fonts-color-emoji;
-        name = "Noto Color Emoji";
+      sansSerif = {
+        name = "Fira Sans";
+        package = pkgs.fira-sans;
+      };
+      serif = {
+        name = "Liberation Serif";
+        package = pkgs.liberation_ttf;
       };
     };
     icons = lib.mkIf pkgs.stdenv.isLinux {
+      dark = "Papirus-Dark";
       enable = true;
       package = pkgs.papirus-icon-theme;
-      dark = "Papirus-Dark";
     };
     image = ./wallpaper.jxl;
+    opacity.terminal = 0.8;
     targets = {
-      firefox = {
-        colorTheme.enable = true;
-        profileNames = [ "default" ];
-      };
       gtk.enable = true;
     };
-    opacity.terminal = 0.8;
   };
 }

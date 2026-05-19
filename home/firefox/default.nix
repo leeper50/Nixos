@@ -8,7 +8,10 @@ let
   firefoxPackage = if pkgs.stdenv.isLinux then pkgs.librewolf else pkgs.firefox-bin;
 in
 {
-  stylix.targets.firefox.profileNames = [ "default" ];
+  stylix.targets.firefox = {
+    colorTheme.enable = true;
+    profileNames = [ "default" ];
+  };
   programs.firefox = {
     enable = true;
     configPath = if pkgs.stdenv.isLinux then ".config/librewolf/librewolf" else ".mozilla/firefox";
