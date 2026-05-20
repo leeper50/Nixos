@@ -17,6 +17,7 @@ let
     gk55
     nas
     racknerd
+    servercheap
   ]
   ++ swarm_keys;
 in
