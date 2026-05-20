@@ -143,6 +143,16 @@
             ./nixos/services/murmur.nix
           ];
         };
+        servercheap = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          modules = [
+            ./hosts/servercheap
+
+            # Global settings
+            ./nixos
+          ];
+        };
       }
       // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" ] (
         name:

@@ -6,6 +6,7 @@ let
   node-3 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMqG4JLWJ+lFKdOqTnY/gNHMoYLx82NjaTmwE7Lo1tJG root@node-3";
   personal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC";
   racknerd = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOG4Vck8uHGDMltzh1/UYFh9vEOz2q7t0Xo6MRlvxDA root@racknerd-8bb595e";
+  servercheap = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH3Kl98RyC+da66FPzOEmYhIr+sAoOevfF4tkXruWAoE root@nixos";
   swarm_keys = [
     node-1
     node-2
