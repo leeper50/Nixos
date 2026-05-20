@@ -28,6 +28,7 @@ in
     playerctl
     rofimoji
     slurp
+    waypaper
     wl-clipboard
     wtype
     xdg-desktop-portal-hyprland
