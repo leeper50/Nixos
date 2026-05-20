@@ -168,7 +168,7 @@ in
         enable_swallow = true;
         force_default_wallpaper = 0;
         swallow_regex = "^kitty";
-        vrr = 1;
+        vrr = 0;
       };
 
       # Machine-specific monitor settings (https://wiki.hyprland.org/Configuring/Monitors/)
