@@ -47,6 +47,10 @@ in
                 "urlhaus-1"
               ];
             };
+            "newtaboverride@agenedia.com".settings = {
+              type = "url";
+              url = "https://www.dellhplaptop.xyz";
+            };
           };
         };
         name = "default";
