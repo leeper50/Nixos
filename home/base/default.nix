@@ -50,6 +50,7 @@
             "gearlever"
             "helix"
             "home_manager"
+            "hyprpm"
             "nix"
             "shell"
             "vscode"
