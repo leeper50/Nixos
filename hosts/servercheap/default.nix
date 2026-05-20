@@ -39,4 +39,10 @@
   services.tailscale.enable = true;
 
   system.stateVersion = "25.11";
+
+  virtualisation.docker = {
+    enable = true;
+    liveRestore = false;
+  };
+  virtualisation.oci-containers.backend = "docker";
 }
