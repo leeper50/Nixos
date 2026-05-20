@@ -283,4 +283,5 @@
     };
   };
   programs.home-manager.enable = true;
+  xdg.configFile."lf/icons".source = ./lf-icons;
 }
