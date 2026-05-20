@@ -63,11 +63,14 @@ in
           force = true;
         };
         settings = {
+          "browser.download.viewableInternally.typeWasRegistered.jxl" = true;
           "browser.startup.homepage" = "https://www.dellhplaptop.xyz";
+          "browser.urlbar.trimURLs" = false;
           "extensions.autoDisableScopes" = 0;
           "extensions.update.autoUpdateDefault" = false;
           "extensions.update.enable" = false;
           "general.autoScroll" = true;
+          "image.jxl.enabled" = true;
         };
       };
     };
