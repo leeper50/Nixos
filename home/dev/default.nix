@@ -25,7 +25,6 @@
       lldb_22
       markdown-oxide
       onefetch
-      python314
       ragenix
       rclone
       restic
@@ -39,10 +38,13 @@
       tombi
       typescript-language-server
       typos-lsp
-      uv
       vscode-css-languageserver
       vscode-json-languageserver
       yaml-language-server
+    ]
+    ++ lib.optionals (osConfig != null) [
+      python314
+      uv
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       k3s
