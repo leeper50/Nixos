@@ -34,7 +34,7 @@
           app = "/Users/walter/Applications/Home Manager Apps/kitty.app";
         }
         {
-          app = "/Users/walter/Applications/Home Manager Apps/VSCodium.app";
+          app = "/Users/walter/Applications/Home Manager Apps/Visual Studio Code.app";
         }
         {
           app = "/System/Applications/System Settings.app";
