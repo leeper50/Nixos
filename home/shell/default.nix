@@ -105,6 +105,16 @@
               return 1
           end
         '';
+        lf = ''
+          set tmp_file "$HOME/.cache/lf-lastdir"
+          command lf --last-dir-path="$tmp_file" $argv
+          if test -f $tmp_file
+              set last_dir (cat $tmp_file)
+              if test -d "$last_dir" -a "$last_dir" != (pwd)
+                  cd $last_dir
+              end
+          end
+        '';
         sound = ''
           if test (uname -s) = Linux
               switch $argv[1]
