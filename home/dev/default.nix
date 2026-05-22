@@ -42,10 +42,6 @@
       vscode-json-languageserver
       yaml-language-server
     ]
-    ++ lib.optionals (osConfig != null) [
-      python314
-      uv
-    ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       k3s
     ]
