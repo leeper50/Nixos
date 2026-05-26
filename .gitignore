@@ -1,6 +1,8 @@
 *
+
 # Root files
 !.gitignore
+!colmena.nix
 !flake.lock
 !flake.nix
 !README.md

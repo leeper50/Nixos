@@ -12,6 +12,7 @@
       base16-schemes
       bc
       chezmoi
+      colmena
       fastfetch
       iperf
       nixd

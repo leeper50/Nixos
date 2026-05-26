@@ -5,6 +5,10 @@
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +41,7 @@
     let
       inherit (inputs)
         agenix
+        colmena
         darwin
         disko
         home-manager
@@ -57,6 +62,93 @@
             allowUnfree = true;
           };
         };
+
+      nixosHostModules = {
+        gk55 = [
+          ./hosts/gk55
+          ./nixos
+          ./nixos/configs/local_networking.nix
+          ./nixos/services/avahi.nix
+        ];
+        nas = [
+          ./hosts/proxmox-vm
+          ./hosts/proxmox-vm/nas
+          ./nixos
+          ./nixos/configs/local_networking.nix
+          ./nixos/services/avahi.nix
+          ./nixos/services/nfs.nix
+          ./nixos/services/samba.nix
+          ./nixos/services/syncthing.nix
+          disko.nixosModules.disko
+        ];
+        racknerd = [
+          ./hosts/racknerd
+          ./nixos
+          ./nixos/services/murmur.nix
+        ];
+        servercheap = [
+          ./hosts/servercheap
+          ./nixos
+        ];
+      };
+
+      swarmNames = [
+        "node-1"
+        "node-2"
+        "node-3"
+      ];
+
+      swarmModules = name: [
+        ./hosts/proxmox-lxc
+        ./hosts/proxmox-lxc/${name}
+        ./nixos
+        ./nixos/configs/local_networking.nix
+        ./nixos/services/avahi.nix
+        ./nixos/services/docker
+        ./nixos/services/docker/komodo.nix
+        ./nixos/services/docker/swarm.nix
+        ./nixos/services/keepalived.nix
+        ./nixos/services/power.nix
+      ];
+
+      mkNixosSystem =
+        modules:
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          inherit modules;
+        };
+
+      colmenaDeployment = {
+        gk55 = {
+          targetHost = "gk55";
+          tags = [ "local" ];
+        };
+        nas = {
+          targetHost = "nas";
+          tags = [
+            "local"
+            "proxmox-vm"
+          ];
+        };
+        racknerd = {
+          targetHost = "racknerd";
+          tags = [ "vps" ];
+        };
+        servercheap = {
+          targetHost = "servercheap";
+          tags = [ "vps" ];
+        };
+      };
+
+      swarmDeployment = name: {
+        targetHost = name;
+        tags = [
+          "local"
+          "proxmox-lxc"
+          "swarm"
+        ];
+      };
     in
     {
       darwinConfigurations = {
@@ -80,6 +172,7 @@
           ];
         };
       };
+
       homeConfigurations = {
         "workstation" = home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs "x86_64-linux";
@@ -92,92 +185,24 @@
           ];
         };
       };
-      nixosConfigurations = {
-        gk55 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+
+      nixosConfigurations =
+        nixpkgs.lib.mapAttrs (_: mkNixosSystem) nixosHostModules
+        // nixpkgs.lib.genAttrs swarmNames (name: mkNixosSystem (swarmModules name));
+
+      colmena = {
+        meta = {
+          nixpkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs;
-          modules = [
-            ./hosts/gk55
-
-            # Global settings
-            ./nixos
-
-            # Specific settings
-            ./nixos/configs/local_networking.nix
-
-            # Services
-            ./nixos/services/avahi.nix
-          ];
-        };
-        nas = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            ./hosts/proxmox-vm
-            ./hosts/proxmox-vm/nas
-
-            # Global settings
-            ./nixos
-
-            # Specific settings
-            ./nixos/configs/local_networking.nix
-
-            # Services
-            ./nixos/services/avahi.nix
-            ./nixos/services/nfs.nix
-            ./nixos/services/samba.nix
-            ./nixos/services/syncthing.nix
-            disko.nixosModules.disko
-          ];
-        };
-        racknerd = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            ./hosts/racknerd
-
-            # Global settings
-            ./nixos
-
-            # Services
-            ./nixos/services/murmur.nix
-          ];
-        };
-        servercheap = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            ./hosts/servercheap
-
-            # Global settings
-            ./nixos
-          ];
         };
       }
-      // nixpkgs.lib.genAttrs [ "node-1" "node-2" "node-3" ] (
-        name:
-        nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            ./hosts/proxmox-lxc
-            ./hosts/proxmox-lxc/${name}
-
-            # Global settings
-            ./nixos
-
-            # Specific settings
-            ./nixos/configs/local_networking.nix
-
-            # Services
-            ./nixos/services/avahi.nix
-            ./nixos/services/docker
-            ./nixos/services/docker/komodo.nix
-            ./nixos/services/docker/swarm.nix
-            ./nixos/services/keepalived.nix
-            ./nixos/services/power.nix
-          ];
-        }
-      );
+      // nixpkgs.lib.mapAttrs (name: modules: {
+        deployment = colmenaDeployment.${name};
+        imports = modules;
+      }) nixosHostModules
+      // nixpkgs.lib.genAttrs swarmNames (name: {
+        deployment = swarmDeployment name;
+        imports = swarmModules name;
+      });
     };
 }
