@@ -48,8 +48,7 @@ in
               ];
             };
             "newtaboverride@agenedia.com".settings = {
-              type = "url";
-              url = "https://www.dellhplaptop.xyz";
+              type = "homepage";
             };
           };
         };
