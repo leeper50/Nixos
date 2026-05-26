@@ -53,6 +53,7 @@ in
             };
             "newtaboverride@agenedia.com".settings = {
               type = "homepage";
+              focus_website = true;
             };
           };
         };
