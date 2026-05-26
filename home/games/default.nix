@@ -6,10 +6,10 @@ in
   home.packages =
     with pkgs;
     [
-      azahar
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
+      azahar
       dolphin-emu
       eden
       ryubing

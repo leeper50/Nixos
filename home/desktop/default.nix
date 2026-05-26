@@ -13,9 +13,6 @@
   home.packages =
     with pkgs;
     [
-      _1password-gui
-      bitwarden-cli
-      bitwarden-desktop
       corefonts
       czkawka
       feishin
@@ -31,6 +28,8 @@
     ++ lib.optionals pkgs.stdenv.isLinux [
       audacious
       audacious-plugins
+      bitwarden-cli
+      bitwarden-desktop
       deskflow
       ffmpeg-full
       filezilla
