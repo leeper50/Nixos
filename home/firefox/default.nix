@@ -14,7 +14,11 @@ in
   };
   programs.firefox = {
     enable = true;
-    configPath = if pkgs.stdenv.isLinux then ".config/librewolf/librewolf" else ".mozilla/firefox";
+    configPath =
+      if pkgs.stdenv.isLinux then
+        ".config/librewolf/librewolf"
+      else
+        "Library/Application Support/Firefox";
     package = firefoxPackage;
     languagePacks = [ "en-US" ];
     profiles = {
