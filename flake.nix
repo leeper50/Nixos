@@ -85,7 +85,6 @@
             targetHost = name;
             tags = [
               "local"
-              "proxmox-lxc"
               "swarm"
             ];
           };
@@ -107,7 +106,7 @@
         gk55 = mkHost {
           deployment = {
             targetHost = "gk55";
-            tags = [ "local" ];
+            tags = [ "" ]; # Machine not currently using nixos
           };
           modules = [
             ./hosts/gk55
@@ -122,7 +121,6 @@
             targetHost = "nas";
             tags = [
               "local"
-              "proxmox-vm"
             ];
           };
           modules = [
@@ -141,7 +139,7 @@
         racknerd = mkHost {
           deployment = {
             targetHost = "racknerd";
-            tags = [ "vps" ];
+            tags = [ "remote" ];
           };
           modules = [
             ./hosts/racknerd
@@ -153,7 +151,7 @@
         servercheap = mkHost {
           deployment = {
             targetHost = "servercheap";
-            tags = [ "vps" ];
+            tags = [ "remote" ];
           };
           modules = [
             ./hosts/servercheap
@@ -203,7 +201,7 @@
       };
 
       nixosConfigurations = {
-        gk55 = hosts.gk55.nixos;
+        # gk55 = hosts.gk55.nixos; # gk55 currently running proxmox
         nas = hosts.nas.nixos;
         racknerd = hosts.racknerd.nixos;
         servercheap = hosts.servercheap.nixos;
@@ -217,7 +215,7 @@
           nixpkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs;
         };
-        gk55 = hosts.gk55.colmena;
+        # gk55 = hosts.gk55.colmena; # gk55 currently running proxmox
         nas = hosts.nas.colmena;
         racknerd = hosts.racknerd.colmena;
         servercheap = hosts.servercheap.colmena;
