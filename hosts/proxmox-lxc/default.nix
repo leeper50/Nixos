@@ -5,7 +5,6 @@
   ];
   networking = {
     defaultGateway = {
-      address = "10.0.0.1";
       interface = "eth0";
     };
     networkmanager.enable = lib.mkForce false;

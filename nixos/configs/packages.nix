@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     btrfs-progs
     busybox
@@ -13,4 +12,5 @@
     rclone
     rsync
   ];
+  nixpkgs.config.allowUnfree = true;
 }

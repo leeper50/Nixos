@@ -1,8 +1,8 @@
 { ... }:
 {
   services.fail2ban = {
-    enable = true;
     bantime = "24h";
+    enable = true;
   };
   services.openssh = {
     allowSFTP = true;
