@@ -7,55 +7,54 @@
 let
   baseStackFile = pkgs.writeText "komodo-stack-base.json" (
     builtins.toJSON {
-      version = "3.8";
+      networks.komodo = {
+        attachable = true;
+        driver = "overlay";
+      };
       services = {
-        mongo = {
-          image = "mongo:7";
-          command = "--quiet --wiredTigerCacheSizeGB 0.25";
-          volumes = [
-            "mongo-data:/data/db"
-            "mongo-config:/data/configdb"
-          ];
-          networks = [ "komodo" ];
+        core = {
           deploy = {
             mode = "replicated";
-            replicas = 1;
             placement.constraints = [ "node.role == manager" ];
+            replicas = 1;
           };
-        };
-        core = {
-          image = "ghcr.io/moghtech/komodo-core:2.1.2";
           environment = {
-            KOMODO_INIT_ADMIN_USERNAME = "walter";
             KOMODO_DATABASE_URI = "mongodb://mongo:27017";
+            KOMODO_INIT_ADMIN_USERNAME = "walter";
             KOMODO_LOCAL_AUTH = "true";
           };
-          volumes = [ "komodo-repo:/repo" ];
+          image = "ghcr.io/moghtech/komodo-core:2.2.0";
           networks = [ "komodo" ];
           ports = [
             {
-              target = 9120;
-              published = 9120;
-              protocol = "tcp";
               mode = "host";
+              protocol = "tcp";
+              published = 9120;
+              target = 9120;
             }
           ];
+          volumes = [ "komodo-repo:/repo" ];
+        };
+        mongo = {
+          command = "--quiet --wiredTigerCacheSizeGB 0.25";
           deploy = {
             mode = "replicated";
-            replicas = 1;
             placement.constraints = [ "node.role == manager" ];
+            replicas = 1;
           };
+          image = "mongo:7";
+          networks = [ "komodo" ];
+          volumes = [
+            "mongo-config:/data/configdb"
+            "mongo-data:/data/db"
+          ];
         };
         periphery = {
-          image = "ghcr.io/moghtech/komodo-periphery:2.1.2";
+          deploy.mode = "global";
           environment = {
             PERIPHERY_SSL_ENABLED = "true";
           };
-          volumes = [
-            "/var/run/docker.sock:/var/run/docker.sock"
-            "/proc:/proc"
-            "/etc/komodo:/etc/komodo"
-          ];
+          image = "ghcr.io/moghtech/komodo-periphery:2.2.0";
           networks = [ "komodo" ];
           ports = [
             {
@@ -65,25 +64,25 @@ let
               mode = "host";
             }
           ];
-          deploy.mode = "global";
+          volumes = [
+            "/etc/komodo:/etc/komodo"
+            "/proc:/proc"
+            "/var/run/docker.sock:/var/run/docker.sock"
+          ];
         };
       };
-      networks.komodo = {
-        driver = "overlay";
-        attachable = true;
-      };
       volumes = {
-        mongo-data = { };
-        mongo-config = { };
         komodo-repo = { };
+        mongo-config = { };
+        mongo-data = { };
       };
     }
   );
 in
 {
   networking.firewall.allowedTCPPorts = [
-    9120 # Komodo UI
     8120 # Komodo Periphery
+    9120 # Komodo UI
   ];
   systemd.services.komodo-stack = lib.mkIf (config.networking.hostName == "node-1") {
     description = "Deploy Komodo stack";

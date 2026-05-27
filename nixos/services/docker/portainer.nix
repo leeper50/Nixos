@@ -7,22 +7,31 @@
 let
   baseStackFile = pkgs.writeText "portainer-stack-base.json" (
     builtins.toJSON {
-      version = "3.2";
+      networks.agent_network = {
+        attachable = true;
+        driver = "overlay";
+      };
       services = {
         agent = {
-          image = "portainer/agent:2.39.1";
-          volumes = [
-            "/var/run/docker.sock:/var/run/docker.sock"
-            "/var/lib/docker/volumes:/var/lib/docker/volumes"
-          ];
-          networks = [ "agent_network" ];
           deploy = {
             mode = "global";
             placement.constraints = [ "node.platform.os == linux" ];
           };
+          image = "portainer/agent:2.39.1";
+          networks = [ "agent_network" ];
+          volumes = [
+            "/var/run/docker.sock:/var/run/docker.sock"
+            "/var/lib/docker/volumes:/var/lib/docker/volumes"
+          ];
         };
         portainer = {
+          deploy = {
+            mode = "replicated";
+            replicas = 1;
+            placement.constraints = [ "node.role == manager" ];
+          };
           image = "portainer/portainer-ee:2.39.1";
+          networks = [ "agent_network" ];
           ports = [
             "9000:9000/tcp"
             "9443:9443/tcp"
@@ -32,17 +41,7 @@ let
             "/var/run/docker.sock:/var/run/docker.sock"
             "portainer_data:/data"
           ];
-          networks = [ "agent_network" ];
-          deploy = {
-            mode = "replicated";
-            replicas = 1;
-            placement.constraints = [ "node.role == manager" ];
-          };
         };
-      };
-      networks.agent_network = {
-        driver = "overlay";
-        attachable = true;
       };
       volumes.portainer_data = { };
     }
