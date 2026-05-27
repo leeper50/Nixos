@@ -11,6 +11,16 @@
       "timeo=30"
     ];
   };
+  fileSystems."/mnt/media" = {
+    device = "nas.local:/mnt/data/Media";
+    fsType = "nfs";
+    options = [
+      "rw"
+      "nfsvers=3"
+      "soft"
+      "timeo=30"
+    ];
+  };
   environment.systemPackages = with pkgs; [ nfs-utils ];
   networking.nftables.enable = lib.mkForce false;
   virtualisation.docker = {
