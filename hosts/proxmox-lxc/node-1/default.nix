@@ -2,10 +2,6 @@
 {
   networking = {
     hostName = "node-1";
-    defaultGateway = {
-      address = "10.0.0.1";
-      interface = "eth0";
-    };
     interfaces.eth0 = {
       ipv4.addresses = [
         {
