@@ -192,6 +192,7 @@
             "diffEditor.ignoreTrimWhitespace" = false;
             "editor.fontLigatures" = true;
             "editor.formatOnSave" = true;
+            "extensions.ignoreRecommendations" = true;
             "files.associations" = {
               "*.css" = "tailwindcss";
             };
