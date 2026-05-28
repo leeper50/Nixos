@@ -5,20 +5,22 @@
     device = "nas.local:/mnt/docker";
     fsType = "nfs";
     options = [
+      "_netdev"
+      "hard"
+      "nfsvers=4.2"
+      "nofail"
       "rw"
-      "nfsvers=3"
-      "soft"
-      "timeo=30"
     ];
   };
   fileSystems."/mnt/media" = {
     device = "nas.local:/mnt/data/Media";
     fsType = "nfs";
     options = [
+      "_netdev"
+      "hard"
+      "nfsvers=4.2"
+      "nofail"
       "rw"
-      "nfsvers=3"
-      "soft"
-      "timeo=30"
     ];
   };
   environment.systemPackages = with pkgs; [ nfs-utils ];

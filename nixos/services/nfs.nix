@@ -4,7 +4,9 @@
     settings = {
       nfsd = {
         vers2 = "n";
-        vers4 = "n";
+        vers3 = "y";
+        vers4 = "y";
+        "vers4.2" = "y";
       };
     };
     server = {
@@ -16,6 +18,7 @@
       '';
       lockdPort = 4001;
       mountdPort = 4002;
+      nproc = 16;
       statdPort = 4000;
     };
   };
@@ -31,7 +34,6 @@
       4000
       4001
       4002
-      20048
     ];
     allowedUDPPorts = [
       111
@@ -39,7 +41,6 @@
       4000
       4001
       4002
-      20048
     ];
   };
 }
