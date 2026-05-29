@@ -33,7 +33,10 @@ let
               target = 9120;
             }
           ];
-          volumes = [ "komodo-repo:/repo" ];
+          volumes = [
+            "komodo-keys:/config/keys"
+            "komodo-repo:/repo-cache"
+          ];
         };
         mongo = {
           command = "--quiet --wiredTigerCacheSizeGB 0.25";
@@ -68,10 +71,12 @@ let
             "/etc/komodo:/etc/komodo"
             "/proc:/proc"
             "/var/run/docker.sock:/var/run/docker.sock"
+            "komodo-keys:/config/keys"
           ];
         };
       };
       volumes = {
+        komodo-keys = { };
         komodo-repo = { };
         mongo-config = { };
         mongo-data = { };
