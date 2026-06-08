@@ -54,6 +54,7 @@
             "hyprpm"
             "nix"
             "shell"
+            "system"
             "vscode"
             "vscodium"
           ];
