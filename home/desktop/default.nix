@@ -1,6 +1,5 @@
 { lib, pkgs, ... }:
 {
-  gtk.gtk4.theme = null;
   home.activation.removeStylixGtkFiles = lib.mkIf pkgs.stdenv.isLinux (
     lib.hm.dag.entryBefore [ "writeBoundary" ] ''
       rm -f $HOME/.gtkrc-2.0 \
@@ -29,7 +28,6 @@
       audacious
       audacious-plugins
       bitwarden-cli
-      bitwarden-desktop
       deskflow
       ffmpeg-full
       filezilla
@@ -145,7 +143,6 @@
       profiles = {
         default = {
           extensions = with pkgs.vscode-extensions; [
-            # anthropic.claude-code # hash-mismatch. uncomment later.
             arrterian.nix-env-selector
             bradlc.vscode-tailwindcss
             charliermarsh.ruff
