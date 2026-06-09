@@ -1,9 +1,10 @@
 { stylix, ... }:
 {
   imports = [
+    stylix.nixosModules.stylix
+    ../../stylix
     {
       home-manager = {
-        sharedModules = [ stylix.homeModules.stylix ];
         useGlobalPkgs = true;
         useUserPackages = true;
         users.walter.imports = [ ./gui.nix ];

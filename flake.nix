@@ -194,12 +194,12 @@
           modules = [
             ./darwin
             ./darwin/homebrew
+            ./stylix
             agenix.homeManagerModules.default
             home-manager.darwinModules.home-manager
             stylix.darwinModules.stylix
             {
               home-manager.extraSpecialArgs = inputs;
-              home-manager.sharedModules = [ stylix.homeModules.stylix ];
               home-manager.users.walter.imports = [ ./home/profiles/gui.nix ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -213,8 +213,9 @@
           pkgs = mkPkgs "x86_64-linux";
           extraSpecialArgs = inputs;
           modules = [
-            ./home/profiles/gui.nix
             ./home/desktop/hyprland.nix
+            ./home/profiles/gui.nix
+            ./stylix
             agenix.homeManagerModules.default
             stylix.homeModules.stylix
           ];

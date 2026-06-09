@@ -13,7 +13,7 @@
       numlockOnStartup = "on";
     };
     kscreenlocker = {
-      appearance.wallpaper = ./wallpaper.jxl;
+      appearance.wallpaper = ../../stylix/wallpaper.jxl;
       autoLock = false;
     };
     kwin = {

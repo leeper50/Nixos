@@ -13,6 +13,7 @@
 !hosts/
 !nixos/
 !secrets/
+!stylix/
 
 # Files in folders
 !darwin/**
@@ -20,3 +21,4 @@
 !hosts/**
 !nixos/**
 !secrets/**
+!stylix/**
