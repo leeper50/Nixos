@@ -7,7 +7,7 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.walter.imports = [ ./gui.nix ];
+        users.walter.imports = [ ./gui_linux.nix ];
       };
     }
   ];
