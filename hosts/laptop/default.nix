@@ -1,8 +1,21 @@
-{ ... }:
+{ nur, ... }:
+let
+  rootDir = ../..;
+in
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports =
+    map (p: rootDir + p) [
+      /home/profiles/gui_nixos.nix
+      /nixos
+      /nixos/configs/local_networking.nix
+      /nixos/desktop
+      /nixos/services/avahi.nix
+      /nixos/services/power.nix
+    ]
+    ++ [
+      ./hardware-configuration.nix
+      nur.modules.nixos.default
+    ];
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;

@@ -1,8 +1,18 @@
 { ... }:
+let
+  rootDir = ../..;
+in
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports =
+    map (p: rootDir + p) [
+      /home/profiles/cli_nixos.nix
+      /nixos
+      /nixos/configs/local_networking.nix
+      /nixos/services/avahi.nix
+    ]
+    ++ [
+      ./hardware-configuration.nix
+    ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

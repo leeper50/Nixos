@@ -1,8 +1,17 @@
 { pkgs, ... }:
+let
+  rootDir = ../..;
+in
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports =
+    map (p: rootDir + p) [
+      /home/profiles/cli_nixos.nix
+      /nixos
+      /nixos/services/murmur.nix
+    ]
+    ++ [
+      ./hardware-configuration.nix
+    ];
 
   boot.tmp.cleanOnBoot = true;
 

@@ -1,5 +1,19 @@
-{ ... }:
+{ disko, ... }:
+let
+  rootDir = ../../..;
+in
 {
+  imports =
+    map (p: rootDir + p) [
+      /home/profiles/cli_nixos.nix
+      /nixos
+      /nixos/configs/local_networking.nix
+      /nixos/services/avahi.nix
+      /nixos/services/nfs.nix
+      /nixos/services/samba.nix
+      /nixos/services/syncthing.nix
+    ]
+    ++ [ disko.nixosModules.disko ];
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";
     fsType = "btrfs";

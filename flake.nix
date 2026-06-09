@@ -89,17 +89,8 @@
             ];
           };
           modules = [
-            ./home/profiles/cli_nixos.nix
             ./hosts/proxmox-lxc
             ./hosts/proxmox-lxc/${name}
-            ./nixos
-            ./nixos/configs/local_networking.nix
-            ./nixos/services/avahi.nix
-            ./nixos/services/docker
-            ./nixos/services/docker/komodo.nix
-            ./nixos/services/docker/swarm.nix
-            ./nixos/services/keepalived.nix
-            ./nixos/services/power.nix
           ];
         };
 
@@ -110,11 +101,7 @@
             tags = [ "" ]; # Machine not currently using nixos
           };
           modules = [
-            ./home/profiles/cli_nixos.nix
             ./hosts/gk55
-            ./nixos
-            ./nixos/configs/local_networking.nix
-            ./nixos/services/avahi.nix
           ];
         };
 
@@ -124,14 +111,7 @@
             tags = [ "local" ];
           };
           modules = [
-            ./home/profiles/gui_nixos.nix
             ./hosts/laptop
-            ./nixos
-            ./nixos/configs/local_networking.nix
-            ./nixos/desktop
-            ./nixos/services/avahi.nix
-            ./nixos/services/power.nix
-            nur.modules.nixos.default
           ];
         };
 
@@ -143,16 +123,8 @@
             ];
           };
           modules = [
-            ./home/profiles/cli_nixos.nix
             ./hosts/proxmox-vm
             ./hosts/proxmox-vm/nas
-            ./nixos
-            ./nixos/configs/local_networking.nix
-            ./nixos/services/avahi.nix
-            ./nixos/services/nfs.nix
-            ./nixos/services/samba.nix
-            ./nixos/services/syncthing.nix
-            disko.nixosModules.disko
           ];
         };
 
@@ -162,10 +134,7 @@
             tags = [ "remote" ];
           };
           modules = [
-            ./home/profiles/cli_nixos.nix
             ./hosts/racknerd
-            ./nixos
-            ./nixos/services/murmur.nix
           ];
         };
 
@@ -175,9 +144,7 @@
             tags = [ "remote" ];
           };
           modules = [
-            ./home/profiles/cli_nixos.nix
             ./hosts/servercheap
-            ./nixos
           ];
         };
 
@@ -192,18 +159,7 @@
           pkgs = mkPkgs "aarch64-darwin";
           specialArgs = inputs;
           modules = [
-            ./darwin
-            ./darwin/homebrew
-            ./stylix
-            agenix.homeManagerModules.default
-            home-manager.darwinModules.home-manager
-            stylix.darwinModules.stylix
-            {
-              home-manager.extraSpecialArgs = inputs;
-              home-manager.users.walter.imports = [ ./home/profiles/gui.nix ];
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-            }
+            ./hosts/macbook
           ];
         };
       };
@@ -213,11 +169,7 @@
           pkgs = mkPkgs "x86_64-linux";
           extraSpecialArgs = inputs;
           modules = [
-            ./home/desktop/hyprland.nix
-            ./home/profiles/gui.nix
-            ./stylix
-            agenix.homeManagerModules.default
-            stylix.homeModules.stylix
+            ./hosts/workstation
           ];
         };
       };
