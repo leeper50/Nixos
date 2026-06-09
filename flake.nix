@@ -127,9 +127,11 @@
             ./home/gui.nix
             ./hosts/laptop
             ./nixos
-            ./nixos/desktop
             ./nixos/configs/local_networking.nix
+            ./nixos/desktop
             ./nixos/services/avahi.nix
+            ./nixos/services/power.nix
+            nur.modules.nixos.default
           ];
         };
 

@@ -1,20 +1,12 @@
-{
-  config,
-  lib,
-  nur,
-  pkgs,
-  ...
-}:
+{ ... }:
 {
   imports = [
-    nur.modules.nixos.default
     ./hardware-configuration.nix
-    ../../nixos/services/power.nix
   ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    systemd-boot.enable = true;
+  };
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;
@@ -26,9 +18,8 @@
   security.rtkit.enable = true;
   services = {
     displayManager.sddm.enable = true;
-    xserver.enable = true;
-    printing.enable = true;
     power-profiles-daemon.enable = true;
+    printing.enable = true;
     pulseaudio.enable = false;
     pipewire = {
       alsa.enable = true;
@@ -36,8 +27,7 @@
       enable = true;
       pulse.enable = true;
     };
+    xserver.enable = true;
   };
-
   system.stateVersion = "26.05";
-
 }
