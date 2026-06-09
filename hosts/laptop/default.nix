@@ -5,6 +5,7 @@ in
 {
   imports =
     map (p: rootDir + p) [
+      /home/desktop/hyprland.nix
       /home/profiles/gui_nixos.nix
       /nixos
       /nixos/configs/local_networking.nix

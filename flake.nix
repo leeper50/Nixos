@@ -157,7 +157,9 @@
       darwinConfigurations = {
         "macbook" = darwin.lib.darwinSystem {
           pkgs = mkPkgs "aarch64-darwin";
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            inherit inputs;
+          };
           modules = [
             ./hosts/macbook
           ];
