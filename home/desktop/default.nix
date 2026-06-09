@@ -231,6 +231,11 @@
   stylix = {
     base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
     enable = true;
+    cursor = {
+      name = "Qogir Cursors";
+      package = pkgs.qogir-icon-theme;
+      size = 32;
+    };
     fonts = {
       emoji = {
         name = "Noto Color Emoji";
