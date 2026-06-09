@@ -116,6 +116,19 @@
           ];
         };
 
+        laptop = mkHost {
+          deployment = {
+            targetHost = "laptop";
+            tags = [ "local" ];
+          };
+          modules = [
+            ./hosts/laptop
+            ./nixos
+            ./nixos/configs/local_networking.nix
+            ./nixos/services/avahi.nix
+          ];
+        };
+
         nas = mkHost {
           deployment = {
             targetHost = "nas";
@@ -202,6 +215,7 @@
 
       nixosConfigurations = {
         # gk55 = hosts.gk55.nixos; # gk55 currently running proxmox
+        laptop = hosts.laptop.nixos;
         nas = hosts.nas.nixos;
         racknerd = hosts.racknerd.nixos;
         servercheap = hosts.servercheap.nixos;
@@ -216,6 +230,7 @@
           specialArgs = inputs;
         };
         # gk55 = hosts.gk55.colmena; # gk55 currently running proxmox
+        laptop = hosts.laptop.colmena;
         nas = hosts.nas.colmena;
         racknerd = hosts.racknerd.colmena;
         servercheap = hosts.servercheap.colmena;
