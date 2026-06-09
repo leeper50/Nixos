@@ -6,7 +6,7 @@
         sharedModules = [ stylix.homeModules.stylix ];
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.walter.imports = [ ./profiles/gui.nix ];
+        users.walter.imports = [ ./gui.nix ];
       };
     }
   ];

@@ -5,7 +5,7 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.walter.imports = [ ./profiles/cli.nix ];
+        users.walter.imports = [ ./cli.nix ];
       };
     }
   ];

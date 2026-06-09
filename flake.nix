@@ -89,7 +89,7 @@
             ];
           };
           modules = [
-            ./home/cli.nix
+            ./home/profiles/cli_nixos.nix
             ./hosts/proxmox-lxc
             ./hosts/proxmox-lxc/${name}
             ./nixos
@@ -110,7 +110,7 @@
             tags = [ "" ]; # Machine not currently using nixos
           };
           modules = [
-            ./home/cli.nix
+            ./home/profiles/cli_nixos.nix
             ./hosts/gk55
             ./nixos
             ./nixos/configs/local_networking.nix
@@ -124,7 +124,7 @@
             tags = [ "local" ];
           };
           modules = [
-            ./home/gui.nix
+            ./home/profiles/gui_nixos.nix
             ./hosts/laptop
             ./nixos
             ./nixos/configs/local_networking.nix
@@ -143,7 +143,7 @@
             ];
           };
           modules = [
-            ./home/cli.nix
+            ./home/profiles/cli_nixos.nix
             ./hosts/proxmox-vm
             ./hosts/proxmox-vm/nas
             ./nixos
@@ -162,7 +162,7 @@
             tags = [ "remote" ];
           };
           modules = [
-            ./home/cli.nix
+            ./home/profiles/cli_nixos.nix
             ./hosts/racknerd
             ./nixos
             ./nixos/services/murmur.nix
@@ -175,7 +175,7 @@
             tags = [ "remote" ];
           };
           modules = [
-            ./home/cli.nix
+            ./home/profiles/cli_nixos.nix
             ./hosts/servercheap
             ./nixos
           ];
