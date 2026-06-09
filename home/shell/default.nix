@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 {
   home.packages = with pkgs; [
+    file
     pistol
   ];
   programs = {
@@ -238,11 +239,6 @@
         case "$(file -Lb --mime-type "$file")" in 
           image/*)
             draw "$file"
-            ;;
-          video/*)
-            # vidthumb is from here:
-            # https://raw.githubusercontent.com/duganchen/kitty-pistol-previewer/main/vidthumb
-            draw "$(vidthumb "$file")"
             ;;
         esac
         pistol "$file"
