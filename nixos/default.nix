@@ -3,16 +3,6 @@
   imports = [
     agenix.nixosModules.default
     home-manager.nixosModules.home-manager
-    {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.walter = {
-        imports = [
-          ../home/base
-          ../home/shell
-        ];
-      };
-    }
 
     # Configs
     ./configs/agenix.nix

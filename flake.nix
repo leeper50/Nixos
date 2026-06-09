@@ -89,6 +89,7 @@
             ];
           };
           modules = [
+            ./home/cli.nix
             ./hosts/proxmox-lxc
             ./hosts/proxmox-lxc/${name}
             ./nixos
@@ -109,6 +110,7 @@
             tags = [ "" ]; # Machine not currently using nixos
           };
           modules = [
+            ./home/cli.nix
             ./hosts/gk55
             ./nixos
             ./nixos/configs/local_networking.nix
@@ -122,8 +124,10 @@
             tags = [ "local" ];
           };
           modules = [
+            ./home/gui.nix
             ./hosts/laptop
             ./nixos
+            ./nixos/desktop
             ./nixos/configs/local_networking.nix
             ./nixos/services/avahi.nix
           ];
@@ -137,6 +141,7 @@
             ];
           };
           modules = [
+            ./home/cli.nix
             ./hosts/proxmox-vm
             ./hosts/proxmox-vm/nas
             ./nixos
@@ -155,6 +160,7 @@
             tags = [ "remote" ];
           };
           modules = [
+            ./home/cli.nix
             ./hosts/racknerd
             ./nixos
             ./nixos/services/murmur.nix
@@ -167,6 +173,7 @@
             tags = [ "remote" ];
           };
           modules = [
+            ./home/cli.nix
             ./hosts/servercheap
             ./nixos
           ];
@@ -185,14 +192,13 @@
           modules = [
             ./darwin
             ./darwin/homebrew
+            agenix.homeManagerModules.default
             home-manager.darwinModules.home-manager
             stylix.darwinModules.stylix
             {
               home-manager.extraSpecialArgs = inputs;
               home-manager.sharedModules = [ stylix.homeModules.stylix ];
-              home-manager.users.walter = {
-                imports = [ ./home ];
-              };
+              home-manager.users.walter.imports = [ ./home/profiles/gui.nix ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
             }
@@ -205,9 +211,9 @@
           pkgs = mkPkgs "x86_64-linux";
           extraSpecialArgs = inputs;
           modules = [
-            ./home
+            ./home/profiles/gui.nix
             ./home/desktop/hyprland.nix
-            ./home/desktop/plasma.nix
+            agenix.homeManagerModules.default
             stylix.homeModules.stylix
           ];
         };

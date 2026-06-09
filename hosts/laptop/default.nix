@@ -3,7 +3,6 @@
   lib,
   nur,
   pkgs,
-  stylix,
   ...
 }:
 {
@@ -11,20 +10,6 @@
     nur.modules.nixos.default
     ./hardware-configuration.nix
     ../../nixos/services/power.nix
-    {
-      home-manager = {
-        sharedModules = [ stylix.homeModules.stylix ];
-        users.walter = {
-          imports = [
-            ../../home/desktop
-            ../../home/desktop
-            ../../home/desktop/hyprland.nix
-            ../../home/dev
-            ../../home/firefox
-          ];
-        };
-      };
-    }
   ];
 
   boot.loader.systemd-boot.enable = true;
