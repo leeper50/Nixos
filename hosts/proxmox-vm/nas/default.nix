@@ -11,7 +11,7 @@ in
       /nixos/services/avahi.nix
       /nixos/services/nfs.nix
       /nixos/services/samba.nix
-      /nixos/services/syncthing/nas.nix
+      /syncthing/nas.nix
     ]
     ++ [ disko.nixosModules.disko ];
   fileSystems."/mnt/data" = {

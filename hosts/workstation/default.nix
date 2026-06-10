@@ -7,8 +7,8 @@ in
     map (p: rootDir + p) [
       /home/desktop/hyprland.nix
       /home/profiles/gui.nix
-      /nixos/services/syncthing/workstation.nix
       /stylix
+      /syncthing/workstation.nix
     ]
     ++ [
       agenix.homeManagerModules.default
