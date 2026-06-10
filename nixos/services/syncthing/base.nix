@@ -129,7 +129,6 @@ in
         devices = [
           "laptop"
           "macbook"
-          "tablet"
           "workstation"
         ];
         id = "ossai-a4yhn";
