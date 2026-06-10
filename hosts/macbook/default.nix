@@ -24,6 +24,7 @@ in
         home-manager.users.walter.imports = [
           agenix.homeManagerModules.default
           ../../home/profiles/gui.nix
+          ../../nixos/services/syncthing/macbook.nix
         ];
         home-manager.useUserPackages = true;
       }

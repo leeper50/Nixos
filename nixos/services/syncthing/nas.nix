@@ -5,7 +5,6 @@
   ];
 
   local.syncthing = {
-    home = "/mnt/data/SambaHomes/walter";
     folders = {
       "GlobalShare" = {
         enable = true;
@@ -16,5 +15,6 @@
         type = "receiveonly";
       };
     };
+    home = "/mnt/data/SambaHomes/walter";
   };
 }
