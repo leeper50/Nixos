@@ -19,7 +19,6 @@
       nixfmt
       parallel
       powerline-fonts
-      syncthing
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       hwinfo

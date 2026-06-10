@@ -10,6 +10,7 @@ in
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/power.nix
+      /nixos/services/syncthing/laptop.nix
     ]
     ++ [
       ./hardware-configuration.nix
