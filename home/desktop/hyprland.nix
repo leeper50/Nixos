@@ -37,7 +37,7 @@ in
   wayland.windowManager.hyprland = {
     configType = "hyprlang";
     enable = true;
-    package = null; # null package for non-nixos hosts
+    package = null;
     settings = {
       "$mod" = "SUPER";
 
@@ -55,6 +55,7 @@ in
 
       bind = [
         "$mod, D, exec, fuzzel"
+        "$mod, Space, exec, fuzzel"
         "$mod, E, exec, dolphin"
         "$mod, F, fullscreen"
         "$mod, L, exec, hyprlock"
@@ -62,7 +63,6 @@ in
         "$mod, Q, killactive"
         "$mod, Return, exec, kitty"
         "$mod, V, togglefloating"
-        "$mod, W, exec, kitty"
         "alt, F4, killactive"
         # screenshot: select area, copy to clipboard
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
@@ -172,7 +172,6 @@ in
         vrr = 0;
       };
 
-      # Machine-specific monitor settings (https://wiki.hyprland.org/Configuring/Monitors/)
       source = [ "~/.config/hypr/monitors.conf" ];
     };
     xwayland.enable = true;
@@ -182,9 +181,9 @@ in
     enable = true;
     settings = [
       {
+        height = 36;
         layer = "top";
         position = "top";
-        height = 36;
         spacing = 24;
 
         modules-left = [
