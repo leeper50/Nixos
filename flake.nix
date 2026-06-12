@@ -58,12 +58,15 @@
           inherit system;
           overlays = [ nur.overlays.default ];
           config.allowUnfree = true;
+          config.permittedInsecurePackages = [
+            "electron-39.8.10"
+          ];
         };
 
       mkNixosSystem =
         modules:
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          pkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs;
           inherit modules;
         };

@@ -28,6 +28,7 @@
       audacious
       audacious-plugins
       bitwarden-cli
+      bitwarden-desktop
       deskflow
       ffmpeg-full
       filezilla
@@ -37,7 +38,7 @@
       handbrake
       haruna
       libreoffice-fresh
-      libsForQt5.qt5.qttools
+      qt5.qttools
       qview
       (vivaldi.override {
         proprietaryCodecs = true;

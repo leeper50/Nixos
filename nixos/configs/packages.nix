@@ -12,5 +12,4 @@
     rclone
     rsync
   ];
-  nixpkgs.config.allowUnfree = true;
 }
