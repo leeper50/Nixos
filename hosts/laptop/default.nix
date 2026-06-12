@@ -13,6 +13,7 @@ in
       /syncthing/laptop.nix
     ]
     ++ [
+      ./gpu.nix
       ./hardware-configuration.nix
       nur.modules.nixos.default
     ];
