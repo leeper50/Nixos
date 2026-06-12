@@ -1,4 +1,4 @@
-{ nur, ... }:
+{ nur, pkgs, ... }:
 let
   rootDir = ../..;
 in
@@ -14,6 +14,7 @@ in
     ]
     ++ [
       ./gpu.nix
+      ./waifu2x.nix
       ./hardware-configuration.nix
       nur.modules.nixos.default
     ];
@@ -25,9 +26,16 @@ in
     hostName = "laptop";
     networkmanager.enable = true;
   };
+  programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {
     power-profiles-daemon.enable = true;
   };
   system.stateVersion = "26.05";
+  users.users.walter = {
+    packages = with pkgs; [
+      imgbrd-grabber
+      uv
+    ];
+  };
 }
