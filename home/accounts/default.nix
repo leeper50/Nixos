@@ -1,6 +1,26 @@
 { lib, ... }:
 let
-  defaultSettings = {
+  defaultCalendarSettings = {
+    remote = {
+      type = "caldav";
+      userName = "wleeper@mailbox.org";
+    };
+    thunderbird = {
+      enable = true;
+      profiles = [ "default" ];
+    };
+  };
+  defaultContactSettings = {
+    remote = {
+      type = "carddav";
+      userName = "wleeper@mailbox.org";
+    };
+    thunderbird = {
+      enable = true;
+      profiles = [ "default" ];
+    };
+  };
+  defaultEmailSettings = {
     enable = true;
     realName = "Walter Leeper";
     thunderbird = {
@@ -8,7 +28,7 @@ let
       profiles = [ "default" ];
     };
   };
-  gmailSettings = defaultSettings // {
+  gmailSettings = defaultEmailSettings // {
     imap = {
       authentication = "xoauth2";
       host = "imap.gmail.com";
@@ -22,7 +42,7 @@ let
       tls.enable = true;
     };
   };
-  mailboxSettings = defaultSettings // {
+  mailboxSettings = defaultEmailSettings // {
     imap = {
       host = "imap.mailbox.org";
       port = 993;
@@ -34,7 +54,7 @@ let
       tls.enable = true;
     };
   };
-  outlookSettings = defaultSettings // {
+  outlookSettings = defaultEmailSettings // {
     imap = {
       authentication = "xoauth2";
       host = "outlook.office365.com";
@@ -53,6 +73,24 @@ let
   };
 in
 {
+  accounts.calendar.accounts = {
+    "Birthdays" = lib.recursiveUpdate defaultCalendarSettings {
+      remote.url = "https://dav.mailbox.org/caldav/Y2FsOi8vMS8w";
+      thunderbird.color = "#be6217";
+    };
+    "Personal" = lib.recursiveUpdate defaultCalendarSettings {
+      remote.url = "https://dav.mailbox.org/caldav/Y2FsOi8vMC8zMg";
+      thunderbird.color = "#dc8add";
+    };
+  };
+  accounts.contact.accounts = {
+    "Contacts" = lib.recursiveUpdate defaultContactSettings {
+      remote.url = "https://dav.mailbox.org/carddav/33";
+    };
+    "Personal" = lib.recursiveUpdate defaultContactSettings {
+      remote.url = "https://dav.mailbox.org/carddav/44";
+    };
+  };
   accounts.email.accounts = {
     "Mailbox" = mailboxSettings // {
       address = "wleeper@mailbox.org";

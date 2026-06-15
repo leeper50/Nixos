@@ -1,8 +1,8 @@
 {
   imports = [
+    ../accounts
     ../desktop
     ../dev
-    ../email
     ../firefox
     ../games
     ./cli.nix
