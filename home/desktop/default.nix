@@ -210,6 +210,7 @@
             "update.showReleaseNotes" = false;
             "vsicons.dontShowNewVersionMessage" = true;
             "workbench.iconTheme" = "vscode-icons";
+            "workbench.secondarySideBar.defaultVisibility" = "hidden";
             "workbench.startupEditor" = "none";
           };
         };

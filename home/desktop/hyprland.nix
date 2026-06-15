@@ -267,6 +267,7 @@ in
           format = "{volume}% - {desc}";
           format-muted = "Muted - {desc}";
           on-click = "${cycle-audio-output}";
+          on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
           scroll-step = 5;
         };
 
