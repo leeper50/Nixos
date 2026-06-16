@@ -79,6 +79,7 @@ in
       thunderbird.color = "#be6217";
     };
     "Personal" = lib.recursiveUpdate defaultCalendarSettings {
+      primary = true;
       remote.url = "https://dav.mailbox.org/caldav/Y2FsOi8vMC8zMg";
       thunderbird.color = "#dc8add";
     };
