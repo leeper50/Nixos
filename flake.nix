@@ -67,7 +67,10 @@
         modules:
         nixpkgs.lib.nixosSystem {
           pkgs = mkPkgs "x86_64-linux";
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            systemType = "Nixos";
+            osConfig = null;
+          };
           inherit modules;
         };
 
@@ -162,6 +165,8 @@
           pkgs = mkPkgs "aarch64-darwin";
           specialArgs = inputs // {
             inherit inputs;
+            systemType = "NixDarwin";
+            osConfig = null;
           };
           modules = [
             ./hosts/macbook
@@ -172,7 +177,10 @@
       homeConfigurations = {
         "workstation" = home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs "x86_64-linux";
-          extraSpecialArgs = inputs;
+          extraSpecialArgs = inputs // {
+            systemType = "Standalone";
+            hostName = "workstation";
+          };
           modules = [
             ./hosts/workstation
           ];
@@ -193,7 +201,10 @@
       colmena = {
         meta = {
           nixpkgs = mkPkgs "x86_64-linux";
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            systemType = "Nixos";
+            osConfig = null;
+          };
         };
         # gk55 = hosts.gk55.colmena; # gk55 currently running proxmox
         laptop = hosts.laptop.colmena;

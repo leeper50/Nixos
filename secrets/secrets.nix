@@ -1,5 +1,6 @@
 let
   gk55 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGHhitPnvUzImWRb80A31LvBoQru3BXUMb+lgDUKkE0 root@nixos";
+  macbook = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAmnjjOxA1m5W7WqeD26WTliaDJYcsUr8vN/yfk8/3x4";
   nas = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISsnpyceiNgLPCVpZiCuZ06a9Zpl3kUKmCCqRI6RFn2 root@nas";
   node-1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMOWw3itt6X+guXpUY1m5M2inL0Zs+Fs0nTrUOqDwZ/c root@node-1";
   node-2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF99jYxJYq1frbpyemmxb7+G4+N0Q0XF77sNDiQcphc4 root@node-2";
@@ -15,6 +16,7 @@ let
   ];
   all_keys = [
     gk55
+    macbook
     nas
     racknerd
     servercheap

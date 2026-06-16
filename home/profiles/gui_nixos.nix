@@ -1,13 +1,24 @@
-{ pkgs, stylix, ... }:
+{
+  agenix,
+  pkgs,
+  stylix,
+  systemType,
+  ...
+}:
 {
   imports = [
     stylix.nixosModules.stylix
     ../../stylix
     {
       home-manager = {
+        extraSpecialArgs = { inherit agenix systemType; };
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.walter.imports = [ ./gui_linux.nix ];
+        users.walter.imports = [
+          agenix.homeManagerModules.default
+          ../../secrets/agenix.nix
+          ./gui_linux.nix
+        ];
       };
     }
   ];

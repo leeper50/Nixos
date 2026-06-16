@@ -19,10 +19,13 @@ in
       home-manager.darwinModules.home-manager
       stylix.darwinModules.stylix
       {
-        home-manager.extraSpecialArgs = inputs;
+        home-manager.extraSpecialArgs = inputs // {
+          systemType = "NixDarwin";
+        };
         home-manager.useGlobalPkgs = true;
         home-manager.users.walter.imports = [
           agenix.homeManagerModules.default
+          ../../secrets/agenix.nix
           ../../home/profiles/gui.nix
           ../../syncthing/macbook.nix
         ];

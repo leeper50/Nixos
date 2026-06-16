@@ -1,5 +1,15 @@
-{ pkgs, self, ... }:
 {
+  agenix,
+  pkgs,
+  self,
+  ...
+}:
+{
+  imports = [
+    agenix.darwinModules.default
+    ../secrets/agenix.nix
+  ];
+
   nixpkgs.overlays = [
     (final: prev: {
       inherit (prev.lixPackageSets.stable)
