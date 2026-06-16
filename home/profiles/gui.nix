@@ -5,6 +5,7 @@
     ../dev
     ../firefox
     ../games
+    ../socks
     ./cli.nix
   ];
 }
