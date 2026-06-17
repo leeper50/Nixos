@@ -12,13 +12,27 @@ let
     ${pkgs.jq}/bin/jq -n \
       --arg password "$(cat ${config.age.secrets."user_walter_clear.age".path})" \
       '{
-        local_address: "127.0.0.1",
-        local_port: 1080,
-        method: "chacha20-ietf-poly1305",
-        mode: "tcp_and_udp",
-        password: $password,
-        server_port: 8388,
-        server: "10.0.0.31"
+        locals: [
+          {
+            local_address: "127.0.0.1",
+            local_port: 1080,
+            mode: "tcp_and_udp",
+          }
+        ],
+        servers: [
+          {
+            method: "chacha20-ietf-poly1305",
+            password: $password,
+            server_port: 8388,
+            server: "100.121.87.44"
+          },
+          {
+            method: "chacha20-ietf-poly1305",
+            password: $password,
+            server_port: 8388,
+            server: "10.0.0.31"
+          }
+        ]
       }' > ${configFile}
     exec ${sslocalBin} -c ${configFile}
   '';
