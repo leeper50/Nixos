@@ -112,25 +112,10 @@ in
       bindel = [
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_SINK@ 5%-"
         ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_SINK@ 5%+"
-        ", XF86KbdBrightnessDown, exec, brightnessctl -d '*::kbd_backlight' set 10%-"
+        ", XF86KbdBrightnessDown, exec, brightnessctl -d '*::kbd_backlight' set 10%- -n 0"
         ", XF86KbdBrightnessUp, exec, brightnessctl -d '*::kbd_backlight' set +10%"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%- -n 5"
         ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
-      ];
-
-      env = [
-        "GDK_BACKEND,wayland,x11"
-        "MOZ_ENABLE_WAYLAND,1"
-        "NIXOS_OZONE_WL,1"
-        "QT_QPA_PLATFORM,wayland;xcb"
-        "QT_QPA_PLATFORMTHEME,kde"
-        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
-      ];
-
-      exec-once = [
-        # Source my wacky things
-        ". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target"
-        "easyeffects --hide-window"
       ];
 
       decoration = {
@@ -151,12 +136,31 @@ in
         smart_split = true;
       };
 
+      env = [
+        "GDK_BACKEND,wayland,x11"
+        "MOZ_ENABLE_WAYLAND,1"
+        "NIXOS_OZONE_WL,1"
+        "QT_QPA_PLATFORM,wayland;xcb"
+        "QT_QPA_PLATFORMTHEME,kde"
+        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+      ];
+
+      exec-once = [
+        # Source my wacky things
+        ". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target"
+        "easyeffects --hide-window"
+      ];
+
       general = {
         border_size = 1;
         gaps_in = 5;
         gaps_out = 10;
         layout = "dwindle";
       };
+
+      gesture = [
+        "3, horizontal, workspace"
+      ];
 
       input = {
         follow_mouse = 1;
