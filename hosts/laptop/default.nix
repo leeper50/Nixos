@@ -29,11 +29,13 @@ in
   programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {
+    asusd.enable = true;
     power-profiles-daemon.enable = true;
   };
   system.stateVersion = "26.05";
   users.users.walter = {
     packages = with pkgs; [
+      asusctl
       imgbrd-grabber
       uv
     ];
