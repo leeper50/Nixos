@@ -42,6 +42,7 @@
         rcat = "command cat";
         rs = "sudo systemctl";
         s = "systemctl";
+        us = "systemctl --user";
       };
       functions = {
         build = ''
