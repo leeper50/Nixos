@@ -23,6 +23,10 @@ in
     languagePacks = [ "en-US" ];
     profiles = {
       default = {
+        bookmarks = {
+          force = true;
+          settings = import ./bookmarks.nix;
+        };
         isDefault = true;
         extensions = {
           force = true;
