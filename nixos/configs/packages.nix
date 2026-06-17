@@ -12,4 +12,7 @@
     rclone
     rsync
   ];
+  services = {
+    tailscale.enable = true;
+  };
 }

@@ -35,7 +35,6 @@ in
       enable = true;
       ip = "100.92.216.84";
     };
-    tailscale.enable = true;
   };
 
   system.stateVersion = "23.11";
