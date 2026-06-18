@@ -23,7 +23,7 @@ let
         ],
         outbounds: [
           {
-            default: "tailscale",
+            default: "lan",
             outbounds: ["lan", "tailscale"],
             tag: "proxy",
             type: "selector"
