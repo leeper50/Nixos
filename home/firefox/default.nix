@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 let
   firefoxPackage = if pkgs.stdenv.isLinux then pkgs.librewolf else pkgs.firefox-bin;
 in
@@ -83,6 +78,10 @@ in
           "extensions.update.enable" = false;
           "general.autoScroll" = true;
           "image.jxl.enabled" = true;
+          "network.proxy.no_proxies_on" = "local,dellhplaptop.xyz,buncha.men,10.0.0.0/8";
+          "network.proxy.socks_port" = 1080;
+          "network.proxy.socks" = "10.0.0.31";
+          "network.proxy.type" = 1;
         };
       };
     };
@@ -151,13 +150,6 @@ in
         };
       };
       PostQuantumKeyAgreementEnabled = true;
-      Proxy = {
-        AutoConfigUrl = "https://c.dellhplaptop.xyz/public/proxy.pac";
-        Locked = false;
-        Mode = "autoConfig";
-        SocksVersion = "5";
-        UseProxyForDNS = true;
-      };
       SanitizeOnShutdown = {
         Cache = true;
         FormData = true;
