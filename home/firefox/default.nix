@@ -104,7 +104,7 @@ in
       DisableProfileRefresh = true;
       DisableSetDesktopBackground = true;
       DisableTelemetry = true;
-      PasswordManagerEnabled = true;
+      PasswordManagerEnabled = false;
 
       # Access Restrictions
       BlockAboutConfig = false;
