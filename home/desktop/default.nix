@@ -29,6 +29,7 @@
       audacious-plugins
       bitwarden-cli
       bitwarden-desktop
+      collabora-desktop
       deskflow
       ffmpeg-full
       filezilla
@@ -37,7 +38,6 @@
       gimp
       handbrake
       haruna
-      libreoffice-fresh
       qt5.qttools
       qview
       (vivaldi.override {

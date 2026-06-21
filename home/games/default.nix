@@ -6,6 +6,7 @@ in
   home.packages =
     with pkgs;
     [
+      discord
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
