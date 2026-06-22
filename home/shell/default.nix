@@ -35,6 +35,7 @@
       shellAliases = {
         cat = "bat -pp";
         cz = "chezmoi";
+        edit_nix = "hx ~/Nix";
         helix = "hx";
         hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
         l = "eza";
@@ -42,117 +43,111 @@
         rcat = "command cat";
         rs = "sudo systemctl";
         s = "systemctl";
+        update_flake = "nix flake update --flake $FLAKE_DIR";
         us = "systemctl --user";
       };
       functions = {
         build = ''
           set original_dir (pwd)
           if type -q nixos-rebuild
-              cd $FLAKE_DIR
-              git pull
-              sudo nixos-rebuild test --flake $FLAKE_DIR/.#(hostname)
-              cd $original_dir
+            cd $FLAKE_DIR
+            git pull
+            sudo nixos-rebuild test --flake $FLAKE_DIR/.#(hostname)
+            cd $original_dir
           else if type -q darwin-rebuild
-              cd $FLAKE_DIR
-              git pull
-              sudo darwin-rebuild build --flake $FLAKE_DIR/.#(hostname)
-              cd $original_dir
+            cd $FLAKE_DIR
+            git pull
+            sudo darwin-rebuild build --flake $FLAKE_DIR/.#(hostname)
+            cd $original_dir
           else if type -q home-manager
-              cd $FLAKE_DIR
-              git pull
-              home-manager build --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
-              cd $original_dir
+            cd $FLAKE_DIR
+            git pull
+            home-manager build --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
+            cd $original_dir
           else
-              return 1
+            return 1
           end
         '';
         clean = ''
           if type -q nixos-rebuild; or type -q darwin-rebuild
-              sudo nix-collect-garbage -d
+            sudo nix-collect-garbage -d
           else if type -q home-manager
-              nix-collect-garbage -d
+            nix-collect-garbage -d
           else
-              return 1
+            return 1
           end
         '';
         dl = ''
           if type -q yt-dlp
-              argparse a i t p -- $argv
-              or return 1
-
-              set args
-
-              if set -q _flag_a
-                  set -a args -x --audio-format opus --audio-quality 0
-              end
-              if set -q _flag_i
-                  set -a args --ignore-config
-              end
-              if set -q _flag_t
-                  set -a args -o "%(title)s.%(ext)s"
-              end
-              if set -q _flag_p
-                  set -a args --proxy socks5://komodo:1080
-              end
-
-              if test -z "$argv[1]"
-                  echo "Missing URL"
-                  return 1
-              end
-
-              set -a args $argv[1]
-              yt-dlp $args
-          else
-              echo "yt-dlp not found"
+            argparse a i t p -- $argv
+            or return 1
+            set args
+            if set -q _flag_a
+              set -a args -x --audio-format opus --audio-quality 0
+            end
+            if set -q _flag_i
+              set -a args --ignore-config
+            end
+            if set -q _flag_t
+              set -a args -o "%(title)s.%(ext)s"
+            end
+            if set -q _flag_p
+              set -a args --proxy socks5://komodo:1080
+            end
+            if test -z "$argv[1]"
+              echo "Missing URL"
               return 1
+            end
+            set -a args $argv[1]
+            yt-dlp $args
+          else
+            echo "yt-dlp not found"
+            return 1
           end
         '';
         lf = ''
           set tmp_file "$HOME/.cache/lf-lastdir"
           command lf --last-dir-path="$tmp_file" $argv
           if test -f $tmp_file
-              set last_dir (cat $tmp_file)
-              if test -d "$last_dir" -a "$last_dir" != (pwd)
-                  cd $last_dir
-              end
+            set last_dir (cat $tmp_file)
+            if test -d "$last_dir" -a "$last_dir" != (pwd)
+              cd $last_dir
+            end
           end
         '';
         sound = ''
           if test (uname -s) = Linux
-              switch $argv[1]
-                  case 44100 48000 96000 192000 384000
-                      pw-metadata -n settings 0 clock.force-rate $argv[1]
-                  case '*'
-                      echo "Error: '$argv[1]' is not a valid sample rate"
-              end
+            switch $argv[1]
+              case 44100 48000 96000 192000 384000
+                pw-metadata -n settings 0 clock.force-rate $argv[1]
+              case '*'
+                echo "Error: '$argv[1]' is not a valid sample rate"
+            end
           else
-              echo "Unsupported OS"
-              return 1
+            echo "Unsupported OS"
+            return 1
           end
         '';
         update = ''
           set original_dir (pwd)
           if type -q nixos-rebuild
-              cd $FLAKE_DIR
-              sudo git pull
-              sudo nixos-rebuild switch --flake $FLAKE_DIR/.#(hostname)
-              cd $original_dir
+            cd $FLAKE_DIR
+            sudo git pull
+            sudo nixos-rebuild switch --flake $FLAKE_DIR/.#(hostname)
+            cd $original_dir
           else if type -q darwin-rebuild
-              cd $FLAKE_DIR
-              git pull
-              sudo darwin-rebuild switch --flake $FLAKE_DIR/.#(hostname)
-              cd $original_dir
+            cd $FLAKE_DIR
+            git pull
+            sudo darwin-rebuild switch --flake $FLAKE_DIR/.#(hostname)
+            cd $original_dir
           else if type -q home-manager
-              cd $FLAKE_DIR
-              git pull
-              home-manager switch --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
-              cd $original_dir
+            cd $FLAKE_DIR
+            git pull
+            home-manager switch --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
+            cd $original_dir
           else
-              return 1
+            return 1
           end
-        '';
-        update_flake = ''
-          nix flake update --flake $FLAKE_DIR
         '';
       };
     };
@@ -267,7 +262,6 @@
         # Output template
         -o "%(title)s.%(ext)s"
         # Filesystem options
-        --cookies-from-browser vivaldi+kwallet6
         --mtime
         --restrict-filenames
         # Subtitle options
