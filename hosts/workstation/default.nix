@@ -6,8 +6,7 @@ in
   imports =
     map (p: rootDir + p) [
       /secrets/agenix.nix
-      /home/desktop/hyprland.nix
-      /home/profiles/gui.nix
+      /home/profiles/gui_linux.nix
       /stylix
       /syncthing/workstation.nix
     ]
