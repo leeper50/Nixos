@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  systemType,
+  ...
+}:
 {
   home.packages =
     with pkgs;
@@ -49,10 +54,8 @@
       wireguard-tools
     ];
   programs = {
-    gcc.enable = true;
-    gitui = {
-      enable = true;
-    };
+    gcc.enable = systemType != "Standalone";
+    gitui.enable = true;
     helix = {
       languages = {
         language-server = {

@@ -27,6 +27,7 @@
     ++ lib.optionals pkgs.stdenv.isLinux [
       audacious
       audacious-plugins
+      blender
       bitwarden-cli
       bitwarden-desktop
       collabora-desktop
