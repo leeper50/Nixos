@@ -25,12 +25,19 @@ in
     ];
   };
   networking = {
+    defaultGateway6.interface = "ens18";
     hostName = "nas";
     interfaces.ens18 = {
       ipv4.addresses = [
         {
           address = "10.0.0.33";
           prefixLength = 8;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "2600:1702:58c1:9acd::33";
+          prefixLength = 64;
         }
       ];
     };
