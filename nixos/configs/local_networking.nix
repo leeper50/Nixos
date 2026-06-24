@@ -8,11 +8,17 @@
       enable = true;
     };
     nameservers = [
-      "10.0.0.40" # Scuffed Virtual IP
-      "10.0.1.1" # Swarm Virtual IP
+      # Scuffed Virtual IP
+      "10.0.0.40"
+      "2600:1702:58c1:9acd::40"
+
+      # Swarm Virtual IP
+      "10.0.1.1"
+      "2600:1702:58c1:9acd::1:1"
+
+      # Quad9
       "9.9.9.9"
-      "2600:1702:58c1:9acd:be24:11ff:fe47:b25d"
-      "2600:1702:58c1:9acd:be24:11ff:fe5b:23bd"
+      "2620:fe::fe"
     ];
     networkmanager.enable = true;
     nftables.enable = true;
