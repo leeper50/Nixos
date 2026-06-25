@@ -25,7 +25,15 @@ in
     {
       assertions = [
         {
-          assertion = !cfg.swarm.enable || cfg.swarm.manager || cfg.swarm.managerIP != null;
+          assertion = !(!cfg.swarm.enable && cfg.swarm.manager);
+          message = "local.docker.swarm.manager should not be true when not using swarm.";
+        }
+        {
+          assertion = !(!cfg.swarm.enable && cfg.swarm.managerIP != null);
+          message = "local.docker.swarm.managerIP should not be set when not using swarm.";
+        }
+        {
+          assertion = !(cfg.swarm.enable && !cfg.swarm.manager && cfg.swarm.managerIP == null);
           message = "local.docker.swarm.managerIP must be set when using swarm and swarm.manager is false.";
         }
       ];
@@ -131,7 +139,7 @@ in
           builtins.toJSON {
             networks.komodo = {
               attachable = true;
-              driver = "overlay";
+              driver = if cfg.swarm.enable then "overlay" else "bridge";
             };
             services = {
               core = {
@@ -213,8 +221,8 @@ in
         ];
         systemd.services.komodo-stack = {
           description = "Deploy Komodo stack";
-          after = [ "docker-swarm-init.service" ];
-          requires = [ "docker-swarm-init.service" ];
+          after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
+          requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
           wantedBy = [ "multi-user.target" ];
           script = ''
             ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
@@ -231,12 +239,20 @@ in
               --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
               '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass' \
               ${komodoStackFile} > "$TMPFILE"
-
-            ${pkgs.docker}/bin/docker stack deploy \
-              --compose-file "$TMPFILE" \
-              --detach \
-              komodo
-          '';
+          ''
+          + (
+            if cfg.swarm.enable then
+              ''
+                ${pkgs.docker}/bin/docker stack deploy \
+                --compose-file "$TMPFILE" \
+                --detach \
+                komodo
+              ''
+            else
+              ''
+                ${pkgs.docker}/bin/docker compose -f "$TMPFILE" up -d
+              ''
+          );
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
@@ -255,14 +271,11 @@ in
           builtins.toJSON {
             networks.agent_network = {
               attachable = true;
-              driver = "overlay";
+              driver = if cfg.swarm.enable then "overlay" else "bridge";
             };
             services = {
               agent = {
-                deploy = {
-                  mode = "global";
-                  placement.constraints = [ "node.platform.os == linux" ];
-                };
+                deploy.mode = "global";
                 image = "portainer/agent:2.39.1";
                 networks = [ "agent_network" ];
                 volumes = [
@@ -299,11 +312,10 @@ in
           9001 # Portainer agent
           9443 # Portainer HTTPS
         ];
-
         systemd.services.portainer-stack = {
           description = "Deploy Portainer stack";
-          after = [ "docker-swarm-init.service" ];
-          requires = [ "docker-swarm-init.service" ];
+          after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
+          requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
           wantedBy = [ "multi-user.target" ];
           script = ''
             LICENSE_FILE="/run/agenix/portainer_license.age"
@@ -319,12 +331,20 @@ in
               --arg key "$(cat "$LICENSE_FILE")" \
               '.services.portainer.command = "--license-key " + $key' \
               ${portainerStackFile} > "$TMPFILE"
-
-            ${pkgs.docker}/bin/docker stack deploy \
-              --compose-file "$TMPFILE" \
-              --detach \
-              portainer
-          '';
+          ''
+          + (
+            if cfg.swarm.enable then
+              ''
+                ${pkgs.docker}/bin/docker stack deploy \
+                --compose-file "$TMPFILE" \
+                --detach \
+                portainer
+              ''
+            else
+              ''
+                ${pkgs.docker}/bin/docker compose -f "$TMPFILE" up -d
+              ''
+          );
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
