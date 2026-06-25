@@ -11,9 +11,7 @@ in
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/blocky.nix
-      /nixos/services/docker
-      /nixos/services/docker/komodo.nix
-      /nixos/services/docker/swarm.nix
+      /nixos/services/docker.nix
       /nixos/services/keepalived.nix
       /nixos/services/power.nix
     ]

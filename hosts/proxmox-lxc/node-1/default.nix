@@ -1,5 +1,10 @@
 { ... }:
 {
+  local.docker = {
+    komodo.enable = true;
+    swarm.enable = true;
+    swarm.manager = true;
+  };
   networking = {
     defaultGateway6.interface = "eth0";
     hostName = "node-1";

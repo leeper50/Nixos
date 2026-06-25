@@ -1,5 +1,9 @@
 { ... }:
 {
+  local.docker = {
+    swarm.enable = true;
+    swarm.managerIP = "node-1.local";
+  };
   networking = {
     defaultGateway6.interface = "eth0";
     hostName = "node-3";

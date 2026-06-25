@@ -7,7 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
-      /nixos/services/docker
+      /nixos/services/docker.nix
     ]
     ++ [
       ./hardware-configuration.nix
