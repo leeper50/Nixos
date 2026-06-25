@@ -7,6 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/gui_nixos.nix
       /nixos
+      /nixos/configs/local_mounts.nix
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/power.nix

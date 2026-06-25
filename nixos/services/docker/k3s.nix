@@ -1,9 +1,9 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
-
 {
   boot.supportedFilesystems = [ "nfs" ];
   environment.systemPackages = with pkgs; [
@@ -43,9 +43,8 @@
     ];
   };
   services.k3s = {
+    clusterInit = (config.networking.hostName == "node-1");
     enable = true;
-    role = "server";
-    tokenFile = config.age.secrets."k3s_token.age".path;
     extraFlags = toString (
       [
         "--write-kubeconfig-mode \"0644\""
@@ -62,7 +61,8 @@
           ]
       )
     );
-    clusterInit = (config.networking.hostName == "node-1");
+    role = "server";
+    tokenFile = config.age.secrets."k3s_token.age".path;
   };
   services.openiscsi = {
     enable = true;
@@ -72,5 +72,5 @@
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
   ];
-  virtualisation.docker.logDriver = "json-file";
+  virtualisation.docker.logDriver = lib.mkForce "json-file";
 }

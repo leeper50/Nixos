@@ -7,18 +7,16 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
+      /nixos/services/docker
       /nixos/services/murmur.nix
     ]
     ++ [
       ./hardware-configuration.nix
     ];
-
   boot.tmp.cleanOnBoot = true;
-
   environment.systemPackages = with pkgs; [
     openssl
   ];
-
   networking = {
     firewall = {
       enable = true;
@@ -29,21 +27,12 @@ in
     };
     hostName = "racknerd";
   };
-
   services = {
     microsocks = {
       enable = true;
       ip = "100.92.216.84";
     };
   };
-
   system.stateVersion = "23.11";
-
-  virtualisation.docker = {
-    enable = true;
-    liveRestore = false;
-  };
-  virtualisation.oci-containers.backend = "docker";
-
   zramSwap.enable = false;
 }

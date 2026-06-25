@@ -7,6 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
+      /nixos/configs/local_mounts.nix
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/blocky.nix
@@ -26,5 +27,6 @@ in
     networkmanager.enable = lib.mkForce false;
   };
   proxmoxLXC.manageHostName = true;
+  systemd.network.wait-online.enable = false;
   users.users.root.initialPassword = "nixos";
 }

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  baseStackFile = pkgs.writeText "komodo-stack-base.json" (
+  komodoStackFile = pkgs.writeText "komodo-stack-base.json" (
     builtins.toJSON {
       networks.komodo = {
         attachable = true;
@@ -108,7 +108,7 @@ in
       ${pkgs.jq}/bin/jq \
         --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
         '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass' \
-        ${baseStackFile} > "$TMPFILE"
+        ${komodoStackFile} > "$TMPFILE"
 
       ${pkgs.docker}/bin/docker stack deploy \
         --compose-file "$TMPFILE" \

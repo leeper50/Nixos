@@ -5,7 +5,7 @@
   ...
 }:
 let
-  baseStackFile = pkgs.writeText "portainer-stack-base.json" (
+  portainerStackFile = pkgs.writeText "portainer-stack-base.json" (
     builtins.toJSON {
       networks.agent_network = {
         attachable = true;
@@ -72,7 +72,7 @@ in
       ${pkgs.jq}/bin/jq \
         --arg key "$(cat "$LICENSE_FILE")" \
         '.services.portainer.command = "--license-key " + $key' \
-        ${baseStackFile} > "$TMPFILE"
+        ${portainerStackFile} > "$TMPFILE"
 
       ${pkgs.docker}/bin/docker stack deploy \
         --compose-file "$TMPFILE" \

@@ -7,11 +7,11 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
+      /nixos/services/docker
     ]
     ++ [
       ./hardware-configuration.nix
     ];
-
   networking = {
     defaultGateway = {
       address = "65.75.202.1";
@@ -25,8 +25,8 @@ in
     nameservers = [
       "9.9.9.9"
       "149.112.112.112"
-      "2620:fe::fe"
       "2620:fe::9"
+      "2620:fe::fe"
     ];
     interfaces.ens3 = {
       ipv4.addresses = [
@@ -43,12 +43,5 @@ in
       ];
     };
   };
-
   system.stateVersion = "25.11";
-
-  virtualisation.docker = {
-    enable = true;
-    liveRestore = false;
-  };
-  virtualisation.oci-containers.backend = "docker";
 }
