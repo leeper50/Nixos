@@ -38,7 +38,7 @@
       minimize-to-application = true;
       persistent-apps = [
         {
-          app = "/Applications/Vivaldi.app";
+          app = "/Users/walter/Applications/Home Manager Apps/Firefox.app";
         }
         {
           app = "/Users/walter/Applications/Home Manager Apps/kitty.app";
@@ -74,6 +74,7 @@
       Clicking = true;
     };
   };
+  services.tailscale.enable = true;
   system.primaryUser = "walter";
   system.stateVersion = 6;
   users.users.walter.home = "/Users/walter";
