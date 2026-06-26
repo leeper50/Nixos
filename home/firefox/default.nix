@@ -88,7 +88,7 @@ in
       BackgroundAppUpdate = false;
 
       # Feature Disabling
-      DisableBuiltinPDFViewer = true;
+      DisableBuiltinPDFViewer = false;
       DisableFirefoxAccounts = true;
       DisableFirefoxScreenshots = true;
       DisableFirefoxStudies = true;
