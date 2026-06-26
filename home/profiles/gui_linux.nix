@@ -11,7 +11,7 @@
       helix
       kdePackages.ark
       kdePackages.dolphin
-      librewolf
+      firefox
       mpv
       qview
       thunderbird

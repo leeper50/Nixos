@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  firefoxPackage = if pkgs.stdenv.isLinux then pkgs.librewolf else pkgs.firefox-bin;
+  firefoxPackage = pkgs.firefox-bin; # if pkgs.stdenv.isLinux then pkgs.librewolf else pkgs.firefox-bin;
 in
 {
   stylix.targets.firefox = {
@@ -10,10 +10,7 @@ in
   programs.firefox = {
     enable = true;
     configPath =
-      if pkgs.stdenv.isLinux then
-        ".config/librewolf/librewolf"
-      else
-        "Library/Application Support/Firefox";
+      if pkgs.stdenv.isLinux then ".mozilla/firefox" else "Library/Application Support/Firefox";
     package = firefoxPackage;
     languagePacks = [ "en-US" ];
     profiles = {
@@ -112,6 +109,12 @@ in
       BlockAboutSupport = false;
 
       # Privacy & Security
+      AIControls = {
+        Default = {
+          Locked = true;
+          Value = "blocked";
+        };
+      };
       AutofillAddressEnabled = false;
       AutofillCreditCardEnabled = false;
       EnableTrackingProtection = {
