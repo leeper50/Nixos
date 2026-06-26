@@ -39,6 +39,7 @@
       gimp
       handbrake
       haruna
+      imgbrd-grabber
       qt5.qttools
       qview
       (vivaldi.override {

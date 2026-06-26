@@ -37,7 +37,6 @@ in
   users.users.walter = {
     packages = with pkgs; [
       asusctl
-      imgbrd-grabber
       uv
     ];
   };
