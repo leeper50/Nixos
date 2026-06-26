@@ -128,7 +128,6 @@ in
       services.syncthing.settings.folders."Retroarch" = {
         devices = [
           "laptop"
-          "macbook"
           "workstation"
         ];
         id = "ossai-a4yhn";
