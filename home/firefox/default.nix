@@ -67,6 +67,7 @@ in
           force = true;
         };
         settings = {
+          "browser.aboutConfig.showWarning" = false;
           "browser.download.viewableInternally.typeWasRegistered.jxl" = true;
           "browser.startup.homepage" = "https://www.dellhplaptop.xyz";
           "browser.urlbar.trimURLs" = false;
@@ -75,10 +76,9 @@ in
           "extensions.update.enable" = false;
           "general.autoScroll" = true;
           "image.jxl.enabled" = true;
-          "network.proxy.no_proxies_on" = "local,dellhplaptop.xyz,buncha.men,10.0.0.0/8";
-          "network.proxy.socks_port" = 1080;
-          "network.proxy.socks" = "10.0.0.31";
-          "network.proxy.type" = 1;
+          "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
+          "network.proxy.no_proxies_on" = "localhost,dellhplaptop.xyz,buncha.men,10.0.0.0/8";
+          "network.proxy.type" = 2;
         };
       };
     };
@@ -133,7 +133,7 @@ in
         Enabled = false;
         Locked = true;
       };
-      HttpsOnlyMode = "force_enabled";
+      HttpsOnlyMode = "enabled";
       Permissions = {
         Autoplay = {
           BlockNewRequests = true;

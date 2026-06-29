@@ -12,6 +12,7 @@
       kdePackages.ark
       kdePackages.dolphin
       firefox
+      gimp
       mpv
       qview
       thunderbird
