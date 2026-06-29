@@ -8,10 +8,18 @@ in
       /home/profiles/cli_nixos.nix
       /nixos
       /nixos/services/docker.nix
+      /nixos/services/i2pd.nix
     ]
     ++ [
       ./hardware-configuration.nix
     ];
+  local.i2pd = {
+    bandwidth = 62500;
+    enableIPv6 = true;
+    port = 51175;
+    privateAddress = "100.121.87.44";
+    publicAddress = "65.75.202.6";
+  };
   networking = {
     defaultGateway = {
       address = "65.75.202.1";

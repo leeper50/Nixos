@@ -8,6 +8,7 @@ in
       /home/profiles/cli_nixos.nix
       /nixos
       /nixos/services/docker.nix
+      /nixos/services/i2pd.nix
       /nixos/services/murmur.nix
     ]
     ++ [
@@ -17,6 +18,13 @@ in
   environment.systemPackages = with pkgs; [
     openssl
   ];
+  local.i2pd = {
+    bandwidth = 62500;
+    enableIPv6 = false;
+    port = 62271;
+    privateAddress = "100.92.216.84";
+    publicAddress = "107.174.237.4";
+  };
   networking = {
     firewall = {
       enable = true;
