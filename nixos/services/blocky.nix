@@ -15,8 +15,10 @@
               "https://raw.githubusercontent.com/XpPlayz/paramount-plus-filterlists/refs/heads/main/allowlist.txt"
             ];
             farRight = [
-              "x.com"
-              "twitter.com"
+              "|
+                x.com
+                twitter.com
+              "
             ];
           };
           denylists = {
