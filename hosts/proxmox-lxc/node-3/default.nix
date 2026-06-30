@@ -1,11 +1,17 @@
 { ... }:
+let
+  rootDir = ../..;
+in
 {
+  imports = map (p: rootDir + p) [
+    /nixos/services/blocky.nix
+    /nixos/services/keepalived.nix
+  ];
   local.docker = {
     swarm.enable = true;
     swarm.managerIP = "node-1.local";
   };
   networking = {
-    defaultGateway6.interface = "eth0";
     hostName = "node-3";
     interfaces.eth0 = {
       ipv4.addresses = [
