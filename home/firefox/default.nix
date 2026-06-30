@@ -69,6 +69,7 @@ in
         settings = {
           "browser.aboutConfig.showWarning" = false;
           "browser.download.viewableInternally.typeWasRegistered.jxl" = true;
+          "browser.fixup.domainsuffixwhitelist.i2p" = true;
           "browser.startup.homepage" = "https://www.dellhplaptop.xyz";
           "browser.urlbar.trimURLs" = false;
           "extensions.autoDisableScopes" = 0;
