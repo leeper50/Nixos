@@ -27,6 +27,13 @@
     hyprpaper
     kdePackages.ark
     kdePackages.dolphin
+    kdePackages.kio
+    kdePackages.kio-extras
+    kdePackages.kdegraphics-thumbnailers
+    kdePackages.ffmpegthumbs
+    kdePackages.kimageformats
+    kdePackages.qtimageformats
+    kdePackages.qtsvg
     mpvpaper
     qview
   ];
