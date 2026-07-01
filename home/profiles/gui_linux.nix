@@ -12,9 +12,9 @@
       kdePackages.ark
       kdePackages.dolphin
       firefox
+      qview
       gimp
       mpv
-      qview
       thunderbird
       vscode
       zathura
