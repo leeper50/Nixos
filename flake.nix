@@ -60,6 +60,7 @@
           config.allowUnfree = true;
           config.permittedInsecurePackages = [
             "electron-39.8.10"
+            "pnpm-10.29.2"
           ];
         };
 
