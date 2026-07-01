@@ -111,6 +111,19 @@
           ];
         };
 
+        komodo = mkHost {
+          deployment = {
+            targetHost = "komodo";
+            tags = [
+              "local"
+            ];
+          };
+          modules = [
+            ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/komodo
+          ];
+        };
+
         laptop = mkHost {
           deployment = {
             targetHost = "laptop";
@@ -189,6 +202,7 @@
 
       nixosConfigurations = {
         # gk55 = hosts.gk55.nixos; # gk55 currently running proxmox
+        komodo = hosts.komodo.nixos;
         laptop = hosts.laptop.nixos;
         nas = hosts.nas.nixos;
         racknerd = hosts.racknerd.nixos;
@@ -207,6 +221,7 @@
           };
         };
         # gk55 = hosts.gk55.colmena; # gk55 currently running proxmox
+        komodo = hosts.komodo.colmena;
         laptop = hosts.laptop.colmena;
         nas = hosts.nas.colmena;
         "node-1" = hosts."node-1".colmena;

@@ -1,5 +1,6 @@
 let
   gk55 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGHhitPnvUzImWRb80A31LvBoQru3BXUMb+lgDUKkE0 root@nixos";
+  komodo = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPieb/L9L+lfCvkA2nXaRZmvwbByskxXPLMV8PI4hmxG root@komodo";
   macbook = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAmnjjOxA1m5W7WqeD26WTliaDJYcsUr8vN/yfk8/3x4";
   nas = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISsnpyceiNgLPCVpZiCuZ06a9Zpl3kUKmCCqRI6RFn2 root@nas";
   node-1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMOWw3itt6X+guXpUY1m5M2inL0Zs+Fs0nTrUOqDwZ/c root@node-1";
@@ -16,6 +17,7 @@ let
   ];
   all_keys = [
     gk55
+    komodo
     macbook
     nas
     racknerd
@@ -35,9 +37,13 @@ in
   "komodo_admin_password.age" = {
     publicKeys = [
       node-1
+      komodo
       personal
     ];
-    hosts = [ "node-1" ];
+    hosts = [
+      "komodo"
+      "node-1"
+    ];
   };
   "mumble_server_password.age" = {
     publicKeys = [
