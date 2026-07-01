@@ -134,6 +134,10 @@
           ];
         };
 
+        "node-1" = mkSwarmHost "node-1";
+        "node-2" = mkSwarmHost "node-2";
+        "node-3" = mkSwarmHost "node-3";
+
         racknerd = mkHost {
           deployment = {
             targetHost = "racknerd";
@@ -153,10 +157,6 @@
             ./hosts/servercheap
           ];
         };
-
-        "node-1" = mkSwarmHost "node-1";
-        "node-2" = mkSwarmHost "node-2";
-        "node-3" = mkSwarmHost "node-3";
       };
     in
     {
@@ -209,11 +209,11 @@
         # gk55 = hosts.gk55.colmena; # gk55 currently running proxmox
         laptop = hosts.laptop.colmena;
         nas = hosts.nas.colmena;
-        racknerd = hosts.racknerd.colmena;
-        servercheap = hosts.servercheap.colmena;
         "node-1" = hosts."node-1".colmena;
         "node-2" = hosts."node-2".colmena;
         "node-3" = hosts."node-3".colmena;
+        racknerd = hosts.racknerd.colmena;
+        servercheap = hosts.servercheap.colmena;
       };
     };
 }

@@ -1,6 +1,6 @@
 { ... }:
 let
-  rootDir = ../..;
+  rootDir = ../../..;
 in
 {
   imports = map (p: rootDir + p) [
