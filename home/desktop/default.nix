@@ -22,6 +22,7 @@
       libjxl
       libwebp
       oxipng
+      signal-desktop
       sqlitebrowser
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
