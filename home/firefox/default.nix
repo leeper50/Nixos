@@ -24,6 +24,7 @@ in
           force = true;
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
+            multi-account-containers
             decentraleyes
             indie-wiki-buddy
             istilldontcareaboutcookies
@@ -65,6 +66,24 @@ in
             };
           };
           force = true;
+        };
+        containersForce = true;
+        containers = {
+          Personal = {
+            id = 1;
+            color = "blue";
+            icon = "fingerprint";
+          };
+          Work = {
+            id = 2;
+            color = "orange";
+            icon = "briefcase";
+          };
+          Shopping = {
+            id = 3;
+            color = "green";
+            icon = "cart";
+          };
         };
         settings = {
           "browser.aboutConfig.showWarning" = false;
