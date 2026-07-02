@@ -31,27 +31,13 @@ in
         enable = true;
         guiAddress = "0.0.0.0:8384";
         settings.devices = {
-          "laptop" = {
-            id = "OO2HOLH-QXRS2H2-TMIJOF6-IJX7DHR-CX44KSR-AVQBAG5-5SRE73T-QGHATQQ";
-          };
-          "nas" = {
-            id = "PGRFMYY-55TDV4M-5PZK35F-OOYCALV-JM5MBXK-CQZ4JEX-2VZLFBW-AFLJPAN";
-          };
-          "macbook" = {
-            id = "MGESDGN-2WDZUXZ-2KVQYEH-X6P7F7C-5HQGBNZ-7LYP4AC-SSSCA5I-JCOTLAX";
-          };
-          "moto-g" = {
-            id = "5NSRNJQ-XGLQYCX-M3ZKVYC-KDP3MMU-JJQWBBC-CSKWW6Y-FEUAHDW-YSZFQAA";
-          };
-          "workstation" = {
-            id = "T5KTZL6-BUZN36J-DREEJ32-LYWWLT2-FYAJBMI-PYW7JG5-NB5RFZB-ICGVMQ5";
-          };
-          "phone" = {
-            id = "LBLFNCY-MRGPFRW-XOIMRGV-T4Q57PM-CEA3YTC-P5YIPGG-3BBOH45-XLADQAL";
-          };
-          "tablet" = {
-            id = "XA573YH-IVZCREZ-ED4IXXO-XVVUSU2-XBXYE7P-KSREPLX-2X4AKJF-2YIQNAT";
-          };
+          "laptop".id = "OO2HOLH-QXRS2H2-TMIJOF6-IJX7DHR-CX44KSR-AVQBAG5-5SRE73T-QGHATQQ";
+          "macbook".id = "MGESDGN-2WDZUXZ-2KVQYEH-X6P7F7C-5HQGBNZ-7LYP4AC-SSSCA5I-JCOTLAX";
+          "moto-g".id = "5NSRNJQ-XGLQYCX-M3ZKVYC-KDP3MMU-JJQWBBC-CSKWW6Y-FEUAHDW-YSZFQAA";
+          "nas".id = "PGRFMYY-55TDV4M-5PZK35F-OOYCALV-JM5MBXK-CQZ4JEX-2VZLFBW-AFLJPAN";
+          "phone".id = "LBLFNCY-MRGPFRW-XOIMRGV-T4Q57PM-CEA3YTC-P5YIPGG-3BBOH45-XLADQAL";
+          "tablet".id = "XA573YH-IVZCREZ-ED4IXXO-XVVUSU2-XBXYE7P-KSREPLX-2X4AKJF-2YIQNAT";
+          "workstation".id = "T5KTZL6-BUZN36J-DREEJ32-LYWWLT2-FYAJBMI-PYW7JG5-NB5RFZB-ICGVMQ5";
         };
       };
     }
@@ -122,17 +108,6 @@ in
         id = "2sfej-bdebv";
         path = "${home}/Sync/Phone";
         type = cfg.folders."Phone".type;
-      };
-    })
-    (lib.mkIf (cfg.folders."Retroarch".enable or false) {
-      services.syncthing.settings.folders."Retroarch" = {
-        devices = [
-          "laptop"
-          "workstation"
-        ];
-        id = "ossai-a4yhn";
-        path = "${home}/Sync/Retroarch";
-        type = cfg.folders."Retroarch".type;
       };
     })
     (lib.mkIf (cfg.folders."Tablet".enable or false) {
