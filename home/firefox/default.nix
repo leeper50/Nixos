@@ -153,7 +153,7 @@ in
         Enabled = false;
         Locked = true;
       };
-      HttpsOnlyMode = "enabled";
+      HttpsOnlyMode = "allowed";
       Permissions = {
         Autoplay = {
           BlockNewRequests = true;
