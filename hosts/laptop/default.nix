@@ -28,6 +28,8 @@ in
     exclude = [
       "/home/walter/.cache"
       "/home/walter/.local/share/Steam"
+      "/home/walter/.local/share/Trash"
+      "/home/walter/Nas"
       "/home/walter/Sync/Retroarch"
     ];
     paths = [

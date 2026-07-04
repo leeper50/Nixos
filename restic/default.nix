@@ -34,10 +34,6 @@ in
               default = [ ];
               type = lib.types.listOf lib.types.str;
             };
-            location = lib.mkOption {
-              default = "Systems/${resolvedHostName}";
-              type = lib.types.str;
-            };
             paths = lib.mkOption {
               default = [ ];
               type = lib.types.listOf lib.types.str;
@@ -80,13 +76,14 @@ in
               };
             }
             // lib.optionalAttrs isNixos { user = backup.user; };
+            location = resolvedHostName + "/" + name;
           in
           {
             "${name}-nas" = common // {
-              repository = "sftp:walter@10.0.0.33:/mnt/data/SambaHomes/walter/Backup/${backup.location}";
+              repository = "sftp:walter@nas.local:/mnt/data/SambaHomes/walter/Backup/${location}";
             };
             "${name}-hetzner" = common // {
-              repository = "sftp:hetzner:/home/Backup/${backup.location}";
+              repository = "sftp:hetzner:/home/Backup/${location}";
             };
           }
         ) cfg.backups;
