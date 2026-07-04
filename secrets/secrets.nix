@@ -60,6 +60,14 @@ in
       "node-3"
     ];
   };
-  "user_walter_clear.age".publicKeys = all_keys;
-  "user_walter_hash.age".publicKeys = all_keys;
+  "user_walter_clear.age" = {
+    group = "walter";
+    owner = "walter";
+    publicKeys = all_keys;
+  };
+  "user_walter_hash.age" = {
+    group = "walter";
+    owner = "walter";
+    publicKeys = all_keys;
+  };
 }

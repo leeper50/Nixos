@@ -11,17 +11,28 @@ in
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/power.nix
+      /restic
       /syncthing/laptop.nix
     ]
     ++ [
       ./gpu.nix
-      ./waifu2x.nix
       ./hardware-configuration.nix
+      ./waifu2x.nix
       nur.modules.nixos.default
     ];
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
+  };
+  local.restic.backups.home = {
+    exclude = [
+      "/home/walter/.cache"
+      "/home/walter/.local/share/Steam"
+      "/home/walter/Sync/Retroarch"
+    ];
+    paths = [
+      "/home/walter"
+    ];
   };
   networking = {
     hostName = "laptop";

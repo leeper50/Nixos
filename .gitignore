@@ -15,6 +15,7 @@
 !secrets/
 !stylix/
 !syncthing/
+!restic/
 
 # Files in folders
 !darwin/**
@@ -24,3 +25,4 @@
 !secrets/**
 !stylix/**
 !syncthing/**
+!restic/**
