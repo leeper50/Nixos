@@ -7,7 +7,7 @@
 {
   imports = [
     agenix.darwinModules.default
-    ../secrets/agenix.nix
+    ../secrets
   ];
 
   nixpkgs.overlays = [

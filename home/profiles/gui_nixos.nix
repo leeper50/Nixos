@@ -16,7 +16,7 @@
         useUserPackages = true;
         users.walter.imports = [
           agenix.homeManagerModules.default
-          ../../secrets/agenix.nix
+          ../../secrets
           ./gui_linux.nix
         ];
       };

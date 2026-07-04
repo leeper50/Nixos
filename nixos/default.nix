@@ -5,7 +5,7 @@
     home-manager.nixosModules.home-manager
 
     # Configs
-    ../secrets/agenix.nix
+    ../secrets
     ./configs/cleanup.nix
     ./configs/locales.nix
     ./configs/packages.nix

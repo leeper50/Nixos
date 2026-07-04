@@ -25,9 +25,11 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.users.walter.imports = [
           agenix.homeManagerModules.default
-          ../../secrets/agenix.nix
-          ../../home/profiles/gui.nix
-          ../../syncthing/macbook.nix
+        ]
+        ++ map (p: rootDir + p) [
+          /home/profiles/gui.nix
+          /secrets
+          /syncthing/macbook.nix
         ];
         home-manager.useUserPackages = true;
       }
