@@ -25,6 +25,8 @@ in
         "/home/walter/.cache"
         "/home/walter/.local/share/Steam"
         "/home/walter/.local/share/Trash"
+        "/home/walter/.steam"
+        "/home/walter/Games"
         "/home/walter/Nas"
       ];
       paths = [
@@ -40,7 +42,7 @@ in
         "/home/walter/.local/share/Steam/steamapps/common/Rimworld/Mods"
         "/home/walter/.local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
         "/home/walter/.local/share/Steam/steamapps/common/Victoria 3/game/dlc"
-        "/home/walter/.local/share/Steam/steamapps/workshop/529340/2883019620"
+        "/home/walter/.local/share/Steam/steamapps/workshop/content/529340/2883019620"
       ];
     };
   };

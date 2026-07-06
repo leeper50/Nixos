@@ -71,8 +71,7 @@ in
                 "--keep-monthly 6"
               ];
               timerConfig = {
-                OnCalendar = "00:05";
-                RandomizedDelaySec = "5h";
+                OnCalendar = "*-*-* 2/6:00:00";
               };
             }
             // lib.optionalAttrs isNixos { user = backup.user; };
