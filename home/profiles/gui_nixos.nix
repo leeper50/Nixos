@@ -30,6 +30,8 @@
     kdePackages.kio
     kdePackages.kio-extras
     kdePackages.kdegraphics-thumbnailers
+    kdePackages.kwallet
+    kdePackages.kwallet-pam
     kdePackages.ffmpegthumbs
     kdePackages.kimageformats
     kdePackages.qtimageformats
