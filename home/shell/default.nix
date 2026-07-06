@@ -21,7 +21,7 @@
       enable = true;
       shellInit = ''
         set fish_greeting
-        set -gx EDITOR hx
+        set -gx EDITOR helix
         set -gx TERM xterm-256color
         set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
         set -gx MANROFFOPT -c
