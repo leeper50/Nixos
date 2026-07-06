@@ -7,17 +7,17 @@ let
   nodes = {
     "node-1" = {
       ipv4Addr = "10.0.0.21";
-      ipv6Addr = "2600:1702:58c1:9acd::21";
+      ipv6Addr = "2600:1702:58c1:9acf::21";
       priority = 100;
     };
     "node-2" = {
       ipv4Addr = "10.0.0.22";
-      ipv6Addr = "2600:1702:58c1:9acd::22";
+      ipv6Addr = "2600:1702:58c1:9acf::22";
       priority = 90;
     };
     "node-3" = {
       ipv4Addr = "10.0.0.23";
-      ipv6Addr = "2600:1702:58c1:9acd::23";
+      ipv6Addr = "2600:1702:58c1:9acf::23";
       priority = 80;
     };
   };
@@ -50,7 +50,7 @@ in
       unicastSrcIp = thisNode.ipv6Addr;
       unicastPeers = peeripv6Addrs;
       virtualIps = [
-        { addr = "2600:1702:58c1:9acd::1:1/64"; }
+        { addr = "2600:1702:58c1:9acf::1:1/64"; }
       ];
       virtualRouterId = 52;
     };

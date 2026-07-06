@@ -36,7 +36,7 @@ in
       ];
       ipv6.addresses = [
         {
-          address = "2600:1702:58c1:9acd::33";
+          address = "2600:1702:58c1:9acf::33";
           prefixLength = 64;
         }
       ];
