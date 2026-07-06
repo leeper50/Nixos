@@ -61,13 +61,13 @@ in
     ];
   };
   "user_walter_clear.age" = {
-    group = "walter";
-    owner = "walter";
+    group = "100";
+    owner = "1000";
     publicKeys = all_keys;
   };
   "user_walter_hash.age" = {
-    group = "walter";
-    owner = "walter";
+    group = "100";
+    owner = "1000";
     publicKeys = all_keys;
   };
 }

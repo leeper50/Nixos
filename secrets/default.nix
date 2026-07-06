@@ -16,7 +16,7 @@ let
       config.networking.hostName;
   isSystemModule = systemType != "Standalone" && osConfig == null;
   secrets = import ./secrets.nix;
-  presentSecrets = lib.filterAttrs (name: _: builtins.pathExists (./${name})) secrets;
+  presentSecrets = lib.filterAttrs (name: _: builtins.pathExists ./${name}) secrets;
   hostSecrets = lib.filterAttrs (
     name: attrs:
     resolvedHostName == null || !(attrs ? hosts) || builtins.elem resolvedHostName attrs.hosts
