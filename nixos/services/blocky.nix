@@ -68,6 +68,13 @@
           prefetchExpires = "24h";
           prefetchThreshold = 2;
         };
+        customDNS = {
+          mapping = {
+            "buncha.men" = "10.0.1.1,2600:1702:58c1:9acf::1:1";
+            "dellhplaptop.xyz" = "10.0.0.60,2600:1702:58c1:9acf::60";
+            "tplinkwifi.net" = "10.0.0.1,2600:1702:58c1:9acf:f2a7:31ff:fe94:abac";
+          };
+        };
         ports = {
           dns = 53;
         };
