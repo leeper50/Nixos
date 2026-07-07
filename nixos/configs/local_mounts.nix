@@ -6,10 +6,16 @@
     fsType = "nfs";
     options = [
       "_netdev"
+      "bg"
       "hard"
       "nfsvers=4.2"
+      "noauto"
       "nofail"
+      "retrans=2"
       "rw"
+      "timeo=600"
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
     ];
   };
   fileSystems."/mnt/media" = {
@@ -17,10 +23,16 @@
     fsType = "nfs";
     options = [
       "_netdev"
+      "bg"
       "hard"
       "nfsvers=4.2"
+      "noauto"
       "nofail"
+      "retrans=2"
       "rw"
+      "timeo=600"
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
     ];
   };
   environment.systemPackages = with pkgs; [ nfs-utils ];
