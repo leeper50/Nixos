@@ -83,6 +83,7 @@ in
           services.syncthing.settings.folders."FreeTube" = {
             devices = [
               "laptop"
+              "nas"
               "workstation"
             ];
             id = "kembu-qwjnf";

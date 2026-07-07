@@ -6,6 +6,10 @@
 
   local.syncthing = {
     folders = {
+      "FreeTube" = {
+        enable = true;
+        type = "receiveonly";
+      };
       "GlobalShare" = {
         enable = true;
         type = "receiveonly";
