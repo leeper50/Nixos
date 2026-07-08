@@ -42,6 +42,12 @@ in
     ### Universal configuration
     {
       networking.nftables.enable = lib.mkForce false;
+      # Allow containers to reach 443 from host's private ip
+      networking.firewall.extraCommands = ''
+        iptables  -A nixos-fw -p tcp -s 172.30.0.0/16            --dport 443 -j nixos-fw-accept
+        ip6tables -A nixos-fw -p tcp -s fd06:6a55:3bd2:ed3d::/64 --dport 443 -j nixos-fw-accept
+        ip6tables -A nixos-fw -p tcp -s fda3:db28:76bb:e314::/64 --dport 443 -j nixos-fw-accept
+      '';
       virtualisation.docker = {
         enable = true;
         daemon.settings = {
@@ -54,6 +60,12 @@ in
               base = "fd06:6a55:3bd2:ed3d::/64";
               size = 120;
             }
+          ];
+          dns = [
+            "10.0.0.40"
+            "2600:1702:58c1:9acf::40"
+            "10.0.1.1"
+            "2600:1702:58c1:9acf::1:1"
           ];
           experimental = true;
           fixed-cidr-v6 = "fda3:db28:76bb:e314::/64";
