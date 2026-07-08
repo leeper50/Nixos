@@ -12,12 +12,20 @@
       "10.0.0.22" = [ "node-2.local" ];
       "10.0.0.23" = [ "node-3.local" ];
       "10.0.0.33" = [ "nas.local" ];
-      "10.0.0.60" = [ "komodo.local" ];
+      "10.0.0.60" = [
+        "komodo.local"
+        "dellhplaptop.xyz"
+      ];
+      "10.0.1.1" = [ "buncha.men" ];
       "2600:1702:58c1:9acf::21" = [ "node-1.local" ];
       "2600:1702:58c1:9acf::22" = [ "node-2.local" ];
       "2600:1702:58c1:9acf::23" = [ "node-3.local" ];
       "2600:1702:58c1:9acf::33" = [ "nas.local" ];
-      "2600:1702:58c1:9acf::60" = [ "komodo.local" ];
+      "2600:1702:58c1:9acf::60" = [
+        "komodo.local"
+        "dellhplaptop.xyz"
+      ];
+      "2600:1702:58c1:9acf::1:1" = [ "buncha.men" ];
     };
     nameservers = [
       # Scuffed Virtual IP
