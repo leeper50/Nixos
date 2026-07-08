@@ -78,11 +78,16 @@ in
             location = resolvedHostName + "/" + name;
           in
           {
-            "${name}-nas" = common // {
-              repository = "sftp:walter@nas.local:/mnt/data/SambaHomes/walter/Backup/${location}";
-            };
+            "${name}-nas" =
+              common
+              // lib.optionalAttrs isNixos {
+                repository = "sftp://${backup.user}@nas.local//mnt/data/SambaHomes/walter/Backup/${location}";
+              }
+              // lib.optionalAttrs (!isNixos) {
+                repository = "sftp://walter@nas.local//mnt/data/SambaHomes/walter/Backup/${location}";
+              };
             "${name}-hetzner" = common // {
-              repository = "sftp:hetzner:/home/Backup/${location}";
+              repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";
             };
           }
         ) cfg.backups;

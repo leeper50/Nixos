@@ -12,9 +12,20 @@ in
       /nixos/services/avahi.nix
       /nixos/services/docker.nix
       /nixos/services/power.nix
+      /restic
     ]
     ++ [ disko.nixosModules.disko ];
   local.docker.komodo.enable = true;
+  local.restic.backups.stacks = {
+    exclude = [
+      "cache"
+      "model-cache"
+    ];
+    paths = [
+      "/etc/komodo/stacks"
+    ];
+    user = "root";
+  };
   networking = {
     defaultGateway6.interface = lib.mkForce "ens18";
     hostName = "komodo";
