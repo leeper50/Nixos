@@ -37,6 +37,7 @@
     kdePackages.qtimageformats
     kdePackages.qtsvg
     mpvpaper
+    rimsort
     qview
   ];
   programs = {
