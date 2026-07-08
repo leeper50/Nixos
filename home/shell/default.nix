@@ -35,7 +35,7 @@
       shellAliases = {
         cat = "bat -pp";
         cz = "chezmoi";
-        edit_nix = "hx ~/Nix";
+        edit_nix = "cd ~/Nix && hx ~/Nix";
         helix = "hx";
         hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
         l = "eza";
