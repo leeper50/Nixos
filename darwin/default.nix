@@ -21,16 +21,26 @@
     })
   ];
 
-  nix.package = pkgs.lixPackageSets.stable.lix;
   environment.shells = [
     pkgs.fish
   ];
-  nix.gc.automatic = true;
-  nix.gc.options = "--delete-older-than 7d";
-  nix.settings.auto-optimise-store = true;
-  nix.settings.experimental-features = "nix-command flakes";
+
+  nix = {
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 7d";
+    };
+    nix.settings = {
+      auto-optimise-store = true;
+      experimental-features = "nix-command flakes";
+    };
+    package = pkgs.lixPackageSets.stable.lix;
+  };
   nixpkgs.hostPlatform = "aarch64-darwin";
+
   programs.fish.enable = true;
+  services.tailscale.enable = true;
+
   system.configurationRevision = self.rev or self.dirtyRev or null;
   system.defaults = {
     dock = {
@@ -74,9 +84,11 @@
       Clicking = true;
     };
   };
-  services.tailscale.enable = true;
   system.primaryUser = "walter";
   system.stateVersion = 6;
-  users.users.walter.home = "/Users/walter";
-  users.users.walter.shell = pkgs.fish;
+
+  users.users.walter = {
+    home = "/Users/walter";
+    shell = pkgs.fish;
+  };
 }

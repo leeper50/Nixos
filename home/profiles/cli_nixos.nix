@@ -9,7 +9,7 @@
         users.walter.imports = [
           agenix.homeManagerModules.default
           ../../secrets
-          ./cli.nix
+          ../default.nix
         ];
       };
     }

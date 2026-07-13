@@ -61,9 +61,7 @@
       remotePlay.openFirewall = true;
     };
   };
-  security = {
-    polkit.enable = true;
-  };
+  security.polkit.enable = true;
   services = {
     displayManager.sddm.enable = true;
     printing.enable = true;

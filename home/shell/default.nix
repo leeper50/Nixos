@@ -1,9 +1,8 @@
 { lib, pkgs, ... }:
+let
+  editor = if pkgs.stdenv.isLinux then "hx" else "helix";
+in
 {
-  home.packages = with pkgs; [
-    file
-    pistol
-  ];
   programs = {
     bat.enable = true;
     eza = {
@@ -19,33 +18,6 @@
     fd.enable = true;
     fish = {
       enable = true;
-      shellInit = ''
-        set fish_greeting
-        set -gx EDITOR hx
-        set -gx TERM xterm-256color
-        set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
-        set -gx MANROFFOPT -c
-        set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
-        fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
-        set -gx FLAKE_DIR $HOME/Nix
-        if type -q kubectl
-          alias k kubectl
-        end
-      '';
-      shellAliases = {
-        cat = "bat -pp";
-        cz = "chezmoi";
-        edit_nix = "cd ~/Nix && hx ~/Nix";
-        helix = "hx";
-        hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
-        l = "eza";
-        ncdu = "rclone ncdu";
-        rcat = "command cat";
-        rs = "sudo systemctl";
-        s = "systemctl";
-        update_flake = "nix flake update --flake $FLAKE_DIR";
-        us = "systemctl --user";
-      };
       functions = {
         build = ''
           set original_dir (pwd)
@@ -77,34 +49,6 @@
             return 1
           end
         '';
-        dl = ''
-          if type -q yt-dlp
-            argparse a i t p -- $argv
-            or return 1
-            set args
-            if set -q _flag_a
-              set -a args -x --audio-format opus --audio-quality 0
-            end
-            if set -q _flag_i
-              set -a args --ignore-config
-            end
-            if set -q _flag_t
-              set -a args -o "%(title)s.%(ext)s"
-            end
-            if set -q _flag_p
-              set -a args --proxy socks5://komodo:1080
-            end
-            if test -z "$argv[1]"
-              echo "Missing URL"
-              return 1
-            end
-            set -a args $argv[1]
-            yt-dlp $args
-          else
-            echo "yt-dlp not found"
-            return 1
-          end
-        '';
         lf = ''
           set tmp_file "$HOME/.cache/lf-lastdir"
           command lf --last-dir-path="$tmp_file" $argv
@@ -113,19 +57,6 @@
             if test -d "$last_dir" -a "$last_dir" != (pwd)
               cd $last_dir
             end
-          end
-        '';
-        sound = ''
-          if test (uname -s) = Linux
-            switch $argv[1]
-              case 44100 48000 96000 192000 384000
-                pw-metadata -n settings 0 clock.force-rate $argv[1]
-              case '*'
-                echo "Error: '$argv[1]' is not a valid sample rate"
-            end
-          else
-            echo "Unsupported OS"
-            return 1
           end
         '';
         update = ''
@@ -150,6 +81,36 @@
           end
         '';
       };
+      shellAliases = lib.mkMerge [
+        {
+          cat = "bat -pp";
+          cz = "chezmoi";
+          edit_nix = "cd ~/Nix && hx ~/Nix";
+          hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
+          l = "eza";
+          ncdu = "rclone ncdu";
+          rcat = "command cat";
+          update_flake = "nix flake update --flake $FLAKE_DIR";
+        }
+        (lib.mkIf pkgs.stdenv.isLinux {
+          rs = "sudo systemctl";
+          s = "systemctl";
+          us = "systemctl --user";
+        })
+      ];
+      shellInit = ''
+        set fish_greeting
+        set -gx EDITOR ${editor}
+        set -gx TERM xterm-256color
+        set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+        set -gx MANROFFOPT -c
+        set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
+        fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
+        set -gx FLAKE_DIR $HOME/Nix
+        if type -q kubectl
+          alias k kubectl
+        end
+      '';
     };
     fzf = {
       enable = true;
@@ -221,30 +182,7 @@
     htop.enable = true;
     lf = {
       enable = true;
-      previewer.source = pkgs.writeShellScript "pv.sh" ''
-        #!/bin/sh
-        file="$1"
-        w="$2"
-        h="$3"
-        x="$4"
-        y="$5"
-        draw() {
-          kitten icat --stdin no --transfer-mode memory --place "''${w}x''${h}@''${x}x''${y}" "$1" </dev/null >/dev/tty
-          exit 1
-        }
-        case "$(file -Lb --mime-type "$file")" in 
-          image/*)
-            draw "$file"
-            ;;
-        esac
-        pistol "$file"
-      '';
-      settings = {
-        cleaner = "${pkgs.writeShellScript "lf-cleaner.sh" ''
-          kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
-        ''}";
-        icons = true;
-      };
+      settings.icons = true;
     };
     ripgrep.enable = true;
     tealdeer = {
@@ -256,33 +194,6 @@
         };
       };
     };
-    yt-dlp = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
-      extraConfig = ''
-        # Output template
-        -o "%(title)s.%(ext)s"
-        # Filesystem options
-        --mtime
-        --restrict-filenames
-        # Subtitle options
-        --write-auto-subs
-        --write-subs
-        # Postprocessing options
-        --compat-options no-keep-subs
-        --embed-chapters
-        --embed-info-json
-        --embed-metadata
-        --embed-subs
-        --embed-thumbnail
-        --xattrs
-        # Sponsorblock options
-        --sponsorblock-mark all
-        --sponsorblock-remove interaction,intro,music_offtopic,preview,selfpromo,sponsor,outro
-        # Preset aliases
-        -t mkv
-      '';
-    };
   };
-  programs.home-manager.enable = true;
   xdg.configFile."lf/icons".source = ./lf-icons;
 }
