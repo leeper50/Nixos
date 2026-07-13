@@ -36,16 +36,20 @@ in
     steam = {
       exclude = [ ];
       paths = [
+        "/home/walter/.config/Limo.conf"
+        "/home/walter/.config/Limo"
         "/home/walter/.config/unity3d/Ludeon Studios"
         "/home/walter/.local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
         "/home/walter/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
         "/home/walter/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc"
         "/home/walter/.local/share/Steam/steamapps/common/Rimworld/Mods"
+        "/home/walter/.local/share/Steam/steamapps/common/Stardew Valley"
         "/home/walter/.local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
         "/home/walter/.local/share/Steam/steamapps/common/Victoria 3/game/dlc"
         "/home/walter/.local/share/Steam/steamapps/workshop/content/529340/2883019620"
         "/home/walter/.local/share/Paradox Interactive"
         "/home/walter/.paradoxlauncher"
+        "/home/walter/Games/Limo"
       ];
     };
   };

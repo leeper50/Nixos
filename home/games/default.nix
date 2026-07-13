@@ -13,6 +13,7 @@ in
       azahar
       dolphin-emu
       eden
+      limo
       ryubing
       teamspeak6-client
       wowup-cf
