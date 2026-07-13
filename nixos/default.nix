@@ -9,6 +9,7 @@
     ./configs/cleanup.nix
     ./configs/locales.nix
     ./configs/packages.nix
+    ./configs/sudo.nix
     ./configs/users.nix
 
     # Services
