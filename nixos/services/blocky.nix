@@ -72,6 +72,9 @@
           mapping = {
             "buncha.men" = "10.0.1.1,2600:1702:58c1:9acf::1:1";
             "dellhplaptop.xyz" = "10.0.0.60,2600:1702:58c1:9acf::60";
+            "dns01.home.local" = "10.0.0.31,2600:1702:58c1:9acf::31";
+            "dns02.home.local" = "10.0.0.32,2600:1702:58c1:9acf::32";
+            "dns03.home.local" = "10.0.0.33,2600:1702:58c1:9acf::33";
             "tplinkwifi.net" = "10.0.0.1,2600:1702:58c1:9acf:f2a7:31ff:fe94:abac";
           };
         };
