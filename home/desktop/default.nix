@@ -41,7 +41,6 @@
       gimp
       handbrake
       haruna
-      imgbrd-grabber
       qt5.qttools
       qview
       (vivaldi.override {
@@ -107,7 +106,6 @@
       ];
       package = pkgs.chromium;
     };
-    joplin-desktop.enable = true;
     kitty = {
       enable = true;
       extraConfig = ''
@@ -190,7 +188,6 @@
               "prettier.tabWidth" = 2;
               "prettier.useTabs" = false;
             };
-            "claudeCode.preferredLocation" = "sidebar";
             "diffEditor.ignoreTrimWhitespace" = false;
             "editor.fontLigatures" = true;
             "editor.formatOnSave" = true;

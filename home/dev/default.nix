@@ -14,7 +14,6 @@
       bun
       cargo
       cargo-update
-      claude-code
       delve
       direnv
       docker-compose-language-service

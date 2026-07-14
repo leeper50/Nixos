@@ -6,7 +6,6 @@
     brews = [ ];
     casks = [
       "freac"
-      "imgbrd-grabber"
       "onlyoffice"
       "parsec"
       "qview"
