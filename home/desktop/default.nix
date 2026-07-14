@@ -1,5 +1,6 @@
 { lib, pkgs, ... }:
 {
+  fonts.fontconfig.enable = true;
   home.activation.removeStylixGtkFiles = lib.mkIf pkgs.stdenv.isLinux (
     lib.hm.dag.entryBefore [ "writeBoundary" ] ''
       rm -f $HOME/.gtkrc-2.0 \
@@ -125,7 +126,7 @@
         remember_window_size = "yes";
       };
     };
-    mpv = lib.mkIf pkgs.stdenv.isLinux {
+    mpv = {
       enable = true;
       bindings = {
         DOWN = "add volume -2";
@@ -232,5 +233,4 @@
       };
     };
   };
-  fonts.fontconfig.enable = true;
 }
