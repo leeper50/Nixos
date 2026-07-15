@@ -19,6 +19,7 @@ in
       agenix.homeManagerModules.default
       stylix.homeModules.stylix
     ];
+  home.pointerCursor.enable = true;
   local = {
     restic.backups = {
       home = {
