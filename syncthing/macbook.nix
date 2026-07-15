@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./base.nix
+    ./default.nix
   ];
 
   local.syncthing = {
