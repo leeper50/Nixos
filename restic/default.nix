@@ -71,7 +71,7 @@ in
                 "--keep-monthly 6"
               ];
               timerConfig = {
-                OnCalendar = "*-*-* 2/6:00:00";
+                OnCalendar = "*-*-* 10,22"; # 10am & 10pm
               };
             }
             // lib.optionalAttrs isNixos { user = backup.user; };
