@@ -1,10 +1,56 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./gui.nix
     ../desktop/hyprland.nix
   ];
+  home.activation.removeStylixGtkFiles = (
+    lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+      rm -f $HOME/.gtkrc-2.0 \
+            $HOME/.config/gtk-3.0/gtk.css \
+            $HOME/.config/gtk-3.0/settings.ini \
+            $HOME/.config/gtk-4.0/gtk.css \
+            $HOME/.config/gtk-4.0/settings.ini
+    ''
+  );
+  home.packages = with pkgs; [
+    bitwarden-cli
+    bitwarden-desktop
+    blender
+    collabora-desktop
+    deskflow
+    ffmpeg-full
+    freac
+    freetube
+    gimp
+    qt5.qttools
+    qview
+    theclicker
+    vlc
+  ];
   programs = {
+    alacritty.settings = {
+      env.WINIT_X11_SCALE_FACTOR = "1";
+      window.class = {
+        instance = "Alacritty";
+        general = "Alacritty";
+      };
+    };
+    chromium = {
+      enable = true;
+      extensions = [
+        { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
+        { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
+        { id = "nngceckbapebfimnlniiiahkandclblb"; } # bitwarden
+        { id = "ldpochfccmkkmhdbclfhpagapcfdljkj"; } # decentraleyes
+        { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; } # i-still-dont-care-about-cookies
+        { id = "fkagelmloambgokoeokbpihmgpkbgbfm"; } # indie wiki buddy
+        { id = "padekgcemlokbadohgkifijomclgjgif"; } # proxy switchyomega
+        { id = "kbmfpngjjgdllneeigpgjifpgocmfgmb"; } # reddit enhancement suite
+        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock-origin
+        { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violent monkey
+      ];
+    };
     fish = {
       functions = {
         dl = ''
@@ -89,6 +135,18 @@
         # Preset aliases
         -t mkv
       '';
+    };
+    zathura = {
+      enable = true;
+      mappings = {
+        "<Left>" = "navigate previous";
+        "<Right>" = "navigate next";
+      };
+      options = {
+        adjust-window = "best-fit";
+        pages-per-row = 2;
+        recolor = true;
+      };
     };
   };
   xdg.mimeApps = {
