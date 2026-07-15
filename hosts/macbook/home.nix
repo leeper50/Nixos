@@ -1,9 +1,11 @@
 { ... }:
+let
+  rootDir = ../..;
+in
 {
-  imports = [
-    ./default.nix
+  imports = map (p: rootDir + p) [
+    /syncthing
   ];
-
   local.syncthing = {
     folders = {
       "Desktops".enable = true;

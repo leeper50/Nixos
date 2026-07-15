@@ -29,7 +29,9 @@ in
         ++ map (p: rootDir + p) [
           /home/profiles/gui.nix
           /secrets
-          /syncthing/macbook.nix
+        ]
+        ++ [
+          ./home.nix
         ];
         home-manager.useUserPackages = true;
       }
