@@ -11,7 +11,7 @@ in
       /nixos/services/avahi.nix
       /nixos/services/nfs.nix
       /nixos/services/samba.nix
-      /syncthing/nas.nix
+      /syncthing/nixos.nix
     ]
     ++ [ disko.nixosModules.disko ];
   fileSystems."/mnt/data" = {
@@ -23,6 +23,23 @@ in
       "noatime"
       "space_cache=v2"
     ];
+  };
+  local.syncthing = {
+    folders = {
+      "FreeTube" = {
+        enable = true;
+        type = "receiveonly";
+      };
+      "GlobalShare" = {
+        enable = true;
+        type = "receiveonly";
+      };
+      "Notes" = {
+        enable = true;
+        type = "receiveonly";
+      };
+    };
+    home = "/mnt/data/SambaHomes/walter";
   };
   networking = {
     defaultGateway6.interface = lib.mkForce "ens18";

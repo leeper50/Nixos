@@ -12,7 +12,7 @@ in
       /nixos/services/avahi.nix
       /nixos/services/power.nix
       /restic
-      /syncthing/laptop.nix
+      /syncthing/nixos.nix
     ]
     ++ [
       ./gpu.nix
@@ -25,19 +25,29 @@ in
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
   };
-  local.restic.backups.home = {
-    exclude = [
-      "/home/walter/.cache"
-      "/home/walter/.local/share/Steam"
-      "/home/walter/.local/share/Trash"
-      "/home/walter/.steam"
-      "/home/walter/Games"
-      "/home/walter/Nas"
-      "/home/walter/Sync/Retroarch"
-    ];
-    paths = [
-      "/home/walter"
-    ];
+  local = {
+    restic.backups.home = {
+      exclude = [
+        "/home/walter/.cache"
+        "/home/walter/.local/share/Steam"
+        "/home/walter/.local/share/Trash"
+        "/home/walter/.steam"
+        "/home/walter/Games"
+        "/home/walter/Nas"
+        "/home/walter/Sync/Retroarch"
+      ];
+      paths = [
+        "/home/walter"
+      ];
+    };
+    syncthing.folders = {
+      "Desktops".enable = true;
+      "Downloads".enable = true;
+      "FreeTube".enable = true;
+      "GlobalShare".enable = true;
+      "Notes".enable = true;
+      "Tablet".enable = true;
+    };
   };
   networking = {
     hostName = "laptop";
