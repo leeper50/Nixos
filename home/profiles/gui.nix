@@ -27,6 +27,7 @@
       libreoffice-bin
       vlc-bin
     ];
+  home.pointerCursor.enable = true;
   programs = {
     alacritty = {
       enable = true;

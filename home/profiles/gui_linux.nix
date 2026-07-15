@@ -25,6 +25,7 @@
     freac
     freetube
     gimp
+    imgbrd-grabber
     qt5.qttools
     qview
     sqlitebrowser
