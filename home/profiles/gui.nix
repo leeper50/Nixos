@@ -12,8 +12,6 @@
     with pkgs;
     [
       corefonts
-      czkawka
-      feishin
       fira-code
       fira-code-symbols
       fira-sans
@@ -22,7 +20,6 @@
       libwebp
       oxipng
       signal-desktop
-      sqlitebrowser
       file
       pistol
     ]
@@ -98,22 +95,6 @@
         cleaner = "${pkgs.writeShellScript "lf-cleaner.sh" ''
           kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
         ''}";
-      };
-    };
-    mpv = {
-      enable = true;
-      bindings = {
-        DOWN = "add volume -2";
-        LEFT = "seek -5";
-        RIGHT = "seek 5";
-        UP = "add volume 2";
-      };
-      config = {
-        interpolation = true;
-        loop-file = "inf";
-        profile = "gpu-hq";
-        video-sync = "display-resample";
-        volume = 30;
       };
     };
     obsidian.enable = true;

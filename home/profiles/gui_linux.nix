@@ -18,13 +18,16 @@
     bitwarden-desktop
     blender
     collabora-desktop
+    czkawka
     deskflow
+    feishin
     ffmpeg-full
     freac
     freetube
     gimp
     qt5.qttools
     qview
+    sqlitebrowser
     theclicker
     vlc
   ];
@@ -108,6 +111,22 @@
         s = "systemctl";
         update_flake = "nix flake update --flake $FLAKE_DIR";
         us = "systemctl --user";
+      };
+    };
+    mpv = {
+      enable = true;
+      bindings = {
+        DOWN = "add volume -2";
+        LEFT = "seek -5";
+        RIGHT = "seek 5";
+        UP = "add volume 2";
+      };
+      config = {
+        interpolation = true;
+        loop-file = "inf";
+        profile = "gpu-hq";
+        video-sync = "display-resample";
+        volume = 30;
       };
     };
     yt-dlp = {

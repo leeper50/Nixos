@@ -7,20 +7,18 @@ in
     with pkgs;
     [
       discord
-      mumble
-      openmw
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       azahar
       dolphin-emu
       eden
       limo
+      mumble
+      openmw
       ryubing
       teamspeak6-client
       wowup-cf
       xenia-canary
-    ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
     ];
   programs = {
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
