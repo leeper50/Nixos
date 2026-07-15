@@ -8,6 +8,7 @@ in
     [
       discord
       mumble
+      openmw
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
       azahar
