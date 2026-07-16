@@ -74,37 +74,18 @@ in
         type = cfg.folders."Downloads".type;
       };
     })
-    (lib.mkIf (cfg.folders."FreeTube".enable or false) (
-      let
-        ignoreText = "(?i)*cache*";
-      in
-      lib.mkMerge [
-        {
-          services.syncthing.settings.folders."FreeTube" = {
-            devices = [
-              "laptop"
-              "nas"
-              "workstation"
-            ];
-            id = "kembu-qwjnf";
-            path = "${home}/.config/FreeTube";
-            type = cfg.folders."FreeTube".type;
-          };
-        }
-        (lib.optionalAttrs (isStandalone || isNixDarwin) {
-          home.file."IgnoreFreeTubeCache" = {
-            enable = true;
-            target = "${home}/.config/FreeTube/.stignore";
-            text = ignoreText;
-          };
-        })
-        (lib.optionalAttrs isNixos {
-          systemd.tmpfiles.rules = [
-            "L+ ${home}/.config/FreeTube/.stignore - - - - ${pkgs.writeText "freetube-stignore" ignoreText}"
-          ];
-        })
-      ]
-    ))
+    (lib.mkIf (cfg.folders."FreeTube".enable or false) {
+      services.syncthing.settings.folders."FreeTube" = {
+        devices = [
+          "laptop"
+          "nas"
+          "workstation"
+        ];
+        id = "kembu-qwjnf";
+        path = "${home}/.config/FreeTube";
+        type = cfg.folders."FreeTube".type;
+      };
+    })
     (lib.mkIf (cfg.folders."GlobalShare".enable or false) {
       services.syncthing.settings.folders."GlobalShare" = {
         devices = [
