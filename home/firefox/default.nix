@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   firefoxPackage = pkgs.firefox-bin;
 in
@@ -24,23 +24,7 @@ in
         };
         search = import ./search.nix;
         containersForce = true;
-        containers = {
-          Personal = {
-            id = 1;
-            color = "blue";
-            icon = "fingerprint";
-          };
-          Work = {
-            id = 2;
-            color = "orange";
-            icon = "briefcase";
-          };
-          Shopping = {
-            id = 3;
-            color = "green";
-            icon = "cart";
-          };
-        };
+        containers = lib.mapAttrs (_: c: { inherit (c) id color icon; }) (import ./containers.nix);
         settings = {
           "browser.aboutConfig.showWarning" = false;
           "browser.download.viewableInternally.typeWasRegistered.jxl" = true;
