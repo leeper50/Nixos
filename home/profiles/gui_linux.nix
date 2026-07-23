@@ -58,32 +58,46 @@
     fish = {
       functions = {
         dl = ''
-          if type -q yt-dlp
-            argparse a i t p -- $argv
-            or return 1
-            set args
-            if set -q _flag_a
+          if not type -q yt-dlp
+              echo "yt-dlp not found"
+              return 127
+          end
+
+          argparse a f= i t p -- $argv
+          or return 2
+
+          set args
+          if set -q _flag_a
               set -a args -x --audio-format opus --audio-quality 0
-            end
-            if set -q _flag_i
+          end
+          if set -q _flag_i
               set -a args --ignore-config
-            end
-            if set -q _flag_t
+          end
+          if set -q _flag_f
+              if not test -f "$_flag_f"
+                  echo "Batch file not found: $_flag_f"
+                  return 3
+              end
+              set -a args --batch-file $_flag_f
+          end
+          if set -q _flag_t
               set -a args -o "%(title)s.%(ext)s"
-            end
-            if set -q _flag_p
-              set -a args --proxy socks5://komodo:1080
-            end
-            if test -z "$argv[1]"
+          end
+          if set -q _flag_p
+              set -a args --proxy socks5://komodo.local:1080
+          end
+
+          if test -z "$argv[1]"; and not set -q _flag_f
               echo "Missing URL"
               return 1
-            end
-            set -a args $argv[1]
-            yt-dlp $args
-          else
-            echo "yt-dlp not found"
-            return 1
           end
+
+          if test -n "$argv[1]"
+              set -a args $argv[1]
+          end
+
+          yt-dlp $args
+          return $status
         '';
         sound = ''
           if test (uname -s) = Linux
