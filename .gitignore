@@ -16,6 +16,7 @@
 !secrets/
 !stylix/
 !syncthing/
+!tests/
 !restic/
 
 # Files in folders
@@ -26,4 +27,5 @@
 !secrets/**
 !stylix/**
 !syncthing/**
+!tests/**
 !restic/**
