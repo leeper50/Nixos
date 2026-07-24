@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-cd (status dirname)
+cd (status dirname)/..
 
 set -l failed 0
 
