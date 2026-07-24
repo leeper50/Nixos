@@ -114,6 +114,7 @@
         '';
       };
       shellAliases = {
+        bisync = "rclone bisync -P $argv $HOME/Pictures/Temp/ Copyparty:/Tablet/ --exclude .DS_Store";
         cat = "bat -pp";
         cz = "chezmoi";
         edit_nix = "cd ~/Nix && hx ~/Nix";
@@ -121,6 +122,8 @@
         hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
         l = "eza";
         ncdu = "rclone ncdu";
+        pull = "rclone sync -P $argv Copyparty:/Tablet/ $HOME/Pictures/Temp/ --exclude .DS_Store";
+        push = "rclone sync -P $argv $HOME/Pictures/Temp/ Copyparty:/Tablet/ --exclude .DS_Store";
         rcat = "command cat";
         rs = "sudo systemctl";
         s = "systemctl";
