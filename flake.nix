@@ -52,6 +52,8 @@
         stylix
         ;
 
+      globals = import ./globals.nix;
+
       mkPkgs =
         system:
         import nixpkgs {
@@ -69,6 +71,7 @@
         nixpkgs.lib.nixosSystem {
           pkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs // {
+            inherit globals;
             systemType = "Nixos";
             osConfig = null;
           };
@@ -178,7 +181,7 @@
         "macbook" = darwin.lib.darwinSystem {
           pkgs = mkPkgs "aarch64-darwin";
           specialArgs = inputs // {
-            inherit inputs;
+            inherit inputs globals;
             systemType = "NixDarwin";
             osConfig = null;
           };
@@ -192,6 +195,7 @@
         "workstation" = home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs "x86_64-linux";
           extraSpecialArgs = inputs // {
+            inherit globals;
             systemType = "Standalone";
             hostName = "workstation";
           };
@@ -217,6 +221,7 @@
         meta = {
           nixpkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs // {
+            inherit globals;
             systemType = "Nixos";
             osConfig = null;
           };

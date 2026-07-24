@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  globals,
   pkgs,
   systemType,
   ...
@@ -16,7 +17,7 @@ in
   options.local.syncthing = {
     home = lib.mkOption {
       type = lib.types.str;
-      default = "/home/walter";
+      default = "/home/${globals.username}";
     };
     folders = lib.mkOption {
       default = { };

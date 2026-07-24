@@ -5,6 +5,7 @@
 !colmena.nix
 !flake.lock
 !flake.nix
+!globals.nix
 !README.md
 
 # Folders

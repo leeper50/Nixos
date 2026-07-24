@@ -1,12 +1,17 @@
-{ agenix, systemType, ... }:
+{
+  agenix,
+  globals,
+  systemType,
+  ...
+}:
 {
   imports = [
     {
       home-manager = {
-        extraSpecialArgs = { inherit agenix systemType; };
+        extraSpecialArgs = { inherit agenix globals systemType; };
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.walter.imports = [
+        users.${globals.username}.imports = [
           agenix.homeManagerModules.default
           ../../secrets
           ../default.nix

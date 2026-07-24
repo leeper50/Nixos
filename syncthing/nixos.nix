@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ config, globals, lib, ... }:
 let
   cfg = config.local.syncthing;
   home = cfg.home;
@@ -12,8 +12,8 @@ in
     configDir = "${home}/Sync/.config/syncthing";
     databaseDir = "${home}/Sync/.config/syncthing";
     dataDir = "${home}/Sync";
-    group = "users";
+    group = globals.username;
     openDefaultPorts = true;
-    user = "walter";
+    user = globals.username;
   };
 }

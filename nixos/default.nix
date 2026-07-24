@@ -1,12 +1,12 @@
 {
   agenix,
   config,
+  globals,
   home-manager,
   pkgs,
   ...
 }:
 let
-  locale = "en_US.UTF-8";
   user_settings = {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxiUaRCIxik4Ptw9JUm/vJiUcKMxEPuGpdf5CZWGZ1Z Walter-PC"
@@ -56,17 +56,17 @@ in
     };
   };
   i18n = {
-    defaultLocale = locale;
+    defaultLocale = globals.locale;
     extraLocaleSettings = {
-      LC_ADDRESS = locale;
-      LC_IDENTIFICATION = locale;
-      LC_MEASUREMENT = locale;
-      LC_MONETARY = locale;
-      LC_NAME = locale;
-      LC_NUMERIC = locale;
-      LC_PAPER = locale;
-      LC_TELEPHONE = locale;
-      LC_TIME = locale;
+      LC_ADDRESS = globals.locale;
+      LC_IDENTIFICATION = globals.locale;
+      LC_MEASUREMENT = globals.locale;
+      LC_MONETARY = globals.locale;
+      LC_NAME = globals.locale;
+      LC_NUMERIC = globals.locale;
+      LC_PAPER = globals.locale;
+      LC_TELEPHONE = globals.locale;
+      LC_TIME = globals.locale;
     };
   };
   programs.fish.enable = true;
@@ -78,18 +78,25 @@ in
     wheelNeedsPassword = true;
   };
   services.tailscale.enable = true;
-  time.timeZone = "America/Chicago";
-  users.users = {
-    root = user_settings;
-    walter = user_settings // {
-      description = "Administrator";
-      extraGroups = [
-        "networkmanager"
-        "walter"
-        "wheel"
-      ];
-      hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
-      isNormalUser = true;
+  time.timeZone = globals.timeZone;
+  users = {
+    groups = {
+      "${globals.username}" = {
+        gid = 1000;
+        members = [ globals.username ];
+      };
+    };
+    users = {
+      root = user_settings;
+      ${globals.username} = user_settings // {
+        description = "Administrator";
+        extraGroups = [
+          "networkmanager"
+          "wheel"
+        ];
+        hashedPasswordFile = config.age.secrets."user_${globals.username}_hash.age".path;
+        isNormalUser = true;
+      };
     };
   };
 }

@@ -1,5 +1,6 @@
 {
   config,
+  globals,
   lib,
   osConfig ? null,
   systemType,
@@ -12,9 +13,9 @@ let
   isStandalone = systemType == "Standalone";
   passwordFile =
     if osConfig != null then
-      osConfig.age.secrets."user_walter_clear.age".path
+      osConfig.age.secrets."user_${globals.username}_clear.age".path
     else
-      config.age.secrets."user_walter_clear.age".path;
+      config.age.secrets."user_${globals.username}_clear.age".path;
   resolvedHostName =
     if isStandalone then
       hostName
@@ -39,7 +40,7 @@ in
               type = lib.types.listOf lib.types.str;
             };
             user = lib.mkOption {
-              default = "walter";
+              default = globals.username;
               type = lib.types.str;
             };
           };
@@ -61,7 +62,7 @@ in
           let
             common = {
               exclude = backup.exclude;
-              extraOptions = [ "sftp.args='-i /home/walter/.ssh/id_ed25519'" ];
+              extraOptions = [ "sftp.args='-i /home/${globals.username}/.ssh/id_ed25519'" ];
               initialize = true;
               passwordFile = passwordFile;
               paths = backup.paths;
@@ -81,10 +82,10 @@ in
             "${name}-nas" =
               common
               // lib.optionalAttrs isNixos {
-                repository = "sftp://${backup.user}@nas.local//mnt/data/SambaHomes/walter/Backup/${location}";
+                repository = "sftp://${backup.user}@nas.local//mnt/data/SambaHomes/${globals.username}/Backup/${location}";
               }
               // lib.optionalAttrs (!isNixos) {
-                repository = "sftp://walter@nas.local//mnt/data/SambaHomes/walter/Backup/${location}";
+                repository = "sftp://${globals.username}@nas.local//mnt/data/SambaHomes/${globals.username}/Backup/${location}";
               };
             "${name}-hetzner" = common // {
               repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";

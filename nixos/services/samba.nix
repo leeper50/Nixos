@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, globals, ... }:
 let
   macSettings = {
     "fruit:encoding" = "native";
@@ -65,7 +65,7 @@ in
   # add user passwords
   systemd.services.samba-smbd.postStart =
     let
-      users = [ "walter" ];
+      users = [ globals.username ];
       setupUser =
         user:
         let

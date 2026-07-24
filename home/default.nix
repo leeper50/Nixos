@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ globals, lib, pkgs, ... }:
 {
   imports = [
     ./shell
@@ -10,7 +10,7 @@
         ${pkgs.duti}/bin/duti -s com.interversehq.qView public.image viewer
       '';
     };
-    homeDirectory = if pkgs.stdenv.isLinux then "/home/walter" else "/Users/walter";
+    homeDirectory = if pkgs.stdenv.isLinux then "/home/${globals.username}" else "/Users/${globals.username}";
     packages =
       with pkgs;
       [
@@ -35,7 +35,7 @@
       ];
     shell.enableFishIntegration = true;
     stateVersion = "25.11";
-    username = "walter";
+    username = globals.username;
   };
   programs.home-manager.enable = true;
   targets.genericLinux.enable = pkgs.stdenv.isLinux;

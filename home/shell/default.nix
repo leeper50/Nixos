@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ globals, lib, pkgs, ... }:
 let
   editor = if pkgs.stdenv.isLinux then "hx" else "helix";
 in
@@ -124,8 +124,8 @@ in
         credential.helper = "store";
         init.defaultBranch = "main";
         user = {
-          email = "wleeper13@outlook.com";
-          name = "Walter Leeper";
+          email = globals.primaryEmail;
+          name = globals.fullName;
         };
       };
     };

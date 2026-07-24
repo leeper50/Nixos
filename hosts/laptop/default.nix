@@ -1,4 +1,4 @@
-{ nur, pkgs, ... }:
+{ globals, nur, pkgs, ... }:
 let
   rootDir = ../..;
 in
@@ -28,16 +28,16 @@ in
   local = {
     restic.backups.home = {
       exclude = [
-        "/home/walter/.cache"
-        "/home/walter/.local/share/Steam"
-        "/home/walter/.local/share/Trash"
-        "/home/walter/.steam"
-        "/home/walter/Games"
-        "/home/walter/Nas"
-        "/home/walter/Sync/Retroarch"
+        "/home/${globals.username}/.cache"
+        "/home/${globals.username}/.local/share/Steam"
+        "/home/${globals.username}/.local/share/Trash"
+        "/home/${globals.username}/.steam"
+        "/home/${globals.username}/Games"
+        "/home/${globals.username}/Nas"
+        "/home/${globals.username}/Sync/Retroarch"
       ];
       paths = [
-        "/home/walter"
+        "/home/${globals.username}"
       ];
     };
     syncthing.folders = {
@@ -60,7 +60,7 @@ in
     power-profiles-daemon.enable = true;
   };
   system.stateVersion = "26.05";
-  users.users.walter = {
+  users.users.${globals.username} = {
     packages = with pkgs; [
       asusctl
       uv

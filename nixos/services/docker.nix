@@ -1,5 +1,6 @@
 {
   config,
+  globals,
   lib,
   pkgs,
   ...
@@ -74,7 +75,7 @@ in
         };
         logDriver = "journald";
       };
-      users.users.walter.extraGroups = [ "docker" ];
+      users.users.${globals.username}.extraGroups = [ "docker" ];
     }
 
     ### K3s configuration
@@ -162,7 +163,7 @@ in
                 };
                 environment = {
                   KOMODO_DATABASE_URI = "mongodb://mongo:27017";
-                  KOMODO_INIT_ADMIN_USERNAME = "walter";
+                  KOMODO_INIT_ADMIN_USERNAME = globals.username;
                   KOMODO_LOCAL_AUTH = "true";
                 };
                 image = "ghcr.io/moghtech/komodo-core:2.2.0";

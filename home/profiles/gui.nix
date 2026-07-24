@@ -27,7 +27,7 @@
       libreoffice-bin
       vlc-bin
     ];
-  home.pointerCursor.enable = true;
+  home.pointerCursor.enable = pkgs.stdenv.isLinux;
   programs = {
     alacritty = {
       enable = true;

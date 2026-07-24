@@ -1,4 +1,4 @@
-{ disko, lib, ... }:
+{ disko, globals, lib, ... }:
 let
   rootDir = ../../..;
 in
@@ -39,7 +39,7 @@ in
         type = "receiveonly";
       };
     };
-    home = "/mnt/data/SambaHomes/walter";
+    home = "/mnt/data/SambaHomes/${globals.username}";
   };
   networking = {
     defaultGateway6.interface = lib.mkForce "ens18";

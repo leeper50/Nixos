@@ -1,5 +1,6 @@
 {
   agenix,
+  globals,
   pkgs,
   self,
   ...
@@ -48,13 +49,13 @@
       minimize-to-application = true;
       persistent-apps = [
         {
-          app = "/Users/walter/Applications/Home Manager Apps/Firefox.app";
+          app = "/Users/${globals.username}/Applications/Home Manager Apps/Firefox.app";
         }
         {
-          app = "/Users/walter/Applications/Home Manager Apps/kitty.app";
+          app = "/Users/${globals.username}/Applications/Home Manager Apps/kitty.app";
         }
         {
-          app = "/Users/walter/Applications/Home Manager Apps/Visual Studio Code.app";
+          app = "/Users/${globals.username}/Applications/Home Manager Apps/Visual Studio Code.app";
         }
         {
           app = "/System/Applications/System Settings.app";
@@ -84,11 +85,12 @@
       Clicking = true;
     };
   };
-  system.primaryUser = "walter";
+  system.primaryUser = globals.username;
   system.stateVersion = 6;
+  time.timeZone = globals.timeZone;
 
-  users.users.walter = {
-    home = "/Users/walter";
+  users.users.${globals.username} = {
+    home = "/Users/${globals.username}";
     shell = pkgs.fish;
   };
 }

@@ -1,5 +1,6 @@
 {
   agenix,
+  globals,
   home-manager,
   inputs,
   stylix,
@@ -20,10 +21,11 @@ in
       stylix.darwinModules.stylix
       {
         home-manager.extraSpecialArgs = inputs // {
+          inherit globals;
           systemType = "NixDarwin";
         };
         home-manager.useGlobalPkgs = true;
-        home-manager.users.walter.imports = [
+        home-manager.users.${globals.username}.imports = [
           agenix.homeManagerModules.default
         ]
         ++ map (p: rootDir + p) [

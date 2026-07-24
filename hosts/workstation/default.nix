@@ -1,5 +1,6 @@
 {
   agenix,
+  globals,
   stylix,
   ...
 }:
@@ -23,34 +24,34 @@ in
     restic.backups = {
       home = {
         exclude = [
-          "/home/walter/.cache"
-          "/home/walter/.local/share/Steam"
-          "/home/walter/.local/share/Trash"
-          "/home/walter/.steam"
-          "/home/walter/Games"
-          "/home/walter/Nas"
+          "/home/${globals.username}/.cache"
+          "/home/${globals.username}/.local/share/Steam"
+          "/home/${globals.username}/.local/share/Trash"
+          "/home/${globals.username}/.steam"
+          "/home/${globals.username}/Games"
+          "/home/${globals.username}/Nas"
         ];
         paths = [
-          "/home/walter"
+          "/home/${globals.username}"
         ];
       };
       steam = {
         exclude = [ ];
         paths = [
-          "/home/walter/.config/Limo.conf"
-          "/home/walter/.config/Limo"
-          "/home/walter/.config/unity3d/Ludeon Studios"
-          "/home/walter/.local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
-          "/home/walter/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
-          "/home/walter/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc"
-          "/home/walter/.local/share/Steam/steamapps/common/Rimworld/Mods"
-          "/home/walter/.local/share/Steam/steamapps/common/Stardew Valley"
-          "/home/walter/.local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
-          "/home/walter/.local/share/Steam/steamapps/common/Victoria 3/game/dlc"
-          "/home/walter/.local/share/Steam/steamapps/workshop/content/529340/2883019620"
-          "/home/walter/.local/share/Paradox Interactive"
-          "/home/walter/.paradoxlauncher"
-          "/home/walter/Games/Limo"
+          "/home/${globals.username}/.config/Limo.conf"
+          "/home/${globals.username}/.config/Limo"
+          "/home/${globals.username}/.config/unity3d/Ludeon Studios"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Rimworld/Mods"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Stardew Valley"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
+          "/home/${globals.username}/.local/share/Steam/steamapps/common/Victoria 3/game/dlc"
+          "/home/${globals.username}/.local/share/Steam/steamapps/workshop/content/529340/2883019620"
+          "/home/${globals.username}/.local/share/Paradox Interactive"
+          "/home/${globals.username}/.paradoxlauncher"
+          "/home/${globals.username}/Games/Limo"
         ];
       };
     };

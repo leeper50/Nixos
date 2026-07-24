@@ -1,4 +1,4 @@
-{ ... }:
+{ globals, ... }:
 let
   rootDir = ../..;
 in
@@ -15,6 +15,6 @@ in
       "Phone".enable = true;
       "Tablet".enable = true;
     };
-    home = "/Users/walter";
+    home = "/Users/${globals.username}";
   };
 }
