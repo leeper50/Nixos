@@ -88,6 +88,7 @@ in
       shellAliases = lib.mkMerge [
         {
           cat = "bat -pp";
+          colmena = "colmena --config $FLAKE_DIR/flake.nix";
           cz = "chezmoi";
           edit_nix = "cd ~/Nix && hx ~/Nix";
           hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
