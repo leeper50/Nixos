@@ -1,16 +1,20 @@
-{ globals, lib, pkgs, ... }:
+{
+  globals,
+  lib,
+  pkgs,
+  ...
+}:
 let
   editor = if pkgs.stdenv.isLinux then "hx" else "helix";
 in
 {
+  imports = [ ./ssh.nix ];
   programs = {
     bat.enable = true;
     eza = {
+      colors = "always";
       enable = true;
       enableFishIntegration = true;
-      extraOptions = [
-        "--color"
-      ];
       git = true;
       icons = "always";
     };
