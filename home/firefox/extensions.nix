@@ -80,7 +80,7 @@ in
         "user-filters"
       ];
       filters = [
-        "www.youtube.com###dismissible"
+        "www.youtube.com##.ytd-rich-section-renderer.style-scope > .ytd-rich-shelf-renderer.style-scope"
         "x.com##.r-ttdzmv.r-vacyoi.css-175oi2r > div.css-175oi2r:nth-of-type(3)"
         "x.com##.r-ttdzmv.r-vacyoi.css-175oi2r > div.r-1udh08x.r-1ifxtd0.r-rs99b7.r-1phboty.r-1867qdf.r-jxzhtn.r-14lw9ot.css-175oi2r"
       ];
