@@ -11,11 +11,9 @@
       astro-language-server
       bash-language-server
       bruno
-      bun
       cargo
       cargo-update
       delve
-      direnv
       docker-compose-language-service
       fish-lsp
       go
@@ -53,6 +51,19 @@
       wireguard-tools
     ];
   programs = {
+    bun = {
+      enable = true;
+      settings = {
+        test = {
+          coverage = true;
+          coverageThreshold = 0.9;
+        };
+      };
+    };
+    direnv = {
+      enable = true;
+      enableFishIntegration = true;
+    };
     gcc.enable = systemType != "Standalone";
     gitui.enable = true;
     helix = {

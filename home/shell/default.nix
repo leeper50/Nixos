@@ -185,6 +185,7 @@ in
       };
     };
     htop.enable = true;
+    jq.enable = true;
     lf = {
       enable = true;
       settings.icons = true;
