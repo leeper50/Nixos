@@ -14,8 +14,6 @@
     ''
   );
   home.packages = with pkgs; [
-    bitwarden-cli
-    bitwarden-desktop
     blender
     collabora-desktop
     czkawka
@@ -45,7 +43,6 @@
       extensions = [
         { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
         { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
-        { id = "nngceckbapebfimnlniiiahkandclblb"; } # bitwarden
         { id = "ldpochfccmkkmhdbclfhpagapcfdljkj"; } # decentraleyes
         { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; } # i-still-dont-care-about-cookies
         { id = "fkagelmloambgokoeokbpihmgpkbgbfm"; } # indie wiki buddy

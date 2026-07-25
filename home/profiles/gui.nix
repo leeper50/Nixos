@@ -18,6 +18,7 @@
       libavif
       libjxl
       libwebp
+      keepassxc
       oxipng
       signal-desktop
       file
