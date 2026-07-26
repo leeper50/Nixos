@@ -23,7 +23,6 @@ in
       ./gpu.nix
       ./hardware-configuration.nix
       ./misc.nix
-      ./waifu2x.nix
       nur.modules.nixos.default
     ];
   boot.loader = {
