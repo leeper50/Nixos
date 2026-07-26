@@ -1,4 +1,4 @@
-{ ... }:
+{ globals, ... }:
 {
   services.nfs = {
     settings = {
@@ -15,6 +15,7 @@
       exports = ''
         /mnt/docker      10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)
         /mnt/data/Media  10.0.0.0/24(rw,sync,no_subtree_check,root_squash)
+        /mnt/data/home/${globals.username}  10.0.0.0/24(rw,sync,no_subtree_check,root_squash)
       '';
       lockdPort = 4001;
       mountdPort = 4002;

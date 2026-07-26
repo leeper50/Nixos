@@ -82,10 +82,10 @@ in
             "${name}-nas" =
               common
               // lib.optionalAttrs isNixos {
-                repository = "sftp://${backup.user}@nas.local//mnt/data/SambaHomes/${globals.username}/Backup/${location}";
+                repository = "sftp://${backup.user}@nas.local//mnt/data/home/${globals.username}/Backup/${location}";
               }
               // lib.optionalAttrs (!isNixos) {
-                repository = "sftp://${globals.username}@nas.local//mnt/data/SambaHomes/${globals.username}/Backup/${location}";
+                repository = "sftp://${globals.username}@nas.local//mnt/data/home/${globals.username}/Backup/${location}";
               };
             "${name}-hetzner" = common // {
               repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";

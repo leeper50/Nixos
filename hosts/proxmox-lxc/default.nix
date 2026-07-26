@@ -7,7 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
-      /nixos/configs/local_mounts.nix
+      /nixos/configs/mounts.nix
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/docker.nix
@@ -16,6 +16,10 @@ in
     ++ [
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
+  local.mounts = {
+    docker = true;
+    media = true;
+  };
   networking = {
     defaultGateway.interface = "eth0";
     defaultGateway6.interface = "eth0";

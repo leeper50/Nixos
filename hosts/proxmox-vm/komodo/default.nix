@@ -7,7 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
-      /nixos/configs/local_mounts.nix
+      /nixos/configs/mounts.nix
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/docker.nix
@@ -15,16 +15,22 @@ in
       /restic
     ]
     ++ [ disko.nixosModules.disko ];
-  local.docker.komodo.enable = true;
-  local.restic.backups.stacks = {
-    exclude = [
-      "cache"
-      "model-cache"
-    ];
-    paths = [
-      "/etc/komodo/stacks"
-    ];
-    user = "root";
+  local = {
+    docker.komodo.enable = true;
+    mounts = {
+      docker = true;
+      media = true;
+    };
+    restic.backups.stacks = {
+      exclude = [
+        "cache"
+        "model-cache"
+      ];
+      paths = [
+        "/etc/komodo/stacks"
+      ];
+      user = "root";
+    };
   };
   networking = {
     defaultGateway6.interface = lib.mkForce "ens18";

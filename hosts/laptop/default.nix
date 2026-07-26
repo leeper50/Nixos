@@ -1,4 +1,9 @@
-{ globals, nur, pkgs, ... }:
+{
+  globals,
+  nur,
+  pkgs,
+  ...
+}:
 let
   rootDir = ../..;
 in
@@ -7,7 +12,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/gui_nixos.nix
       /nixos
-      /nixos/configs/local_mounts.nix
+      /nixos/configs/mounts.nix
       /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/power.nix
@@ -26,6 +31,10 @@ in
     systemd-boot.enable = true;
   };
   local = {
+    mounts = {
+      media = true;
+      user = true;
+    };
     restic.backups.home = {
       exclude = [
         "/home/${globals.username}/.cache"
