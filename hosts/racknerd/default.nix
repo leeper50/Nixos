@@ -18,6 +18,7 @@ in
   environment.systemPackages = with pkgs; [
     openssl
   ];
+  local.docker.remote = true;
   local.i2pd = {
     bandwidth = 62500;
     enableIPv6 = false;

@@ -12,6 +12,7 @@ in
   options.local.docker = {
     k3s.enable = lib.mkEnableOption "k3s";
     komodo.enable = lib.mkEnableOption "komodo";
+    remote = lib.mkEnableOption "remote";
     swarm = {
       enable = lib.mkEnableOption "swarm";
       manager = lib.mkEnableOption "swarm manager";
@@ -62,12 +63,19 @@ in
               size = 120;
             }
           ];
-          dns = [
-            "10.0.0.40"
-            "2600:1702:58c1:9acf::40"
-            "10.0.1.1"
-            "2600:1702:58c1:9acf::1:1"
-          ];
+          dns =
+            if cfg.remote then
+              [
+                "9.9.9.9"
+                "149.112.112.112"
+                "2620:fe::9"
+                "2620:fe::fe"
+              ]
+            else
+              [
+                "10.0.1.1"
+                "2600:1702:58c1:9acf::1:1"
+              ];
           experimental = true;
           fixed-cidr-v6 = "fda3:db28:76bb:e314::/64";
           ipv6 = true;

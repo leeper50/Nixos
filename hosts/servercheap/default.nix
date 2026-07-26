@@ -13,6 +13,7 @@ in
     ++ [
       ./hardware-configuration.nix
     ];
+  local.docker.remote = true;
   local.i2pd = {
     bandwidth = 62500;
     enableIPv6 = true;

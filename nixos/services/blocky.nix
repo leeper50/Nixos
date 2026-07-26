@@ -59,9 +59,9 @@
         };
         bootstrapDns = [
           "9.9.9.9"
-          "1.1.1.1"
-          "2620:fe::fe"
+          "149.112.112.112"
           "2620:fe::9"
+          "2620:fe::fe"
         ];
         caching = {
           prefetching = true;
