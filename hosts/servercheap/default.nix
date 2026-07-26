@@ -13,13 +13,15 @@ in
     ++ [
       ./hardware-configuration.nix
     ];
-  local.docker.remote = true;
-  local.i2pd = {
-    bandwidth = 62500;
-    enableIPv6 = true;
-    port = 51175;
-    privateAddress = "100.121.87.44";
-    publicAddress = "65.75.202.6";
+  local = {
+    docker.remote = true;
+    i2pd = {
+      bandwidth = 62500;
+      enableIPv6 = true;
+      port = 51175;
+      privateAddress = "100.121.87.44";
+      publicAddress = "65.75.202.6";
+    };
   };
   networking = {
     defaultGateway = {
@@ -31,12 +33,6 @@ in
       interface = "ens3";
     };
     hostName = "servercheap";
-    nameservers = [
-      "9.9.9.9"
-      "149.112.112.112"
-      "2620:fe::9"
-      "2620:fe::fe"
-    ];
     interfaces.ens3 = {
       ipv4.addresses = [
         {

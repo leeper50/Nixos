@@ -7,7 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
-      /nixos/configs/local_networking.nix
+      /nixos/configs/networking.nix
       /nixos/services/avahi.nix
     ]
     ++ [
@@ -17,6 +17,7 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  local.networking.local = true;
   networking = {
     hostName = "gk55";
     interfaces.enp1s0 = {

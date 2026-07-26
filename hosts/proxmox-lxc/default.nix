@@ -8,7 +8,7 @@ in
       /home/profiles/cli_nixos.nix
       /nixos
       /nixos/configs/mounts.nix
-      /nixos/configs/local_networking.nix
+      /nixos/configs/networking.nix
       /nixos/services/avahi.nix
       /nixos/services/docker.nix
       /nixos/services/power.nix
@@ -16,9 +16,12 @@ in
     ++ [
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
-  local.mounts = {
-    docker = true;
-    media = true;
+  local = {
+    networking.local = true;
+    mounts = {
+      docker = true;
+      media = true;
+    };
   };
   networking = {
     defaultGateway.interface = "eth0";

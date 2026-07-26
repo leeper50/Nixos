@@ -13,7 +13,7 @@ in
       /home/profiles/gui_nixos.nix
       /nixos
       /nixos/configs/mounts.nix
-      /nixos/configs/local_networking.nix
+      /nixos/configs/networking.nix
       /nixos/services/avahi.nix
       /nixos/services/power.nix
       /restic
@@ -35,6 +35,7 @@ in
       media = true;
       user = true;
     };
+    networking.local = true;
     restic.backups.home = {
       exclude = [
         "/home/${globals.username}/.cache"
@@ -58,10 +59,7 @@ in
       "Tablet".enable = true;
     };
   };
-  networking = {
-    hostName = "laptop";
-    networkmanager.enable = true;
-  };
+  networking.hostName = "laptop";
   programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {

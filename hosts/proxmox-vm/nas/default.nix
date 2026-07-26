@@ -12,7 +12,6 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
-      /nixos/configs/local_networking.nix
       /nixos/services/avahi.nix
       /nixos/services/nfs.nix
       /nixos/services/samba.nix
@@ -29,22 +28,25 @@ in
       "space_cache=v2"
     ];
   };
-  local.syncthing = {
-    folders = {
-      "FreeTube" = {
-        enable = true;
-        type = "receiveonly";
+  local = {
+    networking.local = true;
+    syncthing = {
+      folders = {
+        "FreeTube" = {
+          enable = true;
+          type = "receiveonly";
+        };
+        "GlobalShare" = {
+          enable = true;
+          type = "receiveonly";
+        };
+        "Notes" = {
+          enable = true;
+          type = "receiveonly";
+        };
       };
-      "GlobalShare" = {
-        enable = true;
-        type = "receiveonly";
-      };
-      "Notes" = {
-        enable = true;
-        type = "receiveonly";
-      };
+      home = "/mnt/data/home/${globals.username}";
     };
-    home = "/mnt/data/home/${globals.username}";
   };
   networking = {
     defaultGateway6.interface = lib.mkForce "ens18";

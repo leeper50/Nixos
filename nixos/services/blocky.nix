@@ -1,4 +1,4 @@
-{ ... }:
+{ globals, ... }:
 {
   networking.firewall = {
     allowedTCPPorts = [ 53 ];
@@ -57,12 +57,7 @@
             maxErrorsPerSource = 5;
           };
         };
-        bootstrapDns = [
-          "9.9.9.9"
-          "149.112.112.112"
-          "2620:fe::9"
-          "2620:fe::fe"
-        ];
+        bootstrapDns = globals.nameservers;
         caching = {
           prefetching = true;
           prefetchExpires = "24h";
