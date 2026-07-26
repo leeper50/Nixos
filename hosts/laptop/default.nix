@@ -68,9 +68,19 @@ in
   };
   system.stateVersion = "26.05";
   users.users.${globals.username} = {
+    extraGroups = [ "libvirtd" ];
     packages = with pkgs; [
       asusctl
       uv
+      virt-manager
     ];
+  };
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      swtpm.enable = true;
+    };
   };
 }
