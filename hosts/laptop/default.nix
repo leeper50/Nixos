@@ -62,7 +62,10 @@ in
   programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {
-    asusd.enable = true;
+    asusd = {
+      asusdConfig.source = ./asusd.ron;
+      enable = true;
+    };
     power-profiles-daemon.enable = true;
   };
   system.stateVersion = "26.05";
