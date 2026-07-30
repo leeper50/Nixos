@@ -9,18 +9,6 @@ let
       "10.0.0.60"
       "2600:1702:58c1:9acf::60"
     ];
-    "dns01.home.local" = [
-      "10.0.0.31"
-      "2600:1702:58c1:9acf::31"
-    ];
-    "dns02.home.local" = [
-      "10.0.0.32"
-      "2600:1702:58c1:9acf::32"
-    ];
-    "dns03.home.local" = [
-      "10.0.0.33"
-      "2600:1702:58c1:9acf::33"
-    ];
     "tplinkwifi.net" = [
       "10.0.0.1"
       "2600:1702:58c1:9acf:f2a7:31ff:fe94:abac"
@@ -42,6 +30,22 @@ let
       ]) answers
     ) customDNS
   );
+  defaultClientSettings = {
+    filtering_enabled = true;
+    parental_enabled = false;
+    safe_search.enabled = false;
+    safebrowsing_enabled = false;
+    upstreams = [ ];
+    use_global_blocked_services = true;
+    use_global_settings = true;
+  };
+  taggedClients = [
+    {
+      ids = [ "10.0.0.102" ];
+      name = "Living Room TV";
+      tags = [ "device_tv" ];
+    }
+  ];
 in
 {
   networking.firewall = {
@@ -56,6 +60,9 @@ in
       openFirewall = true;
       port = 3000;
       settings = {
+        clients = {
+          persistent = map (c: defaultClientSettings // c) taggedClients;
+        };
         dns = {
           bind_hosts = [ "0.0.0.0" ];
           bootstrap_dns = globals.nameservers;
@@ -145,18 +152,12 @@ in
           interval = "168h";
         };
         user_rules = [
-          "@@||paramount.tech^"
-          "@@||cbsi.live.ott.irdeto.com^"
-          "@@||cbsinteractive.hb.omtrdc.net^"
-          "@@||cbsi.com^"
-          "@@||paramountplus.com^"
-          "@@||tiqcdn.com^"
-          "@@||cbsig.net^"
-          "@@||cbsavideo.com^"
-          "@@||cbsstatic.com^"
-          "@@||pplusstatic.com^"
           "@@||x.com^"
           "@@||twitter.com^"
+
+          # TV Paramount allowlist
+          "@@||pubads.g.doubleclick.net^$ctag=device_tv"
+          "@@||googleads.g.doubleclick.net^$ctag=device_tv"
         ];
       };
     };
