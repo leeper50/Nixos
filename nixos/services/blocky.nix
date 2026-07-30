@@ -13,16 +13,16 @@
           allowlists = {
             ads = [
               ''
-                *.bakery.pplus.paramount.tech
+                *.paramount.tech
                 *.cbsi.live.ott.irdeto.com
                 *.cbsinteractive.hb.omtrdc.net
-                *.saa.cbsi.com
-                *.saa.paramountplus.com
-                *.tags.tiqcdn.com
-                *.thumbnails.cbsig.net
-                *.vod-gcs-cedexis.cbsavideo.com
-                *.wwimage-secure.cbsstatic.com
-                *.wwimage-us.pplusstatic.com
+                *.cbsi.com
+                *.paramountplus.com
+                *.tiqcdn.com
+                *.cbsig.net
+                *.cbsavideo.com
+                *.cbsstatic.com
+                *.pplusstatic.com
               ''
               "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/whitelist-referral.txt"
             ];
