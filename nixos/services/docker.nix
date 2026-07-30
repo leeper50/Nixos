@@ -169,7 +169,7 @@ in
                   KOMODO_INIT_ADMIN_USERNAME = globals.username;
                   KOMODO_LOCAL_AUTH = "true";
                 };
-                image = "ghcr.io/moghtech/komodo-core:2.2.0";
+                image = "ghcr.io/moghtech/komodo-core:2.3.0";
                 networks = [ "komodo" ];
                 ports = [
                   {
@@ -203,7 +203,7 @@ in
                 environment = {
                   PERIPHERY_SSL_ENABLED = "true";
                 };
-                image = "ghcr.io/moghtech/komodo-periphery:2.2.0";
+                image = "ghcr.io/moghtech/komodo-periphery:2.3.0";
                 networks = [ "komodo" ];
                 ports = [
                   {
