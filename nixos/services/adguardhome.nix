@@ -41,6 +41,21 @@ let
   };
   taggedClients = [
     {
+      ids = [ "10.0.0.167" ];
+      name = "Bedroom TV 1";
+      tags = [ "device_tv" ];
+    }
+    {
+      ids = [
+        "10.0.0.213"
+        "2600:1702:58c1:9acf:2caf:100f:e8cd:86d3"
+        "2600:1702:58c1:9acf:f06e:4766:68f8:96ae"
+        "2600:1702:58c1:9acf:cda7:35e4:827c:507a"
+      ];
+      name = "Den TV";
+      tags = [ "device_tv" ];
+    }
+    {
       ids = [ "10.0.0.102" ];
       name = "Living Room TV";
       tags = [ "device_tv" ];
@@ -52,16 +67,6 @@ let
         "2600:1702:58c1:9acf:8ab3:f0d8:32b3:6ede"
       ];
       name = "Master Bedroom TV";
-      tags = [ "device_tv" ];
-    }
-    {
-      ids = [
-        "10.0.0.213"
-        "2600:1702:58c1:9acf:2caf:100f:e8cd:86d3"
-        "2600:1702:58c1:9acf:f06e:4766:68f8:96ae"
-        "2600:1702:58c1:9acf:cda7:35e4:827c:507a"
-      ];
-      name = "Den TV";
       tags = [ "device_tv" ];
     }
   ];
@@ -162,8 +167,8 @@ in
         ];
         querylog = {
           enabled = true;
-          file_enabled = false;
-          interval = "24h";
+          file_enabled = true;
+          interval = "168h";
           size_memory = 1000;
         };
         statistics = {
