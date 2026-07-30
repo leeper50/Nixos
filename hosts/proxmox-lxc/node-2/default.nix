@@ -4,7 +4,7 @@ let
 in
 {
   imports = map (p: rootDir + p) [
-    /nixos/services/blocky.nix
+    /nixos/services/adguardhome.nix
     /nixos/services/keepalived.nix
   ];
   local.docker = {
