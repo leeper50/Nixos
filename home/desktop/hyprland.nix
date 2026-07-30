@@ -126,7 +126,6 @@ in
           passes = 2;
           size = 10;
         };
-        inactive_opacity = 0.95;
         rounding = 4;
         shadow.enabled = true;
       };
@@ -180,6 +179,7 @@ in
       };
 
       source = [ "~/.config/hypr/monitors.conf" ];
+      xwayland.force_zero_scaling = true;
     };
     xwayland.enable = true;
   };

@@ -28,9 +28,12 @@
               name = "Liberation Serif";
               package = pkgs.liberation_ttf;
             };
+            sizes = {
+              applications = 14;
+              desktop = 14;
+            };
           };
           image = ./wallpaper.jxl;
-          opacity.terminal = 0.8;
         };
       }
     ]
