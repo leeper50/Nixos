@@ -26,6 +26,7 @@
       kotlin-language-server
       lldb_22
       markdown-oxide
+      nmap
       onefetch
       ragenix
       rclone
