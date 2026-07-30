@@ -12,30 +12,38 @@
         blocking = {
           allowlists = {
             ads = [
-              "https://raw.githubusercontent.com/XpPlayz/paramount-plus-filterlists/refs/heads/main/allowlist.txt"
+              ''
+                *.bakery.pplus.paramount.tech
+                *.cbsi.live.ott.irdeto.com
+                *.cbsinteractive.hb.omtrdc.net
+                *.saa.cbsi.com
+                *.saa.paramountplus.com
+                *.tags.tiqcdn.com
+                *.thumbnails.cbsig.net
+                *.vod-gcs-cedexis.cbsavideo.com
+                *.wwimage-secure.cbsstatic.com
+                *.wwimage-us.pplusstatic.com
+              ''
+              "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/whitelist-referral.txt"
             ];
             farRight = [
-              "|
-                x.com
-                twitter.com
-              "
+              ''
+                *.x.com
+                *.twitter.com
+              ''
             ];
           };
           denylists = {
             ads = [
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt"
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt"
-              "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts"
+              "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.txt"
             ];
             farRight = [
-              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist.txt"
-              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-pop.txt"
-              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-alttech.txt"
-              "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Sensitive%20lists/TabloidRemover.txt"
-              "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Sensitive%20lists/TabloidRemover-MastodonCategoryForImports.csv"
-              "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Sensitive%20lists/AntiPreacherList.txt"
-              "https://raw.githubusercontent.com/MassMove/AttackVectors/master/LocalJournals/fake-local-journals-list.txt"
               "https://assets.windscribe.com/custom_blocklists/clickbait.txt"
+              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-alttech.txt"
+              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-pop.txt"
+              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist.txt"
+              "https://raw.githubusercontent.com/DandelionSprout/adfilt/refs/heads/master/Sensitive%20lists/TabloidRemover.txt"
+              "https://raw.githubusercontent.com/MassMove/AttackVectors/master/LocalJournals/fake-local-journals-list.txt"
             ];
           };
           clientGroupsBlock = {
@@ -76,6 +84,7 @@
         ports = {
           dns = 53;
         };
+        queryLog.type = "none";
         upstreams = {
           groups = {
             default = [
