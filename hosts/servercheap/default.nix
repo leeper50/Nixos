@@ -7,6 +7,7 @@ in
     map (p: rootDir + p) [
       /home/profiles/cli_nixos.nix
       /nixos
+      /nixos/configs/networking.nix
       /nixos/services/docker.nix
       /nixos/services/i2pd.nix
     ]
