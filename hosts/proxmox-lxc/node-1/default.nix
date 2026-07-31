@@ -1,17 +1,5 @@
 { ... }:
-let
-  rootDir = ../../..;
-in
 {
-  imports = map (p: rootDir + p) [
-    /nixos/services/adguardhome.nix
-    /nixos/services/keepalived.nix
-  ];
-  local.docker = {
-    komodo.enable = true;
-    swarm.enable = true;
-    swarm.manager = true;
-  };
   networking = {
     hostName = "node-1";
     interfaces.eth0 = {

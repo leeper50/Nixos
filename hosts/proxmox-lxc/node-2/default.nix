@@ -1,16 +1,5 @@
 { ... }:
-let
-  rootDir = ../../..;
-in
 {
-  imports = map (p: rootDir + p) [
-    /nixos/services/adguardhome.nix
-    /nixos/services/keepalived.nix
-  ];
-  local.docker = {
-    swarm.enable = true;
-    swarm.managerIP = "node-1.local";
-  };
   networking = {
     hostName = "node-2";
     interfaces.eth0 = {

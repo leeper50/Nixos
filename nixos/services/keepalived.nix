@@ -30,33 +30,44 @@ let
   );
 in
 {
-  services.keepalived = {
-    enable = true;
-    vrrpInstances.swarmipv4 = {
-      interface = "eth0";
-      priority = thisNode.priority;
-      state = if config.networking.hostName == "node-1" then "MASTER" else "BACKUP";
-      unicastPeers = peeripv4Addrs;
-      unicastSrcIp = thisNode.ipv4Addr;
-      virtualIps = [
-        { addr = "10.0.1.1/8"; }
-      ];
-      virtualRouterId = 51;
-    };
-    vrrpInstances.swarmipv6 = {
-      interface = "eth0";
-      priority = thisNode.priority;
-      state = if config.networking.hostName == "node-1" then "MASTER" else "BACKUP";
-      unicastSrcIp = thisNode.ipv6Addr;
-      unicastPeers = peeripv6Addrs;
-      virtualIps = [
-        { addr = "2600:1702:58c1:9acf::1:1/64"; }
-      ];
-      virtualRouterId = 52;
-    };
-  };
-  networking.firewall.extraCommands = ''
-    iptables -A nixos-fw -p 112 -j nixos-fw-accept
-    ip6tables -A nixos-fw -p 112 -j nixos-fw-accept
-  '';
+  config = lib.mkMerge [
+    {
+      services.keepalived = {
+        enable = true;
+        vrrpInstances.dnsIPv4 = {
+          interface = "eth0";
+          priority = thisNode.priority;
+          state = if config.networking.hostName == "node-1" then "MASTER" else "BACKUP";
+          unicastPeers = peeripv4Addrs;
+          unicastSrcIp = thisNode.ipv4Addr;
+          virtualIps = [
+            { addr = "10.0.1.1/8"; }
+          ];
+          virtualRouterId = 51;
+        };
+        vrrpInstances.dnsIPv6 = {
+          interface = "eth0";
+          priority = thisNode.priority;
+          state = if config.networking.hostName == "node-1" then "MASTER" else "BACKUP";
+          unicastSrcIp = thisNode.ipv6Addr;
+          unicastPeers = peeripv6Addrs;
+          virtualIps = [
+            { addr = "2600:1702:58c1:9acf::1:1/64"; }
+          ];
+          virtualRouterId = 52;
+        };
+      };
+    }
+    (lib.mkIf config.networking.nftables.enable {
+      networking.firewall.extraInputRules = ''
+        meta l4proto 112 accept
+      '';
+    })
+    (lib.mkIf (!config.networking.nftables.enable) {
+      networking.firewall.extraCommands = ''
+        iptables -A nixos-fw -p 112 -j nixos-fw-accept
+        ip6tables -A nixos-fw -p 112 -j nixos-fw-accept
+      '';
+    })
+  ];
 }

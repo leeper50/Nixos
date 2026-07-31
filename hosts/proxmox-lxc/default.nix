@@ -9,25 +9,21 @@ in
       /nixos
       /nixos/configs/mounts.nix
       /nixos/configs/networking.nix
+      /nixos/services/adguardhome.nix
       /nixos/services/avahi.nix
       /nixos/services/beszel.nix
-      /nixos/services/docker.nix
+      /nixos/services/keepalived.nix
       /nixos/services/power.nix
     ]
     ++ [
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
-  local = {
-    networking.local = true;
-    mounts = {
-      docker = true;
-      media = true;
-    };
-  };
+  local.networking.local = true;
   networking = {
     defaultGateway.interface = "eth0";
     defaultGateway6.interface = "eth0";
     networkmanager.enable = lib.mkForce false;
+    nftables.enable = true;
   };
   proxmoxLXC.manageHostName = true;
   systemd.network.wait-online.enable = false;
