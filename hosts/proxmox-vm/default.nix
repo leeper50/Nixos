@@ -14,5 +14,4 @@
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
   systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";
-  virtualisation.libvirtd.enable = true;
 }

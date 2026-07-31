@@ -61,4 +61,5 @@ in
     };
   };
   system.stateVersion = "25.11";
+  virtualisation.libvirtd.enable = true;
 }
