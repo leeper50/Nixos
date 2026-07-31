@@ -2,15 +2,15 @@
 {
   imports = [
     ../../nixos/configs/networking.nix
-    ./hardware-configuration.nix
     ./disk-config.nix
+    ./hardware-configuration.nix
   ];
   boot.kernel.sysctl = {
-    "vm.vfs_cache_pressure" = 500;
     "vm.swappiness" = 10;
+    "vm.vfs_cache_pressure" = 500;
   };
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = true;
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
   systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";

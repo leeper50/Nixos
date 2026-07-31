@@ -55,8 +55,8 @@ in
   };
   "komodo_admin_password.age" = {
     publicKeys = [
-      node-1
       komodo
+      node-1
       personal
     ];
     hosts = [

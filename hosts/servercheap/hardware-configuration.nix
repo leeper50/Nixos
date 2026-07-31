@@ -9,14 +9,14 @@
   ];
   boot.initrd.availableKernelModules = [
     "ata_piix"
+    "sd_mod"
+    "sr_mod"
     "uhci_hcd"
     "virtio_pci"
     "virtio_scsi"
-    "sd_mod"
-    "sr_mod"
   ];
-  boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.enable = true;
   boot.loader.grub.useOSProber = true;
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/aa9d260b-84d1-4ffb-b81f-e489cd3aa0e9";

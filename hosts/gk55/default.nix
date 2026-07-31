@@ -14,9 +14,8 @@ in
       ./hardware-configuration.nix
     ];
 
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.loader.systemd-boot.enable = true;
   local.networking.local = true;
   networking = {
     hostName = "gk55";

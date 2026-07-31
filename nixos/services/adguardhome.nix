@@ -14,6 +14,10 @@ let
       "2600:1702:58c1:9acf:f2a7:31ff:fe94:abac"
     ];
   };
+  ports = {
+    dns = 53;
+    webui = 3000;
+  };
   rewrites = lib.concatLists (
     lib.mapAttrsToList (
       domain: answers:
@@ -73,8 +77,8 @@ let
 in
 {
   networking.firewall = {
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
+    allowedTCPPorts = [ ports.dns ];
+    allowedUDPPorts = [ ports.dns ];
   };
   services = {
     adguardhome = {
@@ -82,7 +86,7 @@ in
       host = "0.0.0.0";
       mutableSettings = true;
       openFirewall = true;
-      port = 3000;
+      port = ports.webui;
       settings = {
         clients = {
           persistent = map (c: defaultClientSettings // c) taggedClients;
@@ -94,7 +98,7 @@ in
           cache_optimistic = true;
           cache_size = 4194304;
           hostsfile_enabled = false;
-          port = 53;
+          port = ports.dns;
           ratelimit = 0;
           upstream_dns = [
             "https://dns.quad9.net/dns-query"

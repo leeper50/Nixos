@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
   cfg = config.local.beszel;
+  ports.agent = 8090;
 in
 {
   options.local.beszel = {
@@ -15,7 +16,7 @@ in
       services.beszel.agent = {
         enable = true;
         environment = {
-          "HUB_URL" = "http://${cfg.agent.hubHost}:8090";
+          "HUB_URL" = "http://${cfg.agent.hubHost}:${toString ports.agent}";
           "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPrPvS3EnwuIsWXEnSejGIN75hP+Tdbi6TLoKv5l/fqs";
           "TOKEN_FILE" = config.age.secrets."beszel_token.age".path;
         };
@@ -25,12 +26,12 @@ in
     }
     (lib.mkIf cfg.hub.enable {
       networking.firewall.allowedTCPPorts = [
-        8090
+        ports.agent
       ];
       services.beszel.hub = {
         enable = true;
         host = "0.0.0.0";
-        port = 8090;
+        port = ports.agent;
       };
     })
   ];

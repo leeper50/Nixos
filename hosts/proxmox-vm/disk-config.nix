@@ -8,27 +8,25 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "512M";
-              type = "EF00";
               content = {
-                type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                type = "filesystem";
               };
+              size = "512M";
+              type = "EF00";
             };
             swap = {
+              content.type = "swap";
               size = "4G";
-              content = {
-                type = "swap";
-              };
             };
             root = {
-              size = "100%";
               content = {
-                type = "filesystem";
                 format = "xfs";
                 mountpoint = "/";
+                type = "filesystem";
               };
+              size = "100%";
             };
           };
         };

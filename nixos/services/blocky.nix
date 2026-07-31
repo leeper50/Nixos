@@ -1,8 +1,11 @@
 { globals, ... }:
+let
+  ports.dns = 53;
+in
 {
   networking.firewall = {
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
+    allowedTCPPorts = [ ports.dns ];
+    allowedUDPPorts = [ ports.dns ];
   };
   services = {
     blocky = {
@@ -13,16 +16,16 @@
           allowlists = {
             ads = [
               ''
-                *.paramount.tech
-                *.cbsi.live.ott.irdeto.com
-                *.cbsinteractive.hb.omtrdc.net
-                *.cbsi.com
-                *.paramountplus.com
-                *.tiqcdn.com
-                *.cbsig.net
                 *.cbsavideo.com
+                *.cbsi.com
+                *.cbsi.live.ott.irdeto.com
+                *.cbsig.net
+                *.cbsinteractive.hb.omtrdc.net
                 *.cbsstatic.com
+                *.paramount.tech
+                *.paramountplus.com
                 *.pplusstatic.com
+                *.tiqcdn.com
               ''
               "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/whitelist-referral.txt"
             ];
@@ -81,9 +84,7 @@
             "tplinkwifi.net" = "10.0.0.1,2600:1702:58c1:9acf:f2a7:31ff:fe94:abac";
           };
         };
-        ports = {
-          dns = 53;
-        };
+        ports.dns = ports.dns;
         queryLog.type = "none";
         upstreams = {
           groups = {

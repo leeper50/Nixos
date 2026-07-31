@@ -30,8 +30,8 @@ in
       mode = attrs.mode or "0400";
     }
     // lib.optionalAttrs isSystemModule {
-      owner = attrs.owner or "root";
       group = attrs.group or "root";
+      owner = attrs.owner or "root";
     }
   ) hostSecrets;
 }

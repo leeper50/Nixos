@@ -14,10 +14,10 @@
   nixpkgs.overlays = [
     (final: prev: {
       inherit (prev.lixPackageSets.stable)
-        nixpkgs-review
+        colmena
         nix-eval-jobs
         nix-fast-build
-        colmena
+        nixpkgs-review
         ;
     })
   ];
@@ -31,17 +31,15 @@
       automatic = true;
       options = "--delete-older-than 7d";
     };
+    package = pkgs.lixPackageSets.stable.lix;
     settings = {
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
     };
-    package = pkgs.lixPackageSets.stable.lix;
   };
   nixpkgs.hostPlatform = "aarch64-darwin";
-
   programs.fish.enable = true;
   services.tailscale.enable = true;
-
   system.configurationRevision = self.rev or self.dirtyRev or null;
   system.defaults = {
     dock = {
@@ -88,7 +86,6 @@
   system.primaryUser = globals.username;
   system.stateVersion = 6;
   time.timeZone = globals.timeZone;
-
   users.users.${globals.username} = {
     home = "/Users/${globals.username}";
     shell = pkgs.fish;

@@ -33,10 +33,10 @@ in
   };
   networking = {
     firewall = {
-      trustedInterfaces = [ "tailscale0" ];
       extraCommands = ''
         iptables -A DOCKER-USER ! -i tailscale0 -p tcp --dport 8120 -j DROP
       '';
+      trustedInterfaces = [ "tailscale0" ];
     };
     hostName = "racknerd";
   };

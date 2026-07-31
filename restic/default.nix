@@ -71,9 +71,7 @@ in
                 "--keep-weekly 4"
                 "--keep-monthly 6"
               ];
-              timerConfig = {
-                OnCalendar = "*-*-* 10,22:00:00"; # 10am & 10pm
-              };
+              timerConfig.OnCalendar = "*-*-* 10,22:00:00"; # 10am & 10pm
             }
             // lib.optionalAttrs isNixos { user = backup.user; };
             location = resolvedHostName + "/" + name;

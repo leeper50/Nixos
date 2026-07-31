@@ -1,8 +1,6 @@
 { ... }:
 {
   homebrew = {
-    enable = true;
-    enableFishIntegration = true;
     brews = [ ];
     casks = [
       "freac"
@@ -11,5 +9,7 @@
       "qview"
       "vivaldi"
     ];
+    enable = true;
+    enableFishIntegration = true;
   };
 }
