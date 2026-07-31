@@ -26,6 +26,25 @@ let
   ++ swarm_keys;
 in
 {
+  "beszel_token.age" = {
+    group = "992";
+    mode = "0440";
+    publicKeys = swarm_keys ++ [
+      komodo
+      nas
+      racknerd
+      servercheap
+    ];
+    hosts = [
+      "komodo"
+      "nas"
+      "node-1"
+      "node-2"
+      "node-3"
+      "racknerd"
+      "servercheap"
+    ];
+  };
   "k3s_token.age" = {
     publicKeys = swarm_keys;
     hosts = [

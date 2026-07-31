@@ -10,6 +10,7 @@ in
       /nixos/configs/mounts.nix
       /nixos/configs/networking.nix
       /nixos/services/avahi.nix
+      /nixos/services/beszel.nix
       /nixos/services/docker.nix
       /nixos/services/power.nix
     ]

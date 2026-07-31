@@ -13,6 +13,7 @@ in
       /home/profiles/cli_nixos.nix
       /nixos
       /nixos/services/avahi.nix
+      /nixos/services/beszel.nix
       /nixos/services/nfs.nix
       /nixos/services/samba.nix
       /syncthing/nixos.nix

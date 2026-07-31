@@ -9,6 +9,7 @@ in
       /nixos
       /nixos/configs/mounts.nix
       /nixos/services/avahi.nix
+      /nixos/services/beszel.nix
       /nixos/services/docker.nix
       /nixos/services/power.nix
       /restic
@@ -23,6 +24,7 @@ in
     "net.ipv6.conf.all.forwarding" = 1;
   };
   local = {
+    beszel.hub.enable = true;
     docker.komodo.enable = true;
     mounts = {
       docker = true;

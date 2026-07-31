@@ -8,6 +8,7 @@ in
       /home/profiles/cli_nixos.nix
       /nixos
       /nixos/configs/networking.nix
+      /nixos/services/beszel.nix
       /nixos/services/docker.nix
       /nixos/services/i2pd.nix
       /nixos/services/murmur.nix
@@ -20,6 +21,7 @@ in
     openssl
   ];
   local = {
+    beszel.agent.hubHost = "100.126.187.39";
     docker.remote = true;
     i2pd = {
       bandwidth = 62500;
