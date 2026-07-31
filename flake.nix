@@ -95,6 +95,7 @@
             targetHost = name;
             tags = [
               "local"
+              "servers"
               "swarm"
             ];
           };
@@ -120,6 +121,7 @@
             targetHost = "komodo";
             tags = [
               "local"
+              "servers"
             ];
           };
           modules = [
@@ -143,6 +145,7 @@
             targetHost = "nas";
             tags = [
               "local"
+              "servers"
             ];
           };
           modules = [
@@ -158,7 +161,10 @@
         racknerd = mkHost {
           deployment = {
             targetHost = "racknerd";
-            tags = [ "remote" ];
+            tags = [
+              "remote"
+              "servers"
+            ];
           };
           modules = [
             ./hosts/racknerd
@@ -168,7 +174,10 @@
         servercheap = mkHost {
           deployment = {
             targetHost = "servercheap";
-            tags = [ "remote" ];
+            tags = [
+              "remote"
+              "servers"
+            ];
           };
           modules = [
             ./hosts/servercheap
