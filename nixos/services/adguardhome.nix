@@ -93,7 +93,7 @@ in
         };
         dns = {
           bind_hosts = [ "0.0.0.0" ];
-          bootstrap_dns = globals.nameservers;
+          bootstrap_dns = globals.nameservers.public;
           cache_enabled = true;
           cache_optimistic = true;
           cache_size = 4194304;

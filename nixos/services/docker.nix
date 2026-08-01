@@ -63,18 +63,11 @@ in
               size = 120;
             }
           ];
-          dns =
-            if cfg.remote then
-              globals.nameservers
-            else
-              [
-                "10.0.1.1"
-                "2600:1702:58c1:9acf::1:1"
-              ];
+          dns = if cfg.remote then globals.nameservers.public else globals.nameservers.local;
           experimental = true;
           fixed-cidr-v6 = "fda3:db28:76bb:e314::/64";
-          ipv6 = true;
           ip6tables = true;
+          ipv6 = true;
         };
         logDriver = "journald";
       };

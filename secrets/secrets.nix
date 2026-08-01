@@ -28,7 +28,7 @@ in
 {
   "beszel_token.age" = {
     group = "992";
-    mode = "0440";
+    mode = "0444";
     publicKeys = swarm_keys ++ [
       komodo
       nas

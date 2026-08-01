@@ -18,7 +18,7 @@ in
           allowPing = true;
           enable = true;
         };
-        nameservers = globals.nameservers;
+        nameservers = globals.nameservers.public;
         networkmanager.enable = true;
         nftables.enable = true;
       };
@@ -47,11 +47,7 @@ in
           ];
           "2600:1702:58c1:9acf::1:1" = [ "buncha.men" ];
         };
-        nameservers = [
-          "10.0.1.1"
-          "2600:1702:58c1:9acf::1:1"
-        ]
-        ++ globals.nameservers;
+        nameservers = globals.nameservers.local ++ globals.nameservers.public;
       };
     })
   ];

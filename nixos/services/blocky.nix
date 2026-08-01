@@ -68,7 +68,7 @@ in
             maxErrorsPerSource = 5;
           };
         };
-        bootstrapDns = globals.nameservers;
+        bootstrapDns = globals.nameservers.public;
         caching = {
           prefetching = true;
           prefetchExpires = "24h";
