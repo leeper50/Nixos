@@ -4,6 +4,7 @@
     brews = [ ];
     casks = [
       "freac"
+      "keepassxc"
       "onlyoffice"
       "parsec"
       "qview"
