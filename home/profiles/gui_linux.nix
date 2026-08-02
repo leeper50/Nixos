@@ -54,15 +54,18 @@
     };
     fish = {
       functions = {
+        crop = ''
+          test -f "$argv[1]"; or return 1
+          set stem (string split -r -m1 . "$argv[1]")[1]
+          magick "$argv[1]" $argv[2..-1] -crop 16:9 +repage -quality 90 "$stem.png"
+        '';
         dl = ''
           if not type -q yt-dlp
               echo "yt-dlp not found"
               return 127
           end
-
           argparse a f= i t p -- $argv
           or return 2
-
           set args
           if set -q _flag_a
               set -a args -x --audio-format opus --audio-quality 0
@@ -83,18 +86,29 @@
           if set -q _flag_p
               set -a args --proxy socks5://komodo.local:1080
           end
-
           if test -z "$argv[1]"; and not set -q _flag_f
               echo "Missing URL"
               return 1
           end
-
           if test -n "$argv[1]"
               set -a args $argv[1]
           end
-
           yt-dlp $args
           return $status
+        '';
+        rename_images = ''
+          if not type -q md5sum
+              echo "md5sum not found"
+              return 127
+          end
+          for file in *.{avif,bmp,gif,heic,jpg,jpeg,jxl,png,tiff,webp}
+              test -f "$file"; or continue
+              set ext (string split -r -m1 . "$file")[2]
+              set hash (md5sum "$file" | string split ' ')[1]
+              if test "$file" != "$hash.$ext"
+                  mv -n "$file" "$hash.$ext"
+              end
+          end
         '';
         sound = ''
           if test (uname -s) = Linux
