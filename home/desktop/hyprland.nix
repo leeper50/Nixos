@@ -35,152 +35,226 @@ in
   ];
 
   wayland.windowManager.hyprland = {
-    configType = "hyprlang";
+    configType = "lua";
     enable = true;
     package = null;
     settings = {
-      "$mod" = "SUPER";
-
-      animations = {
-        animation = [
-          "windows, 1, 7, easeOut"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
-        ];
-        bezier = "easeOut, 0.05, 0.9, 0.1, 1.05";
-        enabled = true;
-      };
-
-      bind = [
-        "$mod, D, exec, fuzzel"
-        "$mod, Space, exec, fuzzel"
-        "$mod, E, exec, dolphin"
-        "$mod, F, fullscreen"
-        "$mod, L, exec, hyprlock"
-        "$mod, period, exec, rofimoji --selector fuzzel --action copy"
-        "$mod, Q, killactive"
-        "$mod, Return, exec, kitty"
-        "$mod, V, togglefloating"
-        "alt, F4, killactive"
-        # screenshot: select area, copy to clipboard
-        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
-        # Focus
-        "$mod, down, movefocus, d"
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        # Move window
-        "$mod SHIFT, down, movewindow, d"
-        "$mod SHIFT, left, movewindow, l"
-        "$mod SHIFT, right, movewindow, r"
-        "$mod SHIFT, up, movewindow, u"
-        # Workspaces
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        # Move window to workspace
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        # Audio & Media controls
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SINK@ toggle"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPrev, exec, playerctl previous"
-        "$mod SHIFT, A, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
-      ];
-
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
-
-      bindel = [
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_SINK@ 5%-"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_SINK@ 5%+"
-        ", XF86KbdBrightnessDown, exec, brightnessctl -d '*::kbd_backlight' set 10%- -n 0"
-        ", XF86KbdBrightnessUp, exec, brightnessctl -d '*::kbd_backlight' set +10%"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%- -n 5"
-        ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
-      ];
-
-      decoration = {
-        active_opacity = 1.0;
-        blur = {
-          enabled = true;
-          noise = 0.01;
-          passes = 2;
-          size = 10;
-        };
-        rounding = 4;
-        shadow.enabled = true;
-      };
-
-      dwindle = {
-        precise_mouse_move = true;
-        smart_split = true;
+      monitor = {
+        mode = "preferred";
+        output = "";
+        position = "auto";
+        scale = "auto";
       };
 
       env = [
-        "GDK_BACKEND,wayland,x11"
-        "MOZ_ENABLE_WAYLAND,1"
-        "NIXOS_OZONE_WL,1"
-        "QT_QPA_PLATFORM,wayland;xcb"
-        "QT_QPA_PLATFORMTHEME,kde"
-        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+        {
+          _args = [
+            "GDK_BACKEND"
+            "wayland,x11"
+          ];
+        }
+        {
+          _args = [
+            "MOZ_ENABLE_WAYLAND"
+            "1"
+          ];
+        }
+        {
+          _args = [
+            "NIXOS_OZONE_WL"
+            "1"
+          ];
+        }
+        {
+          _args = [
+            "QT_QPA_PLATFORM"
+            "wayland;xcb"
+          ];
+        }
+        {
+          _args = [
+            "QT_QPA_PLATFORMTHEME"
+            "kde"
+          ];
+        }
+        {
+          _args = [
+            "QT_WAYLAND_DISABLE_WINDOWDECORATION"
+            "1"
+          ];
+        }
       ];
 
-      exec-once = [
-        # Source my wacky things
-        ". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target"
-        "easyeffects --hide-window"
-      ];
-
-      general = {
-        border_size = 1;
-        gaps_in = 5;
-        gaps_out = 10;
-        layout = "dwindle";
+      curve = {
+        _args = [
+          "easeOut"
+          {
+            type = "bezier";
+            points = [
+              [
+                0.05
+                0.9
+              ]
+              [
+                0.1
+                1.05
+              ]
+            ];
+          }
+        ];
       };
 
-      gesture = [
-        "3, horizontal, workspace"
+      animation = [
+        {
+          bezier = "easeOut";
+          enabled = true;
+          leaf = "windows";
+          speed = 7;
+        }
+        {
+          leaf = "windowsOut";
+          enabled = true;
+          speed = 7;
+          bezier = "default";
+          style = "popin 80%";
+        }
+        {
+          bezier = "default";
+          enabled = true;
+          leaf = "border";
+          speed = 10;
+        }
+        {
+          bezier = "default";
+          enabled = true;
+          leaf = "fade";
+          speed = 7;
+        }
+        {
+          bezier = "default";
+          enabled = true;
+          leaf = "workspaces";
+          speed = 6;
+        }
       ];
 
-      input = {
-        follow_mouse = 1;
-        numlock_by_default = true;
-        touchpad = {
-          natural_scroll = false;
-          scroll_factor = 0.5;
+      gesture = {
+        action = "workspace";
+        direction = "horizontal";
+        fingers = 3;
+      };
+
+      config = {
+        general = {
+          border_size = 1;
+          gaps_in = 5;
+          gaps_out = 10;
+          layout = "dwindle";
         };
+        decoration = {
+          active_opacity = 1.0;
+          blur = {
+            enabled = true;
+            noise = 0.01;
+            passes = 2;
+            size = 10;
+          };
+          rounding = 4;
+          shadow.enabled = true;
+        };
+        animations.enabled = true;
+        dwindle = {
+          precise_mouse_move = true;
+          smart_split = true;
+        };
+        misc = {
+          disable_hyprland_logo = true;
+          enable_swallow = true;
+          force_default_wallpaper = 0;
+          swallow_regex = "^kitty";
+          vrr = 0;
+        };
+        input = {
+          follow_mouse = 1;
+          numlock_by_default = true;
+          touchpad = {
+            natural_scroll = false;
+            scroll_factor = 0.5;
+          };
+        };
+        xwayland.force_zero_scaling = true;
       };
-
-      misc = {
-        disable_hyprland_logo = true;
-        enable_swallow = true;
-        force_default_wallpaper = 0;
-        swallow_regex = "^kitty";
-        vrr = 0;
-      };
-
-      source = [ "~/.config/hypr/monitors.conf" ];
-      xwayland.force_zero_scaling = true;
     };
+
+    extraLuaFiles."binds.lua" = {
+      autoLoad = true;
+      content = ''
+        local mainMod = "SUPER"
+
+        -- Apps
+        hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("fuzzel"))
+        hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("fuzzel"))
+        hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("dolphin"))
+        hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+        hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
+        hl.bind(mainMod .. " + Period", hl.dsp.exec_cmd("rofimoji --selector fuzzel --action copy"))
+        hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+        hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("kitty"))
+        hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+        hl.bind("ALT + F4", hl.dsp.window.close())
+
+        -- Screenshot
+        hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+
+        -- Focus
+        hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+        hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
+        hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+        hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
+
+        -- Move window within layout
+        hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
+        hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
+        hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+        hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
+
+        -- Workspaces
+        for i = 1, 10 do
+          local key = i % 10
+          hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+          hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+        end
+
+        -- Mouse move/resize
+        hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+        hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+        -- Audio & media controls
+        hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"))
+        hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"))
+        hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"))
+        hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"))
+        hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"))
+
+        -- Volume/brightness
+        hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 5%-"), { locked = true, repeating = true })
+        hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_SINK@ 5%+"), { locked = true, repeating = true })
+        hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("brightnessctl -d '*::kbd_backlight' set 10%- -n 0"), { locked = true, repeating = true })
+        hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd("brightnessctl -d '*::kbd_backlight' set +10%"), { locked = true, repeating = true })
+        hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%- -n 5"), { locked = true, repeating = true })
+        hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +5%"), { locked = true, repeating = true })
+      '';
+    };
+
+    extraConfig = ''
+      require("monitors")
+
+      hl.on("hyprland.start", function()
+        hl.exec_cmd(". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target")
+        hl.exec_cmd("easyeffects --hide-window")
+      end)
+    '';
+
     xwayland.enable = true;
   };
 
