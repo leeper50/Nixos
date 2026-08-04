@@ -41,7 +41,7 @@ in
           "/home/${globals.username}/.config/Limo.conf"
           "/home/${globals.username}/.config/Limo"
           "/home/${globals.username}/.config/unity3d/Ludeon Studios"
-          "/home/${globals.username}/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/glorious pc master race (v 2)/"
+          "/home/${globals.username}/.local/share/Aspyr/Sid Meier's Civilization 5/MODS"
           "/home/${globals.username}/.local/share/Paradox Interactive"
           "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
           "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
