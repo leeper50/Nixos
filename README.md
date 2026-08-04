@@ -1,13 +1,12 @@
-# The big ol nix configuration
+# Nix Configuration Overview
 
-The repo contains all my nix configurations across many machine types,
-and different installation methods (NixOS, Nix-darwin, Nix-standalone+home-manager).
+This repository contains my Nix configurations across various machine types, including NixOS, Nix-darwin, and Nix-standalone with Home Manager. The configurations are designed to be customizable for different environments.
 
-To change this to your needs:
-1. Replace values in globals.nix with your own.
-2. Change the pretty much everything in the `secrets/secrets.nix` file. Update secrets and their file names.
-3. Update the `home/accounts/default.nix` file.
-4. Change flake.nix to match your own systems.
+To customize this configuration for your needs:
 
-It is recommended to keep the repo in `$HOME/Nix` as the shell functions expect it to be there.
+1. Replace values in `globals.nix` with your own.
+2. Update the `secrets/secrets.nix` file by replacing secrets and their filenames as necessary.
+3. Modify the `home/accounts/default.nix` file according to your requirements.
+4. Adjust the `flake.nix` file to match your system configuration.
 
+It is recommended to place this repository in `$HOME/Nix`, as shell functions expect it there.
