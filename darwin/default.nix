@@ -10,7 +10,6 @@
     agenix.darwinModules.default
     ../secrets
   ];
-
   nixpkgs.overlays = [
     (final: prev: {
       inherit (prev.lixPackageSets.stable)
@@ -21,11 +20,10 @@
         ;
     })
   ];
-
   environment.shells = [
     pkgs.fish
   ];
-
+  home-manager.backupFileExtension = "home_manager_backup";
   nix = {
     gc = {
       automatic = true;
