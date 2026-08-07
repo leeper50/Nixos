@@ -2,6 +2,7 @@
   agenix,
   globals,
   stylix,
+  pkgs,
   ...
 }:
 let
@@ -65,5 +66,10 @@ in
       "Phone".enable = true;
       "Tablet".enable = true;
     };
+  };
+  services.ollama = {
+    enable = true;
+    environmentVariables."OLLAMA_CONTEXT_LENGTH" = "32768";
+    package = pkgs.ollama-vulkan;
   };
 }

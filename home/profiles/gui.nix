@@ -105,6 +105,7 @@
       profiles = {
         default = {
           extensions = with pkgs.vscode-extensions; [
+            anthropic.claude-code
             arrterian.nix-env-selector
             bradlc.vscode-tailwindcss
             charliermarsh.ruff
@@ -121,6 +122,7 @@
             ndonfris.fish-lsp
             prisma.prisma
             rust-lang.rust-analyzer
+            saoudrizwan.claude-dev
             svelte.svelte-vscode
             tailscale.vscode-tailscale
             tamasfe.even-better-toml
@@ -147,9 +149,10 @@
               "prettier.tabWidth" = 2;
               "prettier.useTabs" = false;
             };
+            "claudeCode.preferredLocation" = "panel";
             "diffEditor.ignoreTrimWhitespace" = false;
             "editor.fontLigatures" = true;
-            "editor.formatOnSave" = true;
+            "editor.formatOnSave" = false;
             "extensions.ignoreRecommendations" = true;
             "files.associations" = {
               "*.css" = "tailwindcss";
