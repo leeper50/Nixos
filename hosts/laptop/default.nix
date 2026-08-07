@@ -23,6 +23,7 @@ in
       ./gpu.nix
       ./hardware-configuration.nix
       ./misc.nix
+      ./ollama.nix
       nur.modules.nixos.default
     ];
   boot.loader = {
