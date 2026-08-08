@@ -9,12 +9,18 @@ let
   cfg = config.local.packages;
 in
 {
-  options.local.packages.ollama.enable = lib.mkEnableOption "ollama";
+  options.local.packages.ollama = {
+    context_length = lib.mkOption {
+      type = lib.types.int;
+      default = 4096;
+    };
+    enable = lib.mkEnableOption "ollama";
+  };
   config = lib.mkMerge [
     (lib.mkIf cfg.ollama.enable {
       services.ollama = {
         enable = true;
-        environmentVariables."OLLAMA_CONTEXT_LENGTH" = "32768";
+        environmentVariables."OLLAMA_CONTEXT_LENGTH" = toString cfg.ollama.context_length;
         package = pkgs.ollama-vulkan;
       };
     })

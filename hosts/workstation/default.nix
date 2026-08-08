@@ -2,7 +2,6 @@
   agenix,
   globals,
   stylix,
-  pkgs,
   ...
 }:
 let
@@ -26,7 +25,10 @@ in
     packages = {
       cream-linux.enable = true;
       elegoo-slicer.enable = true;
-      ollama.enable = true;
+      ollama = {
+        context_length = 32768;
+        enable = true;
+      };
       waifu2x.enable = true;
     };
     restic.backups = {
