@@ -11,6 +11,7 @@ in
   imports =
     map (p: rootDir + p) [
       /home/profiles/gui_nixos.nix
+      /home/packages
       /nixos
       /nixos/configs/mounts.nix
       /nixos/configs/networking.nix
@@ -22,8 +23,6 @@ in
     ++ [
       ./gpu.nix
       ./hardware-configuration.nix
-      ./misc.nix
-      ./ollama.nix
       nur.modules.nixos.default
     ];
   boot.loader = {
@@ -36,6 +35,12 @@ in
       user = true;
     };
     networking.local = true;
+    packages = {
+      cream-linux.enable = true;
+      elegoo-slicer.enable = true;
+      ollama.enable = true;
+      waifu2x.enable = true;
+    };
     restic.backups.home = {
       exclude = [
         "/home/${globals.username}/.cache"

@@ -1,11 +1,12 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  systemType,
+  ...
+}:
 let
-  creamlinux = import (pkgs.fetchFromGitHub {
-    owner = "Novattz";
-    repo = "creamlinux-installer";
-    rev = "main";
-    hash = "sha256-sV23mp0XnJHf4oSqqvFLFfvSkssHzxafqYMNw3HGEdg=";
-  }) { inherit pkgs; };
+  cfg = config.local.packages;
   waifu2x-ncnn-vulkan = pkgs.stdenv.mkDerivation {
     name = "waifu2x-ncnn-vulkan";
     src = pkgs.fetchurl {
@@ -34,8 +35,11 @@ let
   };
 in
 {
-  environment.systemPackages = [
-    creamlinux
-    waifu2x-ncnn-vulkan
-  ];
+  options.local.packages.waifu2x.enable = lib.mkEnableOption "waifu2x";
+  config = lib.mkIf cfg.waifu2x.enable (
+    if systemType == "Standalone" then
+      { home.packages = [ waifu2x-ncnn-vulkan ]; }
+    else
+      { environment.systemPackages = [ waifu2x-ncnn-vulkan ]; }
+  );
 }

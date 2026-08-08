@@ -3,6 +3,7 @@
   homebrew = {
     brews = [ ];
     casks = [
+      "elegoo-slicer"
       "freac"
       "keepassxc"
       "onlyoffice"
