@@ -40,16 +40,10 @@
     inputs:
     let
       inherit (inputs)
-        agenix
-        colmena
         darwin
-        disko
         home-manager
         nixpkgs
         nur
-        plasma-manager
-        self
-        stylix
         ;
 
       globals = import ./globals.nix;
