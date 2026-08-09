@@ -20,10 +20,19 @@ in
     (lib.mkIf cfg.ollama.enable {
       services.ollama = {
         enable = true;
-        environmentVariables."OLLAMA_CONTEXT_LENGTH" = toString cfg.ollama.context_length;
+        environmentVariables = {
+          "OLLAMA_CONTEXT_LENGTH" = toString cfg.ollama.context_length;
+          "OLLAMA_ORIGINS" = "*";
+        };
         package = pkgs.ollama-vulkan;
       };
     })
+    (lib.mkIf cfg.ollama.enable (
+      if systemType == "Standalone" then
+        { home.packages = [ pkgs.jan ]; }
+      else
+        { environment.systemPackages = [ pkgs.jan ]; }
+    ))
     (lib.mkIf (cfg.ollama.enable && systemType == "Nixos" && config.hardware.nvidia.modesetting.enable)
       {
         nix.settings = {
