@@ -47,11 +47,7 @@ in
           message = "local.docker.swarm.managerIP must be set when using swarm and swarm.manager is false.";
         }
         {
-          assertion = !(cfg.komodo.enable && !cfg.komodo.core.enable && !cfg.komodo.periphery.enable);
-          message = "local.docker.komodo.enabled without either core or periphery enabled.";
-        }
-        {
-          assertion = !(cfg.komodo.enable && !cfg.komodo.core.enable && !cfg.komodo.coreIP == null);
+          assertion = !(cfg.komodo.enable && !cfg.komodo.core.enable && cfg.komodo.coreIP == null);
           message = "local.docker.komodo.coreIP must be set when using komodo and komodo.core is false.";
         }
       ];
@@ -255,55 +251,56 @@ in
         );
       in
       {
-        # networking.firewall.allowedTCPPorts = [
-        #   8120 # Komodo Periphery
-        # ]
-        # ++ lib.optionals cfg.komodo.core.enable [
-        #   9120 # Komodo UI
-        # ];
         systemd.services.komodo-stack = {
           description = "Deploy Komodo stack";
           after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
           requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
           wantedBy = [ "multi-user.target" ];
-          script =
-            (
-              if cfg.komodo.core.enable then
-                ''
-                  ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
+          script = ''
+            TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
+            trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
 
-                  if [ ! -f "$ADMIN_PASS_FILE" ]; then
-                    echo "komodo_admin_password.age not yet available — deploy after rekeying"
-                    exit 0
-                  fi
+            ONBOARDING_KEY_FILE="/run/agenix/komodo_onboarding_key.age"
+            ONBOARDING_KEY="$([ -f "$ONBOARDING_KEY_FILE" ] && ${pkgs.coreutils}/bin/cat "$ONBOARDING_KEY_FILE" || true)"
+          ''
+          + (
+            if cfg.komodo.core.enable then
+              ''
+                ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
 
-                  TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
-                  trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
+                if [ ! -f "$ADMIN_PASS_FILE" ]; then
+                  echo "komodo_admin_password.age not yet available — deploy after rekeying"
+                  exit 0
+                fi
 
-                  ${pkgs.jq}/bin/jq \
-                    --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
-                    '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass' \
-                    ${komodoStackFile} > "$TMPFILE"
-                ''
-              else
-                ''
-                  ${pkgs.jq}/bin/jq \
-                    ${komodoStackFile} > "$TMPFILE"
-                ''
-            )
-            + (
-              if cfg.swarm.enable then
-                ''
-                  ${pkgs.docker}/bin/docker stack deploy \
-                  --compose-file "$TMPFILE" \
-                  --detach \
-                  komodo
-                ''
-              else
-                ''
-                  ${pkgs.docker}/bin/docker compose -f "$TMPFILE" up -d
-                ''
-            );
+                ${pkgs.jq}/bin/jq \
+                  --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
+                  --arg onboarding_key "$ONBOARDING_KEY" \
+                  '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass
+                   | if $onboarding_key != "" then .services.periphery.environment.PERIPHERY_ONBOARDING_KEY = $onboarding_key else . end' \
+                  ${komodoStackFile} > "$TMPFILE"
+              ''
+            else
+              ''
+                ${pkgs.jq}/bin/jq \
+                  --arg onboarding_key "$ONBOARDING_KEY" \
+                  'if $onboarding_key != "" then .services.periphery.environment.PERIPHERY_ONBOARDING_KEY = $onboarding_key else . end' \
+                  ${komodoStackFile} > "$TMPFILE"
+              ''
+          )
+          + (
+            if cfg.swarm.enable then
+              ''
+                ${pkgs.docker}/bin/docker stack deploy \
+                --compose-file "$TMPFILE" \
+                --detach \
+                komodo
+              ''
+            else
+              ''
+                ${pkgs.docker}/bin/docker compose -f "$TMPFILE" up -d
+              ''
+          );
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;

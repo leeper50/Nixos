@@ -64,6 +64,21 @@ in
       "node-1"
     ];
   };
+  "komodo_onboarding_key.age" = {
+    publicKeys = swarm_keys ++ [
+      komodo
+      racknerd
+      servercheap
+    ];
+    hosts = [
+      "komodo"
+      "node-1"
+      "node-2"
+      "node-3"
+      "racknerd"
+      "servercheap"
+    ];
+  };
   "mumble_server_password.age" = {
     publicKeys = [
       personal
