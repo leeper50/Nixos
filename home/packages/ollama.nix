@@ -29,9 +29,19 @@ in
     })
     (lib.mkIf cfg.ollama.enable (
       if systemType == "Standalone" then
-        { home.packages = [ pkgs.jan ]; }
+        {
+          home.packages = with pkgs; [
+            claude-code
+            jan
+          ];
+        }
       else
-        { environment.systemPackages = [ pkgs.jan ]; }
+        {
+          environment.systemPackages = with pkgs; [
+            claude-code
+            jan
+          ];
+        }
     ))
     (lib.mkIf (cfg.ollama.enable && systemType == "Nixos" && config.hardware.nvidia.modesetting.enable)
       {
