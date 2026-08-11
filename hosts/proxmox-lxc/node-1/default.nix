@@ -1,5 +1,9 @@
 { ... }:
 {
+  local.docker.swarm = {
+    enable = true;
+    manager = true;
+  };
   networking = {
     hostName = "node-1";
     interfaces.eth0 = {
