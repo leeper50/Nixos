@@ -61,6 +61,7 @@ in
           "/home/${globals.username}/.local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
           "/home/${globals.username}/.local/share/Steam/steamapps/common/Victoria 3/game/dlc"
           "/home/${globals.username}/.local/share/Steam/steamapps/workshop/content/529340/2883019620"
+          "/home/${globals.username}/.local/share/Steam/steamapps/workshop/content/236850/1193125267"
           "/home/${globals.username}/.paradoxlauncher"
           "/home/${globals.username}/Games/Limo"
         ];
