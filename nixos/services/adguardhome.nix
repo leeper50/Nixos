@@ -14,6 +14,15 @@ let
       "2600:1702:58c1:9acf:f2a7:31ff:fe94:abac"
     ];
   };
+  logsSettings = {
+    enable = true;
+    ignored = [
+      "|dnstest.dellhplaptop.xyz^"
+      "|.^"
+    ];
+    ignored_enabled = true;
+    interval = "168h";
+  };
   ports = {
     dns = 53;
     webui = 3000;
@@ -169,23 +178,18 @@ in
             url = "https://raw.githubusercontent.com/MassMove/AttackVectors/master/LocalJournals/fake-local-journals-list.txt";
           }
         ];
-        querylog = {
-          enabled = true;
+        querylog = logsSettings // {
           file_enabled = true;
-          interval = "168h";
           size_memory = 1000;
         };
-        statistics = {
-          enabled = true;
-          interval = "168h";
-        };
+        statistics = logsSettings;
         user_rules = [
-          "@@||x.com^"
           "@@||twitter.com^"
+          "@@||x.com^"
 
           # TV Paramount allowlist
-          "@@||pubads.g.doubleclick.net^$ctag=device_tv"
           "@@||googleads.g.doubleclick.net^$ctag=device_tv"
+          "@@||pubads.g.doubleclick.net^$ctag=device_tv"
         ];
       };
     };
