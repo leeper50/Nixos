@@ -17,7 +17,13 @@ in
     ];
   local = {
     beszel.agent.hubHost = "100.126.187.39";
-    docker.remote = true;
+    docker = {
+      komodo = {
+        coreIP = "100.126.187.39";
+        enable = true;
+      };
+      remote = true;
+    };
     i2pd = {
       bandwidth = 62500;
       enableIPv6 = true;
