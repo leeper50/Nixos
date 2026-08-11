@@ -25,7 +25,10 @@ in
   };
   local = {
     beszel.hub.enable = true;
-    docker.komodo.enable = true;
+    docker.komodo = {
+      core.enable = true;
+      enable = true;
+    };
     mounts = {
       docker = true;
       media = true;
