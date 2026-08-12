@@ -38,7 +38,7 @@ in
           "image.jxl.enabled" = true;
           "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
           "network.proxy.no_proxies_on" = "localhost,dellhplaptop.xyz,buncha.men,10.0.0.0/8";
-          "network.proxy.type" = 2;
+          "network.proxy.type" = 0;
         };
       };
     };
