@@ -8,9 +8,7 @@
   home.packages =
     with pkgs;
     [
-      astro-language-server
       bash-language-server
-      bruno
       cargo
       cargo-update
       delve
@@ -20,7 +18,6 @@
       golangci-lint-langserver
       gopls
       (lib.lowPrio gotools)
-      htop
       jdk25
       kotlin
       kotlin-language-server
@@ -44,9 +41,6 @@
       vscode-css-languageserver
       vscode-json-languageserver
       yaml-language-server
-    ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
-      k3s
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       wireguard-tools

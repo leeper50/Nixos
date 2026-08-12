@@ -9,23 +9,23 @@ in
       discord
     ]
     ++ lib.optionals pkgs.stdenv.isLinux [
-      azahar
-      dolphin-emu
-      eden
+      # azahar
+      # dolphin-emu
+      # eden
       limo
-      mumble
+      # mumble
       openmw
-      ryubing
-      teamspeak6-client
-      wowup-cf
-      xenia-canary
+      # ryubing
+      # teamspeak6-client
+      # wowup-cf
+      # xenia-canary
     ];
   programs = {
     prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
     };
     retroarch = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
+      enable = false;
       cores = {
         bsnes-hd.enable = true;
         citra.enable = true;

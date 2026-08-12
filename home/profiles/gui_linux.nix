@@ -14,6 +14,7 @@
     ''
   );
   home.packages = with pkgs; [
+    bazaar
     blender
     collabora-desktop
     czkawka
