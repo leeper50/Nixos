@@ -22,6 +22,7 @@
     ffmpeg-full
     freac
     gimp
+    kdePackages.kdenlive
     imgbrd-grabber
     qt5.qttools
     qview
@@ -50,6 +51,7 @@
         { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock-origin
         { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violent monkey
       ];
+      package = pkgs.brave;
     };
     fish = {
       functions = {
@@ -95,12 +97,12 @@
           yt-dlp $args
           return $status
         '';
-        rename_images = ''
+        rename_media = ''
           if not type -q md5sum
               echo "md5sum not found"
               return 127
           end
-          for file in *.{avif,bmp,gif,heic,jpg,jpeg,jxl,png,tiff,webp}
+          for file in *.{avif,bmp,gif,heic,jpg,jpeg,jxl,m4v,mkv,mp4,png,tiff,webp}
               test -f "$file"; or continue
               set ext (string split -r -m1 . "$file")[2]
               set hash (md5sum "$file" | string split ' ')[1]
