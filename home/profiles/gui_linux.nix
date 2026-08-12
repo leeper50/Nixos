@@ -21,7 +21,6 @@
     feishin
     ffmpeg-full
     freac
-    freetube
     gimp
     imgbrd-grabber
     qt5.qttools

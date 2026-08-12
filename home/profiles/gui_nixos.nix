@@ -65,6 +65,7 @@
   security.polkit.enable = true;
   services = {
     displayManager.sddm.enable = true;
+    flatpak.enable = true;
     printing.enable = true;
     pulseaudio.enable = false;
     pipewire = {
@@ -75,4 +76,5 @@
     };
     xserver.enable = true;
   };
+  xdg.portal.enable = true;
 }
