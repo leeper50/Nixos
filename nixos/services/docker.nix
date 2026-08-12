@@ -166,7 +166,6 @@ in
                 };
                 services = {
                   periphery = {
-                    deploy.mode = "global";
                     depends_on = lib.optionals cfg.komodo.core.enable [ "core" ];
                     environment = {
                       PERIPHERY_CONNECT_AS = config.networking.hostName;
@@ -200,11 +199,6 @@ in
                 lib.optionalAttrs cfg.komodo.core.enable {
                   services = {
                     core = {
-                      deploy = {
-                        mode = "replicated";
-                        placement.constraints = [ "node.role == manager" ];
-                        replicas = 1;
-                      };
                       environment = {
                         KOMODO_DATABASE_URI = "mongodb://mongo:27017";
                         KOMODO_INIT_ADMIN_USERNAME = globals.username;
@@ -227,11 +221,6 @@ in
                     };
                     mongo = {
                       command = "--quiet --wiredTigerCacheSizeGB 0.25";
-                      deploy = {
-                        mode = "replicated";
-                        placement.constraints = [ "node.role == manager" ];
-                        replicas = 1;
-                      };
                       image = "mongo:7";
                       networks = [ "komodo" ];
                       volumes = [
