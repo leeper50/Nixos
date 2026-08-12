@@ -2,7 +2,6 @@
   lib,
   config,
   globals,
-  pkgs,
   systemType,
   ...
 }:
@@ -83,7 +82,7 @@ in
           "workstation"
         ];
         id = "kembu-qwjnf";
-        path = "${home}/.config/FreeTube";
+        path = "${home}/.var/app/io.freetubeapp.FreeTube/config/FreeTube";
         type = cfg.folders."FreeTube".type;
       };
     })
