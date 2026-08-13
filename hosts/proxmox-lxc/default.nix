@@ -21,12 +21,6 @@ in
     ];
   local = {
     networking.local = true;
-    docker = {
-      komodo = {
-        coreIP = "10.0.0.60";
-        enable = true;
-      };
-    };
   };
   networking = {
     defaultGateway.interface = "eth0";

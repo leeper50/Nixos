@@ -1,8 +1,14 @@
 { ... }:
 {
-  local.docker.swarm = {
-    enable = true;
-    manager = true;
+  local.docker = {
+    komodo = {
+      coreIP = "10.0.0.60";
+      enable = true;
+    };
+    swarm = {
+      enable = true;
+      manager = true;
+    };
   };
   networking = {
     hostName = "node-1";

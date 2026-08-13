@@ -47,6 +47,10 @@ in
           message = "local.docker.swarm.managerIP must be set when using swarm and swarm.manager is false.";
         }
         {
+          assertion = !(cfg.swarm.enable && !cfg.swarm.manager && cfg.komodo.enable);
+          message = "local.cfg.komodo.enable must be false when using swarm and swarm.manager is false.";
+        }
+        {
           assertion = !(cfg.komodo.enable && !cfg.komodo.core.enable && cfg.komodo.coreIP == null);
           message = "local.docker.komodo.coreIP must be set when using komodo and komodo.core is false.";
         }
@@ -166,6 +170,11 @@ in
                 };
                 services = {
                   periphery = {
+                    deploy = lib.optionalAttrs cfg.swarm.enable {
+                      mode = "replicated";
+                      replicas = 1;
+                      placement.constraints = [ "node.role == manager" ];
+                    };
                     depends_on = lib.optionals cfg.komodo.core.enable [ "core" ];
                     environment = {
                       PERIPHERY_CONNECT_AS = config.networking.hostName;
