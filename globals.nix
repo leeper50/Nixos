@@ -2,6 +2,10 @@
   fullName = "Walter Leeper";
   locale = "en_US.UTF-8";
   nameservers = {
+    doh = [
+      "https://dns.quad9.net/dns-query"
+      "https://1.1.1.1/dns-query"
+    ];
     local = [
       "10.0.1.1"
       "2600:1702:58c1:9acf::1:1"

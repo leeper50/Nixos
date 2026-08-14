@@ -1,3 +1,4 @@
+# AdguardHome.yaml configuration - https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration#configuration-file
 { globals, lib, ... }:
 let
   customDNS = {
@@ -15,7 +16,7 @@ let
     ];
   };
   logsSettings = {
-    enable = true;
+    enabled = false;
     ignored = [
       "|dnstest.dellhplaptop.xyz^"
       "|.^"
@@ -97,10 +98,9 @@ in
       openFirewall = true;
       port = ports.webui;
       settings = {
-        clients = {
-          persistent = map (c: defaultClientSettings // c) taggedClients;
-        };
+        clients.persistent = map (c: defaultClientSettings // c) taggedClients;
         dns = {
+          anonymize_client_ip = true;
           bind_hosts = [ "0.0.0.0" ];
           bootstrap_dns = globals.nameservers.public;
           cache_enabled = true;
@@ -109,10 +109,7 @@ in
           hostsfile_enabled = false;
           port = ports.dns;
           ratelimit = 0;
-          upstream_dns = [
-            "https://dns.quad9.net/dns-query"
-            "https://1.1.1.1/dns-query"
-          ];
+          upstream_dns = globals.nameservers.doh;
           upstream_mode = "parallel";
           upstream_timeout = "2s";
         };

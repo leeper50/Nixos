@@ -87,12 +87,7 @@ in
         ports.dns = ports.dns;
         queryLog.type = "none";
         upstreams = {
-          groups = {
-            default = [
-              "https://dns.quad9.net/dns-query"
-              "https://1.1.1.1/dns-query"
-            ];
-          };
+          groups.default = globals.nameservers.doh;
           strategy = "parallel_best";
           timeout = "2s";
         };
