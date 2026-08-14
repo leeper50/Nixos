@@ -1,4 +1,9 @@
-{ globals, lib, pkgs, ... }:
+{
+  globals,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./shell
@@ -10,7 +15,8 @@
         ${pkgs.duti}/bin/duti -s com.interversehq.qView public.image viewer
       '';
     };
-    homeDirectory = if pkgs.stdenv.isLinux then "/home/${globals.username}" else "/Users/${globals.username}";
+    homeDirectory =
+      if pkgs.stdenv.isLinux then "/home/${globals.username}" else "/Users/${globals.username}";
     packages =
       with pkgs;
       [
@@ -28,6 +34,7 @@
       ]
       ++ lib.optionals pkgs.stdenv.isLinux [
         hwinfo
+        trashy
       ]
       ++ lib.optionals pkgs.stdenv.isDarwin [
         dbgate
