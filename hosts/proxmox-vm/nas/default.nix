@@ -5,6 +5,12 @@
   ...
 }:
 let
+  backupKeys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMOWw3itt6X+guXpUY1m5M2inL0Zs+Fs0nTrUOqDwZ/c root@node-1"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF99jYxJYq1frbpyemmxb7+G4+N0Q0XF77sNDiQcphc4 root@node-2"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMqG4JLWJ+lFKdOqTnY/gNHMoYLx82NjaTmwE7Lo1tJG root@node-3"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPieb/L9L+lfCvkA2nXaRZmvwbByskxXPLMV8PI4hmxG root@komodo"
+  ];
   rootDir = ../../..;
 in
 {
@@ -73,4 +79,12 @@ in
     fileSystems = [ "/mnt/data" ];
   };
   system.stateVersion = "25.11";
+  users.users = {
+    root = {
+      openssh.authorizedKeys.keys = backupKeys;
+    };
+    ${globals.username} = {
+      openssh.authorizedKeys.keys = backupKeys;
+    };
+  };
 }

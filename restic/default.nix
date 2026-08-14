@@ -9,6 +9,10 @@
 }:
 let
   cfg = config.local.restic;
+  extraOptionsAttrs = {
+    "${globals.username}" = [ "sftp.args='-i /home/${globals.username}/.ssh/id_ed25519'" ];
+    "root" = [ "sftp.args='-i /etc/ssh/ssh_host_ed25519_key'" ];
+  };
   isNixos = systemType == "Nixos";
   isStandalone = systemType == "Standalone";
   passwordFile =
@@ -55,6 +59,16 @@ in
         services.restic.enable = true;
       }
     ]
+    ++ lib.optionals isNixos [
+      {
+        programs.ssh.knownHosts = {
+          "[u400147.your-storagebox.de]:23".publicKey =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICf9svRenC/PLKIL9nk6K/pxQgoiFC41wTNvoIncOxs";
+          "nas.local".publicKey =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISsnpyceiNgLPCVpZiCuZ06a9Zpl3kUKmCCqRI6RFn2";
+        };
+      }
+    ]
     ++ [
       {
         services.restic.backups = lib.concatMapAttrs (
@@ -62,7 +76,7 @@ in
           let
             common = {
               exclude = backup.exclude;
-              extraOptions = [ "sftp.args='-i /home/${globals.username}/.ssh/id_ed25519'" ];
+              extraOptions = if extraOptionsAttrs ? ${backup.user} then extraOptionsAttrs.${backup.user} else [ ];
               initialize = true;
               passwordFile = passwordFile;
               paths = backup.paths;

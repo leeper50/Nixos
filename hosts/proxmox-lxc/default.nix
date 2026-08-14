@@ -15,12 +15,20 @@ in
       /nixos/services/docker.nix
       /nixos/services/keepalived.nix
       /nixos/services/power.nix
+      /restic
     ]
     ++ [
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
   local = {
+    docker.swarm.enable = true;
     networking.local = true;
+    restic.backups.volumes = {
+      paths = [
+        "/var/lib/docker/volumes"
+      ];
+      user = "root";
+    };
   };
   networking = {
     defaultGateway.interface = "eth0";
