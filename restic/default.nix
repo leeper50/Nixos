@@ -25,6 +25,11 @@ let
       osConfig.age.secrets."restic_b2_env.age".path
     else
       config.age.secrets."restic_b2_env.age".path;
+  rustfsEnvironmentFile =
+    if osConfig != null then
+      osConfig.age.secrets."rustfs_env.age".path
+    else
+      config.age.secrets."rustfs_env.age".path;
   resolvedHostName =
     if isStandalone then
       hostName
@@ -69,8 +74,6 @@ in
         programs.ssh.knownHosts = {
           "[u400147.your-storagebox.de]:23".publicKey =
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICf9svRenC/PLKIL9nk6K/pxQgoiFC41wTNvoIncOxs";
-          "nas.local".publicKey =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISsnpyceiNgLPCVpZiCuZ06a9Zpl3kUKmCCqRI6RFn2";
         };
       }
     ]
@@ -98,14 +101,10 @@ in
             location = resolvedHostName + "/" + name;
           in
           {
-            "${name}-nas" =
-              common
-              // lib.optionalAttrs isNixos {
-                repository = "sftp://${backup.user}@nas.local//mnt/data/home/${globals.username}/Backup/${location}";
-              }
-              // lib.optionalAttrs (!isNixos) {
-                repository = "sftp://${globals.username}@nas.local//mnt/data/home/${globals.username}/Backup/${location}";
-              };
+            "${name}-nas" = common // {
+              environmentFile = rustfsEnvironmentFile;
+              repository = "s3:http://nas.local:9000/dhp-backups/${location}";
+            };
             "${name}-hetzner" = common // {
               repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";
             };

@@ -21,6 +21,7 @@ in
       /nixos/services/avahi.nix
       /nixos/services/beszel.nix
       /nixos/services/nfs.nix
+      /nixos/services/rustfs.nix
       /nixos/services/samba.nix
       /syncthing/nixos.nix
     ]
