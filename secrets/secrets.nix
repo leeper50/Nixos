@@ -86,6 +86,17 @@ in
     ];
     hosts = [ "racknerd" ];
   };
+  "restic_b2_env.age" = {
+    publicKeys = all_keys;
+    hosts = [
+      "komodo"
+      "laptop"
+      "node-1"
+      "node-2"
+      "node-3"
+      "workstation"
+    ];
+  };
   "swarm_token.age" = {
     publicKeys = swarm_keys;
     hosts = [
