@@ -109,6 +109,10 @@ in
       programs.firefox.profiles.default.extensions = profileExtensions;
       programs.firefox.policies."3rdparty".Extensions = policyExtensions;
     })
+    (lib.mkIf cfg.floorp.enable {
+      programs.floorp.profiles.default.extensions = profileExtensions;
+      programs.floorp.policies."3rdparty".Extensions = policyExtensions;
+    })
     (lib.mkIf cfg.librewolf.enable {
       programs.librewolf.profiles.default.extensions = profileExtensions;
       programs.librewolf.policies."3rdparty".Extensions = policyExtensions;

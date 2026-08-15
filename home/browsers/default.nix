@@ -9,6 +9,7 @@ let
   cfg = config.local.browsers;
   chromiumPackage = pkgs.brave;
   firefoxPackage = pkgs.firefox-bin;
+  floorpPackage = pkgs.floorp-bin;
   librewolfPackage = if systemType == "NixDarwin" then pkgs.librewolf else pkgs.librewolf-bin;
   commonFirefoxSettings = {
     enable = true;
@@ -47,6 +48,7 @@ in
   options.local.browsers = {
     brave.enable = lib.mkEnableOption "brave";
     firefox.enable = lib.mkEnableOption "firefox";
+    floorp.enable = lib.mkEnableOption "floorp";
     librewolf.enable = lib.mkEnableOption "librewolf";
   };
   imports = [ ./extensions.nix ];
@@ -71,6 +73,18 @@ in
         configPath =
           if pkgs.stdenv.isLinux then ".mozilla/firefox" else "Library/Application Support/Firefox";
         package = firefoxPackage;
+        profiles.default.settings."network.proxy.type" = 0;
+      };
+    })
+    (lib.mkIf cfg.floorp.enable {
+      stylix.targets = {
+        floorp = {
+          colorTheme.enable = true;
+          profileNames = [ "default" ];
+        };
+      };
+      programs.floorp = lib.recursiveUpdate commonFirefoxSettings {
+        package = floorpPackage;
         profiles.default.settings."network.proxy.type" = 0;
       };
     })
