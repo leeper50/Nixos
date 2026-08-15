@@ -24,6 +24,9 @@ in
     docker.swarm.enable = true;
     networking.local = true;
     restic.backups.volumes = {
+      exclude = [
+        "*cache*"
+      ];
       paths = [
         "/var/lib/docker/volumes"
       ];

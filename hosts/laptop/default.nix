@@ -43,7 +43,7 @@ in
     };
     restic.backups.home = {
       exclude = [
-        "/home/${globals.username}/.cache"
+        "*cache*"
         "/home/${globals.username}/.local/share/Steam"
         "/home/${globals.username}/.local/share/Trash"
         "/home/${globals.username}/.ollama"

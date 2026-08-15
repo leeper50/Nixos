@@ -36,8 +36,7 @@ in
     networking.local = true;
     restic.backups.stacks = {
       exclude = [
-        "cache"
-        "model-cache"
+        "*cache*"
       ];
       paths = [
         "/etc/komodo/stacks"
