@@ -29,6 +29,11 @@ in
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
   };
+  home-manager.users.${globals.username}.local.browsers = {
+    brave.enable = true;
+    firefox.enable = true;
+    librewolf.enable = true;
+  };
   local = {
     mounts = {
       media = true;

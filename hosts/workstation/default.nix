@@ -22,6 +22,11 @@ in
       stylix.homeModules.stylix
     ];
   local = {
+    browsers = {
+      brave.enable = true;
+      firefox.enable = true;
+      librewolf.enable = true;
+    };
     packages = {
       cream-linux.enable = true;
       elegoo-slicer.enable = true;

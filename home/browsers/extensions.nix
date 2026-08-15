@@ -1,29 +1,17 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  cfg = config.local.browsers;
+
   containers = import ./containers.nix;
   cookieStoreId = name: "firefox-container-${toString containers.${name}.id}";
-
-  siteRules = lib.listToAttrs (
-    lib.flatten (
-      lib.mapAttrsToList (
-        name: container:
-        map (site: {
-          name = "map=${site}";
-          value = {
-            host = "!*.${site}";
-            containerName = name;
-            cookieStoreId = cookieStoreId name;
-            enabled = true;
-          };
-        }) (container.sites or [ ])
-      ) containers
-    )
-  );
-
   defaultContainer = lib.findFirst (name: containers.${name}.default or false) null (
     lib.attrNames containers
   );
-
   defaultRules = lib.optionalAttrs (defaultContainer != null) {
     "pref=defaultContainer" = {
       key = "defaultContainer";
@@ -42,6 +30,22 @@ let
       value = "";
     };
   };
+  siteRules = lib.listToAttrs (
+    lib.flatten (
+      lib.mapAttrsToList (
+        name: container:
+        map (site: {
+          name = "map=${site}";
+          value = {
+            host = "!*.${site}";
+            containerName = name;
+            cookieStoreId = cookieStoreId name;
+            enabled = true;
+          };
+        }) (container.sites or [ ])
+      ) containers
+    )
+  );
   profileExtensions = {
     force = true;
     packages = with pkgs.nur.repos.rycee.firefox-addons; [
@@ -57,7 +61,6 @@ let
       ublock-origin
       violentmonkey
     ];
-
     settings."containerise@kinte.sh" = {
       force = true;
       settings = siteRules // defaultRules;
@@ -88,8 +91,27 @@ let
   };
 in
 {
-  programs.firefox.profiles.default.extensions = profileExtensions;
-  programs.firefox.policies."3rdparty".Extensions = policyExtensions;
-  programs.librewolf.profiles.default.extensions = profileExtensions;
-  programs.librewolf.policies."3rdparty".Extensions = policyExtensions;
+  config = lib.mkMerge [
+    (lib.mkIf cfg.brave.enable {
+      programs.chromium.extensions = [
+        { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
+        { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
+        { id = "ldpochfccmkkmhdbclfhpagapcfdljkj"; } # decentraleyes
+        { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; } # i-still-dont-care-about-cookies
+        { id = "fkagelmloambgokoeokbpihmgpkbgbfm"; } # indie wiki buddy
+        { id = "padekgcemlokbadohgkifijomclgjgif"; } # proxy switchyomega
+        { id = "kbmfpngjjgdllneeigpgjifpgocmfgmb"; } # reddit enhancement suite
+        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock-origin
+        { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violent monkey
+      ];
+    })
+    (lib.mkIf cfg.firefox.enable {
+      programs.firefox.profiles.default.extensions = profileExtensions;
+      programs.firefox.policies."3rdparty".Extensions = policyExtensions;
+    })
+    (lib.mkIf cfg.librewolf.enable {
+      programs.librewolf.profiles.default.extensions = profileExtensions;
+      programs.librewolf.policies."3rdparty".Extensions = policyExtensions;
+    })
+  ];
 }

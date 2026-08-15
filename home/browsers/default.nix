@@ -6,9 +6,10 @@
   ...
 }:
 let
+  cfg = config.local.browsers;
   firefoxPackage = pkgs.firefox-bin;
   librewolfPackage = if systemType == "NixDarwin" then pkgs.librewolf else pkgs.librewolf-bin;
-  commonSettings = {
+  commonFirefoxSettings = {
     enable = true;
     languagePacks = [ "en-US" ];
     profiles = {
@@ -42,25 +43,44 @@ let
   };
 in
 {
+  options.local.browsers = {
+    brave.enable = lib.mkEnableOption "brave";
+    firefox.enable = lib.mkEnableOption "firefox";
+    librewolf.enable = lib.mkEnableOption "librewolf";
+  };
   imports = [ ./extensions.nix ];
-  stylix.targets = {
-    firefox = {
-      colorTheme.enable = true;
-      profileNames = [ "default" ];
-    };
-    librewolf = {
-      colorTheme.enable = true;
-      profileNames = [ "default" ];
-    };
-  };
-  programs.firefox = lib.recursiveUpdate commonSettings {
-    configPath =
-      if pkgs.stdenv.isLinux then ".mozilla/firefox" else "Library/Application Support/Firefox";
-    package = firefoxPackage;
-    profiles.default.settings."network.proxy.type" = 0;
-  };
-  programs.librewolf = lib.recursiveUpdate commonSettings {
-    package = librewolfPackage;
-    profiles.default.settings."network.proxy.type" = 2;
-  };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.brave.enable {
+      programs.chromium = {
+        enable = true;
+        package = pkgs.brave;
+      };
+    })
+    (lib.mkIf cfg.firefox.enable {
+      stylix.targets = {
+        firefox = {
+          colorTheme.enable = true;
+          profileNames = [ "default" ];
+        };
+      };
+      programs.firefox = lib.recursiveUpdate commonFirefoxSettings {
+        configPath =
+          if pkgs.stdenv.isLinux then ".mozilla/firefox" else "Library/Application Support/Firefox";
+        package = firefoxPackage;
+        profiles.default.settings."network.proxy.type" = 0;
+      };
+    })
+    (lib.mkIf cfg.librewolf.enable {
+      stylix.targets = {
+        librewolf = {
+          colorTheme.enable = true;
+          profileNames = [ "default" ];
+        };
+      };
+      programs.librewolf = lib.recursiveUpdate commonFirefoxSettings {
+        package = librewolfPackage;
+        profiles.default.settings."network.proxy.type" = 2;
+      };
+    })
+  ];
 }

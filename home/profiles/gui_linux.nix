@@ -39,21 +39,6 @@
         general = "Alacritty";
       };
     };
-    chromium = {
-      enable = true;
-      extensions = [
-        { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
-        { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
-        { id = "ldpochfccmkkmhdbclfhpagapcfdljkj"; } # decentraleyes
-        { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; } # i-still-dont-care-about-cookies
-        { id = "fkagelmloambgokoeokbpihmgpkbgbfm"; } # indie wiki buddy
-        { id = "padekgcemlokbadohgkifijomclgjgif"; } # proxy switchyomega
-        { id = "kbmfpngjjgdllneeigpgjifpgocmfgmb"; } # reddit enhancement suite
-        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock-origin
-        { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violent monkey
-      ];
-      package = pkgs.brave;
-    };
     fish = {
       functions = {
         crop = ''
