@@ -46,6 +46,7 @@ in
         "/home/${globals.username}/.cache"
         "/home/${globals.username}/.local/share/Steam"
         "/home/${globals.username}/.local/share/Trash"
+        "/home/${globals.username}/.ollama"
         "/home/${globals.username}/.steam"
         "/home/${globals.username}/Games"
         "/home/${globals.username}/Nas"
