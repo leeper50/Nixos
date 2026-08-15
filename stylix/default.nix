@@ -9,7 +9,7 @@
     [
       {
         stylix = {
-          base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
+          base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
           enable = true;
           fonts = {
             emoji = {
