@@ -7,6 +7,7 @@
 }:
 let
   cfg = config.local.browsers;
+  chromiumPackage = pkgs.brave;
   firefoxPackage = pkgs.firefox-bin;
   librewolfPackage = if systemType == "NixDarwin" then pkgs.librewolf else pkgs.librewolf-bin;
   commonFirefoxSettings = {
@@ -52,8 +53,11 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.brave.enable {
       programs.chromium = {
+        commandLineArgs = [
+          "--proxy-pac-url=https://c.dellhplaptop.xyz/public/proxy.pac"
+        ];
         enable = true;
-        package = pkgs.brave;
+        package = chromiumPackage;
       };
     })
     (lib.mkIf cfg.firefox.enable {
