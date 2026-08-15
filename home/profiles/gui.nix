@@ -2,10 +2,10 @@
 {
   imports = [
     ../accounts
-    ../dev
-    ../firefox
-    ../games
+    ../browsers
     ../default.nix
+    ../dev
+    ../games
   ];
   fonts.fontconfig.enable = true;
   home.packages =

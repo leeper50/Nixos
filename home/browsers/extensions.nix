@@ -42,9 +42,7 @@ let
       value = "";
     };
   };
-in
-{
-  programs.firefox.profiles.default.extensions = {
+  profileExtensions = {
     force = true;
     packages = with pkgs.nur.repos.rycee.firefox-addons; [
       bypass-paywalls-clean
@@ -65,8 +63,7 @@ in
       settings = siteRules // defaultRules;
     };
   };
-
-  programs.firefox.policies."3rdparty".Extensions = {
+  policyExtensions = {
     "uBlock0@raymondhill.net".toOverwrite = {
       filterLists = [
         "easylist"
@@ -82,8 +79,6 @@ in
       ];
       filters = [
         "www.youtube.com##.ytd-rich-section-renderer.style-scope > .ytd-rich-shelf-renderer.style-scope"
-        "x.com##.r-ttdzmv.r-vacyoi.css-175oi2r > div.css-175oi2r:nth-of-type(3)"
-        "x.com##.r-ttdzmv.r-vacyoi.css-175oi2r > div.r-1udh08x.r-1ifxtd0.r-rs99b7.r-1phboty.r-1867qdf.r-jxzhtn.r-14lw9ot.css-175oi2r"
       ];
     };
     "newtaboverride@agenedia.com" = {
@@ -91,4 +86,10 @@ in
       focus_website = true;
     };
   };
+in
+{
+  programs.firefox.profiles.default.extensions = profileExtensions;
+  programs.firefox.policies."3rdparty".Extensions = policyExtensions;
+  programs.librewolf.profiles.default.extensions = profileExtensions;
+  programs.librewolf.policies."3rdparty".Extensions = policyExtensions;
 }

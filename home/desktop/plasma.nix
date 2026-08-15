@@ -54,7 +54,7 @@
           {
             iconTasks = {
               launchers = [
-                "applications:vivaldi-stable.desktop"
+                "applications:firefox.desktop"
                 "applications:org.kde.dolphin.desktop"
                 "applications:kitty.desktop"
                 "applications:code.desktop"
