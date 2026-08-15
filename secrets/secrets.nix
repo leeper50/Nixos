@@ -87,6 +87,8 @@ in
     hosts = [ "racknerd" ];
   };
   "restic_b2_env.age" = {
+    group = "1000";
+    owner = "1000";
     publicKeys = all_keys;
     hosts = [
       "komodo"
@@ -97,7 +99,9 @@ in
       "workstation"
     ];
   };
-  "rustfs_env.age" = {
+  "restic_rustfs_env.age" = {
+    group = "1000";
+    owner = "1000";
     publicKeys = all_keys;
     hosts = [
       "komodo"
@@ -118,12 +122,12 @@ in
     ];
   };
   "user_walter_clear.age" = {
-    group = "100";
+    group = "1000";
     owner = "1000";
     publicKeys = all_keys;
   };
   "user_walter_hash.age" = {
-    group = "100";
+    group = "1000";
     owner = "1000";
     publicKeys = all_keys;
   };

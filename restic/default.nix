@@ -27,9 +27,9 @@ let
       config.age.secrets."restic_b2_env.age".path;
   rustfsEnvironmentFile =
     if osConfig != null then
-      osConfig.age.secrets."rustfs_env.age".path
+      osConfig.age.secrets."restic_rustfs_env.age".path
     else
-      config.age.secrets."rustfs_env.age".path;
+      config.age.secrets."restic_rustfs_env.age".path;
   resolvedHostName =
     if isStandalone then
       hostName

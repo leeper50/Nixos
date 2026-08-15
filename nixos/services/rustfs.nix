@@ -6,7 +6,7 @@
   '';
   services.rustfs = {
     enable = true;
-    environmentFile = config.age.secrets."rustfs_env.age".path;
+    environmentFile = config.age.secrets."restic_rustfs_env.age".path;
     settings = {
       RUSTFS_REGION = "nas";
       RUSTFS_VOLUMES = "/mnt/data/rustfs";
