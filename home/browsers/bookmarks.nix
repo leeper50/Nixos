@@ -7,14 +7,6 @@
         name = "Games";
         bookmarks = [
           {
-            name = "AzerothCore";
-            url = "https://www.azerothcore.org/wiki/home";
-          }
-          {
-            name = "Castlevania: HoD Item Compendium";
-            url = "https://docs.google.com/spreadsheets/d/1nXBgme6WsQc0ND6X9rqt90jlpZb6qHbj6099NTf_Yp4/edit?hl=en&pli=1&hl=en&pli=1&gid=0#gid=0";
-          }
-          {
             name = "Factorio Mall Hubs (space age)";
             url = "https://factorioblueprints.tech/blueprint/1c6af359-e3e6-4df8-bb20-106048e996a0?selected=d02a6c53-7ac1-4681-bbbf-83ab50da117b&type=book";
           }
