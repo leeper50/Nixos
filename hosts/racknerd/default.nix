@@ -31,10 +31,9 @@ in
     };
     i2pd = {
       bandwidth = 62500;
+      enable = true;
       enableIPv6 = false;
       port = 62271;
-      privateAddress = "100.92.216.84";
-      publicAddress = "107.174.237.4";
     };
   };
   networking = {

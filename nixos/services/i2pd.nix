@@ -8,22 +8,15 @@ in
       type = lib.types.int;
       default = 50000;
     };
+    enable = lib.mkEnableOption "i2pd";
     enableIPv6 = lib.mkEnableOption "ipv6";
     port = lib.mkOption {
       type = lib.types.int;
       default = 25565;
     };
-    privateAddress = lib.mkOption {
-      type = lib.types.str;
-      default = "0.0.0.0";
-    };
-    publicAddress = lib.mkOption {
-      type = lib.types.str;
-      default = "0.0.0.0";
-    };
   };
   config = lib.mkMerge [
-    {
+    (lib.mkIf cfg.enable {
       networking.firewall = {
         allowedTCPPorts = [
           cfg.port
@@ -33,35 +26,35 @@ in
         ];
       };
       services.i2pd = {
-        address = cfg.publicAddress;
-        bandwidth = cfg.bandwidth;
-        enable = true;
-        enableIPv4 = true;
-        enableIPv6 = cfg.enableIPv6;
-        port = cfg.port;
-        proto = {
+        settings = {
+          bandwidth = cfg.bandwidth;
+          ipv4 = true;
+          ipv6 = cfg.enableIPv6;
+          port = cfg.port;
           http = {
-            address = cfg.privateAddress;
-            enable = true;
+            enabled = true;
+            address = "0.0.0.0";
             port = 7070;
+            strictheaders = false;
           };
-          httpProxy = {
-            address = cfg.privateAddress;
-            enable = true;
+          httpproxy = {
+            enabled = true;
+            address = "0.0.0.0";
             port = 4444;
           };
           sam = {
-            address = cfg.privateAddress;
-            enable = true;
+            enabled = true;
+            address = "0.0.0.0";
             port = 7656;
           };
-          socksProxy = {
-            address = cfg.privateAddress;
-            enable = true;
+          socksproxy = {
+            enabled = true;
+            address = "0.0.0.0";
             port = 4447;
           };
         };
+        enable = true;
       };
-    }
+    })
   ];
 }
