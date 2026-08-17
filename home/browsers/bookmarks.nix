@@ -14,6 +14,14 @@
             name = "Factorio Master Class";
             url = "https://factorioblueprints.tech/blueprint/cc17531e-1e60-4ac0-a899-77de574dbcea?selected=2ad010d4-87f2-441a-985d-c665b5052a87";
           }
+          {
+            name = "Stardew Valley Wiki";
+            url = "https://stardewvalleywiki.com/Stardew_Valley_Wiki";
+          }
+          {
+            name = "Stardew Valley Expanded Wiki";
+            url = "https://stardewvalleyexpanded.wiki.gg/";
+          }
         ];
       }
       {
