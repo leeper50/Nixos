@@ -24,11 +24,11 @@
       file
       pistol
     ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       libreoffice-bin
       vlc-bin
     ];
-  home.pointerCursor.enable = pkgs.stdenv.isLinux;
+  home.pointerCursor.enable = pkgs.stdenv.hostPlatform.isLinux;
   programs = {
     alacritty = {
       enable = true;

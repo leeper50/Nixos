@@ -42,7 +42,7 @@
       vscode-json-languageserver
       yaml-language-server
     ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       wireguard-tools
     ];
   programs = {

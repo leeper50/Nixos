@@ -71,7 +71,10 @@ in
       };
       programs.firefox = lib.recursiveUpdate commonFirefoxSettings {
         configPath =
-          if pkgs.stdenv.isLinux then ".mozilla/firefox" else "Library/Application Support/Firefox";
+          if pkgs.stdenv.hostPlatform.isLinux then
+            ".mozilla/firefox"
+          else
+            "Library/Application Support/Firefox";
         package = firefoxPackage;
         profiles.default.settings."network.proxy.type" = 0;
       };

@@ -10,13 +10,16 @@
   ];
 
   home = {
-    activation = lib.mkIf pkgs.stdenv.isDarwin {
+    activation = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       setDefaultApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.duti}/bin/duti -s com.interversehq.qView public.image viewer
       '';
     };
     homeDirectory =
-      if pkgs.stdenv.isLinux then "/home/${globals.username}" else "/Users/${globals.username}";
+      if pkgs.stdenv.hostPlatform.isLinux then
+        "/home/${globals.username}"
+      else
+        "/Users/${globals.username}";
     packages =
       with pkgs;
       [
@@ -32,11 +35,11 @@
         parallel
         powerline-fonts
       ]
-      ++ lib.optionals pkgs.stdenv.isLinux [
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
         hwinfo
         trashy
       ]
-      ++ lib.optionals pkgs.stdenv.isDarwin [
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
         dbgate
         duti
       ];
@@ -45,5 +48,5 @@
     username = globals.username;
   };
   programs.home-manager.enable = true;
-  targets.genericLinux.enable = pkgs.stdenv.isLinux;
+  targets.genericLinux.enable = pkgs.stdenv.hostPlatform.isLinux;
 }

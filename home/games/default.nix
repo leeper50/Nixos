@@ -8,7 +8,7 @@ in
     [
       discord
     ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       # azahar
       # dolphin-emu
       # eden
@@ -21,10 +21,10 @@ in
       # xenia-canary
     ];
   programs = {
-    prismlauncher = lib.mkIf pkgs.stdenv.isLinux {
+    prismlauncher = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
     };
-    retroarch = lib.mkIf pkgs.stdenv.isLinux {
+    retroarch = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = false;
       cores = {
         bsnes-hd.enable = true;
@@ -65,7 +65,7 @@ in
         video_shader_dir = "${retroarch_dir}/Shaders";
       };
     };
-    vesktop = lib.mkIf pkgs.stdenv.isLinux {
+    vesktop = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
       settings = {
         arRPC = false;

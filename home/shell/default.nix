@@ -5,7 +5,7 @@
   ...
 }:
 let
-  editor = if pkgs.stdenv.isLinux then "hx" else "helix";
+  editor = if pkgs.stdenv.hostPlatform.isLinux then "hx" else "helix";
 in
 {
   imports = [ ./ssh.nix ];
@@ -97,7 +97,7 @@ in
           rcat = "command cat";
           update_flake = "nix flake update --flake $FLAKE_DIR";
         }
-        (lib.mkIf pkgs.stdenv.isLinux {
+        (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           rs = "sudo systemctl";
           s = "systemctl";
           us = "systemctl --user";
