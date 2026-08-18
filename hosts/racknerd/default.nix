@@ -10,8 +10,8 @@ in
       /nixos/configs/networking.nix
       /nixos/services/beszel.nix
       /nixos/services/docker.nix
-      /nixos/services/i2pd.nix
       /nixos/services/murmur.nix
+      /nixos/services/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix
@@ -29,10 +29,17 @@ in
       };
       remote = true;
     };
-    i2pd = {
-      enable = true;
-      enableIPv6 = false;
-      port = 62271;
+    proxies = {
+      i2p = {
+        enable = true;
+        enableIPv6 = false;
+        port = 62271;
+      };
+      tor = {
+        enable = true;
+        name = "engagingaugmented";
+        port = 36411;
+      };
     };
   };
   networking = {

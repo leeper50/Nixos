@@ -10,7 +10,7 @@ in
       /nixos/configs/networking.nix
       /nixos/services/beszel.nix
       /nixos/services/docker.nix
-      /nixos/services/i2pd.nix
+      /nixos/services/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix
@@ -24,10 +24,17 @@ in
       };
       remote = true;
     };
-    i2pd = {
-      enable = true;
-      enableIPv6 = true;
-      port = 51175;
+    proxies = {
+      i2p = {
+        enable = true;
+        enableIPv6 = true;
+        port = 51175;
+      };
+      tor = {
+        enable = true;
+        name = "landeddemeanor";
+        port = 47442;
+      };
     };
   };
   networking = {
