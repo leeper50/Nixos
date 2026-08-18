@@ -36,7 +36,7 @@ in
         port = 62271;
       };
       tor = {
-        enable = true;
+        enable = false;
         name = "engagingaugmented";
         port = 36411;
       };

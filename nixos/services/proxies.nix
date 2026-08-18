@@ -115,6 +115,8 @@ in
           ExitRelay = false;
           Nickname = cfg.tor.name;
           ORPort = cfg.tor.port;
+          RelayBandwidthBurst = "200 KBytes";
+          RelayBandwidthRate = "100 KBytes";
         };
       };
       networking.firewall.allowedTCPPorts = [ cfg.tor.port ];

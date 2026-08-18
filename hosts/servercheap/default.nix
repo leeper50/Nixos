@@ -31,7 +31,7 @@ in
         port = 51175;
       };
       tor = {
-        enable = true;
+        enable = false;
         name = "landeddemeanor";
         port = 47442;
       };
