@@ -1,5 +1,5 @@
 {
-  default = "searxng";
+  default = "ddg_noai";
   engines = {
     ddg_noai = {
       definedAliases = [ "@dd" ];
