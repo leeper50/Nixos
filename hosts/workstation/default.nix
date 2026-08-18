@@ -46,6 +46,7 @@ in
           "/home/${globals.username}/.steam"
           "/home/${globals.username}/Games"
           "/home/${globals.username}/Nas"
+          "/home/${globals.username}/Temp"
         ];
         paths = [
           "/home/${globals.username}"

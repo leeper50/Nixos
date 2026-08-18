@@ -56,6 +56,7 @@ in
         "/home/${globals.username}/Games"
         "/home/${globals.username}/Nas"
         "/home/${globals.username}/Sync/Retroarch"
+        "/home/${globals.username}/Temp"
       ];
       paths = [
         "/home/${globals.username}"
