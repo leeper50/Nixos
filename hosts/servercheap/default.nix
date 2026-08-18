@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 let
   rootDir = ../..;
 in
@@ -25,7 +25,6 @@ in
       remote = true;
     };
     i2pd = {
-      bandwidth = 62500;
       enable = true;
       enableIPv6 = true;
       port = 51175;

@@ -1,12 +1,22 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  options,
+  ...
+}:
 let
   cfg = config.local.i2pd;
 in
 {
   options.local.i2pd = {
     bandwidth = lib.mkOption {
-      type = lib.types.int;
-      default = 50000;
+      type =
+        (options.services.i2pd.settings.type.getSubOptions [
+          "services"
+          "i2pd"
+          "settings"
+        ]).bandwidth.type;
+      default = "X";
     };
     enable = lib.mkEnableOption "i2pd";
     enableIPv6 = lib.mkEnableOption "ipv6";

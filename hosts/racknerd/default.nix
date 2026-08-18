@@ -30,7 +30,6 @@ in
       remote = true;
     };
     i2pd = {
-      bandwidth = 62500;
       enable = true;
       enableIPv6 = false;
       port = 62271;
