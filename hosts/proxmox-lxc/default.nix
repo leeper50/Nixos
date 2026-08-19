@@ -23,14 +23,25 @@ in
   local = {
     docker.swarm.enable = true;
     networking.local = true;
-    restic.backups.volumes = {
-      exclude = [
-        "*cache*"
-      ];
-      paths = [
-        "/var/lib/docker/volumes"
-      ];
-      user = "root";
+    restic.backups = {
+      docker = {
+        exclude = [
+          "*cache*"
+        ];
+        paths = [
+          "/etc/docker"
+        ];
+        user = "root";
+      };
+      volumes = {
+        exclude = [
+          "*cache*"
+        ];
+        paths = [
+          "/var/lib/docker/volumes"
+        ];
+        user = "root";
+      };
     };
   };
   networking = {

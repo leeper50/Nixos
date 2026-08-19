@@ -498,6 +498,9 @@ in
           RemainAfterExit = true;
         };
       };
+      systemd.tmpfiles.rules = [
+        "d /etc/docker 0775 ${globals.username} ${globals.username} -"
+      ];
     })
   ];
 }
