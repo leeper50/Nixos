@@ -23,6 +23,7 @@ in
   local = {
     docker.swarm.enable = true;
     networking.local = true;
+    mounts.media = true;
     restic.backups = {
       docker = {
         exclude = [
