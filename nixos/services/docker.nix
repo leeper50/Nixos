@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.local.docker;
-  komodo_version = "2.3.1";
+  komodo_version = "2.3.2";
 in
 {
   options.local.docker = {
