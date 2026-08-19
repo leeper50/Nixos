@@ -101,13 +101,6 @@ in
             location = resolvedHostName + "/" + name;
           in
           {
-            "${name}-nas" = common // {
-              environmentFile = rustfsEnvironmentFile;
-              repository = "s3:http://nas.local:9000/dhp-backups/${location}";
-            };
-            "${name}-hetzner" = common // {
-              repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";
-            };
             "${name}-b2" = common // {
               environmentFile = b2EnvironmentFile;
               pruneOpts = [ ];
@@ -119,6 +112,13 @@ in
               paths = [ ];
               repository = "b2:dhp-backups:${location}";
               timerConfig.OnCalendar = "Sun *-*-* 13:00:00"; # weekly
+            };
+            "${name}-hetzner" = common // {
+              repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";
+            };
+            "${name}-nas" = common // {
+              environmentFile = rustfsEnvironmentFile;
+              repository = "s3:http://nas.local:9000/dhp-backups/${location}";
             };
           }
         ) cfg.backups;
