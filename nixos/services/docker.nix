@@ -23,10 +23,14 @@ in
     remote = lib.mkEnableOption "remote";
     swarm = {
       enable = lib.mkEnableOption "swarm";
+      labels = lib.mkOption {
+        default = [ ];
+        type = lib.types.listOf lib.types.str;
+      };
       manager = lib.mkEnableOption "swarm manager";
       managerIP = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
         default = null;
+        type = lib.types.nullOr lib.types.str;
       };
     };
     portainer.enable = lib.mkEnableOption "portainer";
@@ -84,6 +88,7 @@ in
           fixed-cidr-v6 = "fda3:db28:76bb:e314::/64";
           ip6tables = true;
           ipv6 = true;
+          labels = map (label: "${label}=true") cfg.swarm.labels;
         };
         logDriver = "journald";
       };

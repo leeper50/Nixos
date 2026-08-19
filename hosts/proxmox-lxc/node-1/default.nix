@@ -5,7 +5,10 @@
       coreIP = "10.0.0.60";
       enable = true;
     };
-    swarm.manager = true;
+    swarm = {
+      labels = [ "amd_gpu" ];
+      manager = true;
+    };
   };
   networking = {
     hostName = "node-1";

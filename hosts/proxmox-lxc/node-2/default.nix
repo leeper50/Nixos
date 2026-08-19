@@ -1,6 +1,9 @@
 { ... }:
 {
-  local.docker.swarm.managerIP = "10.0.0.21";
+  local.docker.swarm = {
+    labels = [ "intel_gpu" ];
+    managerIP = "10.0.0.21";
+  };
   networking = {
     hostName = "node-2";
     interfaces.eth0 = {
