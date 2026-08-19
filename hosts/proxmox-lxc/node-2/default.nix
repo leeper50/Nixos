@@ -1,6 +1,6 @@
 { ... }:
 {
-  local.docker.swarm.managerIP = "node-1.local";
+  local.docker.swarm.managerIP = "10.0.0.21";
   networking = {
     hostName = "node-2";
     interfaces.eth0 = {
