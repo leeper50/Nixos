@@ -34,18 +34,22 @@ in
           "10.0.0.52" = [ "nas.local" ];
           "10.0.0.60" = [
             "komodo.local"
+          ];
+          "10.0.1.1" = [
+            "buncha.men"
             "dellhplaptop.xyz"
           ];
-          "10.0.1.1" = [ "buncha.men" ];
           "2600:1702:58c1:9acf::21" = [ "node-1.local" ];
           "2600:1702:58c1:9acf::22" = [ "node-2.local" ];
           "2600:1702:58c1:9acf::23" = [ "node-3.local" ];
           "2600:1702:58c1:9acf::52" = [ "nas.local" ];
           "2600:1702:58c1:9acf::60" = [
             "komodo.local"
+          ];
+          "2600:1702:58c1:9acf::1:1" = [
+            "buncha.men"
             "dellhplaptop.xyz"
           ];
-          "2600:1702:58c1:9acf::1:1" = [ "buncha.men" ];
         };
         nameservers = globals.nameservers.local ++ globals.nameservers.public;
       };
