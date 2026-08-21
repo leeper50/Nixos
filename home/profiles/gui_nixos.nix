@@ -81,6 +81,7 @@ in
   environment.systemPackages = with pkgs; [
     awww
     hyprpaper
+    hyprshutdown
     kdePackages.ark
     kdePackages.dolphin
     kdePackages.kio

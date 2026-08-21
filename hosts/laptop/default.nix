@@ -79,6 +79,7 @@ in
       asusdConfig.source = ./asusd.ron;
       enable = true;
     };
+    logind.settings.Login.HandlePowerKey = "ignore";
     power-profiles-daemon.enable = true;
   };
   system.stateVersion = "26.05";

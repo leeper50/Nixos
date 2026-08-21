@@ -29,6 +29,7 @@ in
     rofimoji
     slurp
     waypaper
+    wl-clip-persist
     wl-clipboard
     wtype
     xdg-desktop-portal-hyprland
@@ -191,6 +192,9 @@ in
       content = ''
         local mainMod = "SUPER"
 
+        -- Session
+        hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd("hyprshutdown --vt"))
+
         -- Apps
         hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("fuzzel"))
         hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("fuzzel"))
@@ -256,6 +260,18 @@ in
     '';
 
     xwayland.enable = true;
+  };
+
+  systemd.user.services.wl-clip-persist = {
+    Install.WantedBy = [ "hyprland-session.target" ];
+    Service = {
+      ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard both";
+      Restart = "on-failure";
+    };
+    Unit = {
+      Description = "Keep Wayland clipboard contents after the source app exits";
+      PartOf = [ "hyprland-session.target" ];
+    };
   };
 
   programs.waybar = {
