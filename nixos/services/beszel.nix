@@ -7,7 +7,7 @@ in
   options.local.beszel = {
     hub.enable = lib.mkEnableOption "host";
     agent.hubHost = lib.mkOption {
-      default = "komodo.local";
+      default = "node-1.local";
       type = lib.types.str;
     };
   };
@@ -17,7 +17,7 @@ in
         enable = true;
         environment = {
           "HUB_URL" = "http://${cfg.agent.hubHost}:${toString ports.agent}";
-          "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPrPvS3EnwuIsWXEnSejGIN75hP+Tdbi6TLoKv5l/fqs";
+          "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNcggS7ZMLtGUfM0HTrqfj9jK6ezXoSj1MzDJOv6cOs";
           "TOKEN_FILE" = config.age.secrets."beszel_token.age".path;
         };
         openFirewall = true;

@@ -1,13 +1,15 @@
 { ... }:
 {
+  local.beszel.hub.enable = true;
   local.docker = {
     komodo = {
-      coreIP = "10.0.0.60";
+      core.enable = true;
       enable = true;
     };
     swarm = {
       labels = [ "amd_gpu" ];
       manager = true;
+      managerIP = "10.0.0.21";
     };
   };
   networking = {

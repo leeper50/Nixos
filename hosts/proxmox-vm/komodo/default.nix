@@ -24,14 +24,9 @@ in
     "net.ipv6.conf.all.forwarding" = 1;
   };
   local = {
-    beszel.hub.enable = true;
     docker.komodo = {
-      core.enable = true;
+      coreIP = "10.0.0.21";
       enable = true;
-    };
-    mounts = {
-      docker = true;
-      media = true;
     };
     networking.local = true;
     restic.backups.stacks = {

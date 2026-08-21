@@ -21,10 +21,10 @@ in
     openssl
   ];
   local = {
-    beszel.agent.hubHost = "100.126.187.39";
+    beszel.agent.hubHost = "100.68.73.88";
     docker = {
       komodo = {
-        coreIP = "100.126.187.39";
+        coreIP = "100.68.73.88";
         enable = true;
       };
       remote = true;

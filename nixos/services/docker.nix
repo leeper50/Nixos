@@ -47,10 +47,6 @@ in
           message = "local.docker.swarm.managerIP should not be set when not using swarm.";
         }
         {
-          assertion = !(cfg.swarm.enable && !cfg.swarm.manager && cfg.swarm.managerIP == null);
-          message = "local.docker.swarm.managerIP must be set when using swarm and swarm.manager is false.";
-        }
-        {
           assertion = !(cfg.swarm.enable && !cfg.swarm.manager && cfg.komodo.enable);
           message = "local.cfg.komodo.enable must be false when using swarm and swarm.manager is false.";
         }
@@ -185,6 +181,7 @@ in
                       PERIPHERY_CONNECT_AS = config.networking.hostName;
                       PERIPHERY_CORE_ADDRESS =
                         if cfg.komodo.core.enable then "ws://core:9120" else "ws://${cfg.komodo.coreIP}:9120";
+                      PERIPHERY_CORE_PUBLIC_KEYS = "MCowBQYDK2VuAyEAsxfy2FMcYn36sr7Sj/syAkaFxGIH6LKaOnYTF+578jo=";
                       PERIPHERY_SSL_ENABLED = "true";
                     };
                     image = "ghcr.io/moghtech/komodo-periphery:${komodo_version}";
@@ -211,15 +208,37 @@ in
               }
               (
                 lib.optionalAttrs cfg.komodo.core.enable {
+                  networks.proxy.external = true;
                   services = {
                     core = {
+                      deploy = lib.optionalAttrs cfg.swarm.enable {
+                        labels = {
+                          "homepage.group" = "Infrastructure";
+                          "homepage.href" = "https://k.dellhplaptop.xyz";
+                          "homepage.icon" = "sh-komodo.svg";
+                          "homepage.name" = "Komodo";
+                          "kuma.__docker" = "";
+                          "release_notes" = "https://github.com/moghtech/komodo/releases";
+                          "traefik.enable" = "true";
+                          "traefik.http.routers.komodo.entryPoints" = "https";
+                          "traefik.http.routers.komodo.middlewares" = "localonly@file";
+                          "traefik.http.routers.komodo.rule" = "Host(`k.dellhplaptop.xyz`)";
+                          "traefik.http.services.komodo.loadbalancer.server.port" = "9120";
+                        };
+                        mode = "replicated";
+                        placement.constraints = [ "node.role == manager" ];
+                        replicas = 1;
+                      };
                       environment = {
                         KOMODO_DATABASE_URI = "mongodb://mongo:27017";
                         KOMODO_INIT_ADMIN_USERNAME = globals.username;
                         KOMODO_LOCAL_AUTH = "true";
                       };
                       image = "ghcr.io/moghtech/komodo-core:${komodo_version}";
-                      networks = [ "komodo" ];
+                      networks = [
+                        "komodo"
+                        "proxy"
+                      ];
                       ports = [
                         {
                           mode = "host";
@@ -234,6 +253,11 @@ in
                       ];
                     };
                     mongo = {
+                      deploy = lib.optionalAttrs cfg.swarm.enable {
+                        mode = "replicated";
+                        replicas = 1;
+                        placement.constraints = [ "node.role == manager" ];
+                      };
                       command = "--quiet --wiredTigerCacheSizeGB 0.25";
                       image = "mongo:7";
                       networks = [ "komodo" ];
@@ -467,7 +491,7 @@ in
         script = ''
           if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | grep -qx active; then
             ${pkgs.docker}/bin/docker swarm init \
-              --advertise-addr 10.0.0.21 \
+              --advertise-addr ${cfg.swarm.managerIP} \
               --default-addr-pool 172.31.0.0/16 \
               --default-addr-pool-mask-length 24
           fi
