@@ -193,7 +193,7 @@ in
         local mainMod = "SUPER"
 
         -- Session
-        hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd("hyprshutdown --vt"))
+        hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd("hyprshutdown"))
 
         -- Apps
         hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("fuzzel"))
