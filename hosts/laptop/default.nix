@@ -36,6 +36,7 @@ in
   };
   local = {
     mounts = {
+      autoMount = true;
       media = true;
       user = true;
     };

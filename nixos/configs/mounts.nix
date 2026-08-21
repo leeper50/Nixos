@@ -7,22 +7,34 @@
 }:
 let
   cfg = config.local.mounts;
-  nfs_options = [
+  nfs_common = [
     "_netdev"
-    "bg"
     "hard"
     "nfsvers=4.2"
-    "noauto"
     "nofail"
     "retrans=2"
     "rw"
     "timeo=600"
-    "x-systemd.automount"
-    "x-systemd.idle-timeout=600"
   ];
+  nfs_options =
+    nfs_common
+    ++ (
+      if cfg.autoMount then
+        [
+          "noauto" # don't mount on boot
+          "x-systemd.automount" # mount when accessed
+          "x-systemd.idle-timeout=600" # disconnect if unused
+        ]
+      else
+        [
+          "x-systemd.mount-timeout=infinity"
+          "retry=10000"
+        ]
+    );
 in
 {
   options.local.mounts = {
+    autoMount = lib.mkEnableOption "automount";
     docker = lib.mkEnableOption "docker";
     media = lib.mkEnableOption "media";
     user = lib.mkEnableOption "user";
