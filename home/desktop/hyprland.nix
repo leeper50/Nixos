@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cycle-audio-output = pkgs.writeShellScript "cycle-audio-output" ''
     current=$(pactl get-default-sink)
@@ -261,6 +266,11 @@ in
 
     xwayland.enable = true;
   };
+
+  systemd.user.tmpfiles.rules = [
+    "d ${config.xdg.configHome}/hypr 0750 - - -"
+    "f ${config.xdg.configHome}/hypr/monitors.lua 0750 - - -"
+  ];
 
   systemd.user.services.wl-clip-persist = {
     Install.WantedBy = [ "hyprland-session.target" ];
