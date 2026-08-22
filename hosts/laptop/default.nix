@@ -16,6 +16,7 @@ in
       /nixos/configs/mounts.nix
       /nixos/configs/networking.nix
       /nixos/services/avahi.nix
+      /nixos/services/beszel.nix
       /nixos/services/power.nix
       /restic
       /syncthing/nixos.nix
@@ -35,6 +36,7 @@ in
     librewolf.enable = true;
   };
   local = {
+    beszel.agent.hubHost = "100.68.73.88";
     mounts = {
       autoMount = true;
       media = true;

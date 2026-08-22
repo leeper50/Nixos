@@ -37,6 +37,7 @@ in
     ];
     hosts = [
       "komodo"
+      "laptop"
       "nas"
       "node-1"
       "node-2"
