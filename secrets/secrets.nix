@@ -86,6 +86,24 @@ in
     ];
     hosts = [ "racknerd" ];
   };
+  "postgresql_forgejo.age" = {
+    publicKeys = swarm_keys ++ [ nas ];
+    hosts = [
+      "nas"
+      "node-1"
+      "node-2"
+      "node-3"
+    ];
+  };
+  "postgresql_freshrss.age" = {
+    publicKeys = swarm_keys ++ [ nas ];
+    hosts = [
+      "nas"
+      "node-1"
+      "node-2"
+      "node-3"
+    ];
+  };
   "restic_b2_env.age" = {
     group = "1000";
     owner = "1000";
@@ -93,6 +111,7 @@ in
     hosts = [
       "komodo"
       "laptop"
+      "nas"
       "node-1"
       "node-2"
       "node-3"

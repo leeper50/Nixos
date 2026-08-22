@@ -21,8 +21,10 @@ in
       /nixos/services/avahi.nix
       /nixos/services/beszel.nix
       /nixos/services/nfs.nix
+      /nixos/services/postgresql.nix
       /nixos/services/rustfs.nix
       /nixos/services/samba.nix
+      /restic
       /syncthing/nixos.nix
     ]
     ++ [ disko.nixosModules.disko ];
@@ -38,6 +40,17 @@ in
   };
   local = {
     networking.local = true;
+    postgresql = {
+      databases = [
+        "forgejo"
+        "freshrss"
+      ];
+      enable = true;
+    };
+    restic.backups.postgresql = {
+      paths = [ "/mnt/data/postgresql-backups" ];
+      user = "postgres";
+    };
     syncthing = {
       folders = {
         "FreeTube" = {
