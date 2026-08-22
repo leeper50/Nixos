@@ -64,6 +64,7 @@ in
           + pkgs.writeShellScript "postgresql-create-backup-dir" ''
             mkdir -p /mnt/data/postgresql-backups
             chown postgres:postgres /mnt/data/postgresql-backups
+            chmod 0755 /mnt/data/postgresql-backups
           ''
         )
       ];
@@ -95,6 +96,7 @@ in
       script = lib.concatMapStrings (name: ''
         ${config.services.postgresql.package}/bin/pg_dump -h /run/postgresql -U postgres -Fc \
           -f /mnt/data/postgresql-backups/${name}.dump.tmp ${name}
+        chmod 0644 /mnt/data/postgresql-backups/${name}.dump.tmp
         mv /mnt/data/postgresql-backups/${name}.dump.tmp /mnt/data/postgresql-backups/${name}.dump
       '') cfg.databases;
       serviceConfig = {

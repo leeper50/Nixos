@@ -49,7 +49,7 @@ in
     };
     restic.backups.postgresql = {
       paths = [ "/mnt/data/postgresql-backups" ];
-      user = "postgres";
+      user = "root";
     };
     syncthing = {
       folders = {
