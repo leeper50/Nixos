@@ -1,4 +1,5 @@
 {
+  disko,
   globals,
   nur,
   pkgs,
@@ -22,6 +23,8 @@ in
       /syncthing/nixos.nix
     ]
     ++ [
+      disko.nixosModules.disko
+      ./disk-config.nix
       ./gpu.nix
       ./hardware-configuration.nix
       nur.modules.nixos.default
@@ -82,6 +85,8 @@ in
       asusdConfig.source = ./asusd.ron;
       enable = true;
     };
+    btrfs.autoScrub.enable = true;
+    fstrim.enable = true;
     logind.settings.Login.HandlePowerKey = "ignore";
     power-profiles-daemon.enable = true;
   };
