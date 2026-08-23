@@ -164,6 +164,7 @@
             "git.enableSmartCommit" = true;
             "git.fetchOnPull" = true;
             "js/ts.updateImportsOnFileMove.enabled" = "always";
+            "nix.enableLanguageServer" = true;
             "nix.serverPath" = "nixd";
             "prettier.tabWidth" = 4;
             "prettier.useTabs" = true;
