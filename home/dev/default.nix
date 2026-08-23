@@ -8,6 +8,7 @@
   home.packages =
     with pkgs;
     [
+      android-tools
       bash-language-server
       cargo
       cargo-update
