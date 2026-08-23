@@ -44,7 +44,7 @@
         duti
       ];
     shell.enableFishIntegration = true;
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     username = globals.username;
   };
   programs.home-manager.enable = true;
