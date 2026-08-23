@@ -30,6 +30,7 @@
     sqlitebrowser
     theclicker
     vlc
+    yubioath-flutter
   ];
   programs = {
     alacritty.settings = {
