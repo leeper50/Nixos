@@ -29,6 +29,7 @@ in
     blueman
     brightnessctl
     grim
+    hyprpolkitagent
     pavucontrol
     playerctl
     rofimoji
@@ -271,6 +272,18 @@ in
     "d ${config.xdg.configHome}/hypr 0750 - - -"
     "f ${config.xdg.configHome}/hypr/monitors.lua 0750 - - -"
   ];
+
+  systemd.user.services.hyprpolkitagent = {
+    Unit = {
+      Description = "Polkit authentication agent for Hyprland";
+      PartOf = [ "hyprland-session.target" ];
+    };
+    Install.WantedBy = [ "hyprland-session.target" ];
+    Service = {
+      ExecStart = "${pkgs.hyprpolkitagent}/bin/hyprpolkitagent";
+      Restart = "on-failure";
+    };
+  };
 
   systemd.user.services.wl-clip-persist = {
     Install.WantedBy = [ "hyprland-session.target" ];

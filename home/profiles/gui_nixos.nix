@@ -134,6 +134,7 @@ in
     flatpak.enable = true;
     printing.enable = true;
     pulseaudio.enable = false;
+    udisks2.enable = true;
     pipewire = {
       alsa.enable = true;
       alsa.support32Bit = true;
