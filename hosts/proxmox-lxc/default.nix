@@ -53,5 +53,4 @@ in
   };
   proxmoxLXC.manageHostName = true;
   systemd.network.wait-online.enable = false;
-  users.users.root.initialPassword = "nixos";
 }

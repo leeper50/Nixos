@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ globals, lib, ... }:
 let
   defaultCalendarSettings = {
     remote = {
@@ -22,7 +22,7 @@ let
   };
   defaultEmailSettings = {
     enable = true;
-    realName = "Walter Leeper";
+    realName = globals.fullName;
     thunderbird = {
       enable = true;
       profiles = [ "default" ];

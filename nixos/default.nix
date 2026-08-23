@@ -79,6 +79,7 @@ in
   services.tailscale.enable = true;
   time.timeZone = globals.timeZone;
   users = {
+    mutableUsers = false;
     groups = {
       "${globals.username}" = {
         gid = 1000;
@@ -93,6 +94,7 @@ in
           "networkmanager"
           "wheel"
         ];
+        group = globals.username;
         hashedPasswordFile = config.age.secrets."user_${globals.username}_hash.age".path;
         isNormalUser = true;
       };
