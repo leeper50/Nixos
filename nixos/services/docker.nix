@@ -14,11 +14,11 @@ in
     k3s.enable = lib.mkEnableOption "k3s";
     komodo = {
       core.enable = lib.mkEnableOption "core";
-      enable = lib.mkEnableOption "komodo";
       coreIP = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         default = null;
       };
+      periphery.enable = lib.mkEnableOption "periphery";
     };
     remote = lib.mkEnableOption "remote";
     swarm = {
@@ -47,12 +47,12 @@ in
           message = "local.docker.swarm.managerIP should not be set when not using swarm.";
         }
         {
-          assertion = !(cfg.swarm.enable && !cfg.swarm.manager && cfg.komodo.enable);
-          message = "local.cfg.komodo.enable must be false when using swarm and swarm.manager is false.";
+          assertion = !((cfg.komodo.core.enable || cfg.komodo.periphery.enable) && cfg.komodo.coreIP == null);
+          message = "local.docker.komodo.coreIP must be set when using komodo.";
         }
         {
-          assertion = !(cfg.komodo.enable && !cfg.komodo.core.enable && cfg.komodo.coreIP == null);
-          message = "local.docker.komodo.coreIP must be set when using komodo and komodo.core is false.";
+          assertion = !(!cfg.komodo.core.enable && !cfg.komodo.periphery.enable && cfg.komodo.coreIP != null);
+          message = "local.docker.komodo.coreIP is set, but neither core or periphery are enabled.";
         }
       ];
     }
@@ -158,130 +158,36 @@ in
       virtualisation.docker.logDriver = lib.mkForce "json-file";
     })
 
-    ### Komodo configuration
-    (lib.mkIf cfg.komodo.enable (
+    ### Komodo periphery configuration
+    (lib.mkIf cfg.komodo.periphery.enable (
       let
-        komodoStackFile = pkgs.writeText "komodo-stack-base.json" (
-          builtins.toJSON (
-            lib.recursiveUpdate
-              {
-                networks.komodo = {
-                  attachable = true;
-                  driver = if cfg.swarm.enable then "overlay" else "bridge";
-                };
-                services = {
-                  periphery = {
-                    deploy = lib.optionalAttrs cfg.swarm.enable {
-                      mode = "replicated";
-                      replicas = 1;
-                      placement.constraints = [ "node.role == manager" ];
-                    };
-                    depends_on = lib.optionals cfg.komodo.core.enable [ "core" ];
-                    environment = {
-                      PERIPHERY_CONNECT_AS = config.networking.hostName;
-                      PERIPHERY_CORE_ADDRESS =
-                        if cfg.komodo.core.enable then "ws://core:9120" else "ws://${cfg.komodo.coreIP}:9120";
-                      PERIPHERY_CORE_PUBLIC_KEYS = "MCowBQYDK2VuAyEAsxfy2FMcYn36sr7Sj/syAkaFxGIH6LKaOnYTF+578jo=";
-                      PERIPHERY_SSL_ENABLED = "true";
-                    };
-                    image = "ghcr.io/moghtech/komodo-periphery:${komodo_version}";
-                    networks = [ "komodo" ];
-                    ports = [
-                      {
-                        target = 8120;
-                        published = 8120;
-                        protocol = "tcp";
-                        mode = "host";
-                      }
-                    ];
-                    volumes = [
-                      "/etc/komodo:/etc/komodo"
-                      "/proc:/proc"
-                      "/var/run/docker.sock:/var/run/docker.sock"
-                      "komodo-keys:/config/keys"
-                    ];
-                  };
-                };
-                volumes = {
-                  komodo-keys = { };
-                };
-              }
-              (
-                lib.optionalAttrs cfg.komodo.core.enable {
-                  networks.proxy.external = true;
-                  services = {
-                    core = {
-                      deploy = lib.optionalAttrs cfg.swarm.enable {
-                        labels = {
-                          "homepage.group" = "Infrastructure";
-                          "homepage.href" = "https://k.dellhplaptop.xyz";
-                          "homepage.icon" = "sh-komodo.svg";
-                          "homepage.name" = "Komodo";
-                          "kuma.__docker" = "";
-                          "release_notes" = "https://github.com/moghtech/komodo/releases";
-                          "traefik.enable" = "true";
-                          "traefik.http.routers.komodo.entryPoints" = "https";
-                          "traefik.http.routers.komodo.middlewares" = "localonly@file";
-                          "traefik.http.routers.komodo.rule" = "Host(`k.dellhplaptop.xyz`)";
-                          "traefik.http.services.komodo.loadbalancer.server.port" = "9120";
-                        };
-                        mode = "replicated";
-                        placement.constraints = [ "node.role == manager" ];
-                        replicas = 1;
-                      };
-                      environment = {
-                        KOMODO_DATABASE_URI = "mongodb://mongo:27017";
-                        KOMODO_INIT_ADMIN_USERNAME = globals.username;
-                        KOMODO_LOCAL_AUTH = "true";
-                      };
-                      image = "ghcr.io/moghtech/komodo-core:${komodo_version}";
-                      networks = [
-                        "komodo"
-                        "proxy"
-                      ];
-                      ports = [
-                        {
-                          mode = "host";
-                          protocol = "tcp";
-                          published = 9120;
-                          target = 9120;
-                        }
-                      ];
-                      volumes = [
-                        "komodo-keys:/config/keys"
-                        "komodo-repo:/repo-cache"
-                      ];
-                    };
-                    mongo = {
-                      deploy = lib.optionalAttrs cfg.swarm.enable {
-                        mode = "replicated";
-                        replicas = 1;
-                        placement.constraints = [ "node.role == manager" ];
-                      };
-                      command = "--quiet --wiredTigerCacheSizeGB 0.25";
-                      image = "mongo:7";
-                      networks = [ "komodo" ];
-                      volumes = [
-                        "mongo-config:/data/configdb"
-                        "mongo-data:/data/db"
-                      ];
-                    };
-                  };
-                  volumes = {
-                    komodo-repo = { };
-                    mongo-config = { };
-                    mongo-data = { };
-                  };
-                }
-              )
-          )
+        komodoPeripheryStackFile = pkgs.writeText "komodo-periphery-stack-base.json" (
+          builtins.toJSON {
+            services.periphery = {
+              environment = {
+                PERIPHERY_CONNECT_AS = config.networking.hostName;
+                PERIPHERY_CORE_ADDRESS = "ws://${cfg.komodo.coreIP}:9120";
+                PERIPHERY_CORE_PUBLIC_KEYS = "MCowBQYDK2VuAyEAsxfy2FMcYn36sr7Sj/syAkaFxGIH6LKaOnYTF+578jo=";
+                PERIPHERY_SSL_ENABLED = "true";
+              };
+              image = "ghcr.io/moghtech/komodo-periphery:${komodo_version}";
+              ports = [ "8120:8120" ];
+              volumes = [
+                "/etc/komodo:/etc/komodo"
+                "/proc:/proc"
+                "/var/run/docker.sock:/var/run/docker.sock"
+                "komodo-keys:/config/keys"
+              ];
+            };
+            volumes.komodo-keys = { };
+          }
         );
       in
       {
-        systemd.services.komodo-stack = {
-          description = "Deploy Komodo stack";
-          after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
-          requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
+        systemd.services.komodo-periphery = {
+          description = "Deploy Komodo periphery";
+          after = [ "docker.service" ];
+          requires = [ "docker.service" ];
           wantedBy = [ "multi-user.target" ];
           script = ''
             TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
@@ -289,32 +195,123 @@ in
 
             ONBOARDING_KEY_FILE="/run/agenix/komodo_onboarding_key.age"
             ONBOARDING_KEY="$([ -f "$ONBOARDING_KEY_FILE" ] && ${pkgs.coreutils}/bin/cat "$ONBOARDING_KEY_FILE" || true)"
+
+            ${pkgs.jq}/bin/jq \
+              --arg onboarding_key "$ONBOARDING_KEY" \
+              'if $onboarding_key != "" then .services.periphery.environment.PERIPHERY_ONBOARDING_KEY = $onboarding_key else . end' \
+              ${komodoPeripheryStackFile} > "$TMPFILE"
+
+            ${pkgs.docker}/bin/docker compose -p komodo-periphery -f "$TMPFILE" up -d
+          '';
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+        };
+        systemd.tmpfiles.rules = [
+          "d /etc/komodo 0777 root root -"
+        ];
+      }
+    ))
+
+    ### Komodo core configuration
+    (lib.mkIf cfg.komodo.core.enable (
+      let
+        komodoCoreStackFile = pkgs.writeText "komodo-core-stack-base.json" (
+          builtins.toJSON {
+            networks.komodo = {
+              attachable = true;
+              driver = if cfg.swarm.enable then "overlay" else "bridge";
+            };
+            networks.proxy.external = true;
+            services = {
+              core = {
+                deploy = lib.optionalAttrs cfg.swarm.enable {
+                  labels = {
+                    "homepage.group" = "Infrastructure";
+                    "homepage.href" = "https://k.dellhplaptop.xyz";
+                    "homepage.icon" = "sh-komodo.svg";
+                    "homepage.name" = "Komodo";
+                    "kuma.__docker" = "";
+                    "release_notes" = "https://github.com/moghtech/komodo/releases";
+                    "traefik.enable" = "true";
+                    "traefik.http.routers.komodo.entryPoints" = "https";
+                    "traefik.http.routers.komodo.middlewares" = "localonly@file";
+                    "traefik.http.routers.komodo.rule" = "Host(`k.dellhplaptop.xyz`)";
+                    "traefik.http.services.komodo.loadbalancer.server.port" = "9120";
+                  };
+                  mode = "replicated";
+                  placement.constraints = [ "node.role == manager" ];
+                  replicas = 1;
+                };
+                environment = {
+                  KOMODO_DATABASE_URI = "mongodb://mongo:27017";
+                  KOMODO_INIT_ADMIN_USERNAME = globals.username;
+                  KOMODO_LOCAL_AUTH = "true";
+                };
+                image = "ghcr.io/moghtech/komodo-core:${komodo_version}";
+                networks = [
+                  "komodo"
+                  "proxy"
+                ];
+                ports = [
+                  {
+                    mode = "host";
+                    protocol = "tcp";
+                    published = 9120;
+                    target = 9120;
+                  }
+                ];
+                volumes = [
+                  "komodo-keys:/config/keys"
+                  "komodo-repo:/repo-cache"
+                ];
+              };
+              mongo = {
+                deploy = lib.optionalAttrs cfg.swarm.enable {
+                  mode = "replicated";
+                  replicas = 1;
+                  placement.constraints = [ "node.role == manager" ];
+                };
+                command = "--quiet --wiredTigerCacheSizeGB 0.25";
+                image = "mongo:7";
+                networks = [ "komodo" ];
+                volumes = [
+                  "mongo-config:/data/configdb"
+                  "mongo-data:/data/db"
+                ];
+              };
+            };
+            volumes = {
+              komodo-keys = { };
+              komodo-repo = { };
+              mongo-config = { };
+              mongo-data = { };
+            };
+          }
+        );
+      in
+      {
+        systemd.services.komodo-core-stack = {
+          description = "Deploy Komodo core stack";
+          after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
+          requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
+          wantedBy = [ "multi-user.target" ];
+          script = ''
+            TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
+            trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
+
+            ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
+            if [ ! -f "$ADMIN_PASS_FILE" ]; then
+              echo "komodo_admin_password.age not yet available — deploy after rekeying"
+              exit 0
+            fi
+
+            ${pkgs.jq}/bin/jq \
+              --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
+              '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass' \
+              ${komodoCoreStackFile} > "$TMPFILE"
           ''
-          + (
-            if cfg.komodo.core.enable then
-              ''
-                ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
-
-                if [ ! -f "$ADMIN_PASS_FILE" ]; then
-                  echo "komodo_admin_password.age not yet available — deploy after rekeying"
-                  exit 0
-                fi
-
-                ${pkgs.jq}/bin/jq \
-                  --arg admin_pass "$(cat "$ADMIN_PASS_FILE")" \
-                  --arg onboarding_key "$ONBOARDING_KEY" \
-                  '.services.core.environment.KOMODO_INIT_ADMIN_PASSWORD = $admin_pass
-                   | if $onboarding_key != "" then .services.periphery.environment.PERIPHERY_ONBOARDING_KEY = $onboarding_key else . end' \
-                  ${komodoStackFile} > "$TMPFILE"
-              ''
-            else
-              ''
-                ${pkgs.jq}/bin/jq \
-                  --arg onboarding_key "$ONBOARDING_KEY" \
-                  'if $onboarding_key != "" then .services.periphery.environment.PERIPHERY_ONBOARDING_KEY = $onboarding_key else . end' \
-                  ${komodoStackFile} > "$TMPFILE"
-              ''
-          )
           + (
             if cfg.swarm.enable then
               ''
@@ -325,7 +322,7 @@ in
               ''
             else
               ''
-                ${pkgs.docker}/bin/docker compose -f "$TMPFILE" up -d
+                ${pkgs.docker}/bin/docker compose -p komodo -f "$TMPFILE" up -d
               ''
           );
           serviceConfig = {
@@ -333,9 +330,6 @@ in
             RemainAfterExit = true;
           };
         };
-        systemd.tmpfiles.rules = [
-          "d /etc/komodo 0777 root root -"
-        ];
       }
     ))
 

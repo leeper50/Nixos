@@ -20,7 +20,7 @@ in
     docker = {
       komodo = {
         coreIP = "100.68.73.88";
-        enable = true;
+        periphery.enable = true;
       };
       remote = true;
     };

@@ -26,7 +26,7 @@ in
   local = {
     docker.komodo = {
       coreIP = "10.0.0.21";
-      enable = true;
+      periphery.enable = true;
     };
     networking.local = true;
     restic.backups.stacks = {

@@ -4,7 +4,8 @@
   local.docker = {
     komodo = {
       core.enable = true;
-      enable = true;
+      coreIP = "10.0.0.21";
+      periphery.enable = true;
     };
     swarm = {
       labels = [ "amd_gpu" ];
