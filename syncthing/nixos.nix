@@ -1,9 +1,4 @@
-{
-  config,
-  globals,
-  lib,
-  ...
-}:
+{ config, globals, ... }:
 let
   cfg = config.local.syncthing;
   home = cfg.home;

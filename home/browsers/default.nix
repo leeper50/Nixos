@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  systemType,
   ...
 }:
 let
@@ -10,7 +9,7 @@ let
   chromiumPackage = pkgs.brave;
   firefoxPackage = pkgs.firefox-bin;
   floorpPackage = pkgs.floorp-bin;
-  librewolfPackage = if systemType == "NixDarwin" then pkgs.librewolf else pkgs.librewolf-bin;
+  librewolfPackage = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.librewolf else pkgs.librewolf-bin;
   commonFirefoxSettings = {
     enable = true;
     languagePacks = [ "en-US" ];

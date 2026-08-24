@@ -1,16 +1,12 @@
 {
-  lib,
   config,
   globals,
-  systemType,
+  lib,
   ...
 }:
 let
   cfg = config.local.syncthing;
   home = cfg.home;
-  isNixDarwin = systemType == "NixDarwin";
-  isNixos = systemType == "Nixos";
-  isStandalone = systemType == "Standalone";
 in
 {
   options.local.syncthing = {

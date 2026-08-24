@@ -1,5 +1,6 @@
 { lib, pkgs, ... }:
 let
+  enableEmulators = false;
   retroarch_dir = "~/Sync/Retroarch";
 in
 {
@@ -7,25 +8,27 @@ in
     with pkgs;
     [
       discord
+      # mumble
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-      # azahar
-      # dolphin-emu
-      # eden
       limo
-      # mumble
       openmw
-      # ryubing
       # teamspeak6-client
       # wowup-cf
-      # xenia-canary
+    ]
+    ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && enableEmulators) [
+      azahar
+      dolphin-emu
+      eden
+      ryubing
+      xenia-canary
     ];
   programs = {
     prismlauncher = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
     };
     retroarch = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-      enable = false;
+      enable = enableEmulators;
       cores = {
         bsnes-hd.enable = true;
         citra.enable = true;

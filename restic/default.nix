@@ -1,10 +1,10 @@
 {
   config,
   globals,
+  hostName ? null,
   lib,
   osConfig ? null,
   systemType,
-  hostName ? null,
   ...
 }:
 let

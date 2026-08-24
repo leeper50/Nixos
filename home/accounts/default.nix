@@ -22,53 +22,47 @@ let
   };
   defaultEmailSettings = {
     enable = true;
+    imap.tls.enable = true;
+    smtp.tls.enable = true;
     realName = globals.fullName;
     thunderbird = {
       enable = true;
       profiles = [ "default" ];
     };
   };
-  gmailSettings = defaultEmailSettings // {
+  gmailSettings = lib.recursiveUpdate defaultEmailSettings {
     imap = {
       authentication = "xoauth2";
       host = "imap.gmail.com";
       port = 993;
-      tls.enable = true;
     };
     smtp = {
       authentication = "xoauth2";
       host = "smtp.gmail.com";
       port = 465;
-      tls.enable = true;
     };
   };
-  mailboxSettings = defaultEmailSettings // {
+  mailboxSettings = lib.recursiveUpdate defaultEmailSettings {
     imap = {
       host = "imap.mailbox.org";
       port = 993;
-      tls.enable = true;
     };
     smtp = {
       host = "smtp.mailbox.org";
       port = 465;
-      tls.enable = true;
     };
   };
-  outlookSettings = defaultEmailSettings // {
+  outlookSettings = lib.recursiveUpdate defaultEmailSettings {
     imap = {
       authentication = "xoauth2";
       host = "outlook.office365.com";
       port = 993;
-      tls.enable = true;
     };
     smtp = {
       authentication = "xoauth2";
       host = "smtp-mail.outlook.com";
       port = 587;
-      tls = {
-        enable = true;
-        useStartTls = true;
-      };
+      tls.useStartTls = true;
     };
   };
 in

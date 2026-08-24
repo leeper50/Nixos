@@ -1,11 +1,17 @@
-{ globals, ... }:
+{ agenix, globals, ... }:
 let
   rootDir = ../..;
 in
 {
-  imports = map (p: rootDir + p) [
-    /syncthing
-  ];
+  imports =
+    map (p: rootDir + p) [
+      /home/profiles/gui.nix
+      /secrets
+      /syncthing
+    ]
+    ++ [
+      agenix.homeManagerModules.default
+    ];
   local = {
     browsers = {
       brave.enable = true;
