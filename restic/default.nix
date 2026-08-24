@@ -17,9 +17,9 @@ let
   isStandalone = systemType == "Standalone";
   passwordFile =
     if osConfig != null then
-      osConfig.age.secrets."user_${globals.username}_clear.age".path
+      osConfig.age.secrets."restic_password_file.age".path
     else
-      config.age.secrets."user_${globals.username}_clear.age".path;
+      config.age.secrets."restic_password_file.age".path;
   b2EnvironmentFile =
     if osConfig != null then
       osConfig.age.secrets."restic_b2_env.age".path

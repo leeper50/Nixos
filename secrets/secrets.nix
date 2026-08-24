@@ -133,6 +133,11 @@ in
       "workstation"
     ];
   };
+  "restic_password_file.age" = {
+    group = "1000";
+    owner = "1000";
+    publicKeys = all_keys;
+  };
   "swarm_token.age" = {
     publicKeys = swarm_keys;
     hosts = [
