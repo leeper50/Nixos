@@ -9,7 +9,7 @@
   imports = [
     agenix.darwinModules.default
     ./homebrew
-    ../secrets
+    ../../secrets
   ];
   nixpkgs.overlays = [
     (final: prev: {

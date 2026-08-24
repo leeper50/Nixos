@@ -11,7 +11,7 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /darwin
+      /hosts/darwin
       /stylix
     ]
     ++ [
