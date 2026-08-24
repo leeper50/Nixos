@@ -1,5 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    intel-gpu-tools
+  ];
   local.docker = {
     komodo = {
       coreIP = "10.0.0.21";

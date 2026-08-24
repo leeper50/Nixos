@@ -1,5 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    intel-gpu-tools
+  ];
   local.docker.swarm = {
     labels = [ "slow" ];
     managerIP = "10.0.0.21";
