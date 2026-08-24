@@ -11,7 +11,6 @@ let
 in
 {
   options.local.docker = {
-    k3s.enable = lib.mkEnableOption "k3s";
     komodo = {
       core.enable = lib.mkEnableOption "core";
       coreIP = lib.mkOption {
@@ -33,7 +32,6 @@ in
         type = lib.types.nullOr lib.types.str;
       };
     };
-    portainer.enable = lib.mkEnableOption "portainer";
   };
   config = lib.mkMerge [
     {
@@ -90,73 +88,6 @@ in
       };
       users.users.${globals.username}.extraGroups = [ "docker" ];
     }
-
-    ### K3s configuration
-    (lib.mkIf cfg.k3s.enable {
-      boot.supportedFilesystems = [ "nfs" ];
-      environment.systemPackages = with pkgs; [
-        cifs-utils
-        k3s
-        nfs-utils
-        openiscsi
-      ];
-      networking.firewall = {
-        allowedTCPPorts = [
-          # Flannel CNI
-          8472 # VXLAN
-          # iSCSI
-          3260
-          # K3s
-          2379 # etcd client
-          2380 # etcd peer
-          6443 # k3s API server
-          10250 # kubelet metrics
-          10251 # k3s scheduler
-          10252 # k3s controller manager
-          # Metallb
-          7946
-        ];
-        allowedUDPPorts = [
-          # Flannel CNI
-          8472 # VXLAN
-          # Metallb
-          7946
-          # WireGuard
-          51820
-        ];
-      };
-      services.k3s = {
-        clusterInit = cfg.swarm.manager;
-        enable = true;
-        extraFlags = toString (
-          [
-            "--disable local-storage"
-            "--disable servicelb"
-            "--disable traefik"
-            "--write-kubeconfig-mode \"0644\""
-          ]
-          ++ (
-            if cfg.swarm.manager then
-              [ ]
-            else
-              [
-                "--server https://${cfg.swarm.managerIP}:6443"
-              ]
-          )
-        );
-        role = "server";
-        tokenFile = config.age.secrets."k3s_token.age".path;
-      };
-      services.openiscsi = {
-        enable = true;
-        name = "iqn.2020-08.org.linux-iscsi.${config.networking.hostName}.local:storage";
-      };
-      services.rpcbind.enable = true;
-      systemd.tmpfiles.rules = [
-        "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
-      ];
-      virtualisation.docker.logDriver = lib.mkForce "json-file";
-    })
 
     ### Komodo periphery configuration
     (lib.mkIf cfg.komodo.periphery.enable (
@@ -323,95 +254,6 @@ in
             else
               ''
                 ${pkgs.docker}/bin/docker compose -p komodo -f "$TMPFILE" up -d
-              ''
-          );
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-          };
-        };
-      }
-    ))
-
-    ### Portainer configuration
-    (lib.mkIf cfg.portainer.enable (
-      let
-        portainerStackFile = pkgs.writeText "portainer-stack-base.json" (
-          builtins.toJSON {
-            networks.agent_network = {
-              attachable = true;
-              driver = if cfg.swarm.enable then "overlay" else "bridge";
-            };
-            services = {
-              agent = {
-                deploy.mode = "global";
-                image = "portainer/agent:2.39.1";
-                networks = [ "agent_network" ];
-                volumes = [
-                  "/var/run/docker.sock:/var/run/docker.sock"
-                  "/var/lib/docker/volumes:/var/lib/docker/volumes"
-                ];
-              };
-              portainer = {
-                deploy = {
-                  mode = "replicated";
-                  replicas = 1;
-                  placement.constraints = [ "node.role == manager" ];
-                };
-                image = "portainer/portainer-ee:2.39.1";
-                networks = [ "agent_network" ];
-                ports = [
-                  "9000:9000/tcp"
-                  "9443:9443/tcp"
-                  "8000:8000/tcp"
-                ];
-                volumes = [
-                  "/var/run/docker.sock:/var/run/docker.sock"
-                  "portainer_data:/data"
-                ];
-              };
-            };
-            volumes.portainer_data = { };
-          }
-        );
-      in
-      {
-        networking.firewall.allowedTCPPorts = [
-          9000 # Portainer HTTP
-          9001 # Portainer agent
-          9443 # Portainer HTTPS
-        ];
-        systemd.services.portainer-stack = {
-          description = "Deploy Portainer stack";
-          after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
-          requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
-          wantedBy = [ "multi-user.target" ];
-          script = ''
-            LICENSE_FILE="/run/agenix/portainer_license.age"
-            if [ ! -f "$LICENSE_FILE" ]; then
-              echo "portainer_license.age not yet available — deploy after rekeying"
-              exit 0
-            fi
-
-            TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
-            trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
-
-            ${pkgs.jq}/bin/jq \
-              --arg key "$(cat "$LICENSE_FILE")" \
-              '.services.portainer.command = "--license-key " + $key' \
-              ${portainerStackFile} > "$TMPFILE"
-          ''
-          + (
-            if cfg.swarm.enable then
-              ''
-                ${pkgs.docker}/bin/docker stack deploy \
-                --compose-file "$TMPFILE" \
-                --detach \
-                portainer
-              ''
-            else
-              ''
-                ${pkgs.docker}/bin/docker compose -f "$TMPFILE" up -d
               ''
           );
           serviceConfig = {
