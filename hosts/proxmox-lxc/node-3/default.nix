@@ -3,9 +3,15 @@
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
   ];
-  local.docker.swarm = {
-    labels = [ "slow" ];
-    managerIP = "10.0.0.21";
+  local.docker = {
+    komodo = {
+      coreIP = "10.0.0.21";
+      periphery.enable = true;
+    };
+    swarm = {
+      labels = [ "slow" ];
+      managerIP = "10.0.0.21";
+    };
   };
   networking = {
     hostName = "node-3";

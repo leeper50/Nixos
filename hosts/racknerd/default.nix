@@ -9,7 +9,6 @@ in
       /nixos
       /nixos/configs/networking.nix
       /nixos/services/beszel.nix
-      /nixos/services/docker.nix
       /nixos/services/murmur.nix
       /nixos/services/proxies.nix
     ]
@@ -22,13 +21,6 @@ in
   ];
   local = {
     beszel.agent.hubHost = "100.68.73.88";
-    docker = {
-      komodo = {
-        coreIP = "100.68.73.88";
-        periphery.enable = true;
-      };
-      remote = true;
-    };
     proxies = {
       i2p = {
         enable = true;
@@ -43,12 +35,7 @@ in
     };
   };
   networking = {
-    firewall = {
-      extraCommands = ''
-        iptables -A DOCKER-USER ! -i tailscale0 -p tcp --dport 8120 -j DROP
-      '';
-      trustedInterfaces = [ "tailscale0" ];
-    };
+    firewall.trustedInterfaces = [ "tailscale0" ];
     hostName = "racknerd";
   };
   services = {

@@ -9,7 +9,6 @@ in
       /nixos
       /nixos/configs/networking.nix
       /nixos/services/beszel.nix
-      /nixos/services/docker.nix
       /nixos/services/proxies.nix
     ]
     ++ [
@@ -17,13 +16,6 @@ in
     ];
   local = {
     beszel.agent.hubHost = "100.68.73.88";
-    docker = {
-      komodo = {
-        coreIP = "100.68.73.88";
-        periphery.enable = true;
-      };
-      remote = true;
-    };
     proxies = {
       i2p = {
         enable = true;
@@ -46,6 +38,7 @@ in
       address = "2606:cc0:11:2300::1";
       interface = "ens3";
     };
+    firewall.trustedInterfaces = [ "tailscale0" ];
     hostName = "servercheap";
     interfaces.ens3 = {
       ipv4.addresses = [

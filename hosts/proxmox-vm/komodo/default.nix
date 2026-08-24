@@ -25,7 +25,7 @@ in
   };
   local = {
     docker.komodo = {
-      coreIP = "10.0.0.21";
+      coreIP = "100.68.73.88";
       periphery.enable = true;
     };
     networking.local = true;
