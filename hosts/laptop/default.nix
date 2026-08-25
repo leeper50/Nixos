@@ -87,7 +87,12 @@ in
     };
     btrfs.autoScrub.enable = true;
     fstrim.enable = true;
-    logind.settings.Login.HandlePowerKey = "ignore";
+    logind.settings.Login = {
+      HandleLidSwitch = "hibernate";
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchExternalPower = "ignore";
+      HandlePowerKey = "ignore";
+    };
     power-profiles-daemon.enable = true;
   };
   system.stateVersion = "26.05";
