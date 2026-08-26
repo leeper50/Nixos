@@ -112,6 +112,7 @@ in
     hosts = [
       "komodo"
       "laptop"
+      "macbook"
       "nas"
       "node-1"
       "node-2"
@@ -126,6 +127,7 @@ in
     hosts = [
       "komodo"
       "laptop"
+      "macbook"
       "nas"
       "node-1"
       "node-2"
