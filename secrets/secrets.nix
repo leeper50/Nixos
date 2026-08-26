@@ -46,14 +46,6 @@ in
       "servercheap"
     ];
   };
-  "k3s_token.age" = {
-    publicKeys = swarm_keys;
-    hosts = [
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
   "komodo_admin_password.age" = {
     publicKeys = [
       komodo
