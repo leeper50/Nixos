@@ -11,16 +11,16 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /home/profiles/gui_nixos.nix
-      /home/packages
-      /nixos
-      /nixos/configs/mounts.nix
-      /nixos/configs/networking.nix
-      /nixos/services/avahi.nix
-      /nixos/services/beszel.nix
-      /nixos/services/power.nix
-      /restic
-      /syncthing/nixos.nix
+      /configs/home/packages
+      /configs/home/profiles/gui_nixos.nix
+      /configs/home/restic.nix
+      /configs/nixos
+      /configs/nixos/avahi.nix
+      /configs/nixos/beszel.nix
+      /configs/nixos/mounts.nix
+      /configs/nixos/networking.nix
+      /configs/nixos/power.nix
+      /configs/nixos/syncthing.nix
     ]
     ++ [
       disko.nixosModules.disko

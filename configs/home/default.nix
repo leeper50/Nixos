@@ -215,5 +215,5 @@ in
     };
   };
   targets.genericLinux.enable = pkgs.stdenv.hostPlatform.isLinux;
-  xdg.configFile."lf/icons".source = ./shell/lf-icons;
+  xdg.configFile."lf/icons".source = ./lf-icons;
 }

@@ -56,7 +56,7 @@ let
       (oldAttrs: {
         installPhase = oldAttrs.installPhase + ''
           chmod u+w $out/share/sddm/themes/sddm-astronaut-theme/Backgrounds/
-          cp ${../../stylix/wallpaper.jxl} \
+          cp ${../wallpaper.jxl} \
             $out/share/sddm/themes/sddm-astronaut-theme/Backgrounds/wallpaper.jxl
         '';
       });
@@ -64,7 +64,7 @@ in
 {
   imports = [
     stylix.nixosModules.stylix
-    ../../stylix
+    ../stylix.nix
     {
       home-manager = {
         extraSpecialArgs = { inherit agenix globals systemType; };
@@ -72,7 +72,7 @@ in
         useUserPackages = true;
         users.${globals.username}.imports = [
           agenix.homeManagerModules.default
-          ../../secrets
+          ../../../secrets
           ./gui_linux.nix
         ];
       };

@@ -19,10 +19,9 @@ in
   imports = [
     agenix.nixosModules.default
     home-manager.nixosModules.home-manager
-    ../secrets
+    ../../secrets
 
-    # Services
-    ./services/ssh.nix
+    ./ssh.nix
   ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   environment.systemPackages = with pkgs; [

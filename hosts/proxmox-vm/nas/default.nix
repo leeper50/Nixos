@@ -16,16 +16,16 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /home/profiles/cli_nixos.nix
-      /nixos
-      /nixos/services/avahi.nix
-      /nixos/services/beszel.nix
-      /nixos/services/nfs.nix
-      /nixos/services/postgresql.nix
-      /nixos/services/rustfs.nix
-      /nixos/services/samba.nix
-      /restic
-      /syncthing/nixos.nix
+      /configs/home/profiles/cli_nixos.nix
+      /configs/home/restic.nix
+      /configs/nixos
+      /configs/nixos/avahi.nix
+      /configs/nixos/beszel.nix
+      /configs/nixos/nfs.nix
+      /configs/nixos/postgresql.nix
+      /configs/nixos/rustfs.nix
+      /configs/nixos/samba.nix
+      /configs/nixos/syncthing.nix
     ]
     ++ [ disko.nixosModules.disko ];
   fileSystems."/mnt/data" = {

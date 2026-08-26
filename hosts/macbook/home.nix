@@ -11,9 +11,9 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /home/profiles/gui.nix
+      /configs/home/profiles/gui.nix
+      /configs/home/syncthing.nix
       /secrets
-      /syncthing
     ]
     ++ [
       agenix.homeManagerModules.default

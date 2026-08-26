@@ -451,7 +451,7 @@ in
         {
           blur_passes = 3;
           blur_size = 4;
-          path = "${../../stylix/wallpaper.jxl}";
+          path = "${../wallpaper.jxl}";
         }
       ];
       general = {

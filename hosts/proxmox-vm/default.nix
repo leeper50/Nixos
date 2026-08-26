@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ../../nixos/configs/networking.nix
+    ../../configs/nixos/networking.nix
     ./disk-config.nix
     ./hardware-configuration.nix
   ];

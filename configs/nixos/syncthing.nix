@@ -5,7 +5,7 @@ let
 in
 {
   imports = [
-    ./default.nix
+    ../home/syncthing.nix
   ];
   networking.firewall.allowedTCPPorts = [ 8384 ];
   services.syncthing = {

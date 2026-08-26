@@ -5,11 +5,11 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /home/profiles/cli_nixos.nix
-      /nixos
-      /nixos/configs/networking.nix
-      /nixos/services/beszel.nix
-      /nixos/services/proxies.nix
+      /configs/home/profiles/cli_nixos.nix
+      /configs/nixos
+      /configs/nixos/beszel.nix
+      /configs/nixos/networking.nix
+      /configs/nixos/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix

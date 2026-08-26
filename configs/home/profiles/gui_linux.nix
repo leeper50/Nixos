@@ -2,7 +2,7 @@
 {
   imports = [
     ./gui.nix
-    ../desktop/hyprland.nix
+    ../desktops/hyprland.nix
   ];
   home.activation.removeStylixGtkFiles = (
     lib.hm.dag.entryBefore [ "writeBoundary" ] ''

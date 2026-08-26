@@ -13,7 +13,7 @@
         useUserPackages = true;
         users.${globals.username}.imports = [
           agenix.homeManagerModules.default
-          ../../secrets
+          ../../../secrets
           ../default.nix
         ];
       };

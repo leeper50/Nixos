@@ -10,12 +10,12 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /home/profiles/gui_linux.nix
-      /home/packages
-      /restic
+      /configs/home/packages
+      /configs/home/profiles/gui_linux.nix
+      /configs/home/restic.nix
+      /configs/home/stylix.nix
+      /configs/home/syncthing.nix
       /secrets
-      /stylix
-      /syncthing
     ]
     ++ [
       agenix.homeManagerModules.default

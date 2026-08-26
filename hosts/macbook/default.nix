@@ -11,8 +11,8 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /hosts/darwin
-      /stylix
+      /configs/darwin
+      /configs/home/stylix.nix
     ]
     ++ [
       home-manager.darwinModules.home-manager

@@ -7,12 +7,12 @@
 }:
 {
   imports = [
-    ../accounts
+    ../accounts.nix
     ../browsers
     ../default.nix
-    ../dev
-    ../games
-    ../rclone
+    ../dev.nix
+    ../games.nix
+    ../rclone.nix
   ];
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [

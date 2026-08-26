@@ -8,7 +8,6 @@
 {
   imports = [
     agenix.darwinModules.default
-    ./homebrew
     ../../secrets
   ];
   nixpkgs.overlays = [
@@ -24,6 +23,19 @@
   environment.shells = [
     pkgs.fish
   ];
+  homebrew = {
+    brews = [ ];
+    casks = [
+      "elegoo-slicer"
+      "freac"
+      "keepassxc"
+      "onlyoffice"
+      "parsec"
+      "qview"
+    ];
+    enable = true;
+    enableFishIntegration = true;
+  };
   home-manager.backupFileExtension = "home_manager_backup";
   nix = {
     gc = {

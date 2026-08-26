@@ -5,14 +5,14 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /home/profiles/cli_nixos.nix
-      /nixos
-      /nixos/configs/mounts.nix
-      /nixos/services/avahi.nix
-      /nixos/services/beszel.nix
-      /nixos/services/docker.nix
-      /nixos/services/power.nix
-      /restic
+      /configs/home/profiles/cli_nixos.nix
+      /configs/home/restic.nix
+      /configs/nixos
+      /configs/nixos/avahi.nix
+      /configs/nixos/beszel.nix
+      /configs/nixos/docker.nix
+      /configs/nixos/mounts.nix
+      /configs/nixos/power.nix
     ]
     ++ [ disko.nixosModules.disko ];
   boot.kernelModules = [
