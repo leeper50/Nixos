@@ -15,21 +15,10 @@ let
   };
   isNixos = systemType == "Nixos";
   isStandalone = systemType == "Standalone";
-  passwordFile =
-    if osConfig != null then
-      osConfig.age.secrets."restic_password_file.age".path
-    else
-      config.age.secrets."restic_password_file.age".path;
-  b2EnvironmentFile =
-    if osConfig != null then
-      osConfig.age.secrets."restic_b2_env.age".path
-    else
-      config.age.secrets."restic_b2_env.age".path;
-  rustfsEnvironmentFile =
-    if osConfig != null then
-      osConfig.age.secrets."restic_rustfs_env.age".path
-    else
-      config.age.secrets."restic_rustfs_env.age".path;
+  secretsAttrs = if osConfig != null then osConfig.age.secrets else config.age.secrets;
+  b2EnvironmentFile = secretsAttrs."restic_b2_env.age".path;
+  passwordFile = secretsAttrs."restic_password_file.age".path;
+  rustfsEnvironmentFile = secretsAttrs."restic_rustfs_env.age".path;
   resolvedHostName =
     if isStandalone then
       hostName
