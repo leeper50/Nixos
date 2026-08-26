@@ -1,4 +1,10 @@
-{ lib, pkgs, ... }:
+# Common settings for all systems with a GUI (desktops).
+# May also have cli settings for desktop specific tasks.
+{
+  globals,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ../accounts
@@ -9,26 +15,24 @@
     ../rclone
   ];
   fonts.fontconfig.enable = true;
-  home.packages =
-    with pkgs;
-    [
-      corefonts
-      fira-code
-      fira-code-symbols
-      fira-sans
-      libavif
-      libjxl
-      libwebp
-      keepassxc
-      oxipng
-      signal-desktop
-      file
-      pistol
-    ]
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-      libreoffice-bin
-      vlc-bin
-    ];
+  home.packages = with pkgs; [
+    chezmoi
+    colmena
+    corefonts
+    file
+    fira-code
+    fira-code-symbols
+    fira-sans
+    keepassxc
+    libavif
+    libjxl
+    libwebp
+    nixd
+    nixfmt
+    oxipng
+    pistol
+    signal-desktop
+  ];
   home.pointerCursor.enable = pkgs.stdenv.hostPlatform.isLinux;
   programs = {
     alacritty = {
@@ -57,6 +61,21 @@
       };
     };
     btop.enable = true;
+    fastfetch.enable = true;
+    fish.shellAliases = {
+      colmena = "colmena --config $FLAKE_DIR/flake.nix";
+      cz = "chezmoi";
+      update_flake = "nix flake update --flake $FLAKE_DIR";
+    };
+    git.settings = {
+      core.autocrlf = false;
+      credential.helper = "store";
+      init.defaultBranch = "main";
+      user = {
+        email = globals.primaryEmail;
+        name = globals.fullName;
+      };
+    };
     kitty = {
       enable = true;
       extraConfig = ''
@@ -101,6 +120,50 @@
       };
     };
     obsidian.enable = true;
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings = {
+        "*" = {
+          AddKeysToAgent = "no";
+          Compression = false;
+          ControlMaster = "auto";
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ControlPersist = "10m";
+          ForwardAgent = false;
+          HashKnownHosts = false;
+          IdentityFile = "~/.ssh/id_ed25519";
+          ServerAliveCountMax = 3;
+          ServerAliveInterval = 15;
+          User = globals.username;
+        };
+        "gk55" = {
+          HostName = "10.0.0.50";
+          User = "root";
+        };
+        "hetzner" = {
+          HostName = "u400147.your-storagebox.de";
+          Port = 23;
+          User = "u400147";
+        };
+        "komodo".HostName = "komodo.local";
+        "laptop".HostName = "laptop.local";
+        "nas".HostName = "nas.local";
+        "node-1".HostName = "node-1.local";
+        "node-2".HostName = "node-2.local";
+        "node-3".HostName = "node-3.local";
+        "proxmox" = {
+          HostName = "10.0.0.30";
+          User = "root";
+        };
+        "racknerd".HostName = "107.174.237.4";
+        "servercheap".HostName = "65.75.202.6";
+        "tower" = {
+          HostName = "10.0.0.51";
+          User = "root";
+        };
+      };
+    };
     vscode = {
       enable = true;
       profiles = {

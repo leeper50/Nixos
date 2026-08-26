@@ -98,36 +98,20 @@
               end
           end
         '';
-        sound = ''
-          if test (uname -s) = Linux
-            switch $argv[1]
-              case 44100 48000 96000 192000 384000
-                pw-metadata -n settings 0 clock.force-rate $argv[1]
-              case '*'
-                echo "Error: '$argv[1]' is not a valid sample rate"
-            end
-          else
-            echo "Unsupported OS"
-            return 1
+        sound = lib.mkIf pkgs.stdenv.hostPlatform.isLinux ''
+          switch $argv[1]
+            case 44100 48000 96000 192000 384000
+              pw-metadata -n settings 0 clock.force-rate $argv[1]
+            case '*'
+              echo "Error: '$argv[1]' is not a valid sample rate"
           end
         '';
       };
       shellAliases = {
         bisync = "rclone bisync -P $argv $HOME/Pictures/Temp/ Copyparty:/Tablet/ --exclude .DS_Store";
-        cat = "bat -pp";
-        cz = "chezmoi";
-        edit_nix = "cd ~/Nix && hx ~/Nix";
         helix = "hx";
-        hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
-        l = "eza";
-        ncdu = "rclone ncdu";
         pull = "rclone sync -P $argv Copyparty:/Tablet/ $HOME/Pictures/Temp/ --exclude .DS_Store";
         push = "rclone sync -P $argv $HOME/Pictures/Temp/ Copyparty:/Tablet/ --exclude .DS_Store";
-        rcat = "command cat";
-        rs = "sudo systemctl";
-        s = "systemctl";
-        update_flake = "nix flake update --flake $FLAKE_DIR";
-        us = "systemctl --user";
       };
     };
     mpv = {

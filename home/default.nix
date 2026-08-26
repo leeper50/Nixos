@@ -10,11 +10,6 @@ let
 in
 {
   home = {
-    activation = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-      setDefaultApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.duti}/bin/duti -s com.interversehq.qView public.image viewer
-      '';
-    };
     homeDirectory =
       if pkgs.stdenv.hostPlatform.isDarwin then
         "/Users/${globals.username}"
@@ -28,20 +23,12 @@ in
         bc
         chezmoi
         colmena
-        fastfetch
         iperf
-        nixd
-        nixfmt
-        parallel
         powerline-fonts
       ]
       ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
         hwinfo
         trashy
-      ]
-      ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-        dbgate
-        duti
       ];
     shell.enableFishIntegration = true;
     stateVersion = "26.05";
@@ -56,7 +43,6 @@ in
       git = true;
       icons = "always";
     };
-    fastfetch.enable = true;
     fd.enable = true;
     fish = {
       enable = true;
@@ -126,14 +112,10 @@ in
       shellAliases = lib.mkMerge [
         {
           cat = "bat -pp";
-          colmena = "colmena --config $FLAKE_DIR/flake.nix";
-          cz = "chezmoi";
           edit_nix = "cd ~/Nix && hx ~/Nix";
           hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
           l = "eza";
-          ncdu = "rclone ncdu";
           rcat = "command cat";
-          update_flake = "nix flake update --flake $FLAKE_DIR";
         }
         (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           rs = "sudo systemctl";
@@ -150,9 +132,6 @@ in
         set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
         fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
         set -gx FLAKE_DIR $HOME/Nix
-        if type -q kubectl
-          alias k kubectl
-        end
       '';
     };
     fzf = {
@@ -162,15 +141,6 @@ in
     git = {
       enable = true;
       lfs.enable = true;
-      settings = {
-        core.autocrlf = false;
-        credential.helper = "store";
-        init.defaultBranch = "main";
-        user = {
-          email = globals.primaryEmail;
-          name = globals.fullName;
-        };
-      };
     };
     helix = {
       enable = true;
@@ -229,51 +199,11 @@ in
       enable = true;
       settings.icons = true;
     };
-    ripgrep.enable = true;
-    ssh = {
+    parallel = {
       enable = true;
-      enableDefaultConfig = false;
-      settings = {
-        "*" = {
-          AddKeysToAgent = "no";
-          Compression = false;
-          ControlMaster = "auto";
-          ControlPath = "~/.ssh/master-%r@%n:%p";
-          ControlPersist = "10m";
-          ForwardAgent = false;
-          HashKnownHosts = false;
-          IdentityFile = "~/.ssh/id_ed25519";
-          ServerAliveCountMax = 3;
-          ServerAliveInterval = 15;
-          User = globals.username;
-        };
-        "gk55" = {
-          HostName = "10.0.0.50";
-          User = "root";
-        };
-        "hetzner" = {
-          HostName = "u400147.your-storagebox.de";
-          Port = 23;
-          User = "u400147";
-        };
-        "komodo".HostName = "komodo.local";
-        "laptop".HostName = "laptop.local";
-        "nas".HostName = "nas.local";
-        "node-1".HostName = "node-1.local";
-        "node-2".HostName = "node-2.local";
-        "node-3".HostName = "node-3.local";
-        "proxmox" = {
-          HostName = "10.0.0.30";
-          User = "root";
-        };
-        "racknerd".HostName = "107.174.237.4";
-        "servercheap".HostName = "65.75.202.6";
-        "tower" = {
-          HostName = "10.0.0.51";
-          User = "root";
-        };
-      };
+      will-cite = true;
     };
+    ripgrep.enable = true;
     tealdeer = {
       enable = true;
       settings = {

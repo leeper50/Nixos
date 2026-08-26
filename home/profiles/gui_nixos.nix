@@ -99,7 +99,6 @@ in
     kdePackages.qtvirtualkeyboard
     mpvpaper
     sddm-astronaut
-    # rimsort
     qview
   ];
   programs = {
@@ -134,13 +133,13 @@ in
     flatpak.enable = true;
     printing.enable = true;
     pulseaudio.enable = false;
-    udisks2.enable = true;
     pipewire = {
       alsa.enable = true;
       alsa.support32Bit = true;
       enable = true;
       pulse.enable = true;
     };
+    udisks2.enable = true;
     xserver.enable = true;
   };
   xdg.portal.enable = true;
