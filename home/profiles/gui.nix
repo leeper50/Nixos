@@ -6,6 +6,7 @@
     ../default.nix
     ../dev
     ../games
+    ../rclone
   ];
   fonts.fontconfig.enable = true;
   home.packages =

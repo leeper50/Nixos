@@ -27,7 +27,6 @@
       nmap
       onefetch
       ragenix
-      rclone
       restic
       rsync
       ruff

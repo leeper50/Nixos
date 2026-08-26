@@ -33,7 +33,6 @@ in
     git
     iperf
     ncdu
-    rclone
     rsync
   ];
   nix = {
