@@ -16,13 +16,13 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/profiles/cli_nixos.nix
       /configs/home/restic.nix
       /configs/nixos
       /configs/nixos/avahi.nix
       /configs/nixos/beszel.nix
       /configs/nixos/nfs.nix
       /configs/nixos/postgresql.nix
+      /configs/nixos/profiles/cli.nix
       /configs/nixos/rustfs.nix
       /configs/nixos/samba.nix
       /configs/nixos/syncthing.nix

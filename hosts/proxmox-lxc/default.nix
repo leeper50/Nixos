@@ -5,7 +5,6 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/profiles/cli_nixos.nix
       /configs/home/restic.nix
       /configs/nixos
       /configs/nixos/adguardhome.nix
@@ -16,6 +15,7 @@ in
       /configs/nixos/mounts.nix
       /configs/nixos/networking.nix
       /configs/nixos/power.nix
+      /configs/nixos/profiles/cli.nix
     ]
     ++ [
       (modulesPath + "/virtualisation/proxmox-lxc.nix")

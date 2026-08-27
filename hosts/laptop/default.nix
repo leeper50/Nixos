@@ -12,7 +12,6 @@ in
   imports =
     map (p: rootDir + p) [
       /configs/home/packages
-      /configs/home/profiles/gui_nixos.nix
       /configs/home/restic.nix
       /configs/nixos
       /configs/nixos/avahi.nix
@@ -20,6 +19,7 @@ in
       /configs/nixos/mounts.nix
       /configs/nixos/networking.nix
       /configs/nixos/power.nix
+      /configs/nixos/profiles/gui.nix
       /configs/nixos/syncthing.nix
     ]
     ++ [

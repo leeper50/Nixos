@@ -5,7 +5,6 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/profiles/cli_nixos.nix
       /configs/home/restic.nix
       /configs/nixos
       /configs/nixos/avahi.nix
@@ -13,6 +12,7 @@ in
       /configs/nixos/docker.nix
       /configs/nixos/mounts.nix
       /configs/nixos/power.nix
+      /configs/nixos/profiles/cli.nix
     ]
     ++ [ disko.nixosModules.disko ];
   boot.kernelModules = [

@@ -14,7 +14,7 @@
         users.${globals.username}.imports = [
           agenix.homeManagerModules.default
           ../../../secrets
-          ../default.nix
+          ../../home
         ];
       };
     }
