@@ -51,6 +51,10 @@ in
         paths = [
           "/home/${globals.username}"
         ];
+        targets = [
+          "hetzner"
+          "nas"
+        ];
       };
       steam = {
         exclude = [ ];
@@ -71,6 +75,10 @@ in
           "/home/${globals.username}/.local/share/Steam/steamapps/workshop/content/236850/1193125267"
           "/home/${globals.username}/.paradoxlauncher"
           "/home/${globals.username}/Games/Limo"
+        ];
+        targets = [
+          "hetzner"
+          "nas"
         ];
       };
     };

@@ -67,6 +67,10 @@ in
       paths = [
         "/home/${globals.username}"
       ];
+      targets = [
+        "hetzner"
+        "nas"
+      ];
     };
     syncthing.folders = {
       "Desktops".enable = true;
