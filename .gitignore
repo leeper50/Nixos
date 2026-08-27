@@ -2,7 +2,6 @@
 
 # Root files
 !.gitignore
-!colmena.nix
 !flake.lock
 !flake.nix
 !globals.nix
@@ -11,14 +10,12 @@
 
 # Folders
 !configs/
-!darwin/
 !hosts/
 !secrets/
 !tests/
 
 # Files in folders
 !configs/**
-!darwin/**
 !hosts/**
 !secrets/**
 !tests/**
