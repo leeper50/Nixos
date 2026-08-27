@@ -1,24 +1,6 @@
 # AdguardHome.yaml configuration - https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration#configuration-file
 { globals, lib, ... }:
 let
-  customDNS = {
-    "buncha.men" = [
-      "10.0.1.1"
-      "2600:1702:58c1:9acf::1:1"
-    ];
-    "vpn.dellhplaptop.xyz" = [
-      "10.0.0.60"
-      "2600:1702:58c1:9acf::60"
-    ];
-    "dellhplaptop.xyz" = [
-      "10.0.1.1"
-      "2600:1702:58c1:9acf::1:1"
-    ];
-    "tplinkwifi.net" = [
-      "10.0.0.1"
-      "2600:1702:58c1:9acf:f2a7:31ff:fe94:abac"
-    ];
-  };
   logsSettings = {
     enabled = false;
     ignored = [
@@ -46,7 +28,7 @@ let
           enabled = true;
         }
       ]) answers
-    ) customDNS
+    ) globals.networking.hosts
   );
   defaultClientSettings = {
     filtering_enabled = true;
@@ -106,14 +88,14 @@ in
         dns = {
           anonymize_client_ip = true;
           bind_hosts = [ "0.0.0.0" ];
-          bootstrap_dns = globals.nameservers.public;
+          bootstrap_dns = globals.networking.nameservers.public;
           cache_enabled = true;
           cache_optimistic = true;
           cache_size = 4194304;
           hostsfile_enabled = false;
           port = ports.dns;
           ratelimit = 0;
-          upstream_dns = globals.nameservers.doh;
+          upstream_dns = globals.networking.nameservers.doh;
           upstream_mode = "parallel";
           upstream_timeout = "2s";
         };

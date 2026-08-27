@@ -77,7 +77,7 @@ in
               size = 120;
             }
           ];
-          dns = if cfg.remote then globals.nameservers.public else globals.nameservers.local;
+          dns = if cfg.remote then globals.networking.nameservers.public else globals.networking.nameservers.local;
           experimental = true;
           fixed-cidr-v6 = "fda3:db28:76bb:e314::/64";
           ip6tables = true;

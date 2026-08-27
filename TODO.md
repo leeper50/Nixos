@@ -9,6 +9,4 @@ example:
   locals.profiles.gui.enable = true; # Enables all gui configs
 ```
 
-Put more data into `/globals.nix` such as:
-1. `/etc/hosts` mappings.
-2. More network settings (gateways).
+Allow for selection of backup location (primarily b2 b/c money)

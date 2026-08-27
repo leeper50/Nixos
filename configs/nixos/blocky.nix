@@ -1,6 +1,9 @@
-{ globals, ... }:
+{ globals, lib, ... }:
 let
   ports.dns = 53;
+  customDNSMapping = lib.mapAttrs (
+    domain: ips: lib.concatStringsSep "," ips
+  ) globals.networking.hosts;
 in
 {
   networking.firewall = {
@@ -68,26 +71,17 @@ in
             maxErrorsPerSource = 5;
           };
         };
-        bootstrapDns = globals.nameservers.public;
+        bootstrapDns = globals.networking.nameservers.public;
         caching = {
           prefetching = true;
           prefetchExpires = "24h";
           prefetchThreshold = 2;
         };
-        customDNS = {
-          mapping = {
-            "buncha.men" = "10.0.1.1,2600:1702:58c1:9acf::1:1";
-            "dellhplaptop.xyz" = "10.0.1.1,2600:1702:58c1:9acf::1:1";
-            "dns01.home.local" = "10.0.0.31,2600:1702:58c1:9acf::31";
-            "dns02.home.local" = "10.0.0.32,2600:1702:58c1:9acf::32";
-            "dns03.home.local" = "10.0.0.33,2600:1702:58c1:9acf::33";
-            "tplinkwifi.net" = "10.0.0.1,2600:1702:58c1:9acf:f2a7:31ff:fe94:abac";
-          };
-        };
+        customDNS.mapping = customDNSMapping;
         ports.dns = ports.dns;
         queryLog.type = "none";
         upstreams = {
-          groups.default = globals.nameservers.doh;
+          groups.default = globals.networking.nameservers.doh;
           strategy = "parallel_best";
           timeout = "2s";
         };
