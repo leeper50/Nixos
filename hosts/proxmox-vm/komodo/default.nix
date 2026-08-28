@@ -1,18 +1,11 @@
-{ disko, lib, ... }:
+{ disko, ... }:
 let
   rootDir = ../../..;
 in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/restic.nix
-      /configs/nixos
-      /configs/nixos/avahi.nix
-      /configs/nixos/beszel.nix
       /configs/nixos/docker.nix
-      /configs/nixos/mounts.nix
-      /configs/nixos/power.nix
-      /configs/nixos/profiles/cli.nix
     ]
     ++ [ disko.nixosModules.disko ];
   boot.kernelModules = [
@@ -40,7 +33,6 @@ in
     };
   };
   networking = {
-    defaultGateway6.interface = lib.mkForce "ens18";
     hostName = "komodo";
     interfaces.ens18 = {
       ipv4.addresses = [

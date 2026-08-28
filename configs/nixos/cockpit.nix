@@ -10,10 +10,6 @@ in
     enable = true;
     openFirewall = true;
     port = posts.webui;
-    settings = {
-      WebService = {
-        AllowUnencrypted = true;
-      };
-    };
+    settings.WebService.AllowUnencrypted = true;
   };
 }

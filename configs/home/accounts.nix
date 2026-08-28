@@ -22,8 +22,14 @@ let
   };
   defaultEmailSettings = {
     enable = true;
-    imap.tls.enable = true;
-    smtp.tls.enable = true;
+    imap = {
+      tls.enable = true;
+      port = 993;
+    };
+    smtp = {
+      tls.enable = true;
+      port = 465;
+    };
     realName = globals.fullName;
     thunderbird = {
       enable = true;
@@ -34,29 +40,20 @@ let
     imap = {
       authentication = "xoauth2";
       host = "imap.gmail.com";
-      port = 993;
     };
     smtp = {
       authentication = "xoauth2";
       host = "smtp.gmail.com";
-      port = 465;
     };
   };
   mailboxSettings = lib.recursiveUpdate defaultEmailSettings {
-    imap = {
-      host = "imap.mailbox.org";
-      port = 993;
-    };
-    smtp = {
-      host = "smtp.mailbox.org";
-      port = 465;
-    };
+    imap.host = "imap.mailbox.org";
+    smtp.host = "smtp.mailbox.org";
   };
   outlookSettings = lib.recursiveUpdate defaultEmailSettings {
     imap = {
       authentication = "xoauth2";
       host = "outlook.office365.com";
-      port = 993;
     };
     smtp = {
       authentication = "xoauth2";
@@ -89,17 +86,7 @@ in
   accounts.email.accounts = {
     "Mailbox" = mailboxSettings // {
       address = "wleeper@mailbox.org";
-      imap = {
-        host = "imap.mailbox.org";
-        port = 993;
-        tls.enable = true;
-      };
       primary = true;
-      smtp = {
-        host = "smtp.mailbox.org";
-        port = 465;
-        tls.enable = true;
-      };
       userName = "wleeper@mailbox.org";
     };
     "Gmail" = gmailSettings // {

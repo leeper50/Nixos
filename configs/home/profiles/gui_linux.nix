@@ -23,8 +23,8 @@
     ffmpeg-full
     freac
     gimp
-    kdePackages.kdenlive
     imgbrd-grabber
+    kdePackages.kdenlive
     qt5.qttools
     qview
     sqlitebrowser
@@ -115,7 +115,6 @@
       };
     };
     mpv = {
-      enable = true;
       bindings = {
         DOWN = "add volume -2";
         LEFT = "seek -5";
@@ -129,6 +128,7 @@
         video-sync = "display-resample";
         volume = 30;
       };
+      enable = true;
     };
     yt-dlp = {
       enable = true;
@@ -171,6 +171,14 @@
   };
   xdg.mimeApps = {
     enable = true;
+    defaultApplications = {
+      # My stuff
+      "inode/directory" = [
+        "org.kde.dolphin.desktop"
+        "Helix.desktop"
+        "code.desktop"
+      ];
+    };
     defaultApplicationPackages = with pkgs; [
       audacious
       helix
@@ -184,13 +192,5 @@
       vscode
       zathura
     ];
-    defaultApplications = {
-      # My stuff
-      "inode/directory" = [
-        "org.kde.dolphin.desktop"
-        "Helix.desktop"
-        "code.desktop"
-      ];
-    };
   };
 }

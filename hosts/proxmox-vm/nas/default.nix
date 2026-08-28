@@ -1,28 +1,19 @@
-{
-  disko,
-  globals,
-  lib,
-  ...
-}:
+{ disko, globals, ... }:
 let
-  backupKeys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMOWw3itt6X+guXpUY1m5M2inL0Zs+Fs0nTrUOqDwZ/c root@node-1"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF99jYxJYq1frbpyemmxb7+G4+N0Q0XF77sNDiQcphc4 root@node-2"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMqG4JLWJ+lFKdOqTnY/gNHMoYLx82NjaTmwE7Lo1tJG root@node-3"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPieb/L9L+lfCvkA2nXaRZmvwbByskxXPLMV8PI4hmxG root@komodo"
-  ];
   rootDir = ../../..;
+  keys = import (rootDir + /secrets/keys.nix);
+  backupKeys = [
+    keys.node-1
+    keys.node-2
+    keys.node-3
+    keys.komodo
+  ];
 in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/restic.nix
-      /configs/nixos
-      /configs/nixos/avahi.nix
-      /configs/nixos/beszel.nix
       /configs/nixos/nfs.nix
       /configs/nixos/postgresql.nix
-      /configs/nixos/profiles/cli.nix
       /configs/nixos/rustfs.nix
       /configs/nixos/samba.nix
       /configs/nixos/syncthing.nix
@@ -70,7 +61,6 @@ in
     };
   };
   networking = {
-    defaultGateway6.interface = lib.mkForce "ens18";
     hostName = "nas";
     interfaces.ens18 = {
       ipv4.addresses = [
@@ -94,11 +84,7 @@ in
   };
   system.stateVersion = "25.11";
   users.users = {
-    root = {
-      openssh.authorizedKeys.keys = backupKeys;
-    };
-    ${globals.username} = {
-      openssh.authorizedKeys.keys = backupKeys;
-    };
+    ${globals.username}.openssh.authorizedKeys.keys = backupKeys;
+    root.openssh.authorizedKeys.keys = backupKeys;
   };
 }

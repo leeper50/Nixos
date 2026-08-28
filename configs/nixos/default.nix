@@ -20,7 +20,6 @@ in
     agenix.nixosModules.default
     home-manager.nixosModules.home-manager
     ../../secrets
-
     ./ssh.nix
   ];
   boot.kernelPackages = pkgs.linuxPackages_latest;

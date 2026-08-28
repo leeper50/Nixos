@@ -7,12 +7,12 @@
 }:
 let
   cfg = config.local.packages;
-  version = "1.5.3.4";
   hash = "sha256-X3ox1tpXAPddm2qgyBNajP/bIQr9fw61neeTAQTFsyM=";
   src = pkgs.fetchurl {
-    url = "https://github.com/elegoo-repo/ElegooSlicer/releases/download/v${version}/ElegooSlicer_Linux_V${version}.AppImage";
     hash = hash;
+    url = "https://github.com/elegoo-repo/ElegooSlicer/releases/download/v${version}/ElegooSlicer_Linux_V${version}.AppImage";
   };
+  version = "1.5.3.4";
   appimageContents = pkgs.appimageTools.extract {
     pname = "elegoo-slicer";
     inherit version src;

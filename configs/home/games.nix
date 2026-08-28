@@ -8,7 +8,7 @@ in
     with pkgs;
     [
       discord
-      # mumble
+      mumble
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       limo
@@ -24,11 +24,9 @@ in
       xenia-canary
     ];
   programs = {
-    prismlauncher = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    prismlauncher.enable = pkgs.stdenv.hostPlatform.isLinux;
+    retroarch = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && enableEmulators) {
       enable = true;
-    };
-    retroarch = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-      enable = enableEmulators;
       cores = {
         bsnes-hd.enable = true;
         citra.enable = true;
@@ -45,17 +43,17 @@ in
       };
       package = pkgs.retroarch-bare;
       settings = {
+        menu_driver = "xmb";
         menu_use_preferred_system_color_theme = "false";
         netplay_nickname = "Ishyaboi";
         video_driver = "vulkan";
         video_fullscreen = "true";
-        menu_driver = "xmb";
         xmb_menu_color_theme = "1";
         xmb_theme = "2";
         # Paths
         audio_filter_dir = "${retroarch_dir}/Filters/Audio";
-        content_database_path = "${retroarch_dir}/ContentDatabase";
         cheat_database_path = "${retroarch_dir}/Cheats";
+        content_database_path = "${retroarch_dir}/ContentDatabase";
         playlist_directory = "${retroarch_dir}/Playlists";
         rgui_browser_directory = "${retroarch_dir}/Games";
         rgui_config_directory = "${retroarch_dir}/Config";

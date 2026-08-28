@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   services.murmur = {
     bandwidth = 192000;

@@ -4,19 +4,18 @@
     plasma-manager.homeModules.plasma-manager
   ];
   home.packages = with pkgs; [ nixos-icons ];
-  programs.fish.shellAliases = {
-    "repair_kde" = "kbuildsycoca6 --noincremental && kquitapp6 plasmashell && kstart plasmashell";
-  };
+  programs.fish.shellAliases."repair_kde" =
+    "kbuildsycoca6 --noincremental && kquitapp6 plasmashell && kstart plasmashell";
   programs.plasma = {
     enable = true;
-    input.keyboard = {
-      numlockOnStartup = "on";
-    };
+    input.keyboard.numlockOnStartup = "on";
     kscreenlocker = {
       appearance.wallpaper = ../wallpaper.jxl;
       autoLock = false;
     };
     kwin = {
+      cornerBarrier = true;
+      edgeBarrier = 0;
       effects = {
         blur = {
           enable = true;
@@ -26,8 +25,6 @@
         shakeCursor.enable = false;
         zoom.enable = false;
       };
-      cornerBarrier = true;
-      edgeBarrier = 0;
       titlebarButtons = {
         left = [
           "keep-above-windows"

@@ -35,7 +35,6 @@ in
 {
   options.local.mounts = {
     autoMount = lib.mkEnableOption "automount";
-    docker = lib.mkEnableOption "docker";
     media = lib.mkEnableOption "media";
     user = lib.mkEnableOption "user";
   };
@@ -48,13 +47,6 @@ in
         nfs-utils
       ];
     }
-    (lib.mkIf cfg.docker {
-      fileSystems."/mnt/docker" = {
-        device = "nas.local:/mnt/docker";
-        fsType = "nfs";
-        options = nfs_options;
-      };
-    })
     (lib.mkIf cfg.media {
       fileSystems."/mnt/media" = {
         device = "nas.local:/mnt/data/Media";

@@ -25,6 +25,18 @@ let
   '';
 in
 {
+  # Get dolphin working with hyprland
+  home.file.".config/menus/applications.menu".text = ''
+    <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+      "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+    <Menu>
+      <Name>Applications</Name>
+      <DefaultAppDirs/>
+      <DefaultDirectoryDirs/>
+      <DefaultMergeDirs/>
+    </Menu>
+  '';
+
   home.packages = with pkgs; [
     blueman
     brightnessctl
@@ -41,157 +53,191 @@ in
     xdg-desktop-portal-hyprland
   ];
 
-  wayland.windowManager.hyprland = {
-    enable = true;
-    package = null;
-    settings = {
-      monitor = {
-        mode = "preferred";
-        output = "";
-        position = "auto";
-        scale = "auto";
-      };
-
-      env = [
+  programs = {
+    waybar = {
+      enable = true;
+      settings = [
         {
-          _args = [
-            "GDK_BACKEND"
-            "wayland,x11"
+          height = 36;
+          layer = "top";
+          position = "top";
+          spacing = 24;
+          modules-left = [
+            "hyprland/workspaces"
           ];
-        }
-        {
-          _args = [
-            "MOZ_ENABLE_WAYLAND"
-            "1"
+          modules-center = [
+            "clock"
           ];
-        }
-        {
-          _args = [
-            "NIXOS_OZONE_WL"
-            "1"
+          modules-right = [
+            "tray"
+            "network"
+            "battery"
+            "pulseaudio"
+            "pulseaudio#microphone"
+            "power-profiles-daemon"
           ];
-        }
-        {
-          _args = [
-            "QT_QPA_PLATFORM"
-            "wayland;xcb"
-          ];
-        }
-        {
-          _args = [
-            "QT_QPA_PLATFORMTHEME"
-            "kde"
-          ];
-        }
-        {
-          _args = [
-            "QT_WAYLAND_DISABLE_WINDOWDECORATION"
-            "1"
-          ];
-        }
-      ];
-
-      curve = {
-        _args = [
-          "easeOut"
-          {
-            type = "bezier";
-            points = [
-              [
-                0.05
-                0.9
-              ]
-              [
-                0.1
-                1.05
-              ]
+          battery = {
+            format = "{capacity}% {icon}";
+            format-charging = "{capacity}% +";
+            format-icons = [
+              "▁"
+              "▂"
+              "▃"
+              "▄"
+              "▅"
+              "▆"
+              "▇"
+              "█"
             ];
-          }
-        ];
-      };
-
-      animation = [
-        {
-          bezier = "easeOut";
-          enabled = true;
-          leaf = "windows";
-          speed = 7;
-        }
-        {
-          leaf = "windowsOut";
-          enabled = true;
-          speed = 7;
-          bezier = "default";
-          style = "popin 80%";
-        }
-        {
-          bezier = "default";
-          enabled = true;
-          leaf = "border";
-          speed = 10;
-        }
-        {
-          bezier = "default";
-          enabled = true;
-          leaf = "fade";
-          speed = 7;
-        }
-        {
-          bezier = "default";
-          enabled = true;
-          leaf = "workspaces";
-          speed = 6;
+            states = {
+              critical = 15;
+              warning = 30;
+            };
+            tooltip = true;
+          };
+          bluetooth = {
+            format = "BT {status}";
+            format-connected = "BT {device_alias}";
+            on-click = "blueman-manager";
+            tooltip-format-connected = "{controller_alias}\n{device_enumerate}";
+          };
+          clock = {
+            format = "{:%Y-%m-%d | %H:%M}";
+            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          };
+          "hyprland/workspaces" = {
+            format = "{name}";
+            on-click = "activate";
+            sort-by-number = true;
+          };
+          "hyprland/window" = {
+            max-length = 60;
+            separate-outputs = true;
+          };
+          network = {
+            format = "";
+            format-disconnected = "Disconnected";
+            tooltip-format = "{ifname}: {ipaddr}";
+          };
+          "power-profiles-daemon" = {
+            format = "{icon}  ";
+            format-icons = {
+              "balanced" = "⚖️";
+              "performance" = "🚀";
+              "power-saver" = "🌿";
+            };
+            tooltip-format = "{profile}";
+          };
+          pulseaudio = {
+            format = "{volume}% - {desc}";
+            format-muted = "Muted - {desc}";
+            on-click = "${cycle-audio-output}";
+            on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
+            scroll-step = 5;
+          };
+          "pulseaudio#microphone" = {
+            format = "{format_source}";
+            format-source = "{volume}% - 🎤";
+            format-source-muted = "Muted - 🎤";
+            on-click = "wpctl set-mute @DEFAULT_SOURCE@ toggle";
+            on-scroll-up = "wpctl set-volume -l 1.0 @DEFAULT_SOURCE@ 5%+";
+            on-scroll-down = "wpctl set-volume @DEFAULT_SOURCE@ 5%-";
+            tooltip-format = "{source_desc}";
+          };
+          tray = {
+            spacing = 8;
+            icon-size = 24;
+          };
         }
       ];
-
-      gesture = {
-        action = "workspace";
-        direction = "horizontal";
-        fingers = 3;
-      };
-
-      config = {
-        general = {
-          border_size = 1;
-          gaps_in = 5;
-          gaps_out = 10;
-          layout = "dwindle";
-        };
-        decoration = {
-          active_opacity = 1.0;
-          blur = {
-            enabled = true;
-            noise = 0.01;
-            passes = 2;
-            size = 10;
-          };
-          rounding = 4;
-          shadow.enabled = true;
-        };
-        animations.enabled = true;
-        dwindle = {
-          precise_mouse_move = true;
-          smart_split = true;
-        };
-        misc = {
-          disable_hyprland_logo = true;
-          enable_swallow = true;
-          force_default_wallpaper = 0;
-          swallow_regex = "^kitty";
-          vrr = 0;
-        };
-        input = {
-          follow_mouse = 1;
-          numlock_by_default = true;
-          touchpad = {
-            natural_scroll = false;
-            scroll_factor = 0.5;
-          };
-        };
-        xwayland.force_zero_scaling = true;
+      style = ''
+        * { font-size: 15px; }
+      '';
+      systemd = {
+        enable = true;
+        targets = [ "hyprland-session.target" ];
       };
     };
+    fuzzel = {
+      enable = true;
+      settings = {
+        main = {
+          font = lib.mkForce "Fira Code:size=14";
+          icons-enabled = true;
+          lines = 15;
+          terminal = "kitty";
+          width = 40;
+        };
+      };
+    };
+    hyprlock = {
+      enable = true;
+      package = null;
+      settings = {
+        background = lib.mkForce [
+          {
+            blur_passes = 3;
+            blur_size = 4;
+            path = "${../wallpaper.jxl}";
+          }
+        ];
+        general = {
+          disable_loading_bar = true;
+          hide_cursor = true;
+        };
+      };
+    };
+  };
 
+  stylix.targets = {
+    dunst.enable = true;
+    fuzzel.enable = true;
+    hyprland.enable = true;
+    hyprlock.enable = true;
+    waybar.enable = true;
+  };
+
+  systemd.user = {
+    services = {
+      hyprpolkitagent = {
+        Unit = {
+          Description = "Polkit authentication agent for Hyprland";
+          PartOf = [ "hyprland-session.target" ];
+        };
+        Install.WantedBy = [ "hyprland-session.target" ];
+        Service = {
+          ExecStart = "${pkgs.hyprpolkitagent}/bin/hyprpolkitagent";
+          Restart = "on-failure";
+        };
+      };
+      wl-clip-persist = {
+        Install.WantedBy = [ "hyprland-session.target" ];
+        Service = {
+          ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard both";
+          Restart = "on-failure";
+        };
+        Unit = {
+          Description = "Keep Wayland clipboard contents after the source app exits";
+          PartOf = [ "hyprland-session.target" ];
+        };
+      };
+    };
+    tmpfiles.rules = [
+      "d ${config.xdg.configHome}/hypr 0750 - - -"
+      "f ${config.xdg.configHome}/hypr/monitors.lua 0750 - - -"
+    ];
+  };
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    extraConfig = ''
+      require("monitors")
+
+      hl.on("hyprland.start", function()
+        hl.exec_cmd(". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target")
+        hl.exec_cmd("easyeffects --hide-window")
+      end)
+    '';
     extraLuaFiles."binds.lua" = {
       autoLoad = true;
       content = ''
@@ -254,232 +300,150 @@ in
         hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +5%"), { locked = true, repeating = true })
       '';
     };
-
-    extraConfig = ''
-      require("monitors")
-
-      hl.on("hyprland.start", function()
-        hl.exec_cmd(". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target")
-        hl.exec_cmd("easyeffects --hide-window")
-      end)
-    '';
-
-    xwayland.enable = true;
-  };
-
-  systemd.user.tmpfiles.rules = [
-    "d ${config.xdg.configHome}/hypr 0750 - - -"
-    "f ${config.xdg.configHome}/hypr/monitors.lua 0750 - - -"
-  ];
-
-  systemd.user.services.hyprpolkitagent = {
-    Unit = {
-      Description = "Polkit authentication agent for Hyprland";
-      PartOf = [ "hyprland-session.target" ];
-    };
-    Install.WantedBy = [ "hyprland-session.target" ];
-    Service = {
-      ExecStart = "${pkgs.hyprpolkitagent}/bin/hyprpolkitagent";
-      Restart = "on-failure";
-    };
-  };
-
-  systemd.user.services.wl-clip-persist = {
-    Install.WantedBy = [ "hyprland-session.target" ];
-    Service = {
-      ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard both";
-      Restart = "on-failure";
-    };
-    Unit = {
-      Description = "Keep Wayland clipboard contents after the source app exits";
-      PartOf = [ "hyprland-session.target" ];
-    };
-  };
-
-  programs.waybar = {
-    enable = true;
-    settings = [
-      {
-        height = 36;
-        layer = "top";
-        position = "top";
-        spacing = 24;
-
-        modules-left = [
-          "hyprland/workspaces"
-        ];
-        modules-center = [
-          "clock"
-        ];
-        modules-right = [
-          "tray"
-          "network"
-          "battery"
-          "pulseaudio"
-          "pulseaudio#microphone"
-          "power-profiles-daemon"
-        ];
-
-        battery = {
-          format = "{capacity}% {icon}";
-          format-charging = "{capacity}% +";
-          format-icons = [
-            "▁"
-            "▂"
-            "▃"
-            "▄"
-            "▅"
-            "▆"
-            "▇"
-            "█"
-          ];
-          states = {
-            critical = 15;
-            warning = 30;
-          };
-          tooltip = true;
-        };
-
-        bluetooth = {
-          format = "BT {status}";
-          format-connected = "BT {device_alias}";
-          on-click = "blueman-manager";
-          tooltip-format-connected = "{controller_alias}\n{device_enumerate}";
-        };
-
-        clock = {
-          format = "{:%Y-%m-%d | %H:%M}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-        };
-
-        "hyprland/workspaces" = {
-          format = "{name}";
-          on-click = "activate";
-          sort-by-number = true;
-        };
-
-        "hyprland/window" = {
-          max-length = 60;
-          separate-outputs = true;
-        };
-
-        network = {
-          format = "";
-          format-disconnected = "Disconnected";
-          tooltip-format = "{ifname}: {ipaddr}";
-        };
-
-        "power-profiles-daemon" = {
-          format = "{icon}  ";
-          format-icons = {
-            "balanced" = "⚖️";
-            "performance" = "🚀";
-            "power-saver" = "🌿";
-          };
-          tooltip-format = "{profile}";
-        };
-
-        pulseaudio = {
-          format = "{volume}% - {desc}";
-          format-muted = "Muted - {desc}";
-          on-click = "${cycle-audio-output}";
-          on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
-          scroll-step = 5;
-        };
-
-        "pulseaudio#microphone" = {
-          format = "{format_source}";
-          format-source = "{volume}% - 🎤";
-          format-source-muted = "Muted - 🎤";
-          on-click = "wpctl set-mute @DEFAULT_SOURCE@ toggle";
-          on-scroll-up = "wpctl set-volume -l 1.0 @DEFAULT_SOURCE@ 5%+";
-          on-scroll-down = "wpctl set-volume @DEFAULT_SOURCE@ 5%-";
-          tooltip-format = "{source_desc}";
-        };
-
-        tray = {
-          spacing = 8;
-          icon-size = 24;
-        };
-      }
-    ];
-    style = ''
-      * { font-size: 15px; }
-    '';
-    systemd = {
-      enable = true;
-      targets = [ "hyprland-session.target" ];
-    };
-  };
-
-  programs.fuzzel = {
-    enable = true;
-    settings = {
-      main = {
-        font = lib.mkForce "Fira Code:size=14";
-        icons-enabled = true;
-        lines = 15;
-        terminal = "kitty";
-        width = 40;
-      };
-    };
-  };
-
-  services.dunst = {
-    enable = true;
-    iconTheme = {
-      name = lib.mkForce "Papirus-Dark";
-      size = "32x32";
-    };
-    settings = {
-      global = {
-        corner_radius = 10;
-        follow = "keyboard";
-        frame_width = 2;
-        gap_size = 5;
-        offset = "10x10";
-        width = 350;
-      };
-    };
-  };
-
-  programs.hyprlock = {
-    enable = true;
     package = null;
     settings = {
-      background = lib.mkForce [
+      animation = [
         {
-          blur_passes = 3;
-          blur_size = 4;
-          path = "${../wallpaper.jxl}";
+          bezier = "easeOut";
+          enabled = true;
+          leaf = "windows";
+          speed = 7;
+        }
+        {
+          leaf = "windowsOut";
+          enabled = true;
+          speed = 7;
+          bezier = "default";
+          style = "popin 80%";
+        }
+        {
+          bezier = "default";
+          enabled = true;
+          leaf = "border";
+          speed = 10;
+        }
+        {
+          bezier = "default";
+          enabled = true;
+          leaf = "fade";
+          speed = 7;
+        }
+        {
+          bezier = "default";
+          enabled = true;
+          leaf = "workspaces";
+          speed = 6;
         }
       ];
-      general = {
-        disable_loading_bar = true;
-        hide_cursor = true;
+      config = {
+        general = {
+          border_size = 1;
+          gaps_in = 5;
+          gaps_out = 10;
+          layout = "dwindle";
+        };
+        decoration = {
+          active_opacity = 1.0;
+          blur = {
+            enabled = true;
+            noise = 0.01;
+            passes = 2;
+            size = 10;
+          };
+          rounding = 4;
+          shadow.enabled = true;
+        };
+        animations.enabled = true;
+        dwindle = {
+          precise_mouse_move = true;
+          smart_split = true;
+        };
+        misc = {
+          disable_hyprland_logo = true;
+          enable_swallow = true;
+          force_default_wallpaper = 0;
+          swallow_regex = "^kitty";
+          vrr = 0;
+        };
+        input = {
+          follow_mouse = 1;
+          numlock_by_default = true;
+          touchpad = {
+            natural_scroll = false;
+            scroll_factor = 0.5;
+          };
+        };
+        xwayland.force_zero_scaling = true;
+      };
+      curve = {
+        _args = [
+          "easeOut"
+          {
+            type = "bezier";
+            points = [
+              [
+                0.05
+                0.9
+              ]
+              [
+                0.1
+                1.05
+              ]
+            ];
+          }
+        ];
+      };
+      env = [
+        {
+          _args = [
+            "GDK_BACKEND"
+            "wayland,x11"
+          ];
+        }
+        {
+          _args = [
+            "MOZ_ENABLE_WAYLAND"
+            "1"
+          ];
+        }
+        {
+          _args = [
+            "NIXOS_OZONE_WL"
+            "1"
+          ];
+        }
+        {
+          _args = [
+            "QT_QPA_PLATFORM"
+            "wayland;xcb"
+          ];
+        }
+        {
+          _args = [
+            "QT_QPA_PLATFORMTHEME"
+            "kde"
+          ];
+        }
+        {
+          _args = [
+            "QT_WAYLAND_DISABLE_WINDOWDECORATION"
+            "1"
+          ];
+        }
+      ];
+      gesture = {
+        action = "workspace";
+        direction = "horizontal";
+        fingers = 3;
+      };
+      monitor = {
+        mode = "preferred";
+        output = "";
+        position = "auto";
+        scale = "auto";
       };
     };
+    xwayland.enable = true;
   };
-
-  stylix.targets = {
-    dunst.enable = true;
-    fuzzel.enable = true;
-    hyprland.enable = true;
-    hyprlock.enable = true;
-    waybar.enable = true;
-  };
-
   xdg.portal.config.common.default = "*";
-
-  # Get dolphin working with hyprland
-  home.file.".config/menus/applications.menu".text = ''
-    <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
-      "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
-    <Menu>
-      <Name>Applications</Name>
-      <DefaultAppDirs/>
-      <DefaultDirectoryDirs/>
-      <DefaultMergeDirs/>
-    </Menu>
-  '';
 }

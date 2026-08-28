@@ -8,10 +8,10 @@
 let
   cfg = config.local.packages;
   creamlinux = import (pkgs.fetchFromGitHub {
+    hash = "sha256-sV23mp0XnJHf4oSqqvFLFfvSkssHzxafqYMNw3HGEdg=";
     owner = "Novattz";
     repo = "creamlinux-installer";
     rev = "main";
-    hash = "sha256-sV23mp0XnJHf4oSqqvFLFfvSkssHzxafqYMNw3HGEdg=";
   }) { inherit pkgs; };
 in
 {
