@@ -6,6 +6,14 @@ let
     "fruit:posix_rename" = "yes";
     "vfs objects" = "fruit streams_xattr";
   };
+  timeMachineSettings = {
+    "vfs objects" = "catia fruit streams_xattr";
+    "fruit:time machine" = "yes";
+    "durable handles" = "yes";
+    "kernel oplocks" = "no";
+    "kernel share modes" = "no";
+    "posix locking" = "no";
+  };
 in
 {
   services.samba-wsdd = {
@@ -60,8 +68,23 @@ in
         "valid users" = "%S";
       }
       // macSettings;
+      TimeMachine = {
+        comment = "Time Machine backups";
+        path = "/mnt/data/TimeMachine";
+        browseable = "yes";
+        writable = "yes";
+        "create mask" = "0600";
+        "directory mask" = "0700";
+        "strict locking" = "no";
+        "valid users" = globals.username;
+      }
+      // timeMachineSettings;
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /mnt/data/TimeMachine 0700 ${globals.username} ${globals.username} -"
+  ];
   # add user passwords
   systemd.services.samba-smbd.postStart =
     let
