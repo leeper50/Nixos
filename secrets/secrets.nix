@@ -48,6 +48,15 @@ in
       "servercheap"
     ];
   };
+  "forgejo_token.age" = {
+    group = "forgejo-runner-podman";
+    owner = "forgejo-runner-podman";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
   "komodo_admin_password.age" = {
     publicKeys = [
       komodo
@@ -80,6 +89,15 @@ in
       racknerd
     ];
     hosts = [ "racknerd" ];
+  };
+  "porkbun_dns_api_token.age" = {
+    group = "acme";
+    owner = "acme";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
   };
   "postgresql_forgejo.age" = {
     publicKeys = swarm_keys ++ [ nas ];

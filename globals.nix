@@ -1,4 +1,5 @@
 {
+  domain = "19280085.xyz";
   fullName = "Walter Leeper";
   locale = "en_US.UTF-8";
   networking = {

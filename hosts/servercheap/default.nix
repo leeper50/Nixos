@@ -7,7 +7,10 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/beszel.nix
+      /configs/nixos/forgejo.nix
+      /configs/nixos/freshrss.nix
       /configs/nixos/networking.nix
+      /configs/nixos/nginx.nix
       /configs/nixos/profiles/cli.nix
       /configs/nixos/proxies.nix
     ]
@@ -16,6 +19,12 @@ in
     ];
   local = {
     beszel.agent.hubHost = "100.68.73.88";
+    forgejo = {
+      server.enable = true;
+      runner.enable = true;
+      runner.uuid = "8fc95947-6d0d-4138-9999-e5e4d17e392b";
+    };
+    nginx.enable = true;
     proxies = {
       i2p = {
         enable = true;
