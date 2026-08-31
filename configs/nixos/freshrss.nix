@@ -12,14 +12,6 @@
         api.enable = true;
         authType = "form";
         baseUrl = "https://rss.${globals.domain}";
-        # database = {
-        #   host = "nas.local";
-        #   name = "freshrss";
-        #   passFile = pass."postgresql_freshrss.age".path;
-        #   port = 5432;
-        #   type = "pgsql";
-        #   user = "freshrss";
-        # };
         dataDir = "/var/lib/freshrss";
         defaultUser = globals.username;
         enable = true;
@@ -32,6 +24,7 @@
     (lib.mkIf (config.services.freshrss.webserver == "nginx") {
       services.nginx.virtualHosts."rss.${globals.domain}" = {
         forceSSL = true;
+        quic = true;
         useACMEHost = globals.domain;
       };
     })

@@ -7,6 +7,8 @@
 let
   cfg = config.local.forgejo;
   pass = config.age.secrets;
+
+  forgejoDomain = "git.${globals.domain}";
 in
 {
   options.local.forgejo = {
@@ -40,7 +42,7 @@ in
         lfs.enable = true;
         settings = {
           server = {
-            DOMAIN = "git.${globals.domain}";
+            DOMAIN = forgejoDomain;
             ROOT_URL = "https://${config.services.forgejo.settings.server.DOMAIN}:443/";
             SSH_PORT = 2222;
           };
@@ -51,11 +53,11 @@ in
       };
     })
     (lib.mkIf (cfg.server.enable && config.services.nginx.enable) {
-      services.nginx.virtualHosts."git.${globals.domain}" = {
+      services.nginx.virtualHosts."${forgejoDomain}" = {
         forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://localhost:3000";
-        };
+        locations."/".proxyPass =
+          "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+        quic = true;
         useACMEHost = globals.domain;
       };
     })

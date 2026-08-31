@@ -16,6 +16,9 @@ in
       80
       443
     ];
+    networking.firewall.allowedUDPPorts = [
+      443
+    ];
     security.acme = {
       acceptTerms = true;
       defaults.email = globals.primaryEmail;
@@ -51,6 +54,7 @@ in
         add_header Referrer-Policy strict-origin-when-cross-origin always;
         add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header Alt-Svc 'h3=":443"; ma=86400' always;
       '';
       virtualHosts = {
         "_" = {
@@ -59,6 +63,8 @@ in
           extraConfig = ''
             return 444;
           '';
+          quic = true;
+          reuseport = true;
           useACMEHost = globals.domain;
         };
       };
