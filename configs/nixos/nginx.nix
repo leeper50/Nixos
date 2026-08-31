@@ -54,18 +54,23 @@ in
       '';
       virtualHosts = {
         "_" = {
+          addSSL = true;
           default = true;
           extraConfig = ''
             return 444;
           '';
+          useACMEHost = globals.domain;
         };
       };
     };
     services.fail2ban.jails = {
-      nginx-bad-request = { };
-      nginx-botsearch = { };
-      nginx-forbidden = { };
-      nginx-limit-req = { };
+      nginx-bad-request.settings.backend = "auto";
+      nginx-botsearch.settings = {
+        backend = "auto";
+        logpath = "/var/log/nginx/access.log\n            /var/log/nginx/error.log";
+      };
+      nginx-forbidden.settings.backend = "auto";
+      nginx-limit-req.settings.backend = "auto";
     };
   };
 }
