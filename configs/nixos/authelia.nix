@@ -7,9 +7,9 @@
 let
   cfg = config.local.authelia;
   pass = config.age.secrets;
-  authDomain = "auth.${globals.domain}";
-  lldapDomain = "lldap.${globals.domain}";
-  headscaleDomain = "headscale.${globals.domain}";
+  authDomain = "login.${globals.domain}";
+  lldapDomain = "ld.${globals.domain}";
+  headscaleDomain = "hd.${globals.domain}";
   baseDn = lib.concatMapStringsSep "," (part: "dc=${part}") (lib.splitString "." globals.domain);
   bindDn = "uid=admin,ou=people,${baseDn}";
   autheliaPort = 9092;
@@ -66,12 +66,12 @@ in
       locations."/".proxyPass = "http://127.0.0.1:17170";
       useACMEHost = globals.domain;
     };
-    users.users.authelia-headscale.extraGroups = [ "ldap-bind-secret" ];
-    systemd.services.authelia-headscale = {
+    users.users.authelia-main.extraGroups = [ "ldap-bind-secret" ];
+    systemd.services.authelia-main = {
       after = [ "lldap.service" ];
       wants = [ "lldap.service" ];
     };
-    services.authelia.instances.headscale = {
+    services.authelia.instances.main = {
       enable = true;
       secrets = {
         jwtSecretFile = pass."authelia_jwt_secret.age".path;
@@ -134,7 +134,7 @@ in
         log.level = "info";
         notifier = {
           disable_startup_check = false;
-          filesystem.filename = "/var/lib/authelia-headscale/notification.txt";
+          filesystem.filename = "/var/lib/authelia-main/notification.txt";
         };
         server.address = "tcp://127.0.0.1:${toString autheliaPort}/";
         session.cookies = [
@@ -143,7 +143,7 @@ in
             domain = globals.domain;
           }
         ];
-        storage.local.path = "/var/lib/authelia-headscale/db.sqlite3";
+        storage.local.path = "/var/lib/authelia-main/db.sqlite3";
       };
     };
     services.nginx.virtualHosts.${authDomain} = {

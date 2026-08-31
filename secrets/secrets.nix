@@ -76,6 +76,15 @@ in
       "servercheap"
     ];
   };
+  "cloudflare_dns_api_token.age" = {
+    group = "acme";
+    owner = "acme";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
   "forgejo_token.age" = {
     group = "forgejo-runner-podman";
     owner = "forgejo-runner-podman";

@@ -20,11 +20,18 @@ in
       acceptTerms = true;
       defaults.email = globals.primaryEmail;
       certs = {
-        ${globals.domain} = {
+        "19280085.xyz" = {
           dnsProvider = "porkbun";
           dnsPropagationCheck = true;
           environmentFile = config.age.secrets."porkbun_dns_api_token.age".path;
-          extraDomainNames = [ "*.${globals.domain}" ];
+          extraDomainNames = [ "*.19280085.xyz" ];
+          group = "nginx";
+        };
+        "dellhp.party" = {
+          dnsProvider = "cloudflare";
+          dnsPropagationCheck = true;
+          environmentFile = config.age.secrets."cloudflare_dns_api_token.age".path;
+          extraDomainNames = [ "*.dellhp.party" ];
           group = "nginx";
         };
       };
@@ -37,8 +44,8 @@ in
       recommendedTlsSettings = true;
       serverTokens = false;
       appendHttpConfig = ''
-        limit_req_zone $binary_remote_addr zone=req_limit_per_ip:10m rate=10r/s;
-        limit_req zone=req_limit_per_ip burst=20 nodelay;
+        limit_req_zone $binary_remote_addr zone=req_limit_per_ip:10m rate=50r/s;
+        limit_req zone=req_limit_per_ip burst=100;
         add_header X-Content-Type-Options nosniff always;
         add_header X-Frame-Options SAMEORIGIN always;
         add_header Referrer-Policy strict-origin-when-cross-origin always;

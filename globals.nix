@@ -1,5 +1,5 @@
 {
-  domain = "19280085.xyz";
+  domain = "dellhp.party";
   fullName = "Walter Leeper";
   locale = "en_US.UTF-8";
   networking = {
@@ -13,6 +13,10 @@
       "buncha.men" = [
         "10.0.1.1"
         "2600:1702:58c1:9acf::1:1"
+      ];
+      "dellhp.party" = [
+        "65.75.202.6"
+        "2606:cc0:11:2351::1"
       ];
       "dellhplaptop.xyz" = [
         "10.0.1.1"
