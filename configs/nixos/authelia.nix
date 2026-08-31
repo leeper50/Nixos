@@ -29,27 +29,9 @@ in
 {
   options.local.authelia = {
     enable = lib.mkEnableOption "Authelia (OIDC provider) backed by LLDAP";
-    headscaleOidcClientSecretHash = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-    };
-    headplaneOidcClientSecretHash = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-    };
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      assertions = [
-        {
-          assertion = cfg.headscaleOidcClientSecretHash != "";
-          message = "Must set local.authelia.headscaleOidcClientSecretHash once you've generated it (see the option's source comment).";
-        }
-        {
-          assertion = cfg.headplaneOidcClientSecretHash != "";
-          message = "Must set local.authelia.headplaneOidcClientSecretHash once you've generated it (see the option's source comment).";
-        }
-      ];
       services.authelia.instances.main = {
         enable = true;
         secrets = {
@@ -74,7 +56,7 @@ in
               access_token_signed_response_alg = "none";
               client_id = "headscale";
               client_name = "Headscale";
-              client_secret = cfg.headscaleOidcClientSecretHash;
+              client_secret = "$pbkdf2-sha512$310000$bqQR9jguvCA3dHh8twp7Xg$BL/QJrhvx7KUX/tNeC.W4qY6vX88EtCL6DXts4kh3447MYvQz631iYQApPmsh3asn1/DM6ydKXZ9aUahkBhDrA";
               redirect_uris = [ "https://${headscaleDomain}/oidc/callback" ];
               scopes = [
                 "openid"
@@ -87,7 +69,7 @@ in
             ++ mkOidcClient config.services.headplane.enable {
               client_id = "headplane";
               client_name = "Headplane";
-              client_secret = cfg.headplaneOidcClientSecretHash;
+              client_secret = "$pbkdf2-sha512$310000$hPEHI5nF1jxjuq2hraFgsg$SAnFIc.C4YY0Nq3wUPgapva76X4j2J7bGlL4svCejLHEYRVyDh7u7KevS3yyH8e0fJszj5jAWOiJ/xaDC2sRTA";
               redirect_uris = [ "https://${headscaleDomain}/admin/oidc/callback" ];
               scopes = [
                 "openid"
@@ -100,7 +82,10 @@ in
             disable_startup_check = false;
             filesystem.filename = "/var/lib/authelia-main/notification.txt";
           };
-          server.address = "tcp://127.0.0.1:${toString autheliaPort}/";
+          server = {
+            address = "tcp://127.0.0.1:${toString autheliaPort}/";
+            endpoints.authz."auth-request".implementation = "AuthRequest";
+          };
           session.cookies = [
             {
               authelia_url = "https://${authDomain}";
