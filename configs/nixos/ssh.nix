@@ -3,6 +3,10 @@
   services.fail2ban = {
     bantime = "24h";
     enable = true;
+    ignoreIP = [
+      "162.233.151.119/32"
+      "2600:1702:58c1:9acf/64"
+    ];
   };
   services.openssh = {
     allowSFTP = true;

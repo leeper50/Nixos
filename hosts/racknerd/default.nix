@@ -20,7 +20,7 @@ in
     openssl
   ];
   local = {
-    beszel.agent.hubHost = "100.68.73.88";
+    beszel.agent.hubHost = "100.64.0.5";
     proxies = {
       i2p = {
         enable = true;
@@ -41,7 +41,7 @@ in
   services = {
     microsocks = {
       enable = true;
-      ip = "100.92.216.84";
+      ip = "100.64.0.3";
     };
   };
   system.stateVersion = "23.11";

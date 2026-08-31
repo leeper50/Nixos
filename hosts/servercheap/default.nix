@@ -6,9 +6,11 @@ in
   imports =
     map (p: rootDir + p) [
       /configs/nixos
+      /configs/nixos/authelia.nix
       /configs/nixos/beszel.nix
       /configs/nixos/forgejo.nix
       /configs/nixos/freshrss.nix
+      /configs/nixos/headscale.nix
       /configs/nixos/networking.nix
       /configs/nixos/nginx.nix
       /configs/nixos/profiles/cli.nix
@@ -18,12 +20,18 @@ in
       ./hardware-configuration.nix
     ];
   local = {
-    beszel.agent.hubHost = "100.68.73.88";
+    authelia = {
+      enable = true;
+      headplaneOidcClientSecretHash = "$pbkdf2-sha512$310000$hPEHI5nF1jxjuq2hraFgsg$SAnFIc.C4YY0Nq3wUPgapva76X4j2J7bGlL4svCejLHEYRVyDh7u7KevS3yyH8e0fJszj5jAWOiJ/xaDC2sRTA";
+      headscaleOidcClientSecretHash = "$pbkdf2-sha512$310000$bqQR9jguvCA3dHh8twp7Xg$BL/QJrhvx7KUX/tNeC.W4qY6vX88EtCL6DXts4kh3447MYvQz631iYQApPmsh3asn1/DM6ydKXZ9aUahkBhDrA";
+    };
+    beszel.agent.hubHost = "100.64.0.5";
     forgejo = {
       server.enable = true;
       runner.enable = true;
       runner.uuid = "8fc95947-6d0d-4138-9999-e5e4d17e392b";
     };
+    headscale.enable = true;
     nginx.enable = true;
     proxies = {
       i2p = {

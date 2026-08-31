@@ -39,7 +39,7 @@ in
     librewolf.enable = true;
   };
   local = {
-    beszel.agent.hubHost = "100.68.73.88";
+    beszel.agent.hubHost = "100.64.0.5";
     mounts = {
       autoMount = true;
       media = true;

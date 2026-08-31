@@ -1,5 +1,6 @@
 {
   agenix,
+  config,
   globals,
   pkgs,
   self,
@@ -50,7 +51,13 @@
   };
   nixpkgs.hostPlatform = "aarch64-darwin";
   programs.fish.enable = true;
-  services.tailscale.enable = true;
+  services.tailscale = {
+    authKeyFile = config.age.secrets."headscale_preauth_key.age".path;
+    enable = true;
+    extraUpFlags = [
+      "--login-server=https://headscale.${globals.domain}"
+    ];
+  };
   system.configurationRevision = self.rev or self.dirtyRev or null;
   system.defaults = {
     dock = {

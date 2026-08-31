@@ -73,7 +73,13 @@ in
     '';
     wheelNeedsPassword = true;
   };
-  services.tailscale.enable = true;
+  services.tailscale = {
+    authKeyFile = config.age.secrets."headscale_preauth_key.age".path;
+    enable = true;
+    extraUpFlags = [
+      "--login-server=https://headscale.${globals.domain}"
+    ];
+  };
   time.timeZone = globals.timeZone;
   users = {
     mutableUsers = false;

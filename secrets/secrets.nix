@@ -28,6 +28,34 @@ let
   ++ swarm_keys;
 in
 {
+  "authelia_jwt_secret.age" = {
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "authelia_oidc_hmac_secret.age" = {
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "authelia_oidc_issuer_key.age" = {
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "authelia_storage_encryption_key.age" = {
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
   "beszel_token.age" = {
     group = "992";
     mode = "0444";
@@ -51,6 +79,42 @@ in
   "forgejo_token.age" = {
     group = "forgejo-runner-podman";
     owner = "forgejo-runner-podman";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "headplane_cookie_secret.age" = {
+    group = "headscale";
+    owner = "headscale";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "headplane_headscale_api_key.age" = {
+    group = "headscale";
+    owner = "headscale";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "headplane_oidc_client_secret.age" = {
+    group = "headscale";
+    owner = "headscale";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "headscale_oidc_client_secret.age" = {
+    group = "headscale";
+    owner = "headscale";
     publicKeys = [
       personal
       servercheap
@@ -82,6 +146,16 @@ in
       "racknerd"
       "servercheap"
     ];
+  };
+  "lldap_admin_password.age" = {
+    group = "ldap-bind-secret";
+    mode = "0440";
+    owner = "lldap";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
   };
   "mumble_server_password.age" = {
     publicKeys = [
@@ -150,6 +224,9 @@ in
   "restic_password_file.age" = {
     group = "1000";
     owner = "1000";
+    publicKeys = all_keys;
+  };
+  "headscale_preauth_key.age" = {
     publicKeys = all_keys;
   };
   "swarm_token.age" = {
