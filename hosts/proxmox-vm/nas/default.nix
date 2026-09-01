@@ -14,6 +14,7 @@ in
     map (p: rootDir + p) [
       /configs/nixos/nfs.nix
       /configs/nixos/postgresql.nix
+      /configs/nixos/redis.nix
       /configs/nixos/rustfs.nix
       /configs/nixos/samba.nix
       /configs/nixos/syncthing.nix
@@ -39,6 +40,9 @@ in
       ];
       enable = true;
     };
+    redis = {
+      databases = [
+        "rxresume"
       ];
       enable = true;
     };
