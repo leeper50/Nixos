@@ -21,6 +21,11 @@ in
   ];
   local = {
     beszel.agent.hubHost = "100.64.0.5";
+    murmur = {
+      domain = "19280085.xyz";
+      enable = true;
+      name = "Da Bad One";
+    };
     proxies = {
       i2p = {
         enable = true;

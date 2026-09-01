@@ -13,6 +13,7 @@ in
       /configs/nixos/headscale.nix
       /configs/nixos/networking.nix
       /configs/nixos/nginx.nix
+      /configs/nixos/murmur.nix
       /configs/nixos/profiles/cli.nix
       /configs/nixos/proxies.nix
     ]
@@ -30,6 +31,11 @@ in
     freshrss.enable = true;
     headscale.enable = true;
     nginx.enable = true;
+    murmur = {
+      domain = "dellhp.party";
+      enable = true;
+      name = "Freedom General";
+    };
     proxies = {
       i2p = {
         enable = true;

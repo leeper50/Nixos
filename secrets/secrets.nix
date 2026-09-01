@@ -166,19 +166,27 @@ in
     ];
     hosts = [ "servercheap" ];
   };
-  "mumble_environment.age" = {
+  "murmur_environment.age" = {
     publicKeys = [
       personal
       racknerd
+      servercheap
     ];
-    hosts = [ "racknerd" ];
+    hosts = [
+      "racknerd"
+      "servercheap"
+    ];
   };
-  "mumble_superuser_password.age" = {
+  "murmur_superuser_password.age" = {
     publicKeys = [
       personal
       racknerd
+      servercheap
     ];
-    hosts = [ "racknerd" ];
+    hosts = [
+      "racknerd"
+      "servercheap"
+    ];
   };
   "porkbun_dns_api_token.age" = {
     group = "acme";
