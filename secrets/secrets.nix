@@ -166,7 +166,14 @@ in
     ];
     hosts = [ "servercheap" ];
   };
-  "mumble_server_password.age" = {
+  "mumble_environment.age" = {
+    publicKeys = [
+      personal
+      racknerd
+    ];
+    hosts = [ "racknerd" ];
+  };
+  "mumble_superuser_password.age" = {
     publicKeys = [
       personal
       racknerd
