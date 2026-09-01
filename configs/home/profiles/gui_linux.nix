@@ -18,7 +18,6 @@
     blender
     collabora-desktop
     czkawka
-    deskflow
     feishin
     ffmpeg-full
     freac

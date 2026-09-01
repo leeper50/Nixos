@@ -28,6 +28,7 @@
       nixfmt
       oxipng
       pistol
+      remmina
       signal-desktop
     ];
     pointerCursor.enable = pkgs.stdenv.hostPlatform.isLinux;

@@ -97,10 +97,14 @@ in
     kdePackages.qtmultimedia
     kdePackages.qtsvg
     kdePackages.qtvirtualkeyboard
+    lan-mouse
     mpvpaper
     sddm-astronaut
     qview
   ];
+  networking.firewall = {
+    allowedUDPPorts = [ 4242 ];
+  };
   programs = {
     hyprland = {
       enable = true;

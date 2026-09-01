@@ -236,6 +236,7 @@ in
       hl.on("hyprland.start", function()
         hl.exec_cmd(". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target")
         hl.exec_cmd("easyeffects --hide-window")
+        hl.exec_cmd("lan-mouse daemon")
       end)
     '';
     extraLuaFiles."binds.lua" = {
