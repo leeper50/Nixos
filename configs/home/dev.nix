@@ -1,50 +1,40 @@
+{ pkgs, systemType, ... }:
 {
-  lib,
-  pkgs,
-  systemType,
-  ...
-}:
-{
-  home.packages =
-    with pkgs;
-    [
-      android-tools
-      bash-language-server
-      cargo
-      cargo-update
-      delve
-      docker-compose-language-service
-      fish-lsp
-      go
-      golangci-lint-langserver
-      gopls
-      (lib.lowPrio gotools)
-      jdk25
-      kotlin
-      kotlin-language-server
-      lldb_22
-      markdown-oxide
-      nmap
-      onefetch
-      ragenix
-      restic
-      rsync
-      ruff
-      rust-analyzer
-      rustc
-      shfmt
-      svelte-language-server
-      tinymist
-      tombi
-      typescript-language-server
-      typos-lsp
-      vscode-css-languageserver
-      vscode-json-languageserver
-      yaml-language-server
-    ]
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-      wireguard-tools
-    ];
+  home.packages = with pkgs; [
+    android-tools
+    bash-language-server
+    cargo
+    cargo-update
+    delve
+    docker-compose-language-service
+    fish-lsp
+    go
+    golangci-lint-langserver
+    gopls
+    gotools
+    jdk25
+    kotlin
+    kotlin-language-server
+    lldb_22
+    markdown-oxide
+    nmap
+    onefetch
+    ragenix
+    restic
+    rsync
+    ruff
+    rust-analyzer
+    rustc
+    shfmt
+    svelte-language-server
+    tinymist
+    tombi
+    typescript-language-server
+    typos-lsp
+    vscode-css-languageserver
+    vscode-json-languageserver
+    yaml-language-server
+  ];
   programs = {
     bun = {
       enable = true;

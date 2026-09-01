@@ -30,6 +30,7 @@ in
       duti
       libreoffice-bin
       vlc-bin
+      wireguard-tools
     ];
   };
   local = {
