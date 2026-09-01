@@ -35,6 +35,10 @@ in
       databases = [
         "forgejo"
         "freshrss"
+        "rxresume"
+      ];
+      enable = true;
+    };
       ];
       enable = true;
     };

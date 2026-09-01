@@ -200,6 +200,15 @@ in
       "node-3"
     ];
   };
+  "postgresql_rxresume.age" = {
+    publicKeys = swarm_keys ++ [ nas ];
+    hosts = [
+      "nas"
+      "node-1"
+      "node-2"
+      "node-3"
+    ];
+  };
   "restic_b2_env.age" = {
     group = "1000";
     owner = "1000";
