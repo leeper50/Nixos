@@ -193,9 +193,9 @@ in
     owner = "acme";
     publicKeys = [
       personal
-      servercheap
+      racknerd
     ];
-    hosts = [ "servercheap" ];
+    hosts = [ "racknerd" ];
   };
   "postgresql_forgejo.age" = {
     publicKeys = swarm_keys ++ [ nas ];
