@@ -126,6 +126,7 @@
     swarmAddresses = lib.concatMap (node: hosts.${node}) swarmNodes;
   };
   primaryEmail = "wleeper@mailbox.org";
+  sshPort = 34146;
   timeZone = "America/Chicago";
   username = "walter";
 }

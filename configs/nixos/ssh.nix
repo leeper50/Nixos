@@ -1,4 +1,4 @@
-{ ... }:
+{ globals, ... }:
 {
   services.fail2ban = {
     bantime = "24h";
@@ -11,7 +11,7 @@
   services.openssh = {
     allowSFTP = true;
     enable = true;
-    ports = [ 22 ];
+    ports = [ globals.sshPort ];
     settings = {
       AllowAgentForwarding = false;
       AllowTcpForwarding = "no";

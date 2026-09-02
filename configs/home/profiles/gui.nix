@@ -132,12 +132,14 @@
           ForwardAgent = false;
           HashKnownHosts = false;
           IdentityFile = "~/.ssh/id_ed25519";
+          Port = globals.sshPort;
           ServerAliveCountMax = 3;
           ServerAliveInterval = 15;
           User = globals.username;
         };
         "gk55" = {
           HostName = "10.0.0.50";
+          Port = 22;
           User = "root";
         };
         "hetzner" = {
@@ -153,12 +155,14 @@
         "node-3".HostName = "node-3.local";
         "proxmox" = {
           HostName = "10.0.0.30";
+          Port = 22;
           User = "root";
         };
         "racknerd".HostName = "107.174.237.4";
         "servercheap".HostName = "65.75.202.6";
         "tower" = {
           HostName = "10.0.0.51";
+          Port = 22;
           User = "root";
         };
       };
