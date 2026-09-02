@@ -22,9 +22,13 @@ in
   local = {
     beszel.agent.hubHost = "100.64.0.5";
     murmur = {
-      domain = "19280085.xyz";
       enable = true;
       name = "Da Bad One";
+      tls = {
+        domain = "vc.19280085.xyz";
+        enable = true;
+        provider = "porkbun";
+      };
     };
     proxies = {
       i2p = {

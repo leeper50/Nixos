@@ -1,4 +1,4 @@
-{ ... }:
+{ globals, ... }:
 let
   rootDir = ../..;
 in
@@ -35,6 +35,11 @@ in
       domain = "dellhp.party";
       enable = true;
       name = "Freedom General";
+      tls = {
+        domain = "vc.${globals.domain}";
+        enable = true;
+        provider = "cloudflare";
+      };
     };
     proxies = {
       i2p = {
