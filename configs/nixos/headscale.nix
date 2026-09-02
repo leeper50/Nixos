@@ -7,7 +7,7 @@
 let
   cfg = config.local.headscale;
   pass = config.age.secrets;
-  
+
   authDomain = "login.${globals.domain}";
   headscaleDomain = "hd.${globals.domain}";
 in

@@ -46,7 +46,7 @@
         nur
         ;
 
-      globals = import ./globals.nix;
+      globals = import ./globals.nix { inherit (nixpkgs) lib; };
 
       mkPkgs =
         system:

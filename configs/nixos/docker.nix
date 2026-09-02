@@ -57,29 +57,33 @@ in
 
     ### Universal configuration
     {
-      networking.nftables.enable = lib.mkForce false;
       # Allow containers to reach 443 from host's private ip
-      networking.firewall.extraCommands = ''
-        iptables  -A nixos-fw -p tcp -s 172.30.0.0/16            --dport 443 -j nixos-fw-accept
-        ip6tables -A nixos-fw -p tcp -s fd06:6a55:3bd2:ed3d::/64 --dport 443 -j nixos-fw-accept
-        ip6tables -A nixos-fw -p tcp -s fda3:db28:76bb:e314::/64 --dport 443 -j nixos-fw-accept
-      '';
+      networking.firewall = globals.mkFirewallRules {
+        service = "docker";
+        sources = [
+          globals.networking.docker.ipv4Subnet
+          globals.networking.docker.ipv6Subnet
+          globals.networking.docker.fixedv6Subnet
+        ];
+        tcpPorts = [ 443 ];
+      };
       virtualisation.docker = {
         enable = true;
         daemon.settings = {
           default-address-pools = [
             {
-              base = "172.30.0.0/16";
+              base = globals.networking.docker.ipv4Subnet;
               size = 24;
             }
             {
-              base = "fd06:6a55:3bd2:ed3d::/64";
+              base = globals.networking.docker.ipv6Subnet;
               size = 120;
             }
           ];
-          dns = if cfg.remote then globals.networking.nameservers.public else globals.networking.nameservers.local;
+          dns =
+            if cfg.remote then globals.networking.nameservers.public else globals.networking.nameservers.local;
           experimental = true;
-          fixed-cidr-v6 = "fda3:db28:76bb:e314::/64";
+          fixed-cidr-v6 = globals.networking.docker.fixedv6Subnet;
           ip6tables = true;
           ipv6 = true;
           labels = map (label: "${label}=true") cfg.swarm.labels;
@@ -272,12 +276,14 @@ in
         "ip_vs_wrr"
         "ip_vs_sh"
       ];
-      networking.firewall = {
-        allowedTCPPorts = [
+      networking.firewall = globals.mkFirewallRules {
+        service = "docker-swarm";
+        sources = globals.networking.swarmAddresses;
+        tcpPorts = [
           2377 # swarm cluster management
           7946 # container network discovery
         ];
-        allowedUDPPorts = [
+        udpPorts = [
           4789 # VXLAN overlay
           7946 # container network discovery
         ];

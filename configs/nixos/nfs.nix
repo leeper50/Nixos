@@ -1,4 +1,13 @@
-{ globals, ... }:
+{ globals, lib, ... }:
+let
+  ports = {
+    lockd = 4001;
+    mountd = 4002;
+    nfsd = 2049;
+    rpcbind = 111;
+    statd = 4000;
+  };
+in
 {
   services.nfs = {
     settings = {
@@ -13,31 +22,26 @@
       createMountPoints = true;
       enable = true;
       exports = ''
-        /mnt/data/Media  10.0.0.0/24(rw,sync,no_subtree_check,root_squash)
-        /mnt/data/Media  2600:1702:58c1:9acf::/64(rw,sync,no_subtree_check,root_squash)
-        /mnt/data/home/${globals.username}  10.0.0.0/24(rw,sync,no_subtree_check,root_squash)
-        /mnt/data/home/${globals.username}  2600:1702:58c1:9acf::/64(rw,sync,no_subtree_check,root_squash)
+        # Home Dir
+        /mnt/data/home/${globals.username} ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
+        /mnt/data/home/${globals.username} ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)
+        # Media Dir
+        /mnt/data/Media ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
+        /mnt/data/Media ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)
       '';
-      lockdPort = 4001;
-      mountdPort = 4002;
+      lockdPort = ports.lockd;
+      mountdPort = ports.mountd;
       nproc = 16;
-      statdPort = 4000;
+      statdPort = ports.statd;
     };
   };
-  networking.firewall = {
-    allowedTCPPorts = [
-      111
-      2049
-      4000
-      4001
-      4002
+  networking.firewall = globals.mkFirewallRules {
+    service = "nfs";
+    sources = [
+      globals.networking.ipv4.lanSubnet
+      globals.networking.ipv6.lanSubnet
     ];
-    allowedUDPPorts = [
-      111
-      2049
-      4000
-      4001
-      4002
-    ];
+    tcpPorts = lib.attrValues ports;
+    udpPorts = lib.attrValues ports;
   };
 }

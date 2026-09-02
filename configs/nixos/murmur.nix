@@ -47,11 +47,19 @@ in
       ];
     }
     (lib.mkIf cfg.enable {
+      networking.firewall = globals.mkFirewallRules {
+        service = "murmur";
+        sources = [
+          "0.0.0.0/0"
+          "::/0"
+        ];
+        tcpPorts = [ config.services.murmur.port ];
+        udpPorts = [ config.services.murmur.port ];
+      };
       services.murmur = {
         bandwidth = 192000;
         enable = true;
         environmentFile = pass."murmur_environment.age".path;
-        openFirewall = true;
         password = "$MURMUR_PASSWORD";
         welcometext = cfg.welcomeMessage;
       };

@@ -1,23 +1,13 @@
 {
   config,
+  globals,
   lib,
   pkgs,
   ...
 }:
 let
   cfg = config.local.postgresql;
-  swarmNodes = {
-    ipv4 = [
-      "10.0.0.21"
-      "10.0.0.22"
-      "10.0.0.23"
-    ];
-    ipv6 = [
-      "2600:1702:58c1:9acf::21"
-      "2600:1702:58c1:9acf::22"
-      "2600:1702:58c1:9acf::23"
-    ];
-  };
+  ports.postgresql = 5432;
 in
 {
   options.local.postgresql = {
@@ -35,16 +25,21 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    networking.firewall.extraInputRules = ''
-      ip saddr { ${lib.concatStringsSep ", " swarmNodes.ipv4} } tcp dport 5432 accept
-      ip6 saddr { ${lib.concatStringsSep ", " swarmNodes.ipv6} } tcp dport 5432 accept
-    '';
+    networking.firewall = globals.mkFirewallRules {
+      service = "postgresql";
+      sources = globals.networking.swarmAddresses;
+      tcpPorts = [ ports.postgresql ];
+    };
     services.postgresql = {
       authentication = lib.mkAfter (
         lib.concatMapStrings (
           name:
-          lib.concatMapStrings (ip: "host  ${name}  ${name}  ${ip}/32  scram-sha-256\n") swarmNodes.ipv4
-          + lib.concatMapStrings (ip: "host  ${name}  ${name}  ${ip}/128  scram-sha-256\n") swarmNodes.ipv6
+          lib.concatMapStrings (
+            address:
+            "host  ${name}  ${name}  ${address}/${
+              if lib.hasInfix ":" address then "128" else "32"
+            }  scram-sha-256\n"
+          ) globals.networking.swarmAddresses
         ) cfg.databases
       );
       enable = true;

@@ -1,10 +1,19 @@
-{ ... }:
+{ globals, ... }:
 {
+  networking.firewall = globals.mkFirewallRules {
+    service = "avahi";
+    sources = [
+      globals.networking.ipv4.lanSubnet
+      globals.networking.ipv6.lanSubnet
+      globals.networking.ipv6.linkLocalSubnet
+    ];
+    udpPorts = [ 5353 ];
+  };
   services.avahi = {
     enable = true;
     nssmdns4 = true;
     nssmdns6 = true;
-    openFirewall = true;
+    openFirewall = false;
     publish = {
       addresses = true;
       domain = true;

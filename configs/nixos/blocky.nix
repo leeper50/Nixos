@@ -4,11 +4,20 @@ let
   customDNSMapping = lib.mapAttrs (
     domain: ips: lib.concatStringsSep "," ips
   ) globals.networking.hosts;
+  dnsSources = [
+    globals.networking.ipv4.lanSubnet
+    globals.networking.docker.ipv4Subnet
+    globals.networking.ipv6.lanSubnet
+    globals.networking.docker.ipv6Subnet
+    globals.networking.docker.fixedv6Subnet
+  ];
 in
 {
-  networking.firewall = {
-    allowedTCPPorts = [ ports.dns ];
-    allowedUDPPorts = [ ports.dns ];
+  networking.firewall = globals.mkFirewallRules {
+    service = "blocky";
+    sources = dnsSources;
+    tcpPorts = [ ports.dns ];
+    udpPorts = [ ports.dns ];
   };
   services = {
     blocky = {

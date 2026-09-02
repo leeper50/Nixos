@@ -1,5 +1,6 @@
 {
   config,
+  globals,
   lib,
   pkgs,
   ...
@@ -91,16 +92,12 @@ in
         };
       };
     }
-    (lib.mkIf config.networking.nftables.enable {
-      networking.firewall.extraInputRules = ''
-        meta l4proto 112 accept
-      '';
-    })
-    (lib.mkIf (!config.networking.nftables.enable) {
-      networking.firewall.extraCommands = ''
-        iptables -A nixos-fw -p 112 -j nixos-fw-accept
-        ip6tables -A nixos-fw -p 112 -j nixos-fw-accept
-      '';
-    })
+    {
+      networking.firewall = globals.mkFirewallRules {
+        service = "keepalived";
+        sources = globals.networking.swarmAddresses;
+        protocols = [ 112 ]; # VRRP
+      };
+    }
   ];
 }

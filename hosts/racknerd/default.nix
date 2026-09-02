@@ -20,7 +20,6 @@ in
     openssl
   ];
   local = {
-    beszel.agent.hubHost = "100.64.0.5";
     murmur = {
       enable = true;
       name = "Da Bad One";

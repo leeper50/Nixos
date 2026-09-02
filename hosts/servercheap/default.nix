@@ -22,7 +22,6 @@ in
     ];
   local = {
     authelia.enable = true;
-    beszel.agent.hubHost = "100.64.0.5";
     forgejo = {
       server.enable = true;
       runner.enable = true;

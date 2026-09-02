@@ -1,5 +1,14 @@
-{ config, globals, ... }:
+{
+  config,
+  globals,
+  lib,
+  ...
+}:
 let
+  lanSources = [
+    globals.networking.ipv4.lanSubnet
+    globals.networking.ipv6.lanSubnet
+  ];
   macSettings = {
     "fruit:encoding" = "native";
     "fruit:metadata" = "stream";
@@ -16,14 +25,32 @@ let
   };
 in
 {
+  networking.firewall = lib.mkMerge [
+    (globals.mkFirewallRules {
+      service = "samba";
+      sources = lanSources;
+      tcpPorts = [
+        139 # NetBIOS session
+        445 # SMB
+      ];
+      udpPorts = [
+        137 # NetBIOS name service
+        138 # NetBIOS datagram
+      ];
+    })
+    (globals.mkFirewallRules {
+      service = "samba-wsdd";
+      sources = lanSources ++ [ globals.networking.ipv6.linkLocalSubnet ];
+      tcpPorts = [ 5357 ]; # WSD transfer
+      udpPorts = [ 3702 ]; # WS-Discovery
+    })
+  ];
   services.samba-wsdd = {
     enable = true;
-    openFirewall = true;
     workgroup = "WORKGROUP";
   };
   services.samba = {
     enable = true;
-    openFirewall = true;
     settings = {
       global = {
         "hosts allow" = "10. 127.0.0.1 localhost";

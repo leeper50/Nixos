@@ -17,6 +17,12 @@ in
   };
   config = lib.mkMerge [
     {
+      assertions = [
+        {
+          assertion = config.networking.nftables.enable;
+          message = "globals.mkFirewallRules emits nftables rules only; the iptables backend ignores extraInputRules, so every generated rule would be silently dropped.";
+        }
+      ];
       networking = {
         firewall = {
           allowPing = true;
@@ -29,8 +35,8 @@ in
     }
     (lib.mkIf (cfg.local) {
       networking = {
-        defaultGateway.address = globals.networking.gatewayV4;
-        defaultGateway6.address = globals.networking.gatewayV6;
+        defaultGateway.address = globals.networking.ipv4.gateway;
+        defaultGateway6.address = globals.networking.ipv6.gateway;
         hosts = ipToDomains;
         nameservers = globals.networking.nameservers.local ++ globals.networking.nameservers.public;
       };

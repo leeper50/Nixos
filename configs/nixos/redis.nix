@@ -1,23 +1,12 @@
 {
   config,
+  globals,
   lib,
   pkgs,
   ...
 }:
 let
   cfg = config.local.redis;
-  swarmNodes = {
-    ipv4 = [
-      "10.0.0.21"
-      "10.0.0.22"
-      "10.0.0.23"
-    ];
-    ipv6 = [
-      "2600:1702:58c1:9acf::21"
-      "2600:1702:58c1:9acf::22"
-      "2600:1702:58c1:9acf::23"
-    ];
-  };
   ports = lib.listToAttrs (lib.imap0 (i: name: lib.nameValuePair name (6379 + i)) cfg.databases);
 in
 {
@@ -37,14 +26,11 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    networking.firewall.extraInputRules = ''
-      ip saddr { ${lib.concatStringsSep ", " swarmNodes.ipv4} } tcp dport { ${lib.concatStringsSep ", " (
-        map toString (lib.attrValues ports)
-      )} } accept
-      ip6 saddr { ${lib.concatStringsSep ", " swarmNodes.ipv6} } tcp dport { ${lib.concatStringsSep ", " (
-        map toString (lib.attrValues ports)
-      )} } accept
-    '';
+    networking.firewall = globals.mkFirewallRules {
+      service = "redis";
+      sources = globals.networking.swarmAddresses;
+      tcpPorts = lib.attrValues ports;
+    };
     services.redis = {
       package = pkgs.valkey;
       servers = lib.mapAttrs (name: port: {

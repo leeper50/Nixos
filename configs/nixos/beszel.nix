@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  globals,
+  lib,
+  ...
+}:
 let
   cfg = config.local.beszel;
   ports.agent = 8090;
@@ -7,7 +12,7 @@ in
   options.local.beszel = {
     hub.enable = lib.mkEnableOption "host";
     agent.hubHost = lib.mkOption {
-      default = "node-1.local";
+      default = "node-1.ts.${globals.domain}";
       type = lib.types.str;
     };
   };
@@ -20,14 +25,10 @@ in
           "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNcggS7ZMLtGUfM0HTrqfj9jK6ezXoSj1MzDJOv6cOs";
           "TOKEN_FILE" = config.age.secrets."beszel_token.age".path;
         };
-        openFirewall = true;
       };
       users.groups.beszel-agent.gid = 992;
     }
     (lib.mkIf cfg.hub.enable {
-      networking.firewall.allowedTCPPorts = [
-        ports.agent
-      ];
       services.beszel.hub = {
         enable = true;
         host = "0.0.0.0";

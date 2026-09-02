@@ -14,6 +14,13 @@ let
     dns = 53;
     webui = 3000;
   };
+  dnsSources = [
+    globals.networking.ipv4.lanSubnet
+    globals.networking.docker.ipv4Subnet
+    globals.networking.ipv6.lanSubnet
+    globals.networking.docker.ipv6Subnet
+    globals.networking.docker.fixedv6Subnet
+  ];
   rewrites = lib.concatLists (
     lib.mapAttrsToList (
       domain: answers:
@@ -72,16 +79,18 @@ let
   ];
 in
 {
-  networking.firewall = {
-    allowedTCPPorts = [ ports.dns ];
-    allowedUDPPorts = [ ports.dns ];
+  networking.firewall = globals.mkFirewallRules {
+    service = "adguardhome";
+    sources = dnsSources;
+    tcpPorts = [ ports.dns ];
+    udpPorts = [ ports.dns ];
   };
   services = {
     adguardhome = {
       enable = true;
       host = "0.0.0.0";
       mutableSettings = true;
-      openFirewall = true;
+      openFirewall = false;
       port = ports.webui;
       settings = {
         clients.persistent = map (c: defaultClientSettings // c) taggedClients;
