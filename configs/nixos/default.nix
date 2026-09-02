@@ -31,6 +31,7 @@ in
     git
     iperf
     ncdu
+    nmap
     rsync
   ];
   nix = {
