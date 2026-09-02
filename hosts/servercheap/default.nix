@@ -30,9 +30,12 @@ in
     };
     freshrss.enable = true;
     headscale.enable = true;
-    nginx.enable = true;
+    nginx = {
+      domain = globals.domain;
+      enable = true;
+      tls.provider = "cloudflare";
+    };
     murmur = {
-      domain = "dellhp.party";
       enable = true;
       name = "Freedom General";
       tls = {

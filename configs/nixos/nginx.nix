@@ -9,7 +9,15 @@ let
 in
 {
   options.local.nginx = {
+    domain = lib.mkOption {
+      default = null;
+      type = lib.types.nullOr lib.types.str;
+    };
     enable = lib.mkEnableOption "nginx";
+    tls.provider = lib.mkOption {
+      default = null;
+      type = lib.types.nullOr lib.types.str;
+    };
   };
   config = lib.mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = [
@@ -23,18 +31,11 @@ in
       acceptTerms = true;
       defaults.email = globals.primaryEmail;
       certs = {
-        "19280085.xyz" = {
-          dnsProvider = "porkbun";
+        ${cfg.domain} = {
+          dnsProvider = cfg.tls.provider;
           dnsPropagationCheck = true;
-          environmentFile = config.age.secrets."porkbun_dns_api_token.age".path;
-          extraDomainNames = [ "*.19280085.xyz" ];
-          group = "nginx";
-        };
-        "dellhp.party" = {
-          dnsProvider = "cloudflare";
-          dnsPropagationCheck = true;
-          environmentFile = config.age.secrets."cloudflare_dns_api_token.age".path;
-          extraDomainNames = [ "*.dellhp.party" ];
+          environmentFile = config.age.secrets."${cfg.tls.provider}_dns_api_token.age".path;
+          extraDomainNames = [ "*.${cfg.domain}" ];
           group = "nginx";
         };
       };
@@ -65,7 +66,7 @@ in
           '';
           quic = true;
           reuseport = true;
-          useACMEHost = globals.domain;
+          useACMEHost = cfg.domain;
         };
       };
     };
