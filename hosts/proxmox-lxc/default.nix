@@ -49,7 +49,6 @@ in
     defaultGateway.interface = "eth0";
     defaultGateway6.interface = "eth0";
     networkmanager.enable = lib.mkForce false;
-    nftables.enable = true;
   };
   proxmoxLXC.manageHostName = true;
   systemd.network.wait-online.enable = false;

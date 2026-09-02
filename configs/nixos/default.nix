@@ -27,13 +27,16 @@ in
     btrfs-progs
     busybox
     curl
+    dig
     ethtool
     git
     iperf
     ncdu
     nmap
     rsync
+    tcpdump
   ];
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
   nix = {
     gc = {
       automatic = true;

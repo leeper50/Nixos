@@ -43,10 +43,7 @@ in
       };
     };
   };
-  networking = {
-    firewall.trustedInterfaces = [ "tailscale0" ];
-    hostName = "racknerd";
-  };
+  networking.hostName = "racknerd";
   services = {
     microsocks = {
       enable = true;

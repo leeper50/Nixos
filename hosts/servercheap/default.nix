@@ -66,7 +66,6 @@ in
       address = "2606:cc0:11:2300::1";
       interface = "ens3";
     };
-    firewall.trustedInterfaces = [ "tailscale0" ];
     hostName = "servercheap";
     interfaces.ens3 = {
       ipv4.addresses = [
