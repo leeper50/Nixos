@@ -28,6 +28,24 @@ let
   ++ swarm_keys;
 in
 {
+  "acme_cloudflare.age" = {
+    group = "acme";
+    owner = "acme";
+    publicKeys = [
+      personal
+      servercheap
+    ];
+    hosts = [ "servercheap" ];
+  };
+  "acme_porkbun.age" = {
+    group = "acme";
+    owner = "acme";
+    publicKeys = [
+      personal
+      racknerd
+    ];
+    hosts = [ "racknerd" ];
+  };
   "authelia_jwt_secret.age" = {
     publicKeys = [
       personal
@@ -76,14 +94,13 @@ in
       "servercheap"
     ];
   };
-  "cloudflare_dns_api_token.age" = {
-    group = "acme";
-    owner = "acme";
-    publicKeys = [
-      personal
-      servercheap
+  "docker_swarm_token.age" = {
+    publicKeys = swarm_keys;
+    hosts = [
+      "node-1"
+      "node-2"
+      "node-3"
     ];
-    hosts = [ "servercheap" ];
   };
   "forgejo_token.age" = {
     group = "forgejo-runner-podman";
@@ -129,6 +146,9 @@ in
       servercheap
     ];
     hosts = [ "servercheap" ];
+  };
+  "headscale_preauth_key.age" = {
+    publicKeys = all_keys;
   };
   "komodo_admin_password.age" = {
     publicKeys = [
@@ -187,15 +207,6 @@ in
       "racknerd"
       "servercheap"
     ];
-  };
-  "porkbun_dns_api_token.age" = {
-    group = "acme";
-    owner = "acme";
-    publicKeys = [
-      personal
-      racknerd
-    ];
-    hosts = [ "racknerd" ];
   };
   "postgresql_forgejo.age" = {
     publicKeys = swarm_keys ++ [ nas ];
@@ -267,17 +278,6 @@ in
     group = "1000";
     owner = "1000";
     publicKeys = all_keys;
-  };
-  "headscale_preauth_key.age" = {
-    publicKeys = all_keys;
-  };
-  "swarm_token.age" = {
-    publicKeys = swarm_keys;
-    hosts = [
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
   };
   "user_walter_clear.age" = {
     group = "1000";

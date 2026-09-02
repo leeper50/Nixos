@@ -347,9 +347,9 @@ in
         wants = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         script = ''
-          TOKEN_FILE="/run/agenix/swarm_token.age"
+          TOKEN_FILE="/run/agenix/docker_swarm_token.age"
           if [ ! -f "$TOKEN_FILE" ]; then
-            echo "swarm_token.age not yet available — deploy after rekeying"
+            echo "docker_swarm_token.age not yet available — deploy after rekeying"
             exit 0
           fi
           if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | grep -qx active; then

@@ -34,7 +34,7 @@ in
         ${cfg.domain} = {
           dnsProvider = cfg.tls.provider;
           dnsPropagationCheck = true;
-          environmentFile = config.age.secrets."${cfg.tls.provider}_dns_api_token.age".path;
+          environmentFile = config.age.secrets."acme_${cfg.tls.provider}.age".path;
           extraDomainNames = [ "*.${cfg.domain}" ];
           group = "nginx";
         };
