@@ -32,8 +32,9 @@ in
       networking.firewall = globals.mkFirewallRules {
         service = "beszel";
         sources = [
-          globals.networking.ipv4.lanSubnet
-          globals.networking.ipv6.lanSubnet
+          globals.networking.docker.fixedv6Subnet
+          globals.networking.docker.ipv4Subnet
+          globals.networking.docker.ipv6Subnet
         ];
         tcpPorts = [ ports.hub ];
       };
