@@ -12,6 +12,7 @@ in
 {
   imports =
     map (p: rootDir + p) [
+      /configs/nixos/media-watch.nix
       /configs/nixos/nfs.nix
       /configs/nixos/postgresql.nix
       /configs/nixos/redis.nix
@@ -31,6 +32,7 @@ in
     ];
   };
   local = {
+    mediaWatch.enable = true;
     networking.local = true;
     postgresql = {
       databases = [

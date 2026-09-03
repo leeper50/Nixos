@@ -150,6 +150,13 @@ in
   "headscale_preauth_key.age" = {
     publicKeys = all_keys;
   };
+  "jellyfin_api_key.age" = {
+    publicKeys = [
+      nas
+      personal
+    ];
+    hosts = [ "nas" ];
+  };
   "komodo_admin_password.age" = {
     publicKeys = [
       komodo
