@@ -109,7 +109,7 @@ in
       personal
       servercheap
     ];
-    hosts = [ "servercheap" ];
+    hosts = [ ];
   };
   "headplane_cookie_secret.age" = {
     group = "headscale";
