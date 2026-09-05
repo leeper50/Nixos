@@ -35,7 +35,7 @@ in
         wants = [ "authelia-main.service" ];
       };
     })
-    (lib.mkIf (config.services.freshrss.webserver == "nginx") {
+    (lib.mkIf (cfg.enable && config.services.freshrss.webserver == "nginx") {
       services.nginx.virtualHosts."${freshrssDomain}" = {
         forceSSL = true;
         quic = true;

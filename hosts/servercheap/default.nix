@@ -23,11 +23,11 @@ in
   local = {
     authelia.enable = true;
     forgejo = {
-      server.enable = true;
-      runner.enable = true;
+      server.enable = false;
+      runner.enable = false;
       runner.uuid = "8fc95947-6d0d-4138-9999-e5e4d17e392b";
     };
-    freshrss.enable = true;
+    freshrss.enable = false;
     headscale.enable = true;
     nginx = {
       domain = globals.domain;
@@ -45,7 +45,7 @@ in
     };
     proxies = {
       i2p = {
-        enable = true;
+        enable = false;
         enableIPv6 = true;
         port = 51175;
       };

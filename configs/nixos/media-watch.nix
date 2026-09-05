@@ -52,7 +52,6 @@ in
     paths = lib.mkOption {
       default = [
         "/mnt/data/Media/Movies"
-        "/mnt/data/Media/Music"
         "/mnt/data/Media/TV"
       ];
       type = lib.types.listOf lib.types.str;
