@@ -33,6 +33,14 @@ in
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
   };
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General.Experimental = true;
+      Policy.AutoEnable = true;
+    };
+  };
   home-manager.users.${globals.username}.local.browsers = {
     brave.enable = true;
     firefox.enable = true;
@@ -88,6 +96,7 @@ in
       asusdConfig.source = ./asusd.ron;
       enable = true;
     };
+    blueman.enable = true;
     btrfs.autoScrub.enable = true;
     fstrim.enable = true;
     logind.settings.Login = {
