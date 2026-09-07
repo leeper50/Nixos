@@ -14,7 +14,6 @@ in
       /configs/nixos/keepalived.nix
       /configs/nixos/mounts.nix
       /configs/nixos/networking.nix
-      /configs/nixos/power.nix
       /configs/nixos/profiles/cli.nix
     ]
     ++ [

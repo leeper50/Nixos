@@ -10,7 +10,6 @@ in
       /configs/nixos/avahi.nix
       /configs/nixos/beszel.nix
       /configs/nixos/networking.nix
-      /configs/nixos/power.nix
       /configs/nixos/profiles/cli.nix
     ]
     ++ [

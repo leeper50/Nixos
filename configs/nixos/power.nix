@@ -1,7 +1,7 @@
 { ... }:
 {
   powerManagement = {
-    cpuFreqGovernor = "ondemand";
+    cpuFreqGovernor = "powersave";
     enable = true;
     powertop.enable = true;
   };
