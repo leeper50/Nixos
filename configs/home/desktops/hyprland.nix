@@ -6,8 +6,8 @@
 }:
 let
   cycle-audio-output = pkgs.writeShellScript "cycle-audio-output" ''
-    current=$(pactl get-default-sink)
-    sinks=$(pactl list sinks short | awk '{print $2}' | grep -v easyeffects)
+    current=$(${pactl} get-default-sink)
+    sinks=$(${pactl} list sinks short | awk '{print $2}' | grep alsa_output)
     count=$(echo "$sinks" | wc -l)
 
     current_idx=0
@@ -18,11 +18,12 @@ let
     done <<< "$sinks"
 
     next_sink=$(echo "$sinks" | sed -n "$(( (current_idx + 1) % count + 1 ))p")
-    pactl set-default-sink "$next_sink"
-    pactl list sink-inputs short | awk '{print $1}' | while read -r id; do
-      pactl move-sink-input "$id" "$next_sink"
+    ${pactl} set-default-sink "$next_sink"
+    ${pactl} list sink-inputs short | awk '{print $1}' | while read -r id; do
+      ${pactl} move-sink-input "$id" "$next_sink"
     done
   '';
+  pactl = "${pkgs.pulseaudio}/bin/pactl";
 in
 {
   # Get dolphin working with hyprland
