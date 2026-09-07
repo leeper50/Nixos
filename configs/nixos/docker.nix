@@ -331,7 +331,7 @@ in
         requires = [ "docker.service" ];
         wantedBy = [ "multi-user.target" ];
         script = ''
-          if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | rg -qx active; then
+          if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | ${pkgs.ripgrep}/bin/rg -qx active; then
             ${pkgs.docker}/bin/docker swarm init \
               --advertise-addr ${cfg.swarm.managerIP} \
               --default-addr-pool 172.31.0.0/16 \
@@ -358,7 +358,7 @@ in
             echo "docker_swarm_token.age not yet available — deploy after rekeying"
             exit 0
           fi
-          if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | rg -qx active; then
+          if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | ${pkgs.ripgrep}/bin/rg -qx active; then
             ${pkgs.docker}/bin/docker swarm join \
               --token "$(cat "$TOKEN_FILE")" \
               ${cfg.swarm.managerIP}:2377
