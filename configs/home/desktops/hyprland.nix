@@ -7,7 +7,7 @@
 let
   cycle-audio-output = pkgs.writeShellScript "cycle-audio-output" ''
     current=$(${pactl} get-default-sink)
-    sinks=$(${pactl} list sinks short | awk '{print $2}' | grep alsa_output)
+    sinks=$(${pactl} list sinks short | awk '{print $2}' | rg alsa_output)
     count=$(echo "$sinks" | wc -l)
 
     current_idx=0
