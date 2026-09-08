@@ -10,8 +10,8 @@ in
 {
   imports =
     map (p: rootDir + p) [
+      /configs/home/gui.nix
       /configs/home/packages
-      /configs/home/profiles/gui_linux.nix
       /configs/home/restic.nix
       /configs/home/stylix.nix
       /configs/home/syncthing.nix

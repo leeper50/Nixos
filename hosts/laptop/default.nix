@@ -12,21 +12,15 @@ in
   imports =
     map (p: rootDir + p) [
       /configs/home/packages
-      /configs/home/restic.nix
       /configs/nixos
-      /configs/nixos/avahi.nix
-      /configs/nixos/beszel.nix
-      /configs/nixos/mounts.nix
-      /configs/nixos/networking.nix
       /configs/nixos/power.nix
-      /configs/nixos/profiles/gui.nix
       /configs/nixos/syncthing.nix
     ]
     ++ [
-      disko.nixosModules.disko
       ./disk-config.nix
       ./gpu.nix
       ./hardware-configuration.nix
+      disko.nixosModules.disko
       nur.modules.nixos.default
     ];
   boot.loader = {
@@ -47,12 +41,12 @@ in
     librewolf.enable = true;
   };
   local = {
+    local = true;
     mounts = {
       autoMount = true;
       media = true;
       user = true;
     };
-    networking.local = true;
     packages = {
       cream-linux.enable = true;
       elegoo-slicer.enable = true;

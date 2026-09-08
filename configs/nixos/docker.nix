@@ -19,7 +19,6 @@ in
       };
       periphery.enable = lib.mkEnableOption "periphery";
     };
-    remote = lib.mkEnableOption "remote";
     swarm = {
       enable = lib.mkEnableOption "swarm";
       labels = lib.mkOption {
@@ -81,7 +80,7 @@ in
             }
           ];
           dns =
-            if cfg.remote then globals.networking.nameservers.public else globals.networking.nameservers.local;
+            if config.local.local then globals.networking.nameservers.local else globals.networking.nameservers.public;
           experimental = true;
           fixed-cidr-v6 = globals.networking.docker.fixedv6Subnet;
           ip6tables = true;

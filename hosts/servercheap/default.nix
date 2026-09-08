@@ -7,14 +7,11 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/authelia.nix
-      /configs/nixos/beszel.nix
       /configs/nixos/forgejo.nix
       /configs/nixos/freshrss.nix
       /configs/nixos/headscale.nix
-      /configs/nixos/networking.nix
       /configs/nixos/nginx.nix
       /configs/nixos/murmur.nix
-      /configs/nixos/profiles/cli.nix
       /configs/nixos/proxies.nix
     ]
     ++ [

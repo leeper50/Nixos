@@ -5,23 +5,17 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/restic.nix
       /configs/nixos
       /configs/nixos/adguardhome.nix
-      /configs/nixos/avahi.nix
-      /configs/nixos/beszel.nix
       /configs/nixos/docker.nix
       /configs/nixos/keepalived.nix
-      /configs/nixos/mounts.nix
-      /configs/nixos/networking.nix
-      /configs/nixos/profiles/cli.nix
     ]
     ++ [
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
   local = {
     docker.swarm.enable = true;
-    networking.local = true;
+    local = true;
     mounts.media = true;
     restic.backups = {
       docker = {
@@ -30,14 +24,6 @@ in
         ];
         paths = [
           "/etc/docker"
-        ];
-        user = "root";
-      };
-      volumes = {
-        exclude = [
-          "*cache*"
-        ];
-        paths = [
           "/var/lib/docker/volumes"
         ];
         user = "root";

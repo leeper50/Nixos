@@ -5,12 +5,7 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/restic.nix
       /configs/nixos
-      /configs/nixos/avahi.nix
-      /configs/nixos/beszel.nix
-      /configs/nixos/networking.nix
-      /configs/nixos/profiles/cli.nix
     ]
     ++ [
       ./disk-config.nix

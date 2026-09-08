@@ -11,7 +11,7 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/profiles/gui.nix
+      /configs/home/gui.nix
       /configs/home/syncthing.nix
       /secrets
     ]

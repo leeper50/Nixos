@@ -45,8 +45,9 @@
         nixpkgs
         nur
         ;
+      inherit (nixpkgs) lib;
 
-      globals = import ./globals.nix { inherit (nixpkgs) lib; };
+      globals = import ./globals.nix { inherit lib; };
 
       mkPkgs =
         system:
@@ -61,11 +62,11 @@
         };
 
       mkNixosSystem =
-        modules:
-        nixpkgs.lib.nixosSystem {
+        { modules, profile }:
+        lib.nixosSystem {
           pkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs // {
-            inherit globals;
+            inherit globals profile;
             systemType = "Nixos";
             osConfig = null;
           };
@@ -73,9 +74,14 @@
         };
 
       mkHost =
-        { deployment, modules }:
         {
-          nixos = mkNixosSystem modules;
+          deployment,
+          modules,
+          profile,
+        }:
+        {
+          inherit profile;
+          nixos = mkNixosSystem { inherit modules profile; };
           colmena = {
             inherit deployment;
             imports = modules;
@@ -97,19 +103,10 @@
             ./hosts/proxmox-lxc
             ./hosts/proxmox-lxc/${name}
           ];
+          profile = "cli";
         };
 
       hosts = {
-        gk55 = mkHost {
-          deployment = {
-            targetHost = "gk55";
-            tags = [ "" ]; # Machine not currently using nixos
-          };
-          modules = [
-            ./hosts/gk55
-          ];
-        };
-
         komodo = mkHost {
           deployment = {
             targetHost = "komodo";
@@ -122,6 +119,7 @@
             ./hosts/proxmox-vm
             ./hosts/proxmox-vm/komodo
           ];
+          profile = "cli";
         };
 
         laptop = mkHost {
@@ -132,6 +130,7 @@
           modules = [
             ./hosts/laptop
           ];
+          profile = "gui";
         };
 
         nas = mkHost {
@@ -146,6 +145,7 @@
             ./hosts/proxmox-vm
             ./hosts/proxmox-vm/nas
           ];
+          profile = "cli";
         };
 
         "node-1" = mkSwarmHost "node-1";
@@ -163,6 +163,7 @@
           modules = [
             ./hosts/racknerd
           ];
+          profile = "cli";
         };
 
         servercheap = mkHost {
@@ -176,6 +177,7 @@
           modules = [
             ./hosts/servercheap
           ];
+          profile = "cli";
         };
       };
     in
@@ -208,17 +210,7 @@
         };
       };
 
-      nixosConfigurations = {
-        # gk55 = hosts.gk55.nixos; # gk55 currently running proxmox
-        komodo = hosts.komodo.nixos;
-        laptop = hosts.laptop.nixos;
-        nas = hosts.nas.nixos;
-        racknerd = hosts.racknerd.nixos;
-        servercheap = hosts.servercheap.nixos;
-        "node-1" = hosts."node-1".nixos;
-        "node-2" = hosts."node-2".nixos;
-        "node-3" = hosts."node-3".nixos;
-      };
+      nixosConfigurations = lib.mapAttrs (_: host: host.nixos) hosts;
 
       colmena = {
         meta = {
@@ -228,16 +220,9 @@
             systemType = "Nixos";
             osConfig = null;
           };
+          nodeSpecialArgs = lib.mapAttrs (_: host: { inherit (host) profile; }) hosts;
         };
-        # gk55 = hosts.gk55.colmena; # gk55 currently running proxmox
-        komodo = hosts.komodo.colmena;
-        laptop = hosts.laptop.colmena;
-        nas = hosts.nas.colmena;
-        "node-1" = hosts."node-1".colmena;
-        "node-2" = hosts."node-2".colmena;
-        "node-3" = hosts."node-3".colmena;
-        racknerd = hosts.racknerd.colmena;
-        servercheap = hosts.servercheap.colmena;
-      };
+      }
+      // lib.mapAttrs (_: host: host.colmena) hosts;
     };
 }

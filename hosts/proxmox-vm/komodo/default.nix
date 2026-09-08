@@ -21,7 +21,7 @@ in
       coreIP = "100.64.0.5";
       periphery.enable = true;
     };
-    networking.local = true;
+    local = true;
     restic.backups.stacks = {
       exclude = [
         "*cache*"

@@ -39,22 +39,22 @@ in
     user = lib.mkEnableOption "user";
   };
   config = lib.mkMerge [
-    {
+    (lib.mkIf config.local.local {
       boot.supportedFilesystems = [
         "nfs"
       ];
       environment.systemPackages = with pkgs; [
         nfs-utils
       ];
-    }
-    (lib.mkIf cfg.media {
+    })
+    (lib.mkIf (config.local.local && cfg.media) {
       fileSystems."/mnt/media" = {
         device = "nas.local:/mnt/data/Media";
         fsType = "nfs";
         options = nfs_options;
       };
     })
-    (lib.mkIf cfg.user {
+    (lib.mkIf (config.local.local && cfg.user) {
       fileSystems."/mnt/${globals.username}" = {
         device = "nas.local:/mnt/data/home/${globals.username}";
         fsType = "nfs";

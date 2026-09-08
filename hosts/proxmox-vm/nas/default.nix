@@ -33,7 +33,7 @@ in
   };
   local = {
     mediaWatch.enable = true;
-    networking.local = true;
+    local = true;
     postgresql = {
       databases = [
         "forgejo"
