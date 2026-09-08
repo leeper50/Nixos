@@ -7,7 +7,6 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/murmur.nix
-      /configs/nixos/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix
@@ -24,18 +23,6 @@ in
         domain = "vc.19280085.xyz";
         enable = true;
         provider = "porkbun";
-      };
-    };
-    proxies = {
-      i2p = {
-        enable = true;
-        enableIPv6 = false;
-        port = 62271;
-      };
-      tor = {
-        enable = false;
-        name = "engagingaugmented";
-        port = 36411;
       };
     };
   };

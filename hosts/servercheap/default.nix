@@ -7,24 +7,15 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/authelia.nix
-      /configs/nixos/forgejo.nix
-      /configs/nixos/freshrss.nix
       /configs/nixos/headscale.nix
       /configs/nixos/nginx.nix
       /configs/nixos/murmur.nix
-      /configs/nixos/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix
     ];
   local = {
     authelia.enable = true;
-    forgejo = {
-      server.enable = false;
-      runner.enable = false;
-      runner.uuid = "8fc95947-6d0d-4138-9999-e5e4d17e392b";
-    };
-    freshrss.enable = false;
     headscale.enable = true;
     nginx = {
       domain = globals.domain;
@@ -38,18 +29,6 @@ in
         domain = "vc.${globals.domain}";
         enable = true;
         provider = "cloudflare";
-      };
-    };
-    proxies = {
-      i2p = {
-        enable = false;
-        enableIPv6 = true;
-        port = 51175;
-      };
-      tor = {
-        enable = false;
-        name = "landeddemeanor";
-        port = 47442;
       };
     };
   };
