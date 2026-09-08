@@ -1,10 +1,4 @@
-{
-  agenix,
-  globals,
-  lib,
-  pkgs,
-  ...
-}:
+{ agenix, globals, ... }:
 let
   rootDir = ../..;
 in
@@ -18,21 +12,6 @@ in
     ++ [
       agenix.homeManagerModules.default
     ];
-
-  home = {
-    activation = {
-      setDefaultApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.duti}/bin/duti -s com.interversehq.qView public.image viewer
-      '';
-    };
-    packages = with pkgs; [
-      dbgate
-      duti
-      libreoffice-bin
-      vlc-bin
-      wireguard-tools
-    ];
-  };
   local = {
     browsers = {
       brave.enable = true;

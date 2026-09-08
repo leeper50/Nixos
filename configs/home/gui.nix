@@ -453,5 +453,21 @@
         ];
       };
     })
+    (lib.mkIf (systemType == "NixDarwin") {
+      home = {
+        activation = {
+          setDefaultApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            ${pkgs.duti}/bin/duti -s com.interversehq.qView public.image viewer
+          '';
+        };
+        packages = with pkgs; [
+          dbgate
+          duti
+          libreoffice-bin
+          vlc-bin
+          wireguard-tools
+        ];
+      };
+    })
   ];
 }
