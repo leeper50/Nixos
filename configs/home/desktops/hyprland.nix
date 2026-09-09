@@ -211,6 +211,23 @@ in
           Restart = "on-failure";
         };
       };
+      plasma-kwallet-pam = {
+        Install.WantedBy = [ "hyprland-session.target" ];
+        Service = {
+          Environment = [ "PAM_KWALLET5_LOGIN=%t/kwallet5.socket" ];
+          ExecCondition = "${pkgs.coreutils}/bin/test -S %t/kwallet5.socket";
+          ExecStart = "${pkgs.writeShellScript "kwallet-pam-init" ''
+            ${pkgs.coreutils}/bin/env \
+              | ${pkgs.socat}/bin/socat STDIN "UNIX-CONNECT:$PAM_KWALLET5_LOGIN"
+          ''}";
+          Slice = "background.slice";
+          Type = "oneshot";
+        };
+        Unit = {
+          Description = "Unlock kwallet from pam credentials";
+          PartOf = [ "hyprland-session.target" ];
+        };
+      };
       wl-clip-persist = {
         Install.WantedBy = [ "hyprland-session.target" ];
         Service = {
@@ -235,9 +252,7 @@ in
       require("monitors")
 
       hl.on("hyprland.start", function()
-        hl.exec_cmd(". $HOME/.nix-profile/etc/profile.d/nix.sh && systemctl --user import-environment PATH && systemctl --user start hyprland-session.target")
         hl.exec_cmd("easyeffects --hide-window")
-        hl.exec_cmd("lan-mouse daemon")
       end)
     '';
     extraLuaFiles."binds.lua" = {

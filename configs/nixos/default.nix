@@ -216,6 +216,7 @@ in
           kdePackages.kio-extras
           kdePackages.kdegraphics-thumbnailers
           kdePackages.kwallet
+          kdePackages.kwalletmanager
           kdePackages.kwallet-pam
           kdePackages.ffmpegthumbs
           kdePackages.kimageformats
@@ -252,7 +253,14 @@ in
             remotePlay.openFirewall = true;
           };
         };
-        security.polkit.enable = true;
+        security = {
+          polkit.enable = true;
+          pam.services.login.kwallet = {
+            enable = true;
+            package = pkgs.kdePackages.kwallet-pam;
+            forceRun = true;
+          };
+        };
         services = {
           displayManager.sddm = {
             enable = true;
