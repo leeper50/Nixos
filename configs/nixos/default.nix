@@ -216,8 +216,6 @@ in
           kdePackages.kio-extras
           kdePackages.kdegraphics-thumbnailers
           kdePackages.kwallet
-          kdePackages.kwalletmanager
-          kdePackages.kwallet-pam
           kdePackages.ffmpegthumbs
           kdePackages.kimageformats
           kdePackages.qt5compat
@@ -227,6 +225,7 @@ in
           kdePackages.qtsvg
           kdePackages.qtvirtualkeyboard
           lan-mouse
+          libsecret
           mpvpaper
           sddm-astronaut
           qview
@@ -253,14 +252,7 @@ in
             remotePlay.openFirewall = true;
           };
         };
-        security = {
-          polkit.enable = true;
-          pam.services.login.kwallet = {
-            enable = true;
-            package = pkgs.kdePackages.kwallet-pam;
-            forceRun = true;
-          };
-        };
+        security.polkit.enable = true;
         services = {
           displayManager.sddm = {
             enable = true;
@@ -269,6 +261,7 @@ in
             wayland.enable = true;
           };
           flatpak.enable = true;
+          gnome.gnome-keyring.enable = true;
           hypridle.enable = lib.mkForce false;
           printing.enable = true;
           pulseaudio.enable = false;

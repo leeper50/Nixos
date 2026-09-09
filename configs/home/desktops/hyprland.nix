@@ -26,6 +26,13 @@ let
   pactl = "${pkgs.pulseaudio}/bin/pactl";
 in
 {
+  home.file.".config/kwalletrc".text = ''
+    [Wallet]
+    First Use=false
+    [KSecretD]
+    Enabled=false
+  '';
+
   # Get dolphin working with hyprland
   home.file.".config/menus/applications.menu".text = ''
     <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
@@ -209,23 +216,6 @@ in
         Service = {
           ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
           Restart = "on-failure";
-        };
-      };
-      plasma-kwallet-pam = {
-        Install.WantedBy = [ "hyprland-session.target" ];
-        Service = {
-          Environment = [ "PAM_KWALLET5_LOGIN=%t/kwallet5.socket" ];
-          ExecCondition = "${pkgs.coreutils}/bin/test -S %t/kwallet5.socket";
-          ExecStart = "${pkgs.writeShellScript "kwallet-pam-init" ''
-            ${pkgs.coreutils}/bin/env \
-              | ${pkgs.socat}/bin/socat STDIN "UNIX-CONNECT:$PAM_KWALLET5_LOGIN"
-          ''}";
-          Slice = "background.slice";
-          Type = "oneshot";
-        };
-        Unit = {
-          Description = "Unlock kwallet from pam credentials";
-          PartOf = [ "hyprland-session.target" ];
         };
       };
       wl-clip-persist = {
