@@ -269,6 +269,7 @@ in
             wayland.enable = true;
           };
           flatpak.enable = true;
+          hypridle.enable = lib.mkForce false;
           printing.enable = true;
           pulseaudio.enable = false;
           pipewire = {
