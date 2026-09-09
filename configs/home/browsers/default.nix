@@ -36,6 +36,7 @@ let
           "extensions.update.enable" = false;
           "general.autoScroll" = true;
           "image.jxl.enabled" = true;
+          "layout.css.prefers-color-scheme.content-override" = 0;
           "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
           "network.proxy.no_proxies_on" =
             "localhost,buncha.men,dellhplaptop.xyz,${globals.domain},${globals.networking.ipv4.lanSubnet}";
