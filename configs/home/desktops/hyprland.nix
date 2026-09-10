@@ -5,6 +5,9 @@
   ...
 }:
 let
+  current-sink = pkgs.writeShellScript "current-sink" ''
+    wpctl inspect @DEFAULT_AUDIO_SINK@ | sed -n 's/.*node.description = "\(.*\)"/\1/p'
+  '';
   cycle-audio-output = pkgs.writeShellScript "cycle-audio-output" ''
     current=$(${pactl} get-default-sink)
     sinks=$(${pactl} list sinks short | awk '{print $2}' | rg -v "effect_input|easyeffects_sink")
@@ -197,11 +200,20 @@ in
     };
   };
 
+  services.mako = {
+    enable = true;
+    settings."app-name=audio-output" = {
+      anchor = "bottom-center";
+      text-alignment = "center";
+      outer-margin = "0,0,360,0";
+    };
+  };
+
   stylix.targets = {
-    dunst.enable = true;
     fuzzel.enable = true;
     hyprland.enable = true;
     hyprlock.enable = true;
+    mako.enable = true;
     waybar.enable = true;
   };
 
@@ -216,6 +228,21 @@ in
         Service = {
           ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
           Restart = "on-failure";
+        };
+      };
+      mako = {
+        Install.WantedBy = [ "hyprland-session.target" ];
+        Service = {
+          Type = "dbus";
+          BusName = "org.freedesktop.Notifications";
+          ExecStart = "${config.services.mako.package}/bin/mako";
+          ExecReload = "${config.services.mako.package}/bin/makoctl reload";
+          Restart = "on-failure";
+        };
+        Unit = {
+          Description = "Lightweight Wayland notification daemon";
+          PartOf = [ "hyprland-session.target" ];
+          After = [ "hyprland-session.target" ];
         };
       };
       wl-clip-persist = {
@@ -242,7 +269,7 @@ in
       require("monitors")
 
       hl.on("hyprland.start", function()
-        hl.exec_cmd("easyeffects --hide-window")
+        -- hl.exec_cmd("easyeffects --hide-window")
       end)
     '';
     extraLuaFiles."binds.lua" = {
@@ -297,6 +324,7 @@ in
         hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"))
         hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"))
         hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"))
+        hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("${cycle-audio-output}; notify-send --expire-time 1000 --app-name=audio-output -h string:x-dunst-stack-tag:audio-output \"$(${current-sink})\""))
 
         -- Volume/brightness
         hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 5%-"), { locked = true, repeating = true })
