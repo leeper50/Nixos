@@ -17,6 +17,8 @@
     ./rclone.nix
   ]
   ++ lib.optionals (systemType != "NixDarwin") [
+    ./audio/easyeffects.nix
+    ./audio/wireplumber.nix
     ./desktops/hyprland.nix
   ];
   config = lib.mkMerge [
@@ -290,6 +292,7 @@
         theclicker
         vlc
         yubioath-flutter
+        pulseaudio
       ];
       programs = {
         alacritty.settings = {
