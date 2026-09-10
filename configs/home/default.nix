@@ -1,4 +1,5 @@
 {
+  config,
   globals,
   lib,
   pkgs,
@@ -130,6 +131,7 @@ in
         set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
         set -gx MANROFFOPT -c
         set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
+        set -gx XDG_CONFIG_HOME ${config.xdg.configHome}
         fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
         set -gx FLAKE_DIR $HOME/Nix
       '';
