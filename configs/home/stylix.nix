@@ -40,7 +40,7 @@
     ++ lib.optionals (options.stylix ? cursor) [
       {
         stylix.cursor = {
-          name = "Qogir Cursors";
+          name = "Qogir";
           package = pkgs.qogir-icon-theme;
           size = 32;
         };
