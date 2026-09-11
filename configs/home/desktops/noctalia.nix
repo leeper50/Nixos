@@ -30,4 +30,8 @@
     };
   };
   stylix.targets.noctalia.enable = true;
+  systemd.user.services.noctalia.Unit = {
+    After = [ "pipewire.service" ];
+    PartOf = [ "pipewire.service" ];
+  };
 }
