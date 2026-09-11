@@ -10,6 +10,9 @@ let
   noctalia = "exec noctalia msg";
 in
 {
+  home.packages = [
+    pkgs.autotiling-rs
+  ];
   stylix.targets.sway = {
     enable = true;
     useWallpaper = false;
@@ -66,13 +69,19 @@ in
         "--locked XF86KbdBrightnessUp" = "${noctalia} keyboard-backlight-up";
         "--locked XF86MonBrightnessDown" = "${noctalia} brightness-down";
         "--locked XF86MonBrightnessUp" = "${noctalia} brightness-up";
-        
+
         # Unbinds
         "${mod}+0" = "null";
         "${mod}+Shift+0" = "null";
       };
       menu = "noctalia msg panel-toggle launcher";
       modifier = "Mod4";
+      startup = [
+        {
+          always = true;
+          command = "${pkgs.autotiling-rs}/bin/autotiling-rs";
+        }
+      ];
       terminal = "kitty";
       window = {
         border = 1;
