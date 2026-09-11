@@ -40,8 +40,8 @@
     ++ lib.optionals (options.stylix ? cursor) [
       {
         stylix.cursor = {
-          name = "Qogir";
-          package = pkgs.qogir-icon-theme;
+          name = "Bibata-Original-Classic";
+          package = pkgs.bibata-cursors;
           size = 32;
         };
         stylix.icons = {

@@ -209,7 +209,6 @@ in
         environment.systemPackages = with pkgs; [
           awww
           hyprpaper
-          hyprshutdown
           kdePackages.ark
           kdePackages.dolphin
           kdePackages.kio
@@ -229,14 +228,16 @@ in
           mpvpaper
           sddm-astronaut
           qview
-        ];
+        ]
+        ++ [ config.stylix.cursor.package ];
         networking.firewall.allowedUDPPorts = [ 4242 ];
         programs = {
           hyprland = {
             enable = true;
+            withUWSM = true;
             xwayland.enable = true;
           };
-          hyprlock.enable = true;
+          sway.enable = true;
           steam = {
             enable = true;
             extest.enable = true;
@@ -258,7 +259,10 @@ in
             enable = true;
             package = pkgs.kdePackages.sddm;
             theme = "sddm-astronaut-theme";
-            wayland.enable = true;
+            wayland = {
+              compositor = "kwin";
+              enable = true;
+            };
           };
           flatpak.enable = true;
           gnome.gnome-keyring.enable = true;

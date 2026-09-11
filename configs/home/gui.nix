@@ -20,6 +20,8 @@
     ./audio/easyeffects.nix
     ./audio/wireplumber.nix
     ./desktops/hyprland.nix
+    ./desktops/noctalia.nix
+    ./desktops/sway.nix
   ];
   config = lib.mkMerge [
     {
@@ -275,6 +277,17 @@
                 $HOME/.config/gtk-4.0/settings.ini
         ''
       );
+      # Get dolphin working with hyprland
+      home.file.".config/menus/applications.menu".text = ''
+        <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+          "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+        <Menu>
+          <Name>Applications</Name>
+          <DefaultAppDirs/>
+          <DefaultDirectoryDirs/>
+          <DefaultMergeDirs/>
+        </Menu>
+      '';
       home.packages = with pkgs; [
         bazaar
         blender

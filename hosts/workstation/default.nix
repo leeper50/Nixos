@@ -21,6 +21,69 @@ in
       agenix.homeManagerModules.default
       stylix.homeModules.stylix
     ];
+  wayland.windowManager = {
+    hyprland.extraLuaFiles."monitors.lua" = {
+      autoLoad = true;
+      content = ''
+        hl.monitor({
+          bitdepth = 10,
+          mode = "highrr",
+          output = "DP-1",
+          position = "auto-left",
+          scale = "1",
+          vrr = 2
+        })
+        hl.monitor({
+          bitdepth = 10,
+          mode = "highrr",
+          output = "DP-2",
+          position = "auto-right",
+          scale = "1.5",
+          vrr = 2
+        })
+        hl.workspace_rule({monitor = "DP-1", workspace = "1"})
+        hl.workspace_rule({monitor = "DP-1", workspace = "3"})
+        hl.workspace_rule({monitor = "DP-2", workspace = "2"})
+        hl.workspace_rule({monitor = "DP-2", workspace = "4"})
+      '';
+    };
+    sway.config = {
+      output = {
+        DP-1 = {
+          adaptive_sync = "on";
+          mode = "2560x1440@170.001Hz";
+          position = "0 0";
+          render_bit_depth = "10";
+          scale = "1";
+        };
+        DP-2 = {
+          adaptive_sync = "on";
+          mode = "3840x2160@120Hz";
+          position = "2560 0";
+          render_bit_depth = "10";
+          scale = "1.5";
+        };
+      };
+      workspaceOutputAssign = [
+        {
+          output = "DP-1";
+          workspace = "1";
+        }
+        {
+          output = "DP-2";
+          workspace = "2";
+        }
+        {
+          output = "DP-1";
+          workspace = "3";
+        }
+        {
+          output = "DP-2";
+          workspace = "4";
+        }
+      ];
+    };
+  };
   local = {
     browsers = {
       brave.enable = true;

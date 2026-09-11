@@ -21,5 +21,6 @@
       };
     };
   };
+  programs.sway.extraOptions = [ "--unsupported-gpu" ];
   services.xserver.videoDrivers = [ "nvidia" ];
 }

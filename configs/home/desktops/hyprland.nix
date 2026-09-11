@@ -5,258 +5,21 @@
   ...
 }:
 let
-  current-sink = pkgs.writeShellScript "current-sink" ''
-    wpctl inspect @DEFAULT_AUDIO_SINK@ | sed -n 's/.*node.description = "\(.*\)"/\1/p'
-  '';
-  cycle-audio-output = pkgs.writeShellScript "cycle-audio-output" ''
-    current=$(${pactl} get-default-sink)
-    sinks=$(${pactl} list sinks short | awk '{print $2}' | rg -v "effect_input|easyeffects_sink")
-    count=$(echo "$sinks" | wc -l)
-
-    current_idx=0
-    i=0
-    while IFS= read -r sink; do
-      if [ "$sink" = "$current" ]; then current_idx=$i; fi
-      i=$((i + 1))
-    done <<< "$sinks"
-
-    next_sink=$(echo "$sinks" | sed -n "$(( (current_idx + 1) % count + 1 ))p")
-    ${pactl} set-default-sink "$next_sink"
-    ${pactl} list sink-inputs short | awk '{print $1}' | while read -r id; do
-      ${pactl} move-sink-input "$id" "$next_sink"
-    done
-  '';
-  pactl = "${pkgs.pulseaudio}/bin/pactl";
+  cycle-audio-output = import ./cycle-audio-output.nix { inherit pkgs; };
 in
 {
-  home.file.".config/kwalletrc".text = ''
-    [Wallet]
-    First Use=false
-    [KSecretD]
-    Enabled=false
-  '';
-
-  # Get dolphin working with hyprland
-  home.file.".config/menus/applications.menu".text = ''
-    <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
-      "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
-    <Menu>
-      <Name>Applications</Name>
-      <DefaultAppDirs/>
-      <DefaultDirectoryDirs/>
-      <DefaultMergeDirs/>
-    </Menu>
-  '';
-
   home.packages = with pkgs; [
     blueman
-    brightnessctl
-    grim
-    hyprpolkitagent
     pavucontrol
-    playerctl
-    rofimoji
-    slurp
     waypaper
-    wl-clip-persist
     wl-clipboard
     wtype
     xdg-desktop-portal-hyprland
   ];
 
-  programs = {
-    waybar = {
-      enable = true;
-      settings = [
-        {
-          height = 36;
-          layer = "top";
-          position = "top";
-          spacing = 24;
-          modules-left = [
-            "hyprland/workspaces"
-          ];
-          modules-center = [
-            "clock"
-          ];
-          modules-right = [
-            "tray"
-            "network"
-            "battery"
-            "pulseaudio"
-            "pulseaudio#microphone"
-            "power-profiles-daemon"
-          ];
-          battery = {
-            format = "{capacity}% {icon}";
-            format-charging = "{capacity}% +";
-            format-icons = [
-              "▁"
-              "▂"
-              "▃"
-              "▄"
-              "▅"
-              "▆"
-              "▇"
-              "█"
-            ];
-            states = {
-              critical = 15;
-              warning = 30;
-            };
-            tooltip = true;
-          };
-          bluetooth = {
-            format = "BT {status}";
-            format-connected = "BT {device_alias}";
-            on-click = "blueman-manager";
-            tooltip-format-connected = "{controller_alias}\n{device_enumerate}";
-          };
-          clock = {
-            format = "{:%Y-%m-%d | %H:%M}";
-            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          };
-          "hyprland/workspaces" = {
-            format = "{name}";
-            on-click = "activate";
-            sort-by-number = true;
-          };
-          "hyprland/window" = {
-            max-length = 60;
-            separate-outputs = true;
-          };
-          network = {
-            format = "";
-            format-disconnected = "Disconnected";
-            tooltip-format = "{ifname}: {ipaddr}";
-          };
-          "power-profiles-daemon" = {
-            format = "{icon}  ";
-            format-icons = {
-              "balanced" = "⚖️";
-              "performance" = "🚀";
-              "power-saver" = "🌿";
-            };
-            tooltip-format = "{profile}";
-          };
-          pulseaudio = {
-            format = "{volume}% - {desc}";
-            format-muted = "Muted - {desc}";
-            on-click = "${cycle-audio-output}";
-            on-click-right = "wpctl set-mute @DEFAULT_SINK@ toggle";
-            scroll-step = 5;
-          };
-          "pulseaudio#microphone" = {
-            format = "{format_source}";
-            format-source = "{volume}% - 🎤";
-            format-source-muted = "Muted - 🎤";
-            on-click = "wpctl set-mute @DEFAULT_SOURCE@ toggle";
-            on-scroll-up = "wpctl set-volume -l 1.0 @DEFAULT_SOURCE@ 5%+";
-            on-scroll-down = "wpctl set-volume @DEFAULT_SOURCE@ 5%-";
-            tooltip-format = "{source_desc}";
-          };
-          tray = {
-            spacing = 8;
-            icon-size = 24;
-          };
-        }
-      ];
-      style = ''
-        * { font-size: 15px; }
-      '';
-      systemd = {
-        enable = true;
-        targets = [ "hyprland-session.target" ];
-      };
-    };
-    fuzzel = {
-      enable = true;
-      settings = {
-        main = {
-          font = lib.mkForce "Fira Code:size=14";
-          icons-enabled = true;
-          lines = 15;
-          terminal = "kitty";
-          width = 40;
-        };
-      };
-    };
-    hyprlock = {
-      enable = true;
-      package = null;
-      settings = {
-        background = lib.mkForce [
-          {
-            blur_passes = 3;
-            blur_size = 4;
-            path = "${../wallpaper.jxl}";
-          }
-        ];
-        general = {
-          disable_loading_bar = true;
-          hide_cursor = true;
-        };
-      };
-    };
-  };
-
-  services.mako = {
-    enable = true;
-    settings."app-name=audio-output" = {
-      anchor = "bottom-center";
-      text-alignment = "center";
-      outer-margin = "0,0,360,0";
-    };
-  };
-
-  stylix.targets = {
-    fuzzel.enable = true;
-    hyprland.enable = true;
-    hyprlock.enable = true;
-    mako.enable = true;
-    waybar.enable = true;
-  };
+  stylix.targets.hyprland.enable = true;
 
   systemd.user = {
-    services = {
-      hyprpolkitagent = {
-        Unit = {
-          Description = "Polkit authentication agent for Hyprland";
-          PartOf = [ "hyprland-session.target" ];
-        };
-        Install.WantedBy = [ "hyprland-session.target" ];
-        Service = {
-          ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
-          Restart = "on-failure";
-        };
-      };
-      mako = {
-        Install.WantedBy = [ "hyprland-session.target" ];
-        Service = {
-          Type = "dbus";
-          BusName = "org.freedesktop.Notifications";
-          ExecStart = "${config.services.mako.package}/bin/mako";
-          ExecReload = "${config.services.mako.package}/bin/makoctl reload";
-          Restart = "on-failure";
-        };
-        Unit = {
-          Description = "Lightweight Wayland notification daemon";
-          PartOf = [ "hyprland-session.target" ];
-          After = [ "hyprland-session.target" ];
-        };
-      };
-      wl-clip-persist = {
-        Install.WantedBy = [ "hyprland-session.target" ];
-        Service = {
-          ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard both";
-          Restart = "on-failure";
-        };
-        Unit = {
-          Description = "Keep Wayland clipboard contents after the source app exits";
-          PartOf = [ "hyprland-session.target" ];
-        };
-      };
-    };
     tmpfiles.rules = [
       "d ${config.xdg.configHome}/hypr 0750 - - -"
       "f ${config.xdg.configHome}/hypr/monitors.lua 0750 - - -"
@@ -271,29 +34,34 @@ in
       hl.on("hyprland.start", function()
         -- hl.exec_cmd("easyeffects --hide-window")
       end)
+      hl.on("hyprland.shutdown", function()
+        os.execute("uwsm check is-active compositor-only || systemctl --user stop graphical-session.target")
+      end)
     '';
     extraLuaFiles."binds.lua" = {
       autoLoad = true;
       content = ''
         local mainMod = "SUPER"
+        local noctalia = "noctalia msg "
 
         -- Session
-        hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd("hyprshutdown"))
+        hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
+        hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
 
         -- Apps
-        hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("fuzzel"))
-        hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("fuzzel"))
+        hl.bind("ALT + F4", hl.dsp.window.close())
+        hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
         hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("dolphin"))
         hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
-        hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
-        hl.bind(mainMod .. " + Period", hl.dsp.exec_cmd("rofimoji --selector fuzzel --action copy"))
+        hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(noctalia .. "session lock"))
+        hl.bind(mainMod .. " + Period", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher /emo"))
         hl.bind(mainMod .. " + Q", hl.dsp.window.close())
         hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("kitty"))
+        hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
         hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-        hl.bind("ALT + F4", hl.dsp.window.close())
 
         -- Screenshot
-        hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+        hl.bind("Print", hl.dsp.exec_cmd(noctalia .. "screenshot-region"))
 
         -- Focus
         hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
@@ -308,8 +76,8 @@ in
         hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
 
         -- Workspaces
-        for i = 1, 10 do
-          local key = i % 10
+        for i = 1, 9 do
+          local key = i % 9
           hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
           hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
         end
@@ -319,23 +87,27 @@ in
         hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
         -- Audio & media controls
-        hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"))
-        hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"))
-        hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"))
-        hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"))
-        hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"))
-        hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("${cycle-audio-output}; notify-send --expire-time 1000 --app-name=audio-output -h string:x-dunst-stack-tag:audio-output \"$(${current-sink})\""))
+        hl.bind("XF86AudioMute", hl.dsp.exec_cmd(noctalia .. "volume-mute"))
+        hl.bind("XF86AudioNext", hl.dsp.exec_cmd(noctalia .. "media next"))
+        hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(noctalia .. "media toggle"))
+        hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(noctalia .. "media previous"))
+        hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd(noctalia .. "mic-mute"))
+        hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("${lib.getExe cycle-audio-output}"))
 
         -- Volume/brightness
-        hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 5%-"), { locked = true, repeating = true })
-        hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_SINK@ 5%+"), { locked = true, repeating = true })
-        hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("brightnessctl -d '*::kbd_backlight' set 10%- -n 0"), { locked = true, repeating = true })
-        hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd("brightnessctl -d '*::kbd_backlight' set +10%"), { locked = true, repeating = true })
-        hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%- -n 5"), { locked = true, repeating = true })
-        hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +5%"), { locked = true, repeating = true })
+        hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(noctalia .. "volume-down"), { locked = true, repeating = true })
+        hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(noctalia .. "volume-up"), { locked = true, repeating = true })
+        hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd(noctalia .. "keyboard-backlight-down"), { locked = true, repeating = true })
+        hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd(noctalia .. "keyboard-backlight-up"), { locked = true, repeating = true })
+        hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctalia .. "brightness-down"), { locked = true, repeating = true })
+        hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(noctalia .. "brightness-up"), { locked = true, repeating = true })
       '';
     };
     package = null;
+    # Under uwsm, uwsm starts the session targets itself
+    systemd.extraCommands = [
+      "(uwsm check is-active compositor-only || (systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target))"
+    ];
     settings = {
       animation = [
         {
