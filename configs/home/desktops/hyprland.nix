@@ -19,20 +19,11 @@ in
 
   stylix.targets.hyprland.enable = true;
 
-  systemd.user = {
-    tmpfiles.rules = [
-      "d ${config.xdg.configHome}/hypr 0750 - - -"
-      "f ${config.xdg.configHome}/hypr/monitors.lua 0750 - - -"
-    ];
-  };
-
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
-      require("monitors")
-
       hl.on("hyprland.start", function()
-        -- hl.exec_cmd("easyeffects --hide-window")
+        -- put autostart stuff here
       end)
       hl.on("hyprland.shutdown", function()
         os.execute("uwsm check is-active compositor-only || systemctl --user stop graphical-session.target")
@@ -103,11 +94,11 @@ in
         hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(noctalia .. "brightness-up"), { locked = true, repeating = true })
       '';
     };
+    extraLuaFiles."monitors.lua" = lib.mkDefault {
+      autoLoad = true;
+      content = "";
+    };
     package = null;
-    # Under uwsm, uwsm starts the session targets itself
-    systemd.extraCommands = [
-      "(uwsm check is-active compositor-only || (systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target))"
-    ];
     settings = {
       animation = [
         {
@@ -250,6 +241,9 @@ in
         scale = "auto";
       };
     };
+    systemd.extraCommands = [
+      "(uwsm check is-active compositor-only || (systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target))"
+    ];
     xwayland.enable = true;
   };
   xdg.portal.config.common.default = "*";
