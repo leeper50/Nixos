@@ -51,6 +51,7 @@ in
       cream-linux.enable = true;
       elegoo-slicer.enable = true;
       ollama.enable = true;
+      rimsort.enable = true;
       waifu2x.enable = true;
     };
     restic.backups.home = {

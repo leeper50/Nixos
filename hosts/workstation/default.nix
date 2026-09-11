@@ -27,7 +27,7 @@ in
       content = ''
         hl.monitor({
           bitdepth = 10,
-          mode = "highrr",
+          mode = "2560x1440@165Hz",
           output = "DP-1",
           position = "auto-left",
           scale = "1",
@@ -35,7 +35,7 @@ in
         })
         hl.monitor({
           bitdepth = 10,
-          mode = "highrr",
+          mode = "3840x2160@120Hz",
           output = "DP-2",
           position = "auto-right",
           scale = "1.5",
@@ -51,7 +51,7 @@ in
       output = {
         DP-1 = {
           adaptive_sync = "on";
-          mode = "2560x1440@170.001Hz";
+          mode = "2560x1440@165Hz";
           position = "0 0";
           render_bit_depth = "10";
           scale = "1";
@@ -97,6 +97,7 @@ in
         context_length = 32768;
         enable = true;
       };
+      rimsort.enable = true;
       waifu2x.enable = true;
     };
     restic.backups = {
