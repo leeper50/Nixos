@@ -45,6 +45,23 @@ in
         hl.workspace_rule({monitor = "DP-1", workspace = "3"})
         hl.workspace_rule({monitor = "DP-2", workspace = "2"})
         hl.workspace_rule({monitor = "DP-2", workspace = "4"})
+
+        hl.bind("SUPER + M", function()
+          hl.monitor({output = "DP-1", disabled = true})
+          hl.monitor({output = "DP-2", disabled = false})
+        end)
+        hl.bind("SUPER + SHIFT + M", function()
+          hl.monitor({output = "DP-1", disabled = false})
+          hl.monitor({output = "DP-2", disabled = false})
+        end)
+        hl.bind("SUPER + N", function()
+          hl.monitor({output = "DP-1", disabled = false})
+          hl.monitor({output = "DP-2", disabled = true})
+        end)
+        hl.bind("SUPER + SHIFT + N", function()
+          hl.monitor({output = "DP-1", disabled = false})
+          hl.monitor({output = "DP-2", disabled = false})
+        end)
       '';
     };
     sway.config = {
