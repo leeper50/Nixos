@@ -18,6 +18,7 @@
     lldb_22
     markdown-oxide
     onefetch
+    opentofu
     ragenix
     restic
     rsync
@@ -27,6 +28,7 @@
     shfmt
     svelte-language-server
     tinymist
+    terraform-ls
     tombi
     typescript-language-server
     typos-lsp
