@@ -16,6 +16,7 @@ in
     ];
   local = {
     authelia.enable = true;
+    beszel.agent = true;
     headscale.enable = true;
     nginx = {
       domain = globals.domain;

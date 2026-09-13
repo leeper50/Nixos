@@ -10,14 +10,17 @@ let
 in
 {
   options.local.beszel = {
-    hub.enable = lib.mkEnableOption "host";
-    agent.hubHost = lib.mkOption {
-      default = "node-1.ts.${globals.domain}";
-      type = lib.types.str;
+    hub.enable = lib.mkEnableOption "beszel host";
+    agent = {
+      enable = lib.mkEnableOption "beszel agent";
+      hubHost = lib.mkOption {
+        default = "node-1.ts.${globals.domain}";
+        type = lib.types.str;
+      };
     };
   };
   config = lib.mkMerge [
-    {
+    (lib.mkIf cfg.agent.enable {
       services.beszel.agent = {
         enable = true;
         environment = {
@@ -27,7 +30,7 @@ in
         };
       };
       users.groups.beszel-agent.gid = 992;
-    }
+    })
     (lib.mkIf cfg.hub.enable {
       networking.firewall = globals.mkFirewallRules {
         service = "beszel";

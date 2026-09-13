@@ -41,6 +41,7 @@ in
     librewolf.enable = true;
   };
   local = {
+    beszel.agent = true;
     local = true;
     mounts = {
       autoMount = true;
