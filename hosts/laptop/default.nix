@@ -52,6 +52,7 @@ in
       elegoo-slicer.enable = true;
       ollama.enable = true;
       rimsort.enable = true;
+      surge.enable = true;
       waifu2x.enable = true;
     };
     restic.backups.home = {

@@ -286,6 +286,15 @@ in
     owner = "1000";
     publicKeys = all_keys;
   };
+  "surge_auth_token.age" = {
+    group = "1000";
+    owner = "1000";
+    publicKeys = [ personal ];
+    hosts = [
+      "laptop"
+      "workstation"
+    ];
+  };
   "user_walter_clear.age" = {
     group = "1000";
     owner = "1000";
