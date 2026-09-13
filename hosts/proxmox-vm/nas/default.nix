@@ -20,7 +20,10 @@ in
       /configs/nixos/samba.nix
       /configs/nixos/syncthing.nix
     ]
-    ++ [ disko.nixosModules.disko ];
+    ++ [
+      disko.nixosModules.disko
+      ../disk-config.nix
+    ];
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";
     fsType = "btrfs";

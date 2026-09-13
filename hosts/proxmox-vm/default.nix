@@ -7,10 +7,7 @@ in
     map (p: rootDir + p) [
       /configs/nixos
     ]
-    ++ [
-      ./disk-config.nix
-      ./hardware-configuration.nix
-    ];
+    ++ [ ./hardware-configuration.nix ];
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
     "vm.vfs_cache_pressure" = 500;

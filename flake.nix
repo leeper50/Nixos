@@ -107,6 +107,51 @@
         };
 
       hosts = {
+        "k3s-01" = mkHost {
+          deployment = {
+            targetHost = "k3s-01";
+            tags = [
+              "local"
+              "servers"
+            ];
+          };
+          modules = [
+            ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/k3s-01
+          ];
+          profile = "cli";
+        };
+
+        "k3s-02" = mkHost {
+          deployment = {
+            targetHost = "k3s-02";
+            tags = [
+              "local"
+              "servers"
+            ];
+          };
+          modules = [
+            ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/k3s-02
+          ];
+          profile = "cli";
+        };
+
+        "k3s-03" = mkHost {
+          deployment = {
+            targetHost = "k3s-03";
+            tags = [
+              "local"
+              "servers"
+            ];
+          };
+          modules = [
+            ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/k3s-03
+          ];
+          profile = "cli";
+        };
+
         komodo = mkHost {
           deployment = {
             targetHost = "komodo";

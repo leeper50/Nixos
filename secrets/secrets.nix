@@ -1,6 +1,8 @@
 let
   inherit (import ./keys.nix)
-    gk55
+    k3s-01
+    k3s-02
+    k3s-03
     komodo
     macbook
     nas
@@ -18,7 +20,9 @@ let
     personal
   ];
   all_keys = [
-    gk55
+    k3s-01
+    k3s-02
+    k3s-03
     komodo
     macbook
     nas

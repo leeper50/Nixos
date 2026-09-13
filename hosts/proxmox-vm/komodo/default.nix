@@ -7,7 +7,10 @@ in
     map (p: rootDir + p) [
       /configs/nixos/docker.nix
     ]
-    ++ [ disko.nixosModules.disko ];
+    ++ [
+      disko.nixosModules.disko
+      ../disk-config.nix
+    ];
   boot.kernelModules = [
     "nft_masq"
     "wireguard"

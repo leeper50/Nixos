@@ -180,6 +180,9 @@
               Port = 22;
               User = "root";
             };
+            "k3s-01".HostName = "10.0.2.1";
+            "k3s-02".HostName = "10.0.2.2";
+            "k3s-03".HostName = "10.0.2.3";
           };
         };
         vscode = {
