@@ -17,6 +17,7 @@
     kotlin-language-server
     lldb_22
     markdown-oxide
+    nixos-anywhere
     onefetch
     opentofu
     ragenix
