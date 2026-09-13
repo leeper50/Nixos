@@ -427,8 +427,6 @@
             # Sponsorblock options
             --sponsorblock-mark all
             --sponsorblock-remove interaction,intro,music_offtopic,preview,selfpromo,sponsor,outro
-            # Preset aliases
-            -t mkv
           '';
         };
         zathura = {
