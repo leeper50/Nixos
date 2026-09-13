@@ -20,7 +20,7 @@ in
     "net.ipv6.conf.all.forwarding" = 1;
   };
   local = {
-    beszel.agent = true;
+    beszel.agent.enable = true;
     docker.komodo = {
       coreIP = "100.64.0.5";
       periphery.enable = true;

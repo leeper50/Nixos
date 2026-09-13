@@ -35,7 +35,7 @@ in
     ];
   };
   local = {
-    beszel.agent = true;
+    beszel.agent.enable = true;
     mediaWatch.enable = true;
     local = true;
     postgresql = {

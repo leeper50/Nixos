@@ -14,7 +14,7 @@ in
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
   local = {
-    beszel.agent = true;
+    beszel.agent.enable = true;
     docker.swarm.enable = true;
     local = true;
     mounts.media = true;

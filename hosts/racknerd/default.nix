@@ -16,7 +16,7 @@ in
     openssl
   ];
   local = {
-    beszel.agent = true;
+    beszel.agent.enable = true;
     murmur = {
       enable = true;
       name = "Da Bad One";
