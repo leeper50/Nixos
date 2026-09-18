@@ -14,7 +14,7 @@ in
       limo
       openmw
       # teamspeak6-client
-      # wowup-cf
+      wowup-cf
     ]
     ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && enableEmulators) [
       azahar
