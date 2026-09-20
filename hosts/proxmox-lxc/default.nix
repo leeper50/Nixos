@@ -37,5 +37,11 @@ in
     networkmanager.enable = lib.mkForce false;
   };
   proxmoxLXC.manageHostName = true;
-  systemd.network.wait-online.enable = false;
+  systemd = {
+    network.wait-online.enable = true;
+    services.docker = {
+      after = [ "mnt-media.mount" ];
+      requires = [ "mnt-media.mount" ];
+    };
+  };
 }
