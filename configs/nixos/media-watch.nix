@@ -16,11 +16,10 @@ let
       refresh() {
         local key
         key=$(tr -d '[:space:]' < "$CREDENTIALS_DIRECTORY/api-key")
-        curl --config <(printf 'header = "X-Emby-Token: %s"\n' "$key") \
+        curl --config <(printf 'header = "Authorization: MediaBrowser Token=\\"%s\\""\n' "$key") \
           --fail --max-time 30 --request POST --retry 3 --show-error --silent \
           "${cfg.jellyfinUrl}/Library/Refresh"
       }
-
       inotifywait --event close_write --event create --event delete \
         --event moved_from --event moved_to \
         --exclude '(\.part|\.!qB|\.tmp|~)$' \
