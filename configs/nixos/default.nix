@@ -30,6 +30,7 @@ in
     ../../secrets
     ./avahi.nix
     ./beszel.nix
+    ./comin.nix
     ./mounts.nix
     ./networking.nix
     ./ssh.nix

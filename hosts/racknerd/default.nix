@@ -17,6 +17,7 @@ in
   ];
   local = {
     beszel.agent.enable = true;
+    comin.enable = true;
     murmur = {
       enable = true;
       name = "Da Bad One";

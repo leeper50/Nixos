@@ -21,6 +21,7 @@ in
   };
   local = {
     beszel.agent.enable = true;
+    comin.enable = true;
     docker.komodo = {
       coreIP = "100.64.0.5";
       periphery.enable = true;

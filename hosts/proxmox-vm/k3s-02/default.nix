@@ -9,6 +9,7 @@
     ../k3s-disk-config.nix
   ];
   local = {
+    comin.enable = true;
     local = true;
   };
   environment.systemPackages = [
