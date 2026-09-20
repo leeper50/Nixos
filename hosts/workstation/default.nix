@@ -26,20 +26,20 @@ in
       autoLoad = true;
       content = ''
         hl.monitor({
-          bitdepth = 10,
+          bitdepth = 8,
           mode = "2560x1440@120Hz",
           output = "DP-1",
           position = "auto-left",
           scale = "1",
-          vrr = 2
+          vrr = 0
         })
         hl.monitor({
-          bitdepth = 10,
+          bitdepth = 8,
           mode = "3840x2160@120Hz",
           output = "DP-2",
           position = "auto-right",
-          scale = "1.5",
-          vrr = 2
+          scale = "2",
+          vrr = 0
         })
         hl.workspace_rule({monitor = "DP-1", workspace = "1"})
         hl.workspace_rule({monitor = "DP-1", workspace = "3"})
