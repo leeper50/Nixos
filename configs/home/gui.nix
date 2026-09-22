@@ -1,12 +1,25 @@
 # Common settings for all systems with a GUI (desktops).
 # May also have cli settings for desktop specific tasks.
 {
+  config,
   globals,
+  hostName ? null,
   lib,
+  osConfig ? null,
   pkgs,
   systemType,
   ...
 }:
+let
+  nixdFlake = "(builtins.getFlake \"${config.home.homeDirectory}/Nix\")";
+  nixdOptions =
+    if systemType == "NixDarwin" then
+      { darwin.expr = "${nixdFlake}.darwinConfigurations.macbook.options"; }
+    else if systemType == "Standalone" then
+      { home-manager.expr = "${nixdFlake}.homeConfigurations.${hostName}.options"; }
+    else
+      { nixos.expr = "${nixdFlake}.nixosConfigurations.${osConfig.networking.hostName}.options"; };
+in
 {
   imports = [
     ./accounts.nix
@@ -237,6 +250,7 @@
                   "prettier.tabWidth" = 2;
                   "prettier.useTabs" = false;
                 };
+                "claudeCode.hideOnboarding" = true;
                 "claudeCode.preferredLocation" = "panel";
                 "diffEditor.ignoreTrimWhitespace" = false;
                 "editor.fontLigatures" = true;
@@ -253,7 +267,12 @@
                 "git.fetchOnPull" = true;
                 "js/ts.updateImportsOnFileMove.enabled" = "always";
                 "nix.enableLanguageServer" = true;
-                "nix.serverPath" = "nixd";
+                "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
+                "nix.serverSettings".nixd = {
+                  formatting.command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
+                  nixpkgs.expr = "import ${nixdFlake}.inputs.nixpkgs { }";
+                  options = nixdOptions;
+                };
                 "prettier.tabWidth" = 4;
                 "prettier.useTabs" = true;
                 "svelte.enable-ts-plugin" = true;
