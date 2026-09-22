@@ -6,14 +6,23 @@
 }:
 let
   cfg = config.local.syncthing;
-  home = cfg.home;
+  devices = {
+    all = devices.desktops ++ devices.mobiles ++ devices.servers;
+    desktops = [
+      "laptop"
+      "macbook"
+      "workstation"
+    ];
+    mobiles = [
+      "moto-g"
+      "tablet"
+      "phone"
+    ];
+    servers = [ "nas" ];
+  };
 in
 {
   options.local.syncthing = {
-    home = lib.mkOption {
-      type = lib.types.str;
-      default = "/home/${globals.username}";
-    };
     folders = lib.mkOption {
       default = { };
       type = lib.types.attrsOf (
@@ -21,12 +30,20 @@ in
           options = {
             enable = lib.mkEnableOption "syncthing folder";
             type = lib.mkOption {
+              default = cfg.folder_type;
               type = lib.types.str;
-              default = "sendreceive";
             };
           };
         }
       );
+    };
+    folder_type = lib.mkOption {
+      default = "sendreceive";
+      type = lib.types.str;
+    };
+    home = lib.mkOption {
+      default = "/home/${globals.username}";
+      type = lib.types.str;
     };
   };
 
@@ -48,96 +65,57 @@ in
     }
     (lib.mkIf (cfg.folders."Desktops".enable or false) {
       services.syncthing.settings.folders."Desktops" = {
-        devices = [
-          "laptop"
-          "macbook"
-          "workstation"
-        ];
+        devices = devices.desktops ++ devices.servers;
         id = "zmytz-ewbvk";
-        path = "${home}/Sync/Desktops";
+        path = "${cfg.home}/Sync/Desktops";
         type = cfg.folders."Desktops".type;
       };
     })
     (lib.mkIf (cfg.folders."Downloads".enable or false) {
       services.syncthing.settings.folders."Downloads" = {
-        devices = [
-          "laptop"
-          "macbook"
-          "workstation"
-        ];
+        devices = devices.desktops ++ devices.servers;
         id = "wdxge-fcb6f";
-        path = "${home}/Downloads";
+        path = "${cfg.home}/Downloads";
         type = cfg.folders."Downloads".type;
       };
     })
     (lib.mkIf (cfg.folders."FreeTube".enable or false) {
       services.syncthing.settings.folders."FreeTube" = {
-        devices = [
-          "laptop"
-          "nas"
-          "workstation"
-        ];
+        devices = devices.desktops ++ devices.servers;
         id = "kembu-qwjnf";
-        path = "${home}/.var/app/io.freetubeapp.FreeTube/config/FreeTube";
+        path = "${cfg.home}/.var/app/io.freetubeapp.FreeTube/config/FreeTube";
         type = cfg.folders."FreeTube".type;
       };
     })
     (lib.mkIf (cfg.folders."GlobalShare".enable or false) {
       services.syncthing.settings.folders."GlobalShare" = {
-        devices = [
-          "laptop"
-          "macbook"
-          "moto-g"
-          "nas"
-          "phone"
-          "tablet"
-          "workstation"
-        ];
+        devices = devices.all;
         id = "urm2m-gt7xq";
-        path = "${home}/Sync/GlobalShare";
+        path = "${cfg.home}/Sync/GlobalShare";
         type = cfg.folders."GlobalShare".type;
       };
     })
     (lib.mkIf (cfg.folders."Notes".enable or false) {
       services.syncthing.settings.folders."Notes" = {
-        devices = [
-          "laptop"
-          "macbook"
-          "moto-g"
-          "nas"
-          "phone"
-          "tablet"
-          "workstation"
-        ];
+        devices = devices.all;
         id = "extbw-xzgpn";
-        path = "${home}/Sync/Notes";
+        path = "${cfg.home}/Sync/Notes";
         type = cfg.folders."Notes".type;
       };
     })
     (lib.mkIf (cfg.folders."Phone".enable or false) {
       services.syncthing.settings.folders."Phone" = {
-        devices = [
-          "macbook"
-          "phone"
-          "tablet"
-          "workstation"
-        ];
+        devices = devices.all;
         id = "2sfej-bdebv";
-        path = "${home}/Sync/Phone";
+        path = "${cfg.home}/Sync/Phone";
         type = cfg.folders."Phone".type;
       };
     })
     (lib.mkIf (cfg.folders."Tablet".enable or false) {
       services.syncthing.settings.folders."Tablet" = {
-        devices = [
-          "laptop"
-          "macbook"
-          "moto-g"
-          "tablet"
-          "workstation"
-        ];
+        devices = devices.all;
         id = "3an97-7phbm";
-        path = "${home}/Sync/Tablet";
+        path = "${cfg.home}/Sync/Tablet";
         type = cfg.folders."Tablet".type;
       };
     })
