@@ -1,12 +1,21 @@
-## Future Goals
+# Future Goals
 
-Make better use of the options system for opt-in configs.
+## Better DNS failover
+Keep using adguardhome on docker swarm.
+Run blocky on komodo & nas vms.
+Maybe switch to blocky if its more stable.
 
-example:
-```nix
-  locals.profiles.cli.enable = true; # Enables all cli configs
-  locals.profiles.dev.enable = true; # Enables all dev configs
-  locals.profiles.gui.enable = true; # Enables all gui configs
-```
+## TLS everywhere
+Use dns-01 certs for each device:
+- *.laptop.dellhp.party
+- *.node-1.dellhp.party
+- etc.
 
-Allow for selection of backup location (primarily b2 b/c money)
+Setup reverse proxy (nginx, maybe caddy or haproxy) to use cert for services:
+- Adguard
+  - Also try to use cert for dns-over-https
+- Beszel
+- Cockpit
+- Syncthing
+
+Limit access with mkFirewallRules with lan only access.
