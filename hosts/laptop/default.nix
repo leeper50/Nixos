@@ -42,6 +42,7 @@ in
   };
   local = {
     beszel.agent.enable = true;
+    comin.enable = true;
     local = true;
     mounts = {
       autoMount = true;
@@ -85,7 +86,6 @@ in
       asusdConfig.source = ./asusd.ron;
       enable = true;
     };
-    blueman.enable = true;
     btrfs.autoScrub.enable = true;
     fstrim.enable = true;
     logind.settings.Login = {
@@ -95,6 +95,7 @@ in
       HandlePowerKey = "ignore";
     };
     power-profiles-daemon.enable = true;
+    upower.enable = true;
   };
   system.stateVersion = "26.05";
   users.users.${globals.username} = {
