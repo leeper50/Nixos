@@ -58,15 +58,6 @@ in
       user = "root";
     };
     syncthing = {
-      folders = {
-        "Desktops".enable = true;
-        "Downloads".enable = true;
-        "FreeTube".enable = true;
-        "GlobalShare".enable = true;
-        "Notes".enable = true;
-        "Phone".enable = true;
-        "Tablet".enable = true;
-      };
       folder_type = "receiveonly";
       home = "/mnt/data/home/${globals.username}";
     };
