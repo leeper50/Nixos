@@ -64,23 +64,23 @@
         "10.0.1.1"
         "2600:1702:58c1:9acf::1:1"
       ];
-      "komodo.local" = [
+      "komodo.dellhp.party" = [
         "10.0.0.60"
         "2600:1702:58c1:9acf::60"
       ];
-      "nas.local" = [
+      "nas.dellhp.party" = [
         "10.0.0.52"
         "2600:1702:58c1:9acf::52"
       ];
-      "node-1.local" = [
+      "node-1.dellhp.party" = [
         "10.0.0.21"
         "2600:1702:58c1:9acf::21"
       ];
-      "node-2.local" = [
+      "node-2.dellhp.party" = [
         "10.0.0.22"
         "2600:1702:58c1:9acf::22"
       ];
-      "node-3.local" = [
+      "node-3.dellhp.party" = [
         "10.0.0.23"
         "2600:1702:58c1:9acf::23"
       ];
@@ -119,9 +119,9 @@
       ];
     };
     swarmNodes = [
-      "node-1.local"
-      "node-2.local"
-      "node-3.local"
+      "node-1.dellhp.party"
+      "node-2.dellhp.party"
+      "node-3.dellhp.party"
     ];
     swarmAddresses = lib.concatMap (node: hosts.${node}) swarmNodes;
   };

@@ -175,12 +175,12 @@ in
               Port = 23;
               User = "u400147";
             };
-            "komodo".HostName = "komodo.local";
+            "komodo".HostName = "komodo.dellhp.party";
             "laptop".HostName = "laptop.local";
-            "nas".HostName = "nas.local";
-            "node-1".HostName = "node-1.local";
-            "node-2".HostName = "node-2.local";
-            "node-3".HostName = "node-3.local";
+            "nas".HostName = "nas.dellhp.party";
+            "node-1".HostName = "node-1.dellhp.party";
+            "node-2".HostName = "node-2.dellhp.party";
+            "node-3".HostName = "node-3.dellhp.party";
             "proxmox" = {
               HostName = "10.0.0.30";
               Port = 22;
@@ -369,7 +369,7 @@ in
                   set -a args -o "%(title)s.%(ext)s"
               end
               if set -q _flag_p
-                  set -a args --proxy socks5://komodo.local:1080
+                  set -a args --proxy socks5://komodo.dellhp.party:1080
               end
               if test -z "$argv[1]"; and not set -q _flag_f
                   echo "Missing URL"

@@ -49,14 +49,14 @@ in
     })
     (lib.mkIf (config.local.local && cfg.media) {
       fileSystems."/mnt/media" = {
-        device = "nas.local:/mnt/data/Media";
+        device = "nas.dellhp.party:/mnt/data/Media";
         fsType = "nfs";
         options = nfs_options;
       };
     })
     (lib.mkIf (config.local.local && cfg.user) {
       fileSystems."/mnt/${globals.username}" = {
-        device = "nas.local:/mnt/data/home/${globals.username}";
+        device = "nas.dellhp.party:/mnt/data/home/${globals.username}";
         fsType = "nfs";
         options = nfs_options;
       };

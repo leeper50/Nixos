@@ -16,7 +16,7 @@ let
   settingsFile = "${configHome}/surge/settings.toml";
   staticSettings = pkgs.writeText "surge-settings.toml" ''
     [network]
-    proxy_url = "socks5://node-1.local:1080"
+    proxy_url = "socks5://node-1.dellhp.party:1080"
     [extension]
   '';
   writeSurgeSettings = pkgs.writeShellApplication {

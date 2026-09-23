@@ -60,7 +60,7 @@ let
       {
         "${name}-nas" = common // {
           environmentFile = rustfsEnvironmentFile;
-          repository = "s3:http://nas.local:9000/dhp-backups/${location}";
+          repository = "s3:http://nas.dellhp.party:9000/dhp-backups/${location}";
         };
       };
   };

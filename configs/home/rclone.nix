@@ -88,13 +88,13 @@ in
       };
       Komodo = {
         config = sftpSettings // {
-          host = "komodo.local";
+          host = "komodo.dellhp.party";
         };
       };
       Nas = {
         config = {
           type = "smb";
-          host = "nas.local";
+          host = "nas.dellhp.party";
           port = 445;
           user = globals.username;
         };
@@ -102,24 +102,24 @@ in
       };
       Node1 = {
         config = sftpSettings // {
-          host = "node-1.local";
+          host = "node-1.dellhp.party";
         };
       };
       Node2 = {
         config = sftpSettings // {
-          host = "node-2.local";
+          host = "node-2.dellhp.party";
         };
       };
       Node3 = {
         config = sftpSettings // {
-          host = "node-3.local";
+          host = "node-3.dellhp.party";
         };
       };
       RustFS = {
         config = {
           type = "s3";
           provider = "Other";
-          endpoint = "http://nas.local:9000";
+          endpoint = "http://nas.dellhp.party:9000";
           region = "nas";
           force_path_style = true;
         };
