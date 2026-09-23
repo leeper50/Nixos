@@ -5,7 +5,9 @@ in
 {
   imports =
     map (p: rootDir + p) [
+      /configs/nixos/blocky.nix
       /configs/nixos/docker.nix
+      /configs/nixos/keepalived.nix
     ]
     ++ [
       disko.nixosModules.disko

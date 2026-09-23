@@ -11,19 +11,36 @@ let
     [ -n "$answer" ]
   '';
   nodes = {
+    "nas" = {
+      interface = "ens18";
+      ipv4Addr = "10.0.0.52";
+      ipv6Addr = "2600:1702:58c1:9acf::52";
+      priority = 60;
+      state = "BACKUP";
+    };
+    "komodo" = {
+      interface = "ens18";
+      ipv4Addr = "10.0.0.60";
+      ipv6Addr = "2600:1702:58c1:9acf::60";
+      priority = 70;
+      state = "BACKUP";
+    };
     "node-1" = {
+      interface = "eth0";
       ipv4Addr = "10.0.0.21";
       ipv6Addr = "2600:1702:58c1:9acf::21";
       priority = 100;
       state = "MASTER";
     };
     "node-2" = {
+      interface = "eth0";
       ipv4Addr = "10.0.0.22";
       ipv6Addr = "2600:1702:58c1:9acf::22";
       priority = 90;
       state = "BACKUP";
     };
     "node-3" = {
+      interface = "eth0";
       ipv4Addr = "10.0.0.23";
       ipv6Addr = "2600:1702:58c1:9acf::23";
       priority = 80;
@@ -53,7 +70,7 @@ in
           }
         '';
         vrrpInstances.dnsIPv4 = {
-          interface = "eth0";
+          interface = thisNode.interface;
           priority = thisNode.priority;
           state = thisNode.state;
           trackScripts = [ "chkAdguard" ];
@@ -65,7 +82,7 @@ in
           virtualRouterId = 51;
         };
         vrrpInstances.dnsIPv6 = {
-          interface = "eth0";
+          interface = thisNode.interface;
           priority = thisNode.priority;
           state = thisNode.state;
           trackScripts = [ "chkAdguard" ];

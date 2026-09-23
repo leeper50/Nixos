@@ -28,18 +28,9 @@ in
           allowlists = {
             ads = [
               ''
-                *.cbsavideo.com
-                *.cbsi.com
-                *.cbsi.live.ott.irdeto.com
-                *.cbsig.net
-                *.cbsinteractive.hb.omtrdc.net
-                *.cbsstatic.com
-                *.paramount.tech
-                *.paramountplus.com
-                *.pplusstatic.com
-                *.tiqcdn.com
+                googleads.g.doubleclick.net
+                pubads.g.doubleclick.net
               ''
-              "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/whitelist-referral.txt"
             ];
             farRight = [
               ''

@@ -12,6 +12,8 @@ in
 {
   imports =
     map (p: rootDir + p) [
+      /configs/nixos/blocky.nix
+      /configs/nixos/keepalived.nix
       /configs/nixos/media-watch.nix
       /configs/nixos/nfs.nix
       /configs/nixos/postgresql.nix
