@@ -26,8 +26,8 @@ in
   imports = [
     agenix.nixosModules.default
     home-manager.nixosModules.home-manager
-    ../home/restic.nix
     ../../secrets
+    ../home/restic.nix
     ./avahi.nix
     ./beszel.nix
     ./comin.nix

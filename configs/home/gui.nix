@@ -321,13 +321,13 @@ in
         gimp
         imgbrd-grabber
         kdePackages.kdenlive
+        pulseaudio
         qt5.qttools
         qview
         sqlitebrowser
         theclicker
         vlc
         yubioath-flutter
-        pulseaudio
       ];
       programs = {
         alacritty.settings = {
