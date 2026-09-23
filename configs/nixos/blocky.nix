@@ -77,7 +77,10 @@ in
           prefetchExpires = "24h";
           prefetchThreshold = 2;
         };
-        customDNS.mapping = customDNSMapping;
+        customDNS = {
+          mapping = customDNSMapping;
+          filterUnmappedTypes = false;
+        };
         ports.dns = ports.dns;
         queryLog.type = "none";
         upstreams = {
