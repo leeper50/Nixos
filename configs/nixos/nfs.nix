@@ -1,4 +1,9 @@
-{ globals, lib, ... }:
+{
+  globals,
+  lib,
+  pkgs,
+  ...
+}:
 let
   ports = {
     lockd = 4001;
@@ -35,6 +40,7 @@ in
       statdPort = ports.statd;
     };
   };
+  systemd.services.nfs-server.path = [ pkgs.kmod ];
   networking.firewall = globals.mkFirewallRules {
     service = "nfs";
     sources = [
