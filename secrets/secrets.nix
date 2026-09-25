@@ -33,22 +33,10 @@ let
 in
 {
   "acme_cloudflare.age" = {
-    group = "acme";
-    owner = "acme";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
+    publicKeys = all_keys;
   };
   "acme_porkbun.age" = {
-    group = "acme";
-    owner = "acme";
-    publicKeys = [
-      personal
-      racknerd
-    ];
-    hosts = [ "racknerd" ];
+    publicKeys = all_keys;
   };
   "authelia_jwt_secret.age" = {
     publicKeys = [
