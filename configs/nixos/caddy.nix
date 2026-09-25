@@ -14,7 +14,7 @@ in
       type = lib.types.str;
     };
     enable = lib.mkEnableOption "caddy";
-    tls.provider = lib.mkOption {
+    provider = lib.mkOption {
       default = "cloudflare";
       type = lib.types.enum [
         "cloudflare"
@@ -24,6 +24,16 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      local.acme = {
+        certs = {
+          ${cfg.domain} = {
+            group = "caddy";
+            provider = cfg.provider;
+            wildcard = true;
+          };
+        };
+        enable = true;
+      };
       networking.firewall = globals.mkFirewallRules {
         service = "caddy";
         sources =
@@ -45,27 +55,11 @@ in
           443
         ];
       };
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = globals.primaryEmail;
-        certs = {
-          ${cfg.domain} = {
-            dnsProvider = cfg.tls.provider;
-            dnsPropagationCheck = true;
-            dnsResolver = "1.1.1.1:53";
-            environmentFile = config.age.secrets."acme_${cfg.tls.provider}.age".path;
-            extraDomainNames = [ "*.${cfg.domain}" ];
-            group = config.services.caddy.group;
-          };
-        };
-      };
-      systemd.services."acme-order-renew-${cfg.domain}".environment.LEGO_DISABLE_CNAME_SUPPORT = "true";
       services = {
         caddy = {
           email = globals.primaryEmail;
           enable = true;
           enableReload = true;
-          environmentFile = config.age.secrets."acme_${cfg.tls.provider}.age".path;
           virtualHosts."w.${cfg.domain}" = {
             extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
             useACMEHost = cfg.domain;

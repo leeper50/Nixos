@@ -301,8 +301,8 @@ in
     group = "1000";
     owner = "1000";
     publicKeys = [ personal ];
-    # hosts = [
-    #   "laptop"
-    # ];
+    hosts = [
+      "laptop"
+    ];
   };
 }

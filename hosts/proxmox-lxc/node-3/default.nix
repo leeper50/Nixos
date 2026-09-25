@@ -1,16 +1,25 @@
 { pkgs, ... }:
+let
+  rootDir = ../../..;
+in
 {
+  imports = map (p: rootDir + p) [
+    /configs/nixos/caddy.nix
+  ];
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
   ];
-  local.docker = {
-    komodo = {
-      coreIP = "10.0.0.21";
-      periphery.enable = true;
-    };
-    swarm = {
-      labels = [ "slow" ];
-      managerIP = "10.0.0.21";
+  local = {
+    caddy.enable = true;
+    docker = {
+      komodo = {
+        coreIP = "10.0.0.21";
+        periphery.enable = true;
+      };
+      swarm = {
+        labels = [ "slow" ];
+        managerIP = "10.0.0.21";
+      };
     };
   };
   networking = {

@@ -87,17 +87,13 @@ in
       };
     })
     (lib.mkIf (cfg.enable && cfg.tls.enable) {
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = globals.primaryEmail;
-        certs = {
-          ${cfg.tls.domain} = {
-            dnsProvider = cfg.tls.provider;
-            dnsPropagationCheck = true;
-            environmentFile = config.age.secrets."acme_${cfg.tls.provider}.age".path;
-            group = "murmur";
-          };
+      local.acme = {
+        certs.${cfg.tls.domain} = {
+          group = "murmur";
+          provider = cfg.tls.provider;
+          wildcard = false;
         };
+        enable = true;
       };
       services.murmur.tls.useACMEHost = cfg.tls.domain;
     })

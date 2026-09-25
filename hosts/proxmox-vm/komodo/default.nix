@@ -22,6 +22,7 @@ in
     "net.ipv6.conf.all.forwarding" = 1;
   };
   local = {
+    caddy.enable = true;
     beszel.agent.enable = true;
     comin.enable = true;
     docker.komodo = {

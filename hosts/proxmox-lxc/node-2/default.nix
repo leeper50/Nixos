@@ -1,17 +1,35 @@
 { pkgs, ... }:
+let
+  rootDir = ../../..;
+in
 {
+  imports = map (p: rootDir + p) [
+    /configs/nixos/caddy.nix
+    /configs/nixos/jellyfin.nix
+  ];
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
   ];
-  local.docker = {
-    komodo = {
-      coreIP = "10.0.0.21";
-      periphery.enable = true;
+  users.groups = {
+    host-render = {
+      gid = 993;
+      members = [ "jellyfin" ];
     };
-    swarm = {
-      labels = [ "intel_gpu" ];
-      managerIP = "10.0.0.21";
+    resolvconf.gid = 399;
+  };
+  local = {
+    caddy.enable = true;
+    docker = {
+      komodo = {
+        coreIP = "10.0.0.21";
+        periphery.enable = true;
+      };
+      swarm = {
+        labels = [ "intel_gpu" ];
+        managerIP = "10.0.0.21";
+      };
     };
+    jellyfin.enable = true;
   };
   networking = {
     hostName = "node-2";

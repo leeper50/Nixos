@@ -28,6 +28,7 @@ in
     home-manager.nixosModules.home-manager
     ../../secrets
     ../home/restic.nix
+    ./acme.nix
     ./avahi.nix
     ./beszel.nix
     ./comin.nix
