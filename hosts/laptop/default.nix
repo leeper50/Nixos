@@ -1,4 +1,5 @@
 {
+  config,
   disko,
   globals,
   nur,
@@ -78,7 +79,35 @@ in
       ];
     };
   };
-  networking.hostName = "laptop";
+  networking = {
+    hostName = "laptop";
+    networkmanager = {
+      ensureProfiles = {
+        environmentFiles = [ config.age.secrets."wifi_home_env.age".path ];
+        profiles.home = {
+          connection = {
+            id = "home";
+            type = "wifi";
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "$WIFI_SSID";
+          };
+          wifi-security = {
+            key-mgmt = "sae";
+            psk = "$WIFI_PASSWORD";
+          };
+          ipv4.method = "auto";
+          ipv6 = {
+            method = "auto";
+            token = "::71";
+            ip6-privacy = "0";
+          };
+        };
+      };
+      unmanaged = [ "interface-name:enp3s0" ];
+    };
+  };
   programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {

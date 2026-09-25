@@ -297,4 +297,12 @@ in
     owner = "1000";
     publicKeys = all_keys;
   };
+  "wifi_home_env.age" = {
+    group = "1000";
+    owner = "1000";
+    publicKeys = [ personal ];
+    # hosts = [
+    #   "laptop"
+    # ];
+  };
 }
