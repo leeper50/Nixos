@@ -7,8 +7,8 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/authelia.nix
+      /configs/nixos/caddy.nix
       /configs/nixos/headscale.nix
-      /configs/nixos/nginx.nix
       /configs/nixos/murmur.nix
     ]
     ++ [
@@ -18,12 +18,12 @@ in
     authelia.enable = true;
     beszel.agent.enable = true;
     comin.enable = true;
-    headscale.enable = true;
-    nginx = {
+    caddy = {
       domain = globals.domain;
       enable = true;
-      tls.provider = "cloudflare";
+      provider = "cloudflare";
     };
+    headscale.enable = true;
     murmur = {
       enable = true;
       name = "Freedom General";

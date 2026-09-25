@@ -84,7 +84,7 @@ in
           };
           server = {
             address = "tcp://127.0.0.1:${toString autheliaPort}/";
-            endpoints.authz."auth-request".implementation = "AuthRequest";
+            endpoints.authz."forward-auth".implementation = "ForwardAuth";
           };
           session.cookies = [
             {
@@ -131,17 +131,13 @@ in
         users.authelia-main.extraGroups = [ "ldap-bind-secret" ];
       };
     })
-    (lib.mkIf (cfg.enable && config.services.nginx.enable) {
-      services.nginx.virtualHosts.${authDomain} = {
-        forceSSL = true;
-        locations."/".proxyPass = "http://127.0.0.1:${toString autheliaPort}";
-        quic = true;
+    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+      services.caddy.virtualHosts.${authDomain} = {
+        extraConfig = "reverse_proxy 127.0.0.1:${toString autheliaPort}";
         useACMEHost = globals.domain;
       };
-      services.nginx.virtualHosts.${lldapDomain} = {
-        forceSSL = true;
-        locations."/".proxyPass = "http://127.0.0.1:${toString config.services.lldap.settings.http_port}";
-        quic = true;
+      services.caddy.virtualHosts.${lldapDomain} = {
+        extraConfig = "reverse_proxy 127.0.0.1:${toString config.services.lldap.settings.http_port}";
         useACMEHost = globals.domain;
       };
     })

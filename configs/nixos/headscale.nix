@@ -73,18 +73,19 @@ in
         wants = [ "authelia-main.service" ];
       };
     })
-    (lib.mkIf (cfg.enable && config.services.nginx.enable) {
-      services.nginx.virtualHosts.${headscaleDomain} = {
-        forceSSL = true;
-        quic = true;
+    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+      services.caddy.virtualHosts.${headscaleDomain} = {
+        extraConfig = ''
+          handle /admin* {
+            reverse_proxy 127.0.0.1:${toString config.services.headplane.settings.server.port}
+          }
+          handle {
+            reverse_proxy 127.0.0.1:${toString config.services.headscale.port} {
+              flush_interval -1
+            }
+          }
+        '';
         useACMEHost = globals.domain;
-        locations."/" = {
-          extraConfig = "proxy_buffering off;";
-          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
-          proxyWebsockets = true;
-        };
-        locations."/admin".proxyPass =
-          "http://127.0.0.1:${toString config.services.headplane.settings.server.port}";
       };
     })
   ];

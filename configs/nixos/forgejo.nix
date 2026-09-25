@@ -52,12 +52,9 @@ in
         user = "forgejo";
       };
     })
-    (lib.mkIf (cfg.server.enable && config.services.nginx.enable) {
-      services.nginx.virtualHosts."${forgejoDomain}" = {
-        forceSSL = true;
-        locations."/".proxyPass =
-          "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
-        quic = true;
+    (lib.mkIf (cfg.server.enable && config.services.caddy.enable) {
+      services.caddy.virtualHosts."${forgejoDomain}" = {
+        extraConfig = "reverse_proxy localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
         useACMEHost = globals.domain;
       };
     })

@@ -22,6 +22,13 @@ in
       ];
     };
   };
+  options.services.caddy.virtualHosts = lib.mkOption {
+    type = lib.types.attrsOf (
+      lib.types.submodule {
+        config.extraConfig = lib.mkIf cfg.enable (lib.mkBefore "import hardening");
+      }
+    );
+  };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       local.acme = {
@@ -60,9 +67,28 @@ in
           email = globals.primaryEmail;
           enable = true;
           enableReload = true;
-          virtualHosts."w.${cfg.domain}" = {
-            extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
-            useACMEHost = cfg.domain;
+          extraConfig = ''
+            (hardening) {
+              header {
+                X-Content-Type-Options nosniff
+                X-Frame-Options SAMEORIGIN
+                Referrer-Policy strict-origin-when-cross-origin
+                Permissions-Policy "camera=(), microphone=(), geolocation=()"
+                Strict-Transport-Security "max-age=31536000; includeSubDomains"
+                -Server
+              }
+            }
+          '';
+          virtualHosts = {
+            "*.${cfg.domain}" = {
+              extraConfig = "abort";
+              serverAliases = [ cfg.domain ];
+              useACMEHost = cfg.domain;
+            };
+            "w.${cfg.domain}" = {
+              extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
+              useACMEHost = cfg.domain;
+            };
           };
         };
         whoami.enable = true;
