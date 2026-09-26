@@ -92,6 +92,7 @@ in
         SystemCallArchitectures = "native";
         SystemCallFilter = [ "@system-service" ];
       };
+      unitConfig.RequiresMountsFor = [ "/mnt/data" ];
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ];
     };

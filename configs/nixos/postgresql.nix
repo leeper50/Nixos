@@ -52,18 +52,6 @@ in
         listen_addresses = lib.mkForce "localhost,10.0.0.52";
       };
     };
-    systemd.services.postgresql = {
-      serviceConfig.ExecStartPre = lib.mkBefore [
-        (
-          "+"
-          + pkgs.writeShellScript "postgresql-create-backup-dir" ''
-            mkdir -p /mnt/data/postgresql-backups
-            chown postgres:postgres /mnt/data/postgresql-backups
-            chmod 0755 /mnt/data/postgresql-backups
-          ''
-        )
-      ];
-    };
     systemd.services.postgresql-set-passwords = lib.mkIf (cfg.databases != [ ]) {
       after = [ "postgresql-setup.service" ];
       description = "Set PostgreSQL role passwords from agenix secrets";
@@ -95,9 +83,20 @@ in
         mv /mnt/data/postgresql-backups/${name}.dump.tmp /mnt/data/postgresql-backups/${name}.dump
       '') cfg.databases;
       serviceConfig = {
+        ExecStartPre = [
+          (
+            "+"
+            + pkgs.writeShellScript "postgresql-create-backup-dir" ''
+              mkdir -p /mnt/data/postgresql-backups
+              chown postgres:postgres /mnt/data/postgresql-backups
+              chmod 0755 /mnt/data/postgresql-backups
+            ''
+          )
+        ];
         Type = "oneshot";
         User = "postgres";
       };
+      unitConfig.RequiresMountsFor = [ "/mnt/data" ];
     };
     systemd.timers.postgresql-backup = lib.mkIf (cfg.databases != [ ]) {
       description = "Daily PostgreSQL dump timer";

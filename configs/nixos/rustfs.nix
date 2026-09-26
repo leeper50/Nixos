@@ -11,6 +11,7 @@
       9001
     ];
   };
+  systemd.services.rustfs.unitConfig.RequiresMountsFor = [ "/mnt/data" ];
   services.rustfs = {
     enable = true;
     environmentFile = config.age.secrets."restic_rustfs_env.age".path;

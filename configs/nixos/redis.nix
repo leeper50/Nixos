@@ -60,6 +60,7 @@ in
       serviceConfig = {
         Type = "oneshot";
       };
+      unitConfig.RequiresMountsFor = [ "/mnt/data" ];
     };
     systemd.timers.redis-backup = lib.mkIf (cfg.databases != [ ]) {
       description = "Daily Redis dump timer";

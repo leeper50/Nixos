@@ -108,27 +108,36 @@ in
       // timeMachineSettings;
     };
   };
-
-  systemd.tmpfiles.rules = [
-    "d /mnt/data/TimeMachine 0700 ${globals.username} ${globals.username} -"
-  ];
-  # add user passwords
-  systemd.services.samba-smbd.postStart =
-    let
-      users = [ globals.username ];
-      setupUser =
-        user:
-        let
-          passwordPath = config.age.secrets."user_${user}_clear.age".path;
-          smbpasswd = "${config.services.samba.package}/bin/smbpasswd";
-        in
-        ''
-          (echo $(< ${passwordPath});
-           echo $(< ${passwordPath})) | \
-            ${smbpasswd} -s -a ${user}
+  systemd = {
+    services = lib.mkMerge [
+      (lib.genAttrs (map (name: "samba-${name}") [
+        "nmbd"
+        "smbd"
+        "winbindd"
+      ]) (_: { unitConfig.RequiresMountsFor = [ "/mnt/data" ]; }))
+      {
+        samba-smbd.preStart = ''
+          install -d -m 0700 -o ${globals.username} -g ${globals.username} /mnt/data/TimeMachine
         '';
-    in
-    ''
-      ${builtins.concatStringsSep "\n" (map setupUser users)}
-    '';
+        samba-smbd.postStart =
+          let
+            users = [ globals.username ];
+            setupUser =
+              user:
+              let
+                passwordPath = config.age.secrets."user_${user}_clear.age".path;
+                smbpasswd = "${config.services.samba.package}/bin/smbpasswd";
+              in
+              ''
+                (echo $(< ${passwordPath});
+                 echo $(< ${passwordPath})) | \
+                  ${smbpasswd} -s -a ${user}
+              '';
+          in
+          ''
+            ${builtins.concatStringsSep "\n" (map setupUser users)}
+          '';
+      }
+    ];
+  };
 }

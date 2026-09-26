@@ -40,7 +40,12 @@ in
       statdPort = ports.statd;
     };
   };
-  systemd.services.nfs-server.path = [ pkgs.kmod ];
+  systemd.services = lib.mkMerge [
+    (lib.genAttrs [ "nfs-server" "nfs-mountd" ] (_: {
+      unitConfig.RequiresMountsFor = [ "/mnt/data" ];
+    }))
+    { nfs-server.path = [ pkgs.kmod ]; }
+  ];
   networking.firewall = globals.mkFirewallRules {
     service = "nfs";
     sources = [
