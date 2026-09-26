@@ -1,6 +1,13 @@
 { globals, lib, ... }:
 let
   ports.dns = 53;
+  dns-lists = import ./lib/dns-lists.nix;
+  groupByCategory =
+    f: lists: lib.zipAttrsWith (_: lib.id) (map (l: { ${l.category} = f l; }) lists);
+  allowlists = groupByCategory (
+    l: lib.concatMapStrings (domain: "*.${domain}\n") l.domains
+  ) dns-lists.allowlists;
+  denylists = groupByCategory (l: l.url.blocky or l.url) dns-lists.blocklists;
   customDNSMapping = lib.mapAttrs (
     domain: ips: lib.concatStringsSep "," ips
   ) globals.networking.hosts;
@@ -13,6 +20,10 @@ let
   ];
 in
 {
+  assertions = map (category: {
+    assertion = denylists ? ${category};
+    message = "dns-lists.nix: allowlist category '${category}' has no matching blocklist.";
+  }) (lib.attrNames allowlists);
   networking.firewall = globals.mkFirewallRules {
     service = "blocky";
     sources = dnsSources;
@@ -25,39 +36,8 @@ in
       enableConfigCheck = true;
       settings = {
         blocking = {
-          allowlists = {
-            ads = [
-              ''
-                googleads.g.doubleclick.net
-                pubads.g.doubleclick.net
-              ''
-            ];
-            farRight = [
-              ''
-                *.x.com
-                *.twitter.com
-              ''
-            ];
-          };
-          denylists = {
-            ads = [
-              "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.txt"
-            ];
-            farRight = [
-              "https://assets.windscribe.com/custom_blocklists/clickbait.txt"
-              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-alttech.txt"
-              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-pop.txt"
-              "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist.txt"
-              "https://raw.githubusercontent.com/DandelionSprout/adfilt/refs/heads/master/Sensitive%20lists/TabloidRemover.txt"
-              "https://raw.githubusercontent.com/MassMove/AttackVectors/master/LocalJournals/fake-local-journals-list.txt"
-            ];
-          };
-          clientGroupsBlock = {
-            default = [
-              "ads"
-              "farRight"
-            ];
-          };
+          inherit allowlists denylists;
+          clientGroupsBlock.default = lib.attrNames denylists;
           blockType = "zeroIp";
           blockTTL = "1m";
           loading = {

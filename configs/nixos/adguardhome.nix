@@ -10,6 +10,19 @@ let
     ignored_enabled = true;
     interval = "168h";
   };
+  dns-lists = import ./lib/dns-lists.nix;
+  filters = lib.imap1 (id: l: {
+    enabled = true;
+    inherit id;
+    inherit (l) name;
+    url = l.url.adguard or l.url;
+  }) dns-lists.blocklists;
+  allowRules = lib.concatMap (
+    l:
+    map (
+      domain: "@@||${domain}^" + lib.optionalString (l.adguard.group != "") "$ctag=${l.adguard.group}"
+    ) l.domains
+  ) dns-lists.allowlists;
   ports = {
     dns = 53;
     webui = 3000;
@@ -120,69 +133,13 @@ in
           safe_search.enabled = false;
           safebrowsing_enabled = false;
         };
-        filters = [
-          {
-            enabled = true;
-            id = 1;
-            name = "HaGeZi Pro";
-            url = "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt";
-          }
-          {
-            enabled = true;
-            id = 2;
-            name = "HaGeZi Allowlist Referral";
-            url = "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/whitelist-referral.txt";
-          }
-          {
-            enabled = true;
-            id = 3;
-            name = "Windscribe Clickbait";
-            url = "https://assets.windscribe.com/custom_blocklists/clickbait.txt";
-          }
-          {
-            enabled = true;
-            id = 4;
-            name = "antifa-n Alt-Tech";
-            url = "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-alttech.txt";
-          }
-          {
-            enabled = true;
-            id = 5;
-            name = "antifa-n Pop";
-            url = "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist-pop.txt";
-          }
-          {
-            enabled = true;
-            id = 6;
-            name = "antifa-n Blocklist";
-            url = "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist.txt";
-          }
-          {
-            enabled = true;
-            id = 7;
-            name = "Tabloid Remover";
-            url = "https://raw.githubusercontent.com/DandelionSprout/adfilt/refs/heads/master/Sensitive%20lists/TabloidRemover.txt";
-          }
-          {
-            enabled = true;
-            id = 8;
-            name = "Fake Local Journals";
-            url = "https://raw.githubusercontent.com/MassMove/AttackVectors/master/LocalJournals/fake-local-journals-list.txt";
-          }
-        ];
+        inherit filters;
         querylog = logsSettings // {
           file_enabled = true;
           size_memory = 1000;
         };
         statistics = logsSettings;
-        user_rules = [
-          "@@||twitter.com^"
-          "@@||x.com^"
-
-          # TV Paramount allowlist
-          "@@||googleads.g.doubleclick.net^$ctag=device_tv"
-          "@@||pubads.g.doubleclick.net^$ctag=device_tv"
-        ];
+        user_rules = allowRules;
       };
     };
     resolved.enable = false;
