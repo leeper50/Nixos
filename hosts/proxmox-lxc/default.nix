@@ -42,6 +42,7 @@ in
     services.docker = {
       after = [ "mnt-media.mount" ];
       requires = [ "mnt-media.mount" ];
+      unitConfig.RequiresMountsFor = [ "/mnt/media" ];
     };
   };
 }
