@@ -4,7 +4,6 @@ let
 in
 {
   imports = map (p: rootDir + p) [
-    /configs/nixos/caddy.nix
     /configs/nixos/jellyfin.nix
   ];
   environment.systemPackages = with pkgs; [

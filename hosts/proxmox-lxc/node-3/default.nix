@@ -1,11 +1,5 @@
 { pkgs, ... }:
-let
-  rootDir = ../../..;
-in
 {
-  imports = map (p: rootDir + p) [
-    /configs/nixos/caddy.nix
-  ];
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
   ];

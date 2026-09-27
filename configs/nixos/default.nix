@@ -31,6 +31,7 @@ in
     ./acme.nix
     ./avahi.nix
     ./beszel.nix
+    ./caddy.nix
     ./comin.nix
     ./mounts.nix
     ./networking.nix

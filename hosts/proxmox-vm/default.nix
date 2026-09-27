@@ -6,7 +6,6 @@ in
   imports =
     map (p: rootDir + p) [
       /configs/nixos
-      /configs/nixos/caddy.nix
     ]
     ++ [ ./hardware-configuration.nix ];
   boot.kernel.sysctl = {

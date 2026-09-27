@@ -7,7 +7,6 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/authelia.nix
-      /configs/nixos/caddy.nix
       /configs/nixos/headscale.nix
       /configs/nixos/murmur.nix
     ]

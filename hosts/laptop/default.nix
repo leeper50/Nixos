@@ -14,7 +14,6 @@ in
     map (p: rootDir + p) [
       /configs/home/packages
       /configs/nixos
-      /configs/nixos/caddy.nix
       /configs/nixos/power.nix
       /configs/nixos/syncthing.nix
     ]
