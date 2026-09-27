@@ -53,5 +53,23 @@
       source = "https://github.com/antifa-n/pihole";
       url = "https://raw.githubusercontent.com/antifa-n/pihole/master/blocklist.txt";
     }
+    {
+      category = "gambling";
+      name = "HaGeZi gambling";
+      source = "https://github.com/hagezi/dns-blocklists#gambling";
+      url = {
+        adguard = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/gambling.txt";
+        blocky = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/gambling.txt";
+      };
+    }
+    {
+      category = "nsfw";
+      name = "HaGeZi nsfw";
+      source = "https://github.com/hagezi/dns-blocklists#nsfw";
+      url = {
+        adguard = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/nsfw.txt";
+        blocky = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/nsfw.txt";
+      };
+    }
   ];
 }
