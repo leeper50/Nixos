@@ -17,6 +17,11 @@ in
   ];
   local = {
     beszel.agent.enable = true;
+    caddy = {
+      domain = "19280085.xyz";
+      enable = true;
+      provider = "porkbun";
+    };
     comin.enable = true;
     murmur = {
       enable = true;
