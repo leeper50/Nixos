@@ -94,7 +94,6 @@ wait
 set -l failed
 for label in $jobs
     set -l id (job_id $label)
-    echo "=== $label ==="
     if test (cat $tmpdir/$id.code) -ne 0
         cat $tmpdir/$id.out
         set -a failed $label
