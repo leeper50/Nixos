@@ -1,9 +1,7 @@
 {
   config,
   globals,
-  hostName ? null,
   lib,
-  osConfig ? null,
   systemType,
   ...
 }:
@@ -55,13 +53,6 @@ let
       id = "3an97-7phbm";
     };
   };
-  resolvedHostName =
-    if systemType == "Standalone" then
-      hostName
-    else if osConfig != null then
-      osConfig.networking.hostName
-    else
-      config.networking.hostName;
 in
 {
   options.local.syncthing = {
@@ -78,8 +69,8 @@ in
     {
       assertions = [
         {
-          assertion = resolvedHostName != null && lib.elem resolvedHostName devices.all;
-          message = "local.syncthing: host '${toString resolvedHostName}' is not a known syncthing device";
+          assertion = globals.hostName != null && lib.elem globals.hostName devices.all;
+          message = "local.syncthing: host '${toString globals.hostName}' is not a known syncthing device";
         }
       ];
       services.syncthing = {
@@ -99,7 +90,7 @@ in
             inherit (folder) devices id;
             path = folder.path or "${cfg.home}/Sync/${name}";
             type = folder.type or cfg.folder_type;
-          }) (lib.filterAttrs (_: folder: lib.elem resolvedHostName folder.devices) folders);
+          }) (lib.filterAttrs (_: folder: lib.elem globals.hostName folder.devices) folders);
         };
       };
     }

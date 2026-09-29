@@ -17,7 +17,6 @@
     };
   };
   networking = {
-    hostName = "node-3";
     interfaces.eth0 = {
       ipv4.addresses = [
         {

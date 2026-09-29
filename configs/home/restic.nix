@@ -1,7 +1,6 @@
 {
   config,
   globals,
-  hostName ? null,
   lib,
   osConfig ? null,
   systemType,
@@ -62,20 +61,13 @@ let
           environmentFile = rustfsEnvironmentFile;
           repository =
             if (!isStandalone && config.services.tailscale.enable) then
-              "s3:https://s3.nas.ts.${globals.domain}/dhp-backups/${location}"
+              "s3:https://s3.nas.${globals.domains.tailnet}/dhp-backups/${location}"
             else
-              "s3:https://s3.nas.${globals.domain}/dhp-backups/${location}";
+              "s3:https://s3.nas.${globals.domains.primary}/dhp-backups/${location}";
         };
       };
   };
   targetNames = lib.attrNames targetGenerators;
-  resolvedHostName =
-    if isStandalone then
-      hostName
-    else if osConfig != null then
-      osConfig.networking.hostName
-    else
-      config.networking.hostName;
 in
 {
   options.local.restic = {
@@ -152,7 +144,7 @@ in
               timerConfig.OnCalendar = "*-*-* 13:00:00"; # 1pm Daily
             }
             // lib.optionalAttrs isNixos { user = backup.user; };
-            location = resolvedHostName + "/" + name;
+            location = globals.hostName + "/" + name;
           in
           lib.mergeAttrsList (
             map (target: targetGenerators.${target} { inherit name common location; }) backup.targets

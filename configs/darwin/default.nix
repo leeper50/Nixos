@@ -48,6 +48,7 @@
       experimental-features = "nix-command flakes";
     };
   };
+  networking.hostName = globals.hostName;
   nixpkgs.hostPlatform = "aarch64-darwin";
   programs.fish.enable = true;
   services.tailscale.enable = true;

@@ -175,27 +175,27 @@ in
               Port = 23;
               User = "u400147";
             };
-            "komodo".HostName = "komodo.${globals.domain}";
-            "laptop".HostName = "laptop.${globals.domain}";
-            "nas".HostName = "nas.${globals.domain}";
-            "node-1".HostName = "node-1.${globals.domain}";
-            "node-2".HostName = "node-2.${globals.domain}";
-            "node-3".HostName = "node-3.${globals.domain}";
+            "komodo".HostName = "komodo.${globals.domains.primary}";
+            "laptop".HostName = "laptop.${globals.domains.primary}";
+            "nas".HostName = "nas.${globals.domains.primary}";
+            "node-1".HostName = "node-1.${globals.domains.primary}";
+            "node-2".HostName = "node-2.${globals.domains.primary}";
+            "node-3".HostName = "node-3.${globals.domains.primary}";
             "proxmox" = {
               HostName = "10.0.0.30";
               Port = 22;
               User = "root";
             };
-            "racknerd".HostName = "racknerd.ts.${globals.domain}";
-            "servercheap".HostName = "servercheap.ts.${globals.domain}";
+            "racknerd".HostName = "racknerd.${globals.domains.tailnet}";
+            "servercheap".HostName = "servercheap.${globals.domains.tailnet}";
             "tower" = {
               HostName = "10.0.0.51";
               Port = 22;
               User = "root";
             };
-            "k3s-01".HostName = "k3s-01.ts.${globals.domain}";
-            "k3s-02".HostName = "k3s-02.ts.${globals.domain}";
-            "k3s-03".HostName = "k3s-03.ts.${globals.domain}";
+            "k3s-01".HostName = "k3s-01.${globals.domains.tailnet}";
+            "k3s-02".HostName = "k3s-02.${globals.domains.tailnet}";
+            "k3s-03".HostName = "k3s-03.${globals.domains.tailnet}";
           };
         };
         vscode = {
@@ -369,7 +369,7 @@ in
                   set -a args -o "%(title)s.%(ext)s"
               end
               if set -q _flag_p
-                  set -a args --proxy socks5://komodo.${globals.domain}:1080
+                  set -a args --proxy socks5://komodo.${globals.domains.primary}:1080
               end
               if test -z "$argv[1]"; and not set -q _flag_f
                   echo "Missing URL"

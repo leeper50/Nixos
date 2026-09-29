@@ -14,7 +14,7 @@ in
     agent = {
       enable = lib.mkEnableOption "beszel agent";
       hubHost = lib.mkOption {
-        default = "node-1.ts.${globals.domain}";
+        default = "node-1.${globals.domains.tailnet}";
         type = lib.types.str;
       };
     };

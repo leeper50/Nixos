@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.local.freshrss;
-  freshrssDomain = "rss.${globals.domain}";
+  freshrssDomain = "rss.${globals.domains.primary}";
   autheliaPort = 9091;
 in
 {
@@ -55,7 +55,7 @@ in
             file_server
           }
         '';
-        useACMEHost = globals.domain;
+        useACMEHost = globals.domains.primary;
       };
     })
   ];

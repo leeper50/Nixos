@@ -10,7 +10,7 @@ in
 {
   options.local.caddy = {
     domain = lib.mkOption {
-      default = "${config.networking.hostName}.${globals.domain}";
+      default = globals.domains.devicePrimary;
       type = lib.types.str;
     };
     enable = lib.mkEnableOption "caddy";
@@ -20,10 +20,6 @@ in
         "cloudflare"
         "porkbun"
       ];
-    };
-    tsDomain = lib.mkOption {
-      default = if config.services.tailscale.enable then "${config.networking.hostName}.ts.${globals.domain}" else null;
-      type = lib.types.nullOr lib.types.str;
     };
   };
   options.services.caddy.virtualHosts = lib.mkOption {
@@ -96,14 +92,14 @@ in
               };
             }
             (lib.mkIf config.services.tailscale.enable {
-              "*.${cfg.tsDomain}" = {
+              "*.${globals.domains.deviceTailnet}" = {
                 extraConfig = "abort";
-                serverAliases = [ cfg.tsDomain ];
-                useACMEHost = cfg.tsDomain;
+                serverAliases = [ globals.domains.deviceTailnet ];
+                useACMEHost = globals.domains.deviceTailnet;
               };
-              "w.${cfg.tsDomain}" = {
+              "w.${globals.domains.deviceTailnet}" = {
                 extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
-                useACMEHost = cfg.tsDomain;
+                useACMEHost = globals.domains.deviceTailnet;
               };
             })
           ];

@@ -16,7 +16,6 @@
     pkgs.fastfetch
   ];
   networking = {
-    hostName = "k3s-01";
     interfaces.ens18 = {
       ipv4.addresses = [
         {

@@ -33,7 +33,6 @@ in
       };
     };
   };
-  networking.hostName = "racknerd";
   services = {
     microsocks = {
       enable = true;

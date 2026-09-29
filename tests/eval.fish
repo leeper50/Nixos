@@ -78,7 +78,12 @@ set -a jobs (queue_configs darwin darwinConfigurations config.system.build.tople
 if test (count $requested_hosts) -eq 0
     set -l colmena_id (job_id colmena)
     begin
-        nix eval .#colmena.meta.specialArgs.globals.username >$tmpdir/$colmena_id.out 2>&1
+        # globals is per node, so check every node gets one built for its own name.
+        nix eval .#colmena.meta.nodeSpecialArgs --apply '
+            args: builtins.all (name:
+              args.${name}.globals.hostName == name
+                || throw "colmena node ${name} has globals.hostName ${args.${name}.globals.hostName}"
+            ) (builtins.attrNames args)' >$tmpdir/$colmena_id.out 2>&1
         echo $status >$tmpdir/$colmena_id.code
     end &
     set -a jobs colmena

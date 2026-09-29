@@ -31,7 +31,6 @@ in
     jellyfin.enable = true;
   };
   networking = {
-    hostName = "node-2";
     interfaces.eth0 = {
       ipv4.addresses = [
         {

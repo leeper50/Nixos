@@ -41,7 +41,6 @@ in
     };
   };
   networking = {
-    hostName = "komodo";
     interfaces.ens18 = {
       ipv4.addresses = [
         {

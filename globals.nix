@@ -1,7 +1,16 @@
-{ lib }:
 {
-  domain = "dellhp.party";
+  lib,
+  hostName,
+}:
+{
+  domains = rec {
+    devicePrimary = "${hostName}.${primary}";
+    deviceTailnet = "${hostName}.${tailnet}";
+    primary = "dellhp.party";
+    tailnet = "ts.${primary}";
+  };
   fullName = "Walter Leeper";
+  inherit hostName;
   locale = "en_US.UTF-8";
   # `protocols` matches raw IP protocols that carry no port (VRRP, GRE, ...),
   # given as numbers or names.

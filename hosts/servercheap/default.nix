@@ -18,7 +18,7 @@ in
     beszel.agent.enable = true;
     comin.enable = true;
     caddy = {
-      domain = globals.domain;
+      domain = globals.domains.primary;
       enable = true;
       provider = "cloudflare";
     };
@@ -27,7 +27,7 @@ in
       enable = true;
       name = "Freedom General";
       tls = {
-        domain = "vc.${globals.domain}";
+        domain = "vc.${globals.domains.primary}";
         enable = true;
         provider = "cloudflare";
       };
@@ -42,7 +42,6 @@ in
       address = "2606:cc0:11:2300::1";
       interface = "ens3";
     };
-    hostName = "servercheap";
     interfaces.ens3 = {
       ipv4.addresses = [
         {

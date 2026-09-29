@@ -50,7 +50,7 @@ in
           ])
           (
             [ config.local.caddy.domain ]
-            ++ lib.optional config.services.tailscale.enable config.local.caddy.tsDomain
+            ++ lib.optional config.services.tailscale.enable globals.domains.deviceTailnet
           )
       );
     })

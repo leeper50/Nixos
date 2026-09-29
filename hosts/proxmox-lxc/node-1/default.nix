@@ -21,7 +21,6 @@
       ];
       allowedUDPPorts = [ 443 ];
     };
-    hostName = "node-1";
     interfaces.eth0 = {
       ipv4.addresses = [
         {

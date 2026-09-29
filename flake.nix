@@ -51,7 +51,7 @@
         ;
       inherit (nixpkgs) lib;
 
-      globals = import ./globals.nix { inherit lib; };
+      mkGlobals = hostName: import ./globals.nix { inherit lib hostName; };
 
       mkPkgs =
         system:
@@ -66,11 +66,16 @@
         };
 
       mkNixosSystem =
-        { modules, profile }:
+        {
+          modules,
+          name,
+          profile,
+        }:
         lib.nixosSystem {
           pkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs // {
-            inherit globals profile;
+            inherit profile;
+            globals = mkGlobals name;
             systemType = "Nixos";
             osConfig = null;
           };
@@ -84,12 +89,7 @@
           profile,
         }:
         {
-          inherit profile;
-          nixos = mkNixosSystem { inherit modules profile; };
-          colmena = {
-            inherit deployment;
-            imports = modules;
-          };
+          inherit deployment modules profile;
         };
 
       mkSwarmHost =
@@ -235,7 +235,8 @@
         "macbook" = darwin.lib.darwinSystem {
           pkgs = mkPkgs "aarch64-darwin";
           specialArgs = inputs // {
-            inherit inputs globals;
+            inherit inputs;
+            globals = mkGlobals "macbook";
             systemType = "NixDarwin";
             osConfig = null;
           };
@@ -249,7 +250,7 @@
         "workstation" = home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs "x86_64-linux";
           extraSpecialArgs = inputs // {
-            inherit globals;
+            globals = mkGlobals "workstation";
             systemType = "Standalone";
             hostName = "workstation";
           };
@@ -259,19 +260,30 @@
         };
       };
 
-      nixosConfigurations = lib.mapAttrs (_: host: host.nixos) hosts;
+      nixosConfigurations = lib.mapAttrs (
+        name: host:
+        mkNixosSystem {
+          inherit name;
+          inherit (host) modules profile;
+        }
+      ) hosts;
 
       colmena = {
         meta = {
           nixpkgs = mkPkgs "x86_64-linux";
           specialArgs = inputs // {
-            inherit globals;
             systemType = "Nixos";
             osConfig = null;
           };
-          nodeSpecialArgs = lib.mapAttrs (_: host: { inherit (host) profile; }) hosts;
+          nodeSpecialArgs = lib.mapAttrs (name: host: {
+            inherit (host) profile;
+            globals = mkGlobals name;
+          }) hosts;
         };
       }
-      // lib.mapAttrs (_: host: host.colmena) hosts;
+      // lib.mapAttrs (_: host: {
+        inherit (host) deployment;
+        imports = host.modules;
+      }) hosts;
     };
 }

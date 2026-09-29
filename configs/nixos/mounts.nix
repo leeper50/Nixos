@@ -49,14 +49,14 @@ in
     })
     (lib.mkIf (config.local.local && cfg.media) {
       fileSystems."/mnt/media" = {
-        device = "nas.${globals.domain}:/mnt/data/Media";
+        device = "nas.${globals.domains.primary}:/mnt/data/Media";
         fsType = "nfs";
         options = nfs_options;
       };
     })
     (lib.mkIf (config.local.local && cfg.user) {
       fileSystems."/mnt/${globals.username}" = {
-        device = "nas.${globals.domain}:/mnt/data/home/${globals.username}";
+        device = "nas.${globals.domains.primary}:/mnt/data/home/${globals.username}";
         fsType = "nfs";
         options = nfs_options;
       };

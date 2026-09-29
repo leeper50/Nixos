@@ -88,13 +88,13 @@ in
       };
       Komodo = {
         config = sftpSettings // {
-          host = "komodo.${globals.domain}";
+          host = "komodo.${globals.domains.primary}";
         };
       };
       Nas = {
         config = {
           type = "smb";
-          host = "nas.${globals.domain}";
+          host = "nas.${globals.domains.primary}";
           port = 445;
           user = globals.username;
         };
@@ -102,24 +102,24 @@ in
       };
       Node1 = {
         config = sftpSettings // {
-          host = "node-1.${globals.domain}";
+          host = "node-1.${globals.domains.primary}";
         };
       };
       Node2 = {
         config = sftpSettings // {
-          host = "node-2.${globals.domain}";
+          host = "node-2.${globals.domains.primary}";
         };
       };
       Node3 = {
         config = sftpSettings // {
-          host = "node-3.${globals.domain}";
+          host = "node-3.${globals.domains.primary}";
         };
       };
       RustFS = {
         config = {
           type = "s3";
           provider = "Other";
-          endpoint = "https://s3.nas.${globals.domain}";
+          endpoint = "https://s3.nas.${globals.domains.primary}";
           region = "nas";
           force_path_style = true;
         };

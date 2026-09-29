@@ -9,8 +9,8 @@ let
   cfg = config.local.headscale;
   pass = config.age.secrets;
 
-  authDomain = "login.${globals.domain}";
-  headscaleDomain = "hd.${globals.domain}";
+  authDomain = "login.${globals.domains.primary}";
+  headscaleDomain = "hd.${globals.domains.primary}";
 
   # Setup explicit extra records from caddy virtual host from each machine.
   tailnetRecords = lib.concatLists (
@@ -19,7 +19,7 @@ let
         hostName: hostConfig:
         let
           ips = globals.networking.tailnet.${hostName};
-          suffix = ".${hostName}.ts.${globals.domain}";
+          suffix = ".${hostName}.${globals.domains.tailnet}";
           names = lib.filter (name: lib.hasSuffix suffix name && !lib.hasPrefix "*" name) (
             lib.attrNames hostConfig.services.caddy.virtualHosts
           );
@@ -59,7 +59,7 @@ in
         enable = true;
         settings = {
           dns = {
-            base_domain = "ts.${globals.domain}";
+            base_domain = "${globals.domains.tailnet}";
             extra_records = tailnetRecords;
             magic_dns = true;
             override_local_dns = false;
@@ -124,7 +124,7 @@ in
             }
           }
         '';
-        useACMEHost = globals.domain;
+        useACMEHost = globals.domains.primary;
       };
     })
   ];

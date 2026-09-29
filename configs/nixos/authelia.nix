@@ -8,10 +8,10 @@ let
   cfg = config.local.authelia;
   pass = config.age.secrets;
 
-  authDomain = "login.${globals.domain}";
-  lldapDomain = "ld.${globals.domain}";
-  headscaleDomain = "hd.${globals.domain}";
-  baseDn = lib.concatMapStringsSep "," (part: "dc=${part}") (lib.splitString "." globals.domain);
+  authDomain = "login.${globals.domains.primary}";
+  lldapDomain = "ld.${globals.domains.primary}";
+  headscaleDomain = "hd.${globals.domains.primary}";
+  baseDn = lib.concatMapStringsSep "," (part: "dc=${part}") (lib.splitString "." globals.domains.primary);
   bindDn = "uid=admin,ou=people,${baseDn}";
 
   autheliaPort = 9091;
@@ -89,7 +89,7 @@ in
           session.cookies = [
             {
               authelia_url = "https://${authDomain}";
-              domain = globals.domain;
+              domain = globals.domains.primary;
             }
           ];
           storage.local.path = "/var/lib/authelia-main/db.sqlite3";
@@ -134,11 +134,11 @@ in
     (lib.mkIf (cfg.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts.${authDomain} = {
         extraConfig = "reverse_proxy 127.0.0.1:${toString autheliaPort}";
-        useACMEHost = globals.domain;
+        useACMEHost = globals.domains.primary;
       };
       services.caddy.virtualHosts.${lldapDomain} = {
         extraConfig = "reverse_proxy 127.0.0.1:${toString config.services.lldap.settings.http_port}";
-        useACMEHost = globals.domain;
+        useACMEHost = globals.domains.primary;
       };
     })
   ];

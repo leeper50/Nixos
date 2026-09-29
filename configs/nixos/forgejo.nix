@@ -8,7 +8,7 @@ let
   cfg = config.local.forgejo;
   pass = config.age.secrets;
 
-  forgejoDomain = "git.${globals.domain}";
+  forgejoDomain = "git.${globals.domains.primary}";
 in
 {
   options.local.forgejo = {
@@ -55,7 +55,7 @@ in
     (lib.mkIf (cfg.server.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts."${forgejoDomain}" = {
         extraConfig = "reverse_proxy localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
-        useACMEHost = globals.domain;
+        useACMEHost = globals.domains.primary;
       };
     })
     (lib.mkIf cfg.runner.enable {
@@ -85,7 +85,7 @@ in
           ];
           server.connections = {
             default = {
-              url = "https://git.${globals.domain}/";
+              url = "https://${forgejoDomain}/";
               token_url = "file:${pass."forgejo_token.age".path}";
               uuid = cfg.runner.uuid;
             };

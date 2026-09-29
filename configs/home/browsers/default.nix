@@ -39,7 +39,7 @@ let
           "layout.css.prefers-color-scheme.content-override" = 0;
           "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
           "network.proxy.no_proxies_on" =
-            "localhost,buncha.men,dellhplaptop.xyz,${globals.domain},${globals.networking.ipv4.lanSubnet}";
+            "localhost,buncha.men,dellhplaptop.xyz,${globals.domains.primary},${globals.networking.ipv4.lanSubnet}";
         };
       };
     };

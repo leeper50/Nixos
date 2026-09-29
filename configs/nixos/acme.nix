@@ -38,8 +38,7 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       # Add machine-specific cert to attrSet as default.
-      local.acme.certs."${config.networking.hostName}.${globals.domain}" = { };
-
+      local.acme.certs."${globals.domains.devicePrimary}" = { };
       security.acme = {
         acceptTerms = true;
         defaults = {
@@ -64,7 +63,7 @@ in
     })
     (lib.mkIf (cfg.enable && config.services.tailscale.enable) {
       # Add tailscale machine cert to attrSet.
-      local.acme.certs."${config.networking.hostName}.ts.${globals.domain}" = { };
+      local.acme.certs."${globals.domains.deviceTailnet}" = { };
     })
   ];
 }

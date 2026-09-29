@@ -68,7 +68,7 @@ in
     {
       assertions = [
         {
-          assertion = !(profile != "gui" && profile != "cli");
+          assertion = (profile == "gui" || profile == "cli");
           message = "The system's profile setting must be either gui or cli. Currently set to ${profile}.";
         }
       ];
@@ -120,6 +120,7 @@ in
           LC_TIME = globals.locale;
         };
       };
+      networking.hostName = globals.hostName;
       programs.fish.enable = true;
       security.sudo = {
         enable = true;

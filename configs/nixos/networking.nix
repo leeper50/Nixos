@@ -27,7 +27,7 @@ in
         authKeyFile = config.age.secrets."headscale_preauth_key.age".path;
         enable = true;
         extraUpFlags = [
-          "--login-server=https://hd.${globals.domain}"
+          "--login-server=https://hd.${globals.domains.primary}"
         ];
       };
     }

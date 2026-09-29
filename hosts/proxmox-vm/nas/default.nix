@@ -67,7 +67,6 @@ in
     };
   };
   networking = {
-    hostName = "nas";
     interfaces.ens18 = {
       ipv4.addresses = [
         {

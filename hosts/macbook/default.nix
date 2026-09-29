@@ -31,5 +31,4 @@ in
         };
       }
     ];
-  networking.hostName = "macbook";
 }
