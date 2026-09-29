@@ -42,10 +42,20 @@ in
       };
     }
     (lib.mkIf config.services.caddy.enable {
-      services.caddy.virtualHosts."sync.${config.local.caddy.domain}" = {
-        extraConfig = "reverse_proxy localhost:8384";
-        useACMEHost = config.local.caddy.domain;
-      };
+      services.caddy.virtualHosts = lib.listToAttrs (
+        map
+          (
+            domain:
+            lib.nameValuePair "sync.${domain}" {
+              extraConfig = "reverse_proxy 127.0.0.1:8384";
+              useACMEHost = domain;
+            }
+          )
+          (
+            lib.optional config.local.local config.local.caddy.domain
+            ++ lib.optional config.services.tailscale.enable config.local.caddy.tsDomain
+          )
+      );
     })
   ];
 }

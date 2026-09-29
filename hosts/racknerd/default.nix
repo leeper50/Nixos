@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ globals, pkgs, ... }:
 let
   rootDir = ../..;
 in
@@ -37,7 +37,7 @@ in
   services = {
     microsocks = {
       enable = true;
-      ip = "100.64.0.3";
+      ip = globals.networking.tailnet.racknerd.ipv4;
     };
   };
   system.stateVersion = "23.11";

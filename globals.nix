@@ -88,6 +88,13 @@
         "10.0.0.23"
         "2600:1702:58c1:9acf::23"
       ];
+      "racknerd.dellhp.party" = [
+        "107.174.237.4"
+      ];
+      "servercheap.dellhp.party" = [
+        "65.75.202.6"
+        "2606:cc0:11:2351::1"
+      ];
       "tplinkwifi.net" = [
         "10.0.0.1"
         "2600:1702:58c1:9acf:f2a7:31ff:fe94:abac"
@@ -121,6 +128,52 @@
         "2620:fe::9"
         "2620:fe::fe"
       ];
+    };
+    tailnet = {
+      k3s-01 = {
+        ipv4 = "100.64.0.13";
+        ipv6 = "fd7a:115c:a1e0::d";
+      };
+      k3s-02 = {
+        ipv4 = "100.64.0.14";
+        ipv6 = "fd7a:115c:a1e0::e";
+      };
+      k3s-03 = {
+        ipv4 = "100.64.0.15";
+        ipv6 = "fd7a:115c:a1e0::f";
+      };
+      komodo = {
+        ipv4 = "100.64.0.4";
+        ipv6 = "fd7a:115c:a1e0::4";
+      };
+      laptop = {
+        ipv4 = "100.64.0.9";
+        ipv6 = "fd7a:115c:a1e0::9";
+      };
+      nas = {
+        ipv4 = "100.64.0.8";
+        ipv6 = "fd7a:115c:a1e0::8";
+      };
+      node-1 = {
+        ipv4 = "100.64.0.5";
+        ipv6 = "fd7a:115c:a1e0::5";
+      };
+      node-2 = {
+        ipv4 = "100.64.0.6";
+        ipv6 = "fd7a:115c:a1e0::6";
+      };
+      node-3 = {
+        ipv4 = "100.64.0.7";
+        ipv6 = "fd7a:115c:a1e0::7";
+      };
+      racknerd = {
+        ipv4 = "100.64.0.3";
+        ipv6 = "fd7a:115c:a1e0::3";
+      };
+      servercheap = {
+        ipv4 = "100.64.0.2";
+        ipv6 = "fd7a:115c:a1e0::2";
+      };
     };
     swarmNodes = [
       "node-1.dellhp.party"

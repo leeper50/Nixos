@@ -21,6 +21,10 @@ in
         "porkbun"
       ];
     };
+    tsDomain = lib.mkOption {
+      default = if config.services.tailscale.enable then "${config.networking.hostName}.ts.${globals.domain}" else null;
+      type = lib.types.nullOr lib.types.str;
+    };
   };
   options.services.caddy.virtualHosts = lib.mkOption {
     type = lib.types.attrsOf (
@@ -79,17 +83,30 @@ in
               }
             }
           '';
-          virtualHosts = {
-            "*.${cfg.domain}" = {
-              extraConfig = "abort";
-              serverAliases = [ cfg.domain ];
-              useACMEHost = cfg.domain;
-            };
-            "w.${cfg.domain}" = {
-              extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
-              useACMEHost = cfg.domain;
-            };
-          };
+          virtualHosts = lib.mkMerge [
+            {
+              "*.${cfg.domain}" = {
+                extraConfig = "abort";
+                serverAliases = [ cfg.domain ];
+                useACMEHost = cfg.domain;
+              };
+              "w.${cfg.domain}" = {
+                extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
+                useACMEHost = cfg.domain;
+              };
+            }
+            (lib.mkIf config.services.tailscale.enable {
+              "*.${cfg.tsDomain}" = {
+                extraConfig = "abort";
+                serverAliases = [ cfg.tsDomain ];
+                useACMEHost = cfg.tsDomain;
+              };
+              "w.${cfg.tsDomain}" = {
+                extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
+                useACMEHost = cfg.tsDomain;
+              };
+            })
+          ];
         };
         whoami.enable = true;
       };

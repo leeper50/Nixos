@@ -60,6 +60,7 @@ in
       paths = [ "/mnt/data/postgresql-backups" ];
       user = "root";
     };
+    rustfs.enable = true;
     syncthing = {
       folder_type = "receiveonly";
       home = "/mnt/data/home/${globals.username}";

@@ -1,6 +1,12 @@
 # AdguardHome.yaml configuration - https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration#configuration-file
-{ globals, lib, ... }:
+{
+  config,
+  globals,
+  lib,
+  ...
+}:
 let
+  cfg = config.local.adguardhome;
   logsSettings = {
     enabled = false;
     ignored = [
@@ -92,56 +98,95 @@ let
   ];
 in
 {
-  networking.firewall = globals.mkFirewallRules {
-    service = "adguardhome";
-    sources = dnsSources;
-    tcpPorts = [ ports.dns ];
-    udpPorts = [ ports.dns ];
+  options.local.adguardhome = {
+    enable = lib.mkEnableOption "adguardhome";
   };
-  services = {
-    adguardhome = {
-      enable = true;
-      host = "0.0.0.0";
-      mutableSettings = true;
-      openFirewall = false;
-      port = ports.webui;
-      settings = {
-        clients.persistent = map (c: defaultClientSettings // c) taggedClients;
-        dns = {
-          anonymize_client_ip = true;
-          bind_hosts = [ "0.0.0.0" ];
-          bootstrap_dns = globals.networking.nameservers.public;
-          cache_enabled = true;
-          cache_optimistic = true;
-          cache_size = 4194304;
-          hostsfile_enabled = false;
-          port = ports.dns;
-          ratelimit = 0;
-          upstream_dns = globals.networking.nameservers.doh;
-          upstream_mode = "parallel";
-          upstream_timeout = "2s";
-        };
-        filtering = {
-          blocked_response_ttl = 60;
-          blocking_mode = "null_ip";
-          filtering_enabled = true;
-          filters_update_interval = 6;
-          parental_enabled = false;
-          protection_enabled = true;
-          rewrites_enabled = true;
-          inherit rewrites;
-          safe_search.enabled = false;
-          safebrowsing_enabled = false;
-        };
-        inherit filters;
-        querylog = logsSettings // {
-          file_enabled = true;
-          size_memory = 1000;
-        };
-        statistics = logsSettings;
-        user_rules = allowRules;
+  config = lib.mkMerge [
+    (lib.mkIf (cfg.enable) {
+      networking.firewall = globals.mkFirewallRules {
+        service = "adguardhome";
+        sources = dnsSources;
+        tcpPorts = [ ports.dns ];
+        udpPorts = [ ports.dns ];
       };
-    };
-    resolved.enable = false;
-  };
+      services = {
+        adguardhome = {
+          enable = true;
+          host = "0.0.0.0";
+          mutableSettings = true;
+          openFirewall = false;
+          port = ports.webui;
+          settings = {
+            clients.persistent = map (c: defaultClientSettings // c) taggedClients;
+            dns = {
+              anonymize_client_ip = true;
+              bind_hosts = [ "0.0.0.0" ];
+              bootstrap_dns = globals.networking.nameservers.public;
+              cache_enabled = true;
+              cache_optimistic = true;
+              cache_size = 4194304;
+              hostsfile_enabled = false;
+              port = ports.dns;
+              ratelimit = 0;
+              upstream_dns = globals.networking.nameservers.doh;
+              upstream_mode = "parallel";
+              upstream_timeout = "2s";
+            };
+            filtering = {
+              blocked_response_ttl = 60;
+              blocking_mode = "null_ip";
+              filtering_enabled = true;
+              filters_update_interval = 6;
+              parental_enabled = false;
+              protection_enabled = true;
+              rewrites_enabled = true;
+              inherit rewrites;
+              safe_search.enabled = false;
+              safebrowsing_enabled = false;
+            };
+            inherit filters;
+            querylog = logsSettings // {
+              file_enabled = true;
+              size_memory = 1000;
+            };
+            statistics = logsSettings;
+            user_rules = allowRules;
+          };
+        };
+        resolved.enable = false;
+      };
+    })
+    # Serve dns-over-https through caddy.
+    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+      services.adguardhome.settings = {
+        dns.trusted_proxies = [
+          "127.0.0.0/8"
+          "::1/128"
+        ];
+        http.doh.insecure_enabled = true;
+        tls.enabled = false;
+      };
+      services.caddy.virtualHosts = lib.listToAttrs (
+        map
+          (
+            domain:
+            lib.nameValuePair "dns.${domain}" {
+              extraConfig = ''
+                handle /dns-query* {
+                  reverse_proxy 127.0.0.1:${toString ports.webui}
+                }
+                handle {
+                  abort
+                }
+              '';
+              useACMEHost = domain;
+            }
+          )
+          (
+            lib.optional config.local.local config.local.caddy.domain
+            ++ lib.optional config.services.tailscale.enable config.local.caddy.tsDomain
+          )
+      );
+    })
+  ];
 }

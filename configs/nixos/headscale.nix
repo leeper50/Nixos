@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  self,
   ...
 }:
 let
@@ -10,6 +11,43 @@ let
 
   authDomain = "login.${globals.domain}";
   headscaleDomain = "hd.${globals.domain}";
+
+  # Setup explicit extra records from caddy virtual host from each machine.
+  tailnetRecords = lib.concatLists (
+    lib.mapAttrsToList
+      (
+        hostName: hostConfig:
+        let
+          ips = globals.networking.tailnet.${hostName};
+          suffix = ".${hostName}.ts.${globals.domain}";
+          names = lib.filter (name: lib.hasSuffix suffix name && !lib.hasPrefix "*" name) (
+            lib.attrNames hostConfig.services.caddy.virtualHosts
+          );
+        in
+        lib.optionals (hostConfig.services.tailscale.enable && hostConfig.services.caddy.enable) (
+          lib.concatMap (name: [
+            {
+              inherit name;
+              type = "A";
+              value = ips.ipv4;
+            }
+            {
+              inherit name;
+              type = "AAAA";
+              value = ips.ipv6;
+            }
+          ]) names
+        )
+      )
+      (
+        lib.filterAttrs (hostName: _: globals.networking.tailnet ? ${hostName}) (
+          lib.mapAttrs (_: system: system.config) self.nixosConfigurations
+          // {
+            ${config.networking.hostName} = config;
+          }
+        )
+      )
+  );
 in
 {
   options.local.headscale = {
@@ -22,6 +60,7 @@ in
         settings = {
           dns = {
             base_domain = "ts.${globals.domain}";
+            extra_records = tailnetRecords;
             magic_dns = true;
             override_local_dns = false;
           };

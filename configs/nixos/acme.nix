@@ -35,27 +35,36 @@ in
       );
     };
   };
-  config = lib.mkIf cfg.enable {
-    # Add machine-specific cert to attrSet as default.
-    local.acme.certs."${config.networking.hostName}.${globals.domain}" = { };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      # Add machine-specific cert to attrSet as default.
+      local.acme.certs."${config.networking.hostName}.${globals.domain}" = { };
 
-    security.acme = {
-      acceptTerms = true;
-      defaults.email = globals.primaryEmail;
-      certs = lib.mapAttrs (name: options: {
-        dnsPropagationCheck = true;
-        dnsProvider = options.provider;
-        dnsResolver = "1.1.1.1:53";
-        environmentFile = config.age.secrets."acme_${options.provider}.age".path;
-        extraDomainNames = lib.optional options.wildcard "*.${name}";
-        group = options.group;
-      }) cfg.certs;
-    };
-    systemd.services = lib.mapAttrs' (
-      name: _:
-      lib.nameValuePair "acme-order-renew-${name}" {
-        environment.LEGO_DISABLE_CNAME_SUPPORT = "true";
-      }
-    ) cfg.certs;
-  };
+      security.acme = {
+        acceptTerms = true;
+        defaults = {
+          email = globals.primaryEmail;
+          keyType = "ec256";
+        };
+        certs = lib.mapAttrs (name: options: {
+          dnsPropagationCheck = true;
+          dnsProvider = options.provider;
+          dnsResolver = "1.1.1.1:53";
+          environmentFile = config.age.secrets."acme_${options.provider}.age".path;
+          extraDomainNames = lib.optional options.wildcard "*.${name}";
+          group = options.group;
+        }) cfg.certs;
+      };
+      systemd.services = lib.mapAttrs' (
+        name: _:
+        lib.nameValuePair "acme-order-renew-${name}" {
+          environment.LEGO_DISABLE_CNAME_SUPPORT = "true";
+        }
+      ) cfg.certs;
+    })
+    (lib.mkIf (cfg.enable && config.services.tailscale.enable) {
+      # Add tailscale machine cert to attrSet.
+      local.acme.certs."${config.networking.hostName}.ts.${globals.domain}" = { };
+    })
+  ];
 }

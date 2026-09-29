@@ -60,7 +60,11 @@ let
       {
         "${name}-nas" = common // {
           environmentFile = rustfsEnvironmentFile;
-          repository = "s3:http://nas.dellhp.party:9000/dhp-backups/${location}";
+          repository =
+            if (!isStandalone && config.services.tailscale.enable) then
+              "s3:https://s3.nas.ts.${globals.domain}/dhp-backups/${location}"
+            else
+              "s3:https://s3.nas.${globals.domain}/dhp-backups/${location}";
         };
       };
   };
@@ -111,6 +115,16 @@ in
     ]
     ++ lib.optionals isNixos [
       {
+        assertions =
+          let
+            nasBackups = lib.attrNames (lib.filterAttrs (_: backup: lib.elem "nas" backup.targets) cfg.backups);
+          in
+          [
+            {
+              assertion = nasBackups == [ ] || config.local.local || config.services.tailscale.enable;
+              message = "local.restic.backups [${lib.concatStringsSep ", " nasBackups}] use the nas target, must be local or use tailscale.";
+            }
+          ];
         programs.ssh.knownHosts = {
           "[u400147.your-storagebox.de]:23".publicKey =
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICf9svRenC/PLKIL9nk6K/pxQgoiFC41wTNvoIncOxs";
