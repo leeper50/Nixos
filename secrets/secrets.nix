@@ -207,6 +207,20 @@ in
       "servercheap"
     ];
   };
+  "ntfy_access_token.age" = {
+    group = "1000";
+    owner = "1000";
+    publicKeys = all_keys;
+  };
+  "ntfy_environment.age" = {
+    publicKeys = [
+      personal
+      node-3
+    ];
+    hosts = [
+      "node-3"
+    ];
+  };
   "postgresql_forgejo.age" = {
     publicKeys = swarm_keys ++ [ nas ];
     hosts = [

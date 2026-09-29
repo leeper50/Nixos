@@ -1,5 +1,11 @@
 { pkgs, ... }:
+let
+  rootDir = ../../..;
+in
 {
+  imports = map (p: rootDir + p) [
+    /configs/nixos/ntfy.nix
+  ];
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
   ];
@@ -15,6 +21,7 @@
         managerIP = "10.0.0.21";
       };
     };
+    ntfy.enable = true;
   };
   networking = {
     interfaces.eth0 = {
