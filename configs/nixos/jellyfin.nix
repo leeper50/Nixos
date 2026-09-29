@@ -38,9 +38,8 @@ in
       ];
       udpPorts = [ ports.discovery ];
     };
-    services.caddy.virtualHosts."jf.${config.local.caddy.domain}" = {
-      extraConfig = "reverse_proxy localhost:${toString ports.http}";
-      useACMEHost = config.local.caddy.domain;
+    services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+      jf = "reverse_proxy 127.0.0.1:${toString ports.http}";
     };
     services.jellyfin = {
       enable = true;

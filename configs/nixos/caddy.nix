@@ -79,6 +79,28 @@ in
                 -Server
               }
             }
+          ''
+          + lib.optionalString config.local.local ''
+            (local_ips) {
+              @local_ips client_ip ${globals.networking.ipv4.lanSubnet} ${globals.networking.ipv6.lanSubnet}
+            }
+            (friendly_ips) {
+              @friendly_ips client_ip ${
+                lib.strings.join " " (
+                  [
+                    globals.networking.ipv4.lanSubnet
+                    globals.networking.ipv6.lanSubnet
+                  ]
+                  ++ globals.networking.hosts."racknerd.${globals.domains.primary}"
+                  ++ globals.networking.hosts."servercheap.${globals.domains.primary}"
+                )
+              }
+            }
+          '';
+          globalConfig = lib.optionalString config.local.local ''
+            servers {
+              trusted_proxies static ${lib.strings.join " " globals.networking.hosts."node-1.${globals.domains.primary}"}
+            }
           '';
           virtualHosts = lib.mkMerge [
             {

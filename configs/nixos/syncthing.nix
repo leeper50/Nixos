@@ -43,20 +43,9 @@ in
       };
     }
     (lib.mkIf config.services.caddy.enable {
-      services.caddy.virtualHosts = lib.listToAttrs (
-        map
-          (
-            domain:
-            lib.nameValuePair "sync.${domain}" {
-              extraConfig = "reverse_proxy 127.0.0.1:8384";
-              useACMEHost = domain;
-            }
-          )
-          (
-            lib.optional config.local.local config.local.caddy.domain
-            ++ lib.optional config.services.tailscale.enable globals.domains.deviceTailnet
-          )
-      );
+      services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+        sync = "reverse_proxy 127.0.0.1:8384";
+      };
     })
   ];
 }

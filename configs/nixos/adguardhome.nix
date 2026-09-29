@@ -167,27 +167,16 @@ in
         http.doh.insecure_enabled = true;
         tls.enabled = false;
       };
-      services.caddy.virtualHosts = lib.listToAttrs (
-        map
-          (
-            domain:
-            lib.nameValuePair "dns.${domain}" {
-              extraConfig = ''
-                handle /dns-query* {
-                  reverse_proxy 127.0.0.1:${toString ports.webui}
-                }
-                handle {
-                  abort
-                }
-              '';
-              useACMEHost = domain;
-            }
-          )
-          (
-            lib.optional config.local.local config.local.caddy.domain
-            ++ lib.optional config.services.tailscale.enable globals.domains.deviceTailnet
-          )
-      );
+      services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+        dns = ''
+          handle /dns-query* {
+            reverse_proxy 127.0.0.1:${toString ports.webui}
+          }
+          handle {
+            abort
+          }
+        '';
+      };
     })
   ];
 }

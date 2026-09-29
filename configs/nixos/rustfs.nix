@@ -37,23 +37,10 @@ in
     })
     (lib.mkIf (cfg.enable && config.services.caddy.enable) {
       # Console on rustfs.*, S3 API on s3.*.
-      services.caddy.virtualHosts = lib.listToAttrs (
-        lib.concatMap
-          (domain: [
-            (lib.nameValuePair "rustfs.${domain}" {
-              extraConfig = "reverse_proxy 127.0.0.1:9001";
-              useACMEHost = domain;
-            })
-            (lib.nameValuePair "s3.${domain}" {
-              extraConfig = "reverse_proxy 127.0.0.1:9000";
-              useACMEHost = domain;
-            })
-          ])
-          (
-            [ config.local.caddy.domain ]
-            ++ lib.optional config.services.tailscale.enable globals.domains.deviceTailnet
-          )
-      );
+      services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+        rustfs = "reverse_proxy 127.0.0.1:9001";
+        s3 = "reverse_proxy 127.0.0.1:9000";
+      };
     })
   ];
 }
