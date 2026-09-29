@@ -2,13 +2,16 @@
   lib,
   hostName,
 }:
-{
+let
   domains = rec {
     devicePrimary = "${hostName}.${primary}";
     deviceTailnet = "${hostName}.${tailnet}";
     primary = "dellhp.party";
     tailnet = "ts.${primary}";
   };
+in
+{
+  inherit domains;
   fullName = "Walter Leeper";
   inherit hostName;
   locale = "en_US.UTF-8";
@@ -63,7 +66,7 @@
         "10.0.1.1"
         "2600:1702:58c1:9acf::1:1"
       ];
-      "dellhp.party" = [
+      "${domains.primary}" = [
         "65.75.202.6"
         "2606:cc0:11:2351::1"
       ];
@@ -71,34 +74,34 @@
         "10.0.1.1"
         "2600:1702:58c1:9acf::1:1"
       ];
-      "komodo.dellhp.party" = [
+      "komodo.${domains.primary}" = [
         "10.0.0.60"
         "2600:1702:58c1:9acf::60"
       ];
-      "laptop.dellhp.party" = [
+      "laptop.${domains.primary}" = [
         "10.0.0.71"
         "2600:1702:58c1:9acf:73b7:bc38:4b1c:18ba"
       ];
-      "nas.dellhp.party" = [
+      "nas.${domains.primary}" = [
         "10.0.0.52"
         "2600:1702:58c1:9acf::52"
       ];
-      "node-1.dellhp.party" = [
+      "node-1.${domains.primary}" = [
         "10.0.0.21"
         "2600:1702:58c1:9acf::21"
       ];
-      "node-2.dellhp.party" = [
+      "node-2.${domains.primary}" = [
         "10.0.0.22"
         "2600:1702:58c1:9acf::22"
       ];
-      "node-3.dellhp.party" = [
+      "node-3.${domains.primary}" = [
         "10.0.0.23"
         "2600:1702:58c1:9acf::23"
       ];
-      "racknerd.dellhp.party" = [
+      "racknerd.${domains.primary}" = [
         "107.174.237.4"
       ];
-      "servercheap.dellhp.party" = [
+      "servercheap.${domains.primary}" = [
         "65.75.202.6"
         "2606:cc0:11:2351::1"
       ];
@@ -183,9 +186,9 @@
       };
     };
     swarmNodes = [
-      "node-1.dellhp.party"
-      "node-2.dellhp.party"
-      "node-3.dellhp.party"
+      "node-1.${domains.primary}"
+      "node-2.${domains.primary}"
+      "node-3.${domains.primary}"
     ];
     swarmAddresses = lib.concatMap (node: hosts.${node}) swarmNodes;
   };

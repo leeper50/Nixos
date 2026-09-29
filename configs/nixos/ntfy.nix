@@ -19,14 +19,14 @@ in
         environmentFile = config.age.secrets."ntfy_environment.age".path;
         # Setup user stuff in ntfy_environment.age & secrets.nix
         settings = {
-          attachment-cache-dir = "/var/cache/ntfy/attachments";
+          attachment-cache-dir = "/var/lib/ntfy-sh/attachments";
           auth-access = [
             "*:up*:write-only"
           ];
           auth-default-access = "deny-all";
           base-url = "https://n.${globals.domains.devicePrimary}";
           behind-proxy = true;
-          cache-file = "/var/cache/ntfy/cache.db";
+          cache-file = "/var/lib/ntfy-sh/cache.db";
           enable-login = true;
           listen-http = ":${port}";
           require-login = true;
