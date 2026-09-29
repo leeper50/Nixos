@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 let
@@ -41,7 +42,7 @@ in
         };
         enable = true;
       };
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "caddy";
         sources =
           if config.local.local then

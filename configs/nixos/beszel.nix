@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 let
@@ -32,7 +33,7 @@ in
       users.groups.beszel-agent.gid = 992;
     })
     (lib.mkIf cfg.hub.enable {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "beszel";
         sources = [
           globals.networking.docker.fixedv6Subnet

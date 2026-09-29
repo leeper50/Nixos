@@ -3,6 +3,7 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 let
@@ -103,7 +104,7 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf (cfg.enable) {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "adguardhome";
         sources = dnsSources;
         tcpPorts = [ ports.dns ];

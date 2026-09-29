@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   pkgs,
   ...
 }:
@@ -26,7 +27,7 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    networking.firewall = globals.mkFirewallRules {
+    networking.firewall = localLib.mkFirewallRules {
       service = "redis";
       sources = globals.networking.swarmAddresses;
       tcpPorts = lib.attrValues ports;

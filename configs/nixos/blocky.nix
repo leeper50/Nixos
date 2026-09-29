@@ -1,4 +1,4 @@
-{ globals, lib, ... }:
+{ globals, lib, localLib, ... }:
 let
   ports.dns = 53;
   dns-lists = import ./lib/dns-lists.nix;
@@ -24,7 +24,7 @@ in
     assertion = denylists ? ${category};
     message = "dns-lists.nix: allowlist category '${category}' has no matching blocklist.";
   }) (lib.attrNames allowlists);
-  networking.firewall = globals.mkFirewallRules {
+  networking.firewall = localLib.mkFirewallRules {
     service = "blocky";
     sources = dnsSources;
     tcpPorts = [ ports.dns ];

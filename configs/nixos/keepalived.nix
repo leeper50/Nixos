@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   pkgs,
   ...
 }:
@@ -110,7 +111,7 @@ in
       };
     }
     {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "keepalived";
         sources = globals.networking.swarmAddresses;
         protocols = [ 112 ]; # VRRP

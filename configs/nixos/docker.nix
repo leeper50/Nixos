@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   pkgs,
   ...
 }:
@@ -57,7 +58,7 @@ in
     ### Universal configuration
     {
       # Allow containers to reach 443 from host's private ip
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "docker";
         sources = [
           globals.networking.docker.ipv4Subnet
@@ -275,7 +276,7 @@ in
         "ip_vs_wrr"
         "ip_vs_sh"
       ];
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "docker-swarm";
         sources = globals.networking.swarmAddresses;
         tcpPorts = [

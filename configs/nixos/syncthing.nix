@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 let
@@ -14,7 +15,7 @@ in
   ];
   config = lib.mkMerge [
     {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "syncthing";
         sources = [
           globals.networking.ipv4.lanSubnet

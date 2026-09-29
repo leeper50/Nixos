@@ -1,6 +1,7 @@
 {
   globals,
   lib,
+  localLib,
   pkgs,
   ...
 }:
@@ -46,7 +47,7 @@ in
     }))
     { nfs-server.path = [ pkgs.kmod ]; }
   ];
-  networking.firewall = globals.mkFirewallRules {
+  networking.firewall = localLib.mkFirewallRules {
     service = "nfs";
     sources = [
       globals.networking.ipv4.lanSubnet

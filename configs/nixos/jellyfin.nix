@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   pkgs,
   ...
 }:
@@ -29,7 +30,7 @@ in
         vpl-gpu-rt
       ];
     };
-    networking.firewall = globals.mkFirewallRules {
+    networking.firewall = localLib.mkFirewallRules {
       service = "jellyfin";
       sources = [
         globals.networking.ipv4.lanSubnet

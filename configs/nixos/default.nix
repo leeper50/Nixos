@@ -66,6 +66,7 @@ in
   ];
   config = lib.mkMerge [
     {
+      _module.args.localLib = import ./lib { inherit config globals lib; };
       assertions = [
         {
           assertion = (profile == "gui" || profile == "cli");

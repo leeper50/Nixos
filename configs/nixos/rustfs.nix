@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 let
@@ -13,7 +14,7 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "rustfs";
         sources = [
           globals.networking.ipv4.lanSubnet

@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 let
@@ -26,7 +27,7 @@ let
 in
 {
   networking.firewall = lib.mkMerge [
-    (globals.mkFirewallRules {
+    (localLib.mkFirewallRules {
       service = "samba";
       sources = lanSources;
       tcpPorts = [
@@ -38,7 +39,7 @@ in
         138 # NetBIOS datagram
       ];
     })
-    (globals.mkFirewallRules {
+    (localLib.mkFirewallRules {
       service = "samba-wsdd";
       sources = lanSources ++ [ globals.networking.ipv6.linkLocalSubnet ];
       tcpPorts = [ 5357 ]; # WSD transfer

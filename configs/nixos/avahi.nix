@@ -2,12 +2,13 @@
   config,
   globals,
   lib,
+  localLib,
   ...
 }:
 {
   config = lib.mkMerge [
     (lib.mkIf config.local.local {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "avahi";
         sources = [
           globals.networking.ipv4.lanSubnet

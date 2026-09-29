@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  localLib,
   pkgs,
   ...
 }:
@@ -47,7 +48,7 @@ in
       ];
     }
     (lib.mkIf cfg.enable {
-      networking.firewall = globals.mkFirewallRules {
+      networking.firewall = localLib.mkFirewallRules {
         service = "murmur";
         sources = [
           "0.0.0.0/0"
