@@ -20,17 +20,12 @@ in
     caddy = {
       domain = globals.domains.primary;
       enable = true;
-      provider = "cloudflare";
     };
     headscale.enable = true;
     murmur = {
       enable = true;
       name = "Freedom General";
-      tls = {
-        domain = "vc.${globals.domains.primary}";
-        enable = true;
-        provider = "cloudflare";
-      };
+      tls.enable = true;
     };
   };
   networking = {

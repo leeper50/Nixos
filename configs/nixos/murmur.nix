@@ -19,12 +19,12 @@ in
     public = lib.mkEnableOption "Open & Public server";
     tls = {
       domain = lib.mkOption {
-        default = null;
+        default = "vc.${globals.domains.primary}";
         type = lib.types.nullOr lib.types.str;
       };
       enable = lib.mkEnableOption "Enable DNS-01 cert challenge";
       provider = lib.mkOption {
-        default = null;
+        default = "cloudflare";
         type = lib.types.nullOr lib.types.str;
       };
     };
