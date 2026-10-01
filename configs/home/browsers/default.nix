@@ -28,7 +28,6 @@ let
         settings = {
           "browser.aboutConfig.showWarning" = false;
           "browser.download.viewableInternally.typeWasRegistered.jxl" = true;
-          "browser.fixup.domainsuffixwhitelist.i2p" = true;
           "browser.startup.homepage" = "https://www.dellhplaptop.xyz";
           "browser.urlbar.trimURLs" = false;
           "extensions.autoDisableScopes" = 0;
@@ -37,13 +36,24 @@ let
           "general.autoScroll" = true;
           "image.jxl.enabled" = true;
           "layout.css.prefers-color-scheme.content-override" = 0;
-          "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
-          "network.proxy.no_proxies_on" =
-            "localhost,buncha.men,dellhplaptop.xyz,${globals.domains.primary},${globals.networking.ipv4.lanSubnet}";
+          "network.proxy.type" = lib.mkDefault 0;
         };
       };
     };
     policies = import ./policies.nix;
+  };
+  proxySettings = {
+    "browser.fixup.domainsuffixwhitelist.i2p" = true;
+    "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
+    "network.proxy.type" = 2;
+    "network.proxy.no_proxies_on" = lib.strings.join "," [
+      "buncha.men"
+      "dellhplaptop.xyz"
+      globals.domains.primary
+      globals.domains.tailnet
+      globals.networking.ipv4.lanSubnet
+      globals.networking.ipv6.lanSubnet
+    ];
   };
 in
 {
@@ -73,7 +83,6 @@ in
       };
       programs.firefox = lib.recursiveUpdate commonFirefoxSettings {
         package = firefoxPackage;
-        profiles.default.settings."network.proxy.type" = 0;
       };
     })
     (lib.mkIf cfg.floorp.enable {
@@ -85,7 +94,6 @@ in
       };
       programs.floorp = lib.recursiveUpdate commonFirefoxSettings {
         package = floorpPackage;
-        profiles.default.settings."network.proxy.type" = 0;
       };
     })
     (lib.mkIf cfg.librewolf.enable {
@@ -97,7 +105,7 @@ in
       };
       programs.librewolf = lib.recursiveUpdate commonFirefoxSettings {
         package = librewolfPackage;
-        profiles.default.settings."network.proxy.type" = 2;
+        profiles.default.settings = proxySettings;
       };
     })
   ];
