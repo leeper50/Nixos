@@ -146,7 +146,6 @@ in
             ''}";
           };
         };
-        obsidian.enable = true;
         ssh = {
           enable = true;
           enableDefaultConfig = false;

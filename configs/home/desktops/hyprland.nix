@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 let
   cycle-audio-output = import ./cycle-audio-output.nix { inherit pkgs; };
 in
@@ -160,7 +155,7 @@ in
           disable_hyprland_logo = true;
           enable_swallow = true;
           force_default_wallpaper = 0;
-          swallow_regex = "^kitty";
+          # swallow_regex = "^kitty";
           vrr = 0;
         };
         input = {
