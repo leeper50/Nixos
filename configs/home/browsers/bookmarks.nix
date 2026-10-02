@@ -92,6 +92,28 @@
           }
         ];
       }
+      {
+        name = "Languages";
+        bookmarks = [
+          {
+            name = "Swedish";
+            bookmarks = [
+              {
+                name = "Complete Swedish Free Audio";
+                url = "https://library.teachyourself.com/id004325173";
+              }
+              {
+                name = "Omniglot";
+                url = "https://omniglot.com/writing/swedish.htm";
+              }
+              {
+                name = "Readlang";
+                url = "https://readlang.com/sv/links";
+              }
+            ];
+          }
+        ];
+      }
     ];
   }
 ]
