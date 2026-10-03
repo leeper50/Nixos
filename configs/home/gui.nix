@@ -56,6 +56,7 @@ in
           nixfmt
           oxipng
           pistol
+          qownnotes
           remmina
           signal-desktop
         ];
