@@ -266,6 +266,10 @@ in
                 "git.fetchOnPull" = true;
                 "js/ts.updateImportsOnFileMove.enabled" = "always";
                 "nix.enableLanguageServer" = true;
+                "nix.hiddenLanguageServerErrors" = [
+                  "textDocument/definition"
+                  "textDocument/documentSymbol"
+                ];
                 "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
                 "nix.serverSettings".nixd = {
                   formatting.command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
