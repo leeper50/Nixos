@@ -281,5 +281,7 @@
         inherit (host) deployment;
         imports = host.modules;
       }) hosts;
+
+      colmenaHive = inputs.colmena.lib.makeHive inputs.self.colmena;
     };
 }
