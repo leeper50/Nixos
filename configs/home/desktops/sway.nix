@@ -10,8 +10,9 @@ let
   noctalia = "exec noctalia msg";
 in
 {
-  home.packages = [
-    pkgs.autotiling-rs
+  home.packages = with pkgs; [
+    autotiling-rs
+    grimblast
   ];
   stylix.targets.sway = {
     enable = true;
@@ -41,39 +42,44 @@ in
           tap = "enabled";
         };
       };
-      keybindings = lib.mkOptionDefault {
-        # Apps
-        "${mod}+e" = "exec dolphin";
-        "${mod}+F4" = "${noctalia} panel-toggle session";
-        "${mod}+l" = "${noctalia} session lock";
-        "${mod}+period" = "${noctalia} panel-toggle launcher /emo";
-        "${mod}+q" = "kill";
-        "${mod}+Shift+e" = "${noctalia} panel-toggle session";
-        "${mod}+space" = "${noctalia} panel-toggle launcher";
+      keybindings =
+        let
+          screenshot_name = "~/Pictures/Screenshots/$(date +'%Y%m%d_%H%M%S.png')";
+        in
+        lib.mkOptionDefault {
+          # Apps
+          "${mod}+e" = "exec dolphin";
+          "${mod}+F4" = "${noctalia} panel-toggle session";
+          "${mod}+l" = "${noctalia} session lock";
+          "${mod}+period" = "${noctalia} panel-toggle launcher /emo";
+          "${mod}+q" = "kill";
+          "${mod}+Shift+e" = "${noctalia} panel-toggle session";
+          "${mod}+space" = "${noctalia} panel-toggle launcher";
 
-        # Audio & media controls
-        "${mod}+Shift+a" = "${noctalia} mic-mute";
-        "${mod}+Shift+s" = "exec ${lib.getExe cycle-audio-output}";
-        "XF86AudioMute" = "${noctalia} volume-mute";
-        "XF86AudioNext" = "${noctalia} media next";
-        "XF86AudioPlay" = "${noctalia} media toggle";
-        "XF86AudioPrev" = "${noctalia} media previous";
+          # Audio & media controls
+          "${mod}+Shift+a" = "${noctalia} mic-mute";
+          "${mod}+Shift+s" = "exec ${lib.getExe cycle-audio-output}";
+          "XF86AudioMute" = "${noctalia} volume-mute";
+          "XF86AudioNext" = "${noctalia} media next";
+          "XF86AudioPlay" = "${noctalia} media toggle";
+          "XF86AudioPrev" = "${noctalia} media previous";
 
-        # Screenshot
-        "Print" = "${noctalia} screenshot-region";
+          # Screenshot
+          "Print" = "grimblast copysave screen ${screenshot_name}";
+          "Shift+Print" = "grimblast copysave area ${screenshot_name}";
 
-        # Volume/brightness
-        "--locked XF86AudioLowerVolume" = "${noctalia} volume-down";
-        "--locked XF86AudioRaiseVolume" = "${noctalia} volume-up";
-        "--locked XF86KbdBrightnessDown" = "${noctalia} keyboard-backlight-down";
-        "--locked XF86KbdBrightnessUp" = "${noctalia} keyboard-backlight-up";
-        "--locked XF86MonBrightnessDown" = "${noctalia} brightness-down";
-        "--locked XF86MonBrightnessUp" = "${noctalia} brightness-up";
+          # Volume/brightness
+          "--locked XF86AudioLowerVolume" = "${noctalia} volume-down";
+          "--locked XF86AudioRaiseVolume" = "${noctalia} volume-up";
+          "--locked XF86KbdBrightnessDown" = "${noctalia} keyboard-backlight-down";
+          "--locked XF86KbdBrightnessUp" = "${noctalia} keyboard-backlight-up";
+          "--locked XF86MonBrightnessDown" = "${noctalia} brightness-down";
+          "--locked XF86MonBrightnessUp" = "${noctalia} brightness-up";
 
-        # Unbinds
-        "${mod}+0" = "null";
-        "${mod}+Shift+0" = "null";
-      };
+          # Unbinds
+          "${mod}+0" = "null";
+          "${mod}+Shift+0" = "null";
+        };
       menu = "noctalia msg panel-toggle launcher";
       modifier = "Mod4";
       startup = [

@@ -464,6 +464,7 @@ in
           };
         };
       };
+      services.wl-clip-persist.enable = true;
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {

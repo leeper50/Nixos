@@ -5,6 +5,7 @@ in
 {
   home.packages = with pkgs; [
     blueman
+    grimblast
     pavucontrol
     waypaper
     wl-clipboard
@@ -26,7 +27,9 @@ in
     '';
     extraLuaFiles."binds.lua" = {
       autoLoad = true;
-      content = ''
+      content = let 
+        screenshot_name = "~/Pictures/Screenshots/$(date +'%Y%m%d_%H%M%S.png')";
+      in ''
         local mainMod = "SUPER"
         local noctalia = "noctalia msg "
 
@@ -47,7 +50,8 @@ in
         hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 
         -- Screenshot
-        hl.bind("Print", hl.dsp.exec_cmd(noctalia .. "screenshot-region"))
+        hl.bind("Print", hl.dsp.exec_cmd("grimblast copysave screen ${screenshot_name}"))
+        hl.bind("SHIFT + Print", hl.dsp.exec_cmd("grimblast copysave area ${screenshot_name}"))
 
         -- Focus
         hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
