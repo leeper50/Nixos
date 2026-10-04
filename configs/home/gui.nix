@@ -395,20 +395,20 @@ in
                   end
               end
             '';
-            sound = lib.mkIf pkgs.stdenv.hostPlatform.isLinux ''
-              switch $argv[1]
-                case 44100 48000 96000 192000 384000
-                  pw-metadata -n settings 0 clock.force-rate $argv[1]
-                case '*'
-                  echo "Error: '$argv[1]' is not a valid sample rate"
-              end
-            '';
           };
-          shellAliases = {
-            bisync = "rclone bisync -P $argv $HOME/Pictures/Temp/ Copyparty:/Tablet/ --exclude .DS_Store";
+          shellAliases = let 
+            excludes = lib.strings.concatMapStringsSep " " (e: "--exclude ${e}") [
+              ".DS_Store"
+              ".stfolder"
+              ".stignore"
+            ];
+            local = "$HOME/Pictures/Wallpapers/";
+            remote = "Copyparty:/Tablet/";
+          in {
+            bisync = "rclone bisync -P ${local} ${remote} ${excludes} $argv";
             helix = "hx";
-            pull = "rclone sync -P $argv Copyparty:/Tablet/ $HOME/Pictures/Temp/ --exclude .DS_Store";
-            push = "rclone sync -P $argv $HOME/Pictures/Temp/ Copyparty:/Tablet/ --exclude .DS_Store";
+            pull = "rclone sync -P ${remote} ${local} ${excludes} $argv";
+            push = "rclone sync -P ${local} ${remote} ${excludes} $argv";
           };
         };
         mpv = {
