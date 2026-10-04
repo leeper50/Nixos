@@ -17,8 +17,8 @@
               package = pkgs.noto-fonts-color-emoji;
             };
             monospace = {
-              name = "Fira Code";
-              package = pkgs.fira-code;
+              name = "FiraCode Nerd Font";
+              package = pkgs.nerd-fonts.fira-code;
             };
             sansSerif = {
               name = "Fira Sans";

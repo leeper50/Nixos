@@ -113,7 +113,6 @@ in
             map alt+right send_text all \x1b\x66
             map ctrl+left next_window
             map ctrl+right previous_window
-            symbol_map U+23FB-U+23FE,U+2665,U+26A1,U+2B58,U+E000-U+E00A,U+E0A0-U+E0A3,U+E0B0-U+E0C8,U+E0CA,U+E0CC-U+E0D2,U+E0D4,U+E0D6,U+E0D8,U+E0DA,U+E0DC,U+E0DE,U+E0E0-U+E0E3,U+E0E5,U+E0E7,U+E0E9-U+E0EE,U+F000-U+F2E0,U+F300-U+F31C,U+F400-U+F4A9,U+F500-U+F8FF Symbols Nerd Font Mono
           '';
           settings = {
             confirm_os_window_close = 0;
