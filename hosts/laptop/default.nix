@@ -104,7 +104,6 @@ in
         };
       };
     };
-    unmanaged = [ "interface-name:enp3s0" ];
   };
   programs.nix-ld.enable = true;
   security.rtkit.enable = true;
