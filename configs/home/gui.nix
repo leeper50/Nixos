@@ -130,7 +130,7 @@ in
             x="$4"
             y="$5"
             draw() {
-              kitten icat --stdin no --transfer-mode memory --place "''${w}x''${h}@''${x}x''${y}" "$1" </dev/null >/dev/tty
+              kitten icat --stdin no --transfer-mode stream --place "''${w}x''${h}@''${x}x''${y}" "$1" </dev/null >/dev/tty
               exit 1
             }
             case "$(file -Lb --mime-type "$file")" in 
@@ -142,7 +142,7 @@ in
           '';
           settings = {
             cleaner = "${pkgs.writeShellScript "lf-cleaner.sh" ''
-              kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
+              kitten icat --clear --stdin no --transfer-mode stream </dev/null >/dev/tty
             ''}";
           };
         };
@@ -395,20 +395,22 @@ in
               end
             '';
           };
-          shellAliases = let 
-            excludes = lib.strings.concatMapStringsSep " " (e: "--exclude ${e}") [
-              ".DS_Store"
-              ".stfolder"
-              ".stignore"
-            ];
-            local = "$HOME/Pictures/Wallpapers/";
-            remote = "Copyparty:/Tablet/";
-          in {
-            bisync = "rclone bisync -P ${local} ${remote} ${excludes} $argv";
-            helix = "hx";
-            pull = "rclone sync -P ${remote} ${local} ${excludes} $argv";
-            push = "rclone sync -P ${local} ${remote} ${excludes} $argv";
-          };
+          shellAliases =
+            let
+              excludes = lib.strings.concatMapStringsSep " " (e: "--exclude ${e}") [
+                ".DS_Store"
+                ".stfolder"
+                ".stignore"
+              ];
+              local = "$HOME/Pictures/Wallpapers/";
+              remote = "Copyparty:/Tablet/";
+            in
+            {
+              bisync = "rclone bisync -P ${local} ${remote} ${excludes} $argv";
+              helix = "hx";
+              pull = "rclone sync -P ${remote} ${local} ${excludes} $argv";
+              push = "rclone sync -P ${local} ${remote} ${excludes} $argv";
+            };
         };
         mpv = {
           bindings = {
