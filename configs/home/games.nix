@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  systemType,
+  ...
+}:
 let
   enableEmulators = false;
   retroarch_dir = "~/Sync/Retroarch";
@@ -13,8 +18,10 @@ in
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       limo
       openmw
-      # teamspeak6-client
       wowup-cf
+    ]
+    ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && systemType == "Nixos") [
+      heroic
     ]
     ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && enableEmulators) [
       azahar
