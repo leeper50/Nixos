@@ -33,11 +33,9 @@ in
       };
     };
   };
-  services = {
-    microsocks = {
-      enable = true;
-      ip = globals.networking.tailnet.racknerd.ipv4;
-    };
+  services.microsocks = {
+    enable = true;
+    ip = globals.networking.tailnet.racknerd.ipv4;
   };
   system.stateVersion = "23.11";
   zramSwap.enable = false;

@@ -9,6 +9,7 @@ in
       /configs/nixos/authelia.nix
       /configs/nixos/headscale.nix
       /configs/nixos/murmur.nix
+      /configs/nixos/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix
@@ -26,6 +27,11 @@ in
       enable = true;
       name = "Freedom General";
       tls.enable = true;
+    };
+    proxies.i2p = {
+      enable = true;
+      enableIPv6 = true;
+      port = 59230;
     };
   };
   networking = {
@@ -51,6 +57,11 @@ in
         }
       ];
     };
+  };
+
+  services.microsocks = {
+    enable = true;
+    ip = globals.networking.tailnet.servercheap.ipv4;
   };
   system.stateVersion = "25.11";
 }
