@@ -46,6 +46,7 @@ in
       databases = [
         "forgejo"
         "freshrss"
+        "miniflux"
         "rxresume"
       ];
       enable = true;
