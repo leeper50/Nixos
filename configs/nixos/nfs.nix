@@ -47,6 +47,7 @@ in
     }))
     { nfs-server.path = [ pkgs.kmod ]; }
   ];
+  systemd.tmpfiles.rules = [ "f /var/lib/nfs/etab 0644 root root -" ];
   networking.firewall = localLib.mkFirewallRules {
     service = "nfs";
     sources = globals.networking.lan;

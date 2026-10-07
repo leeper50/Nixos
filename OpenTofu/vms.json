@@ -1,4 +1,16 @@
 {
+  "nas": {
+    "cores": 4,
+    "data_disk_size": 0,
+    "datastore_id": "nvme_tower",
+    "disk_size": 64,
+    "memory": 6144,
+    "node_name": "tower",
+    "pci_mappings": [
+      "tower-sata"
+    ],
+    "vm_id": 1004
+  },
   "node-1": {
     "cores": 12,
     "data_disk_size": 64,

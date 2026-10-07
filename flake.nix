@@ -137,6 +137,16 @@
             ./hosts/proxmox-vm/nas
           ];
           profile = "cli";
+          proxmox = {
+            node_name = "tower";
+            vm_id = 1004;
+            cores = 4;
+            memory = 6144;
+            datastore_id = "nvme_tower";
+            disk_size = 64;
+            data_disk_size = 0;
+            pci_mappings = [ "tower-sata" ];
+          };
         };
 
         "node-1" = mkSwarmHost "node-1" {

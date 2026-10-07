@@ -2,7 +2,7 @@
   dataMountpoint ? "/data",
   dataFormat ? "btrfs",
 }:
-{ config, ... }:
+{ config, lib, ... }:
 {
   disko.devices = {
     disk = {
@@ -62,6 +62,8 @@
           };
         };
       };
+    }
+    // lib.optionalAttrs (dataMountpoint != null) {
       data = {
         type = "disk";
         device = "/dev/disk/by-id/virtio-${config.networking.hostName}-data";

@@ -23,7 +23,7 @@ in
     ]
     ++ [
       disko.nixosModules.disko
-      ../disk-config.nix
+      (import ../vm-disk-config.nix { dataMountpoint = null; })
     ];
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";

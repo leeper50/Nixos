@@ -47,8 +47,8 @@ locals {
     disk_size      = 40
     data_disk_size = 100
     cpu_type       = "host"
-    pci_mappings = []
-    usb_mappings = []
+    pci_mappings   = []
+    usb_mappings   = []
   }
 
   # Defined per host in flake.nix (`proxmox = { ... }`) and exported with
@@ -116,13 +116,17 @@ resource "proxmox_virtual_environment_vm" "nixos_vm" {
     size         = each.value.disk_size
   }
 
-  disk {
-    datastore_id = each.value.data_datastore_id
-    interface    = "virtio1"
-    serial       = "${each.key}-data"
-    iothread     = true
-    discard      = "on"
-    size         = each.value.data_disk_size
+  # data_disk_size = 0 means no data disk.
+  dynamic "disk" {
+    for_each = each.value.data_disk_size > 0 ? [each.value] : []
+    content {
+      datastore_id = disk.value.data_datastore_id
+      interface    = "virtio1"
+      serial       = "${each.key}-data"
+      iothread     = true
+      discard      = "on"
+      size         = disk.value.data_disk_size
+    }
   }
 
   dynamic "hostpci" {
@@ -171,6 +175,14 @@ resource "proxmox_hardware_mapping_pci" "pci" {
       path         = "0000:00:02.0"
       subsystem_id = "1043:8882"
       iommu_group  = 0
+    }
+    tower-sata = {
+      comment      = "tower SATA controller with the two WD 8TB drives (nas /mnt/data)"
+      node         = "tower"
+      id           = "8086:7a62"
+      path         = "0000:00:17.0"
+      subsystem_id = "1043:8882"
+      iommu_group  = 9
     }
   }
 
