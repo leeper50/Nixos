@@ -37,10 +37,6 @@ in
         "10.0.1.1"
         "2600:1702:58c1:9acf::1:1"
       ];
-      "komodo.${domains.primary}" = [
-        "10.0.0.60"
-        "2600:1702:58c1:9acf::60"
-      ];
       "laptop.${domains.primary}" = [
         "10.0.0.71"
         "2600:1702:58c1:9acf:73b7:bc38:4b1c:18ba"
@@ -72,10 +68,6 @@ in
         "10.0.0.1"
         "2600:1702:58c1:9acf:f2a7:31ff:fe94:abac"
       ];
-      "vpn.dellhplaptop.xyz" = [
-        "10.0.0.60"
-        "2600:1702:58c1:9acf::60"
-      ];
     };
     ipv4 = {
       gateway = "10.0.0.1";
@@ -103,10 +95,6 @@ in
       ];
     };
     tailnet = {
-      komodo = {
-        ipv4 = "100.64.0.4";
-        ipv6 = "fd7a:115c:a1e0::4";
-      };
       laptop = {
         ipv4 = "100.64.0.9";
         ipv6 = "fd7a:115c:a1e0::9";

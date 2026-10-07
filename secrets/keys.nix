@@ -1,5 +1,4 @@
 {
-  komodo = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPieb/L9L+lfCvkA2nXaRZmvwbByskxXPLMV8PI4hmxG root@komodo";
   macbook = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAmnjjOxA1m5W7WqeD26WTliaDJYcsUr8vN/yfk8/3x4";
   nas = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIISsnpyceiNgLPCVpZiCuZ06a9Zpl3kUKmCCqRI6RFn2 root@nas";
   node-1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMOWw3itt6X+guXpUY1m5M2inL0Zs+Fs0nTrUOqDwZ/c root@node-1";

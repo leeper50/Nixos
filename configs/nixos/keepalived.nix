@@ -16,13 +16,6 @@ let
       interface = "ens18";
       ipv4Addr = "10.0.0.52";
       ipv6Addr = "2600:1702:58c1:9acf::52";
-      priority = 60;
-      state = "BACKUP";
-    };
-    "komodo" = {
-      interface = "ens18";
-      ipv4Addr = "10.0.0.60";
-      ipv6Addr = "2600:1702:58c1:9acf::60";
       priority = 70;
       state = "BACKUP";
     };

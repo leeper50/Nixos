@@ -1,6 +1,5 @@
 let
   inherit (import ./keys.nix)
-    komodo
     macbook
     nas
     node-1
@@ -17,7 +16,6 @@ let
     personal
   ];
   all_keys = [
-    komodo
     macbook
     nas
     racknerd
@@ -64,13 +62,11 @@ in
     group = "992";
     mode = "0444";
     publicKeys = swarm_keys ++ [
-      komodo
       nas
       racknerd
       servercheap
     ];
     hosts = [
-      "komodo"
       "laptop"
       "nas"
       "node-1"
@@ -145,23 +141,19 @@ in
   };
   "komodo_admin_password.age" = {
     publicKeys = [
-      komodo
       node-1
       personal
     ];
     hosts = [
-      "komodo"
       "node-1"
     ];
   };
   "komodo_onboarding_key.age" = {
     publicKeys = swarm_keys ++ [
-      komodo
       racknerd
       servercheap
     ];
     hosts = [
-      "komodo"
       "node-1"
       "node-2"
       "node-3"
@@ -265,7 +257,6 @@ in
     owner = "1000";
     publicKeys = all_keys;
     hosts = [
-      "komodo"
       "laptop"
       "macbook"
       "nas"
@@ -280,7 +271,6 @@ in
     owner = "1000";
     publicKeys = all_keys;
     hosts = [
-      "komodo"
       "laptop"
       "macbook"
       "nas"

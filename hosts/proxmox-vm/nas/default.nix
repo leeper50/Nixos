@@ -6,7 +6,6 @@ let
     keys.node-1
     keys.node-2
     keys.node-3
-    keys.komodo
   ];
 in
 {

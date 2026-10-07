@@ -113,21 +113,6 @@
         };
 
       hosts = {
-        komodo = mkHost {
-          deployment = {
-            targetHost = "komodo";
-            tags = [
-              "local"
-              "servers"
-            ];
-          };
-          modules = [
-            ./hosts/proxmox-vm
-            ./hosts/proxmox-vm/komodo
-          ];
-          profile = "cli";
-        };
-
         laptop = mkHost {
           deployment = {
             targetHost = "laptop";

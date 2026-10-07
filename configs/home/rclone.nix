@@ -86,11 +86,6 @@ in
           user = "u400147";
         };
       };
-      Komodo = {
-        config = sftpSettings // {
-          host = "komodo.${globals.domains.primary}";
-        };
-      };
       Nas = {
         config = {
           type = "smb";

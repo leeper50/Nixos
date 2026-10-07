@@ -174,7 +174,6 @@ in
               Port = 23;
               User = "u400147";
             };
-            "komodo".HostName = "komodo.${globals.domains.primary}";
             "laptop".HostName = "laptop.${globals.domains.primary}";
             "nas".HostName = "nas.${globals.domains.primary}";
             "node-1".HostName = "node-1.${globals.domains.primary}";
