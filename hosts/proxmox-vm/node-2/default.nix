@@ -7,15 +7,9 @@ in
     /configs/nixos/jellyfin.nix
   ];
   environment.systemPackages = with pkgs; [
-    intel-gpu-tools
+    nvtopPackages.intel
   ];
-  users.groups = {
-    host-render = {
-      gid = 993;
-      members = [ "jellyfin" ];
-    };
-    resolvconf.gid = 399;
-  };
+  hardware.enableRedistributableFirmware = true;
   local = {
     caddy.enable = true;
     docker = {
@@ -31,7 +25,7 @@ in
     jellyfin.enable = true;
   };
   networking = {
-    interfaces.eth0 = {
+    interfaces.ens18 = {
       ipv4.addresses = [
         {
           address = "10.0.0.22";

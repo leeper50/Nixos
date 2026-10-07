@@ -1,3 +1,7 @@
+{
+  dataMountpoint ? "/data",
+  dataFormat ? "btrfs",
+}:
 { config, ... }:
 {
   disko.devices = {
@@ -65,19 +69,28 @@
           type = "gpt";
           partitions = {
             data = {
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-                subvolumes = {
-                  "/data" = {
-                    mountpoint = "/data";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
+              content =
+                if dataFormat == "btrfs" then
+                  {
+                    type = "btrfs";
+                    extraArgs = [ "-f" ];
+                    subvolumes = {
+                      "/data" = {
+                        mountpoint = dataMountpoint;
+                        mountOptions = [
+                          "compress=zstd"
+                          "noatime"
+                        ];
+                      };
+                    };
+                  }
+                else
+                  {
+                    type = "filesystem";
+                    format = dataFormat;
+                    mountpoint = dataMountpoint;
+                    mountOptions = [ "noatime" ];
                   };
-                };
-              };
               size = "100%";
             };
           };

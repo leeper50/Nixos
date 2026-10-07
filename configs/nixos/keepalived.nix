@@ -27,21 +27,21 @@ let
       state = "BACKUP";
     };
     "node-1" = {
-      interface = "eth0";
+      interface = "ens18";
       ipv4Addr = "10.0.0.21";
       ipv6Addr = "2600:1702:58c1:9acf::21";
       priority = 100;
       state = "MASTER";
     };
     "node-2" = {
-      interface = "eth0";
+      interface = "ens18";
       ipv4Addr = "10.0.0.22";
       ipv6Addr = "2600:1702:58c1:9acf::22";
       priority = 90;
       state = "BACKUP";
     };
     "node-3" = {
-      interface = "eth0";
+      interface = "ens18";
       ipv4Addr = "10.0.0.23";
       ipv6Addr = "2600:1702:58c1:9acf::23";
       priority = 80;

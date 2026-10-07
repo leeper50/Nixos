@@ -93,7 +93,7 @@
         // lib.optionalAttrs (proxmox != null) { inherit proxmox; };
 
       mkSwarmHost =
-        name:
+        name: proxmox:
         mkHost {
           deployment = {
             targetHost = name;
@@ -104,78 +104,15 @@
             ];
           };
           modules = [
-            ./hosts/proxmox-lxc
-            ./hosts/proxmox-lxc/${name}
+            ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/swarm.nix
+            ./hosts/proxmox-vm/${name}
           ];
           profile = "cli";
+          inherit proxmox;
         };
 
       hosts = {
-        "k3s-01" = mkHost {
-          deployment = {
-            targetHost = "k3s-01";
-            tags = [
-              "local"
-              "servers"
-            ];
-          };
-          modules = [
-            ./hosts/proxmox-vm
-            ./hosts/proxmox-vm/k3s-01
-          ];
-          profile = "cli";
-          proxmox = {
-            vm_id = 1011;
-            cores = 6;
-            memory = 6144;
-          };
-        };
-
-        "k3s-02" = mkHost {
-          deployment = {
-            targetHost = "k3s-02";
-            tags = [
-              "local"
-              "servers"
-            ];
-          };
-          modules = [
-            ./hosts/proxmox-vm
-            ./hosts/proxmox-vm/k3s-02
-          ];
-          profile = "cli";
-          proxmox = {
-            node_name = "tower";
-            vm_id = 1012;
-            cores = 6;
-            memory = 6144;
-            datastore_id = "nvme_tower";
-          };
-        };
-
-        "k3s-03" = mkHost {
-          deployment = {
-            targetHost = "k3s-03";
-            tags = [
-              "local"
-              "servers"
-            ];
-          };
-          modules = [
-            ./hosts/proxmox-vm
-            ./hosts/proxmox-vm/k3s-03
-          ];
-          profile = "cli";
-          proxmox = {
-            node_name = "gk55";
-            vm_id = 1013;
-            cores = 4;
-            memory = 4096;
-            disk_size = 20;
-            data_disk_size = 20;
-          };
-        };
-
         komodo = mkHost {
           deployment = {
             targetHost = "komodo";
@@ -217,9 +154,36 @@
           profile = "cli";
         };
 
-        "node-1" = mkSwarmHost "node-1";
-        "node-2" = mkSwarmHost "node-2";
-        "node-3" = mkSwarmHost "node-3";
+        "node-1" = mkSwarmHost "node-1" {
+          node_name = "ser8";
+          vm_id = 1001;
+          cores = 12;
+          memory = 16384;
+          disk_size = 32;
+          data_disk_size = 64;
+          usb_mappings = [
+            "zigbee"
+            "zwave"
+          ];
+        };
+        "node-2" = mkSwarmHost "node-2" {
+          node_name = "tower";
+          vm_id = 1002;
+          cores = 8;
+          memory = 8192;
+          datastore_id = "nvme_tower";
+          disk_size = 64;
+          data_disk_size = 64;
+          pci_mappings = [ "tower-igpu" ];
+        };
+        "node-3" = mkSwarmHost "node-3" {
+          node_name = "gk55";
+          vm_id = 1003;
+          cores = 4;
+          memory = 4096;
+          disk_size = 32;
+          data_disk_size = 32;
+        };
 
         racknerd = mkHost {
           deployment = {

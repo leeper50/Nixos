@@ -1,13 +1,10 @@
-{ pkgs, ... }:
+{ ... }:
 let
   rootDir = ../../..;
 in
 {
   imports = map (p: rootDir + p) [
     /configs/nixos/ntfy.nix
-  ];
-  environment.systemPackages = with pkgs; [
-    intel-gpu-tools
   ];
   local = {
     caddy.enable = true;
@@ -24,7 +21,7 @@ in
     ntfy.enable = true;
   };
   networking = {
-    interfaces.eth0 = {
+    interfaces.ens18 = {
       ipv4.addresses = [
         {
           address = "10.0.0.23";

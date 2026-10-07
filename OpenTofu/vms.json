@@ -1,22 +1,34 @@
 {
-  "k3s-01": {
-    "cores": 6,
-    "memory": 6144,
-    "vm_id": 1011
+  "node-1": {
+    "cores": 12,
+    "data_disk_size": 64,
+    "disk_size": 32,
+    "memory": 16384,
+    "node_name": "ser8",
+    "usb_mappings": [
+      "zigbee",
+      "zwave"
+    ],
+    "vm_id": 1001
   },
-  "k3s-02": {
-    "cores": 6,
+  "node-2": {
+    "cores": 8,
+    "data_disk_size": 64,
     "datastore_id": "nvme_tower",
-    "memory": 6144,
+    "disk_size": 64,
+    "memory": 8192,
     "node_name": "tower",
-    "vm_id": 1012
+    "pci_mappings": [
+      "tower-igpu"
+    ],
+    "vm_id": 1002
   },
-  "k3s-03": {
+  "node-3": {
     "cores": 4,
-    "data_disk_size": 20,
-    "disk_size": 20,
+    "data_disk_size": 32,
+    "disk_size": 32,
     "memory": 4096,
     "node_name": "gk55",
-    "vm_id": 1013
+    "vm_id": 1003
   }
 }

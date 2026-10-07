@@ -46,6 +46,9 @@ locals {
     memory         = 2048
     disk_size      = 40
     data_disk_size = 100
+    cpu_type       = "host"
+    pci_mappings = []
+    usb_mappings = []
   }
 
   # Defined per host in flake.nix (`proxmox = { ... }`) and exported with
@@ -91,6 +94,7 @@ resource "proxmox_virtual_environment_vm" "nixos_vm" {
 
   cpu {
     cores = each.value.cores
+    type  = each.value.cpu_type
   }
 
   memory {
@@ -121,6 +125,28 @@ resource "proxmox_virtual_environment_vm" "nixos_vm" {
     size         = each.value.data_disk_size
   }
 
+  dynamic "hostpci" {
+    for_each = each.value.pci_mappings
+    content {
+      device  = "hostpci${hostpci.key}"
+      mapping = hostpci.value
+    }
+  }
+
+  dynamic "usb" {
+    for_each = each.value.usb_mappings
+    content {
+      mapping = usb.value
+      usb3    = true
+    }
+  }
+
+  # Mappings are referenced by name from vms.json, so order them explicitly.
+  depends_on = [
+    proxmox_hardware_mapping_pci.pci,
+    proxmox_hardware_mapping_usb.usb,
+  ]
+
   lifecycle {
     # prevent_destroy = true
   }
@@ -134,4 +160,49 @@ resource "proxmox_download_file" "nixos_installer_iso" {
   node_name    = each.value
   overwrite    = false
   url          = "https://github.com/nix-community/nixos-images/releases/download/nixos-26.05/nixos-installer-x86_64-linux.iso"
+}
+
+resource "proxmox_hardware_mapping_pci" "pci" {
+  for_each = {
+    tower-igpu = {
+      comment      = "tower Intel UHD 730 (node-2 / Jellyfin)"
+      node         = "tower"
+      id           = "8086:4692"
+      path         = "0000:00:02.0"
+      subsystem_id = "1043:8882"
+      iommu_group  = 0
+    }
+  }
+
+  name    = each.key
+  comment = each.value.comment
+  map = [{
+    node         = each.value.node
+    id           = each.value.id
+    path         = each.value.path
+    subsystem_id = each.value.subsystem_id
+    iommu_group  = each.value.iommu_group
+  }]
+}
+
+resource "proxmox_hardware_mapping_usb" "usb" {
+  for_each = {
+    zigbee = {
+      comment = "Sonoff Zigbee 3.0 USB Dongle Plus"
+      node    = "ser8"
+      id      = "10c4:ea60"
+    }
+    zwave = {
+      comment = "Nabu Casa ZWA-2"
+      node    = "ser8"
+      id      = "303a:4001"
+    }
+  }
+
+  name    = each.key
+  comment = each.value.comment
+  map = [{
+    node = each.value.node
+    id   = each.value.id
+  }]
 }

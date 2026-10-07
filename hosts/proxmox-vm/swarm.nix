@@ -1,17 +1,20 @@
-{ lib, modulesPath, ... }:
+{ disko, ... }:
 let
   rootDir = ../..;
 in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/nixos
       /configs/nixos/adguardhome.nix
       /configs/nixos/docker.nix
       /configs/nixos/keepalived.nix
     ]
     ++ [
-      (modulesPath + "/virtualisation/proxmox-lxc.nix")
+      disko.nixosModules.disko
+      (import ./vm-disk-config.nix {
+        dataMountpoint = "/var/lib/docker";
+        dataFormat = "xfs";
+      })
     ];
   local = {
     adguardhome.enable = true;
@@ -32,18 +35,12 @@ in
       };
     };
   };
-  networking = {
-    defaultGateway.interface = "eth0";
-    defaultGateway6.interface = "eth0";
-    networkmanager.enable = lib.mkForce false;
-  };
-  proxmoxLXC.manageHostName = true;
-  systemd = {
-    network.wait-online.enable = true;
-    services.docker = {
-      after = [ "mnt-media.mount" ];
-      requires = [ "mnt-media.mount" ];
-      unitConfig.RequiresMountsFor = [ "/mnt/media" ];
-    };
+  systemd.services.docker = {
+    after = [ "mnt-media.mount" ];
+    requires = [ "mnt-media.mount" ];
+    unitConfig.RequiresMountsFor = [
+      "/mnt/media"
+      "/var/lib/docker"
+    ];
   };
 }

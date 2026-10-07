@@ -8,7 +8,6 @@
       periphery.enable = true;
     };
     swarm = {
-      labels = [ "amd_gpu" ];
       manager = true;
       managerIP = "10.0.0.21";
     };
@@ -21,7 +20,7 @@
       ];
       allowedUDPPorts = [ 443 ];
     };
-    interfaces.eth0 = {
+    interfaces.ens18 = {
       ipv4.addresses = [
         {
           address = "10.0.0.21";

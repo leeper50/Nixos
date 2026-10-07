@@ -192,9 +192,6 @@ in
               Port = 22;
               User = "root";
             };
-            "k3s-01".HostName = "k3s-01.${globals.domains.tailnet}";
-            "k3s-02".HostName = "k3s-02.${globals.domains.tailnet}";
-            "k3s-03".HostName = "k3s-03.${globals.domains.tailnet}";
           };
         };
         vscode = {
