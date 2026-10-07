@@ -7,15 +7,19 @@
 !globals.nix
 !README.md
 !TODO.md
+!tofu.fish
+!vm-builder.fish
 
 # Folders
 !configs/
 !hosts/
+!OpenTofu/
 !secrets/
 !tests/
 
 # Files in folders
 !configs/**
 !hosts/**
+!OpenTofu/**
 !secrets/**
 !tests/**

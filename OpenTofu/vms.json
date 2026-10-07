@@ -1,0 +1,22 @@
+{
+  "k3s-01": {
+    "cores": 6,
+    "memory": 6144,
+    "vm_id": 1011
+  },
+  "k3s-02": {
+    "cores": 6,
+    "datastore_id": "nvme_tower",
+    "memory": 6144,
+    "node_name": "tower",
+    "vm_id": 1012
+  },
+  "k3s-03": {
+    "cores": 4,
+    "data_disk_size": 20,
+    "disk_size": 20,
+    "memory": 4096,
+    "node_name": "gk55",
+    "vm_id": 1013
+  }
+}

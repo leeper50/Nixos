@@ -310,6 +310,10 @@ in
       "workstation"
     ];
   };
+  "tofu_env.age" = {
+    publicKeys = [ personal ];
+    hosts = [ ];
+  };
   "user_walter_clear.age" = {
     group = "1000";
     owner = "1000";

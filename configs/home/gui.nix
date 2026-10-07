@@ -180,7 +180,7 @@ in
             "node-1".HostName = "node-1.${globals.domains.primary}";
             "node-2".HostName = "node-2.${globals.domains.primary}";
             "node-3".HostName = "node-3.${globals.domains.primary}";
-            "proxmox" = {
+            "ser8" = {
               HostName = "10.0.0.30";
               Port = 22;
               User = "root";

@@ -1,0 +1,2 @@
+proxmox_endpoint = "https://proxmox.example.com:8006/"
+

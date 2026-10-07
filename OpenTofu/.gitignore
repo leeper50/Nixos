@@ -1,0 +1,19 @@
+# Local provider plugins and modules
+.terraform/
+.terraform.tfstate.lock.info
+
+# terraform.tfstate is committed: it is encrypted (see the encryption block in
+# main.tf). Backups and other copies may predate encryption, so keep them out.
+*.tfstate.*
+*.tfstate.backup
+
+# Variable files hold secrets; the example is safe to track
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Saved plans can also contain secrets
+*.tfplan
+
+crash.log
+crash.*.log
