@@ -5,12 +5,16 @@
   ...
 }:
 let
-  domainPairs = lib.flatten (
-    lib.mapAttrsToList (
-      domain: addrs: map (ip: { inherit domain ip; }) (lib.filter (ip: ip != null) (lib.attrValues addrs))
-    ) globals.networking.hosts
+  ipToDomains = lib.zipAttrs (
+    lib.concatLists (
+      lib.mapAttrsToList (
+        domain:
+        map (ip: {
+          ${ip} = domain;
+        })
+      ) globals.networking.dns
+    )
   );
-  ipToDomains = lib.mapAttrs (ip: pairs: map (p: p.domain) pairs) (lib.groupBy (p: p.ip) domainPairs);
 in
 {
   config = lib.mkMerge [
