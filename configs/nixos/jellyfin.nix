@@ -32,10 +32,7 @@ in
     };
     networking.firewall = localLib.mkFirewallRules {
       service = "jellyfin";
-      sources = [
-        globals.networking.ipv4.lanSubnet
-        globals.networking.ipv6.lanSubnet
-      ];
+      sources = globals.networking.lan;
       udpPorts = [ ports.discovery ];
     };
     services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {

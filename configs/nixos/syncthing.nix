@@ -17,10 +17,7 @@ in
     {
       networking.firewall = localLib.mkFirewallRules {
         service = "syncthing";
-        sources = [
-          globals.networking.ipv4.lanSubnet
-          globals.networking.ipv6.lanSubnet
-        ];
+        sources = globals.networking.lan;
         tcpPorts =
           if config.services.caddy.enable then
             [ 22000 ]

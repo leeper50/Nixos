@@ -16,10 +16,7 @@ in
     (lib.mkIf cfg.enable {
       networking.firewall = localLib.mkFirewallRules {
         service = "rustfs";
-        sources = [
-          globals.networking.ipv4.lanSubnet
-          globals.networking.ipv6.lanSubnet
-        ];
+        sources = globals.networking.lan;
         tcpPorts = [
           9000
           9001

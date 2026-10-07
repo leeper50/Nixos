@@ -46,14 +46,15 @@ let
     "browser.fixup.domainsuffixwhitelist.i2p" = true;
     "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
     "network.proxy.type" = 2;
-    "network.proxy.no_proxies_on" = lib.strings.join "," [
-      "buncha.men"
-      "dellhplaptop.xyz"
-      globals.domains.primary
-      globals.domains.tailnet
-      globals.networking.ipv4.lanSubnet
-      globals.networking.ipv6.lanSubnet
-    ];
+    "network.proxy.no_proxies_on" = lib.strings.join "," (
+      globals.networking.lan
+      ++ [
+        "buncha.men"
+        "dellhplaptop.xyz"
+        globals.domains.primary
+        globals.domains.tailnet
+      ]
+    );
   };
 in
 {

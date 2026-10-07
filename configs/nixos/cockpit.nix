@@ -1,14 +1,16 @@
-{ config, globals, localLib, ... }:
+{
+  config,
+  globals,
+  localLib,
+  ...
+}:
 let
   ports.webui = 9090;
 in
 {
   networking.firewall = localLib.mkFirewallRules {
     service = "cockpit";
-    sources = [
-      globals.networking.ipv4.lanSubnet
-      globals.networking.ipv6.lanSubnet
-    ];
+    sources = globals.networking.lan;
     tcpPorts = [ ports.webui ];
   };
   services.cockpit = {

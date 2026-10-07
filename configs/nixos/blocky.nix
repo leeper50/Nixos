@@ -1,9 +1,13 @@
-{ globals, lib, localLib, ... }:
+{
+  globals,
+  lib,
+  localLib,
+  ...
+}:
 let
   ports.dns = 53;
   dns-lists = import ./lib/dns-lists.nix;
-  groupByCategory =
-    f: lists: lib.zipAttrsWith (_: lib.id) (map (l: { ${l.category} = f l; }) lists);
+  groupByCategory = f: lists: lib.zipAttrsWith (_: lib.id) (map (l: { ${l.category} = f l; }) lists);
   allowlists = groupByCategory (
     l: lib.concatMapStrings (domain: "*.${domain}\n") l.domains
   ) dns-lists.allowlists;
@@ -11,10 +15,8 @@ let
   customDNSMapping = lib.mapAttrs (
     domain: ips: lib.concatStringsSep "," ips
   ) globals.networking.hosts;
-  dnsSources = [
-    globals.networking.ipv4.lanSubnet
+  dnsSources = globals.networking.lan ++ [
     globals.networking.docker.ipv4Subnet
-    globals.networking.ipv6.lanSubnet
     globals.networking.docker.ipv6Subnet
     globals.networking.docker.fixedv6Subnet
   ];

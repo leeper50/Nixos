@@ -49,10 +49,7 @@ in
   ];
   networking.firewall = localLib.mkFirewallRules {
     service = "nfs";
-    sources = [
-      globals.networking.ipv4.lanSubnet
-      globals.networking.ipv6.lanSubnet
-    ];
+    sources = globals.networking.lan;
     tcpPorts = lib.attrValues ports;
     udpPorts = lib.attrValues ports;
   };

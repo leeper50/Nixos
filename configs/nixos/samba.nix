@@ -6,10 +6,6 @@
   ...
 }:
 let
-  lanSources = [
-    globals.networking.ipv4.lanSubnet
-    globals.networking.ipv6.lanSubnet
-  ];
   macSettings = {
     "fruit:encoding" = "native";
     "fruit:metadata" = "stream";
@@ -29,7 +25,7 @@ in
   networking.firewall = lib.mkMerge [
     (localLib.mkFirewallRules {
       service = "samba";
-      sources = lanSources;
+      sources = globals.networking.lan;
       tcpPorts = [
         139 # NetBIOS session
         445 # SMB
@@ -41,7 +37,7 @@ in
     })
     (localLib.mkFirewallRules {
       service = "samba-wsdd";
-      sources = lanSources ++ [ globals.networking.ipv6.linkLocalSubnet ];
+      sources = globals.networking.lan ++ [ globals.networking.ipv6.linkLocalSubnet ];
       tcpPorts = [ 5357 ]; # WSD transfer
       udpPorts = [ 3702 ]; # WS-Discovery
     })
@@ -111,11 +107,16 @@ in
   };
   systemd = {
     services = lib.mkMerge [
-      (lib.genAttrs (map (name: "samba-${name}") [
-        "nmbd"
-        "smbd"
-        "winbindd"
-      ]) (_: { unitConfig.RequiresMountsFor = [ "/mnt/data" ]; }))
+      (lib.genAttrs
+        (map (name: "samba-${name}") [
+          "nmbd"
+          "smbd"
+          "winbindd"
+        ])
+        (_: {
+          unitConfig.RequiresMountsFor = [ "/mnt/data" ];
+        })
+      )
       {
         samba-smbd.preStart = ''
           install -d -m 0700 -o ${globals.username} -g ${globals.username} /mnt/data/TimeMachine

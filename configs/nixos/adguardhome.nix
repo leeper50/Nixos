@@ -34,12 +34,10 @@ let
     dns = 53;
     webui = 3000;
   };
-  dnsSources = [
+  dnsSources = globals.networking.lan ++ [
     globals.networking.docker.fixedv6Subnet
     globals.networking.docker.ipv4Subnet
     globals.networking.docker.ipv6Subnet
-    globals.networking.ipv4.lanSubnet
-    globals.networking.ipv6.lanSubnet
   ];
   rewrites = lib.concatLists (
     lib.mapAttrsToList (

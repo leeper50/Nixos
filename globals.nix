@@ -78,6 +78,10 @@ in
       lanSubnet = "2600:1702:58c1:9acf::/64";
       linkLocalSubnet = "fe80::/10";
     };
+    lan = [
+      ipv4.lanSubnet
+      ipv6.lanSubnet
+    ];
     nameservers = {
       doh = [
         "https://dns.quad9.net/dns-query"
