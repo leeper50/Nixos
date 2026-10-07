@@ -26,7 +26,7 @@ in
         enable = true;
         environment = {
           "HUB_URL" = "http://${cfg.agent.hubHost}:${toString ports.hub}";
-          "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNcggS7ZMLtGUfM0HTrqfj9jK6ezXoSj1MzDJOv6cOs";
+          "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrW1b08xk0bva1Tyo+fmVAroFqflvQMEhikCpt/WphI";
           "TOKEN_FILE" = config.age.secrets."beszel_token.age".path;
         };
       };
