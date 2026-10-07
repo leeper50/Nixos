@@ -46,13 +46,13 @@ in
     interfaces.ens3 = {
       ipv4.addresses = [
         {
-          address = "65.75.202.6";
+          address = globals.networking.hosts.servercheap.ipv4;
           prefixLength = 25;
         }
       ];
       ipv6.addresses = [
         {
-          address = "2606:cc0:11:2351::1";
+          address = globals.networking.hosts.servercheap.ipv6;
           prefixLength = 64;
         }
       ];

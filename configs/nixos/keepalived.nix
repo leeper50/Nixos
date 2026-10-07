@@ -7,47 +7,35 @@
   ...
 }:
 let
-  checkAdguard = pkgs.writeShellScript "check-adguard" ''
+  checkDns = pkgs.writeShellScript "check-dns" ''
     answer=$(${pkgs.dnsutils}/bin/dig +short +time=1 +tries=1 @127.0.0.1 dnstest.dellhplaptop.xyz A) || exit 1
     [ -n "$answer" ]
   '';
-  nodes = {
+  nodes = lib.mapAttrs (name: node: node // {
+    ipv4Addr = globals.networking.hosts.${name}.ipv4;
+    ipv6Addr = globals.networking.hosts.${name}.ipv6;
+  }) {
     "nas" = {
-      interface = "ens18";
-      ipv4Addr = "10.0.0.52";
-      ipv6Addr = "2600:1702:58c1:9acf::52";
       priority = 70;
       state = "BACKUP";
     };
     "node-1" = {
-      interface = "ens18";
-      ipv4Addr = "10.0.0.21";
-      ipv6Addr = "2600:1702:58c1:9acf::21";
       priority = 100;
       state = "MASTER";
     };
     "node-2" = {
-      interface = "ens18";
-      ipv4Addr = "10.0.0.22";
-      ipv6Addr = "2600:1702:58c1:9acf::22";
       priority = 90;
       state = "BACKUP";
     };
     "node-3" = {
-      interface = "ens18";
-      ipv4Addr = "10.0.0.23";
-      ipv6Addr = "2600:1702:58c1:9acf::23";
       priority = 80;
       state = "BACKUP";
     };
   };
   thisNode = nodes.${config.networking.hostName};
-  peeripv4Addrs = lib.mapAttrsToList (_: v: v.ipv4Addr) (
-    lib.filterAttrs (name: _: name != config.networking.hostName) nodes
-  );
-  peeripv6Addrs = lib.mapAttrsToList (_: v: v.ipv6Addr) (
-    lib.filterAttrs (name: _: name != config.networking.hostName) nodes
-  );
+  peers = lib.filterAttrs (name: _: name != config.networking.hostName) nodes;
+  peeripv4Addrs = lib.filter (a: a != null) (lib.mapAttrsToList (_: node: node.ipv4Addr) peers);
+  peeripv6Addrs = lib.filter (a: a != null) (lib.mapAttrsToList (_: node: node.ipv6Addr) peers);
 in
 {
   config = lib.mkMerge [
@@ -55,7 +43,7 @@ in
       services.keepalived = {
         enable = true;
         enableScriptSecurity = true;
-        extraConfig = ''
+        extraConfig = lib.mkIf (thisNode.ipv4Addr != null && thisNode.ipv6Addr != null) ''
           vrrp_sync_group dns {
             group {
               dnsIPv4
@@ -63,11 +51,11 @@ in
             }
           }
         '';
-        vrrpInstances.dnsIPv4 = {
-          interface = thisNode.interface;
+        vrrpInstances.dnsIPv4 = lib.mkIf (thisNode.ipv4Addr != null) {
+          interface = "ens18";
           priority = thisNode.priority;
           state = thisNode.state;
-          trackScripts = [ "chkAdguard" ];
+          trackScripts = [ "checkDns" ];
           unicastPeers = peeripv4Addrs;
           unicastSrcIp = thisNode.ipv4Addr;
           virtualIps = [
@@ -75,23 +63,23 @@ in
           ];
           virtualRouterId = 51;
         };
-        vrrpInstances.dnsIPv6 = {
-          interface = thisNode.interface;
+        vrrpInstances.dnsIPv6 = lib.mkIf (thisNode.ipv6Addr != null) {
+          interface = "ens18";
           priority = thisNode.priority;
           state = thisNode.state;
-          trackScripts = [ "chkAdguard" ];
+          trackScripts = [ "checkDns" ];
           unicastSrcIp = thisNode.ipv6Addr;
           unicastPeers = peeripv6Addrs;
           virtualIps = [
-            { addr = "2600:1702:58c1:9acf::1:1/64"; }
+            { addr = "${globals.networking.ipv6.prefix}::1:1/${globals.networking.ipv6.subnetMask}"; }
           ];
           virtualRouterId = 52;
         };
-        vrrpScripts.chkAdguard = {
+        vrrpScripts.checkDns = {
           fall = 2;
           interval = 2;
           rise = 2;
-          script = "${checkAdguard}";
+          script = "${checkDns}";
           timeout = 2;
         };
       };
@@ -106,8 +94,8 @@ in
     {
       networking.firewall = localLib.mkFirewallRules {
         service = "keepalived";
-        sources = globals.networking.swarmAddresses;
-        protocols = [ 112 ]; # VRRP
+        sources = lib.filter (a: a != null) (lib.concatMap (n: [ n.ipv4Addr n.ipv6Addr ]) (lib.attrValues nodes));
+        protocols = [ "VRRP" ];
       };
     }
   ];

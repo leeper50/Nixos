@@ -1,4 +1,4 @@
-{ ... }:
+{ globals, ... }:
 let
   rootDir = ../../..;
 in
@@ -10,31 +10,15 @@ in
     caddy.enable = true;
     docker = {
       komodo = {
-        coreIP = "10.0.0.21";
+        coreIP = globals.networking.hosts.node-1.ipv4;
         periphery.enable = true;
       };
       swarm = {
         labels = [ "slow" ];
-        managerIP = "10.0.0.21";
+        managerIP = globals.networking.hosts.node-1.ipv4;
       };
     };
     ntfy.enable = true;
-  };
-  networking = {
-    interfaces.ens18 = {
-      ipv4.addresses = [
-        {
-          address = "10.0.0.23";
-          prefixLength = 8;
-        }
-      ];
-      ipv6.addresses = [
-        {
-          address = "2600:1702:58c1:9acf::23";
-          prefixLength = 64;
-        }
-      ];
-    };
   };
   system.stateVersion = "25.11";
 }

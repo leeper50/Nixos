@@ -6,7 +6,9 @@
 }:
 let
   domainPairs = lib.flatten (
-    lib.mapAttrsToList (domain: ips: map (ip: { inherit domain ip; }) ips) globals.networking.hosts
+    lib.mapAttrsToList (
+      domain: addrs: map (ip: { inherit domain ip; }) (lib.filter (ip: ip != null) (lib.attrValues addrs))
+    ) globals.networking.hosts
   );
   ipToDomains = lib.mapAttrs (ip: pairs: map (p: p.domain) pairs) (lib.groupBy (p: p.ip) domainPairs);
 in

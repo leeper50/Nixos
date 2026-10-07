@@ -36,7 +36,7 @@ in
       package = pkgs.valkey;
       servers = lib.mapAttrs (name: port: {
         enable = true;
-        bind = "127.0.0.1 10.0.0.52";
+        bind = "127.0.0.1 ${globals.networking.hosts.${config.networking.hostName}.ipv4}";
         inherit port;
         requirePassFile = "/run/agenix/redis_${name}.age";
       }) ports;

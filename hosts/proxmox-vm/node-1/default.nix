@@ -1,39 +1,28 @@
-{ ... }:
+{ globals, localLib, ... }:
 {
   local.beszel.hub.enable = true;
   local.docker = {
     komodo = {
       core.enable = true;
-      coreIP = "10.0.0.21";
+      coreIP = globals.networking.hosts.node-1.ipv4;
       periphery.enable = true;
     };
     swarm = {
       manager = true;
-      managerIP = "10.0.0.21";
+      managerIP = globals.networking.hosts.node-1.ipv4;
     };
   };
-  networking = {
-    firewall = {
-      allowedTCPPorts = [
-        80
-        443
-      ];
-      allowedUDPPorts = [ 443 ];
-    };
-    interfaces.ens18 = {
-      ipv4.addresses = [
-        {
-          address = "10.0.0.21";
-          prefixLength = 8;
-        }
-      ];
-      ipv6.addresses = [
-        {
-          address = "2600:1702:58c1:9acf::21";
-          prefixLength = 64;
-        }
-      ];
-    };
+  networking.firewall = localLib.mkFirewallRules {
+    service = "traefik";
+    sources = [
+      "0.0.0.0"
+      "::0"
+    ];
+    tcpPorts = [
+      80
+      443
+    ];
+    udpPorts = [ 443 ];
   };
   system.stateVersion = "25.11";
 }

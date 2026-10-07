@@ -1,4 +1,9 @@
-{ lib, ... }:
+{
+  config,
+  globals,
+  lib,
+  ...
+}:
 let
   rootDir = ../..;
 in
@@ -14,7 +19,23 @@ in
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
-  networking.defaultGateway6.interface = lib.mkForce "ens18";
+  networking = {
+    defaultGateway6.interface = "ens18";
+    interfaces.ens18 = {
+      ipv4.addresses = [
+        {
+          address = globals.networking.hosts.${config.networking.hostName}.ipv4;
+          prefixLength = lib.toIntBase10 globals.networking.ipv4.subnetMask;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = globals.networking.hosts.${config.networking.hostName}.ipv6;
+          prefixLength = lib.toIntBase10 globals.networking.ipv6.subnetMask;
+        }
+      ];
+    };
+  };
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
   systemd.services.qemu-guest-agent.serviceConfig.Restart = "always";

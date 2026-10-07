@@ -66,22 +66,6 @@ in
       home = "/mnt/data/home/${globals.username}";
     };
   };
-  networking = {
-    interfaces.ens18 = {
-      ipv4.addresses = [
-        {
-          address = "10.0.0.52";
-          prefixLength = 8;
-        }
-      ];
-      ipv6.addresses = [
-        {
-          address = "2600:1702:58c1:9acf::52";
-          prefixLength = 64;
-        }
-      ];
-    };
-  };
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";

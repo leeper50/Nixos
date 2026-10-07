@@ -53,7 +53,7 @@ let
           enabled = true;
         }
       ]) answers
-    ) globals.networking.hosts
+    ) globals.networking.dns
   );
   defaultClientSettings = {
     filtering_enabled = true;

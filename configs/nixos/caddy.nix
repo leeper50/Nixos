@@ -85,8 +85,11 @@ in
               @friendly_ips client_ip ${
                 lib.strings.join " " (
                   globals.networking.lan
-                  ++ globals.networking.hosts."racknerd.${globals.domains.primary}"
-                  ++ globals.networking.hosts."servercheap.${globals.domains.primary}"
+                  ++ [
+                    globals.networking.hosts.racknerd.ipv4
+                    globals.networking.hosts.servercheap.ipv4
+                    globals.networking.hosts.servercheap.ipv6
+                  ]
                 )
               }
             }
@@ -94,7 +97,10 @@ in
           globalConfig = lib.optionalString config.local.local ''
             servers {
               trusted_proxies static ${
-                lib.strings.join " " globals.networking.hosts."node-1.${globals.domains.primary}"
+                lib.strings.join " " [
+                  globals.networking.hosts.node-1.ipv4
+                  globals.networking.hosts.node-1.ipv6
+                ]
               }
             }
           '';

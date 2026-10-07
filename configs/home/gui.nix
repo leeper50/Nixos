@@ -174,24 +174,17 @@ in
               Port = 23;
               User = "u400147";
             };
-            "laptop".HostName = "laptop.${globals.domains.primary}";
-            "nas".HostName = "nas.${globals.domains.primary}";
-            "node-1".HostName = "node-1.${globals.domains.primary}";
-            "node-2".HostName = "node-2.${globals.domains.primary}";
-            "node-3".HostName = "node-3.${globals.domains.primary}";
             "ser8" = {
               HostName = "10.0.0.30";
               Port = 22;
               User = "root";
             };
-            "racknerd".HostName = "racknerd.${globals.domains.tailnet}";
-            "servercheap".HostName = "servercheap.${globals.domains.tailnet}";
             "tower" = {
               HostName = "10.0.0.51";
               Port = 22;
               User = "root";
             };
-          };
+          } // lib.mapAttrs (n: _: {HostName = "${n}.${globals.domains.primary}";}) globals.networking.hosts;
         };
         vscode = {
           enable = true;

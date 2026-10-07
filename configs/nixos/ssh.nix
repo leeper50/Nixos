@@ -5,7 +5,7 @@
     enable = true;
     ignoreIP = [
       "162.233.151.119/32"
-      "2600:1702:58c1:9acf/64"
+      "${globals.networking.ipv6.prefix}/${globals.networking.ipv6.subnetMask}"
     ];
   };
   services.openssh = {
