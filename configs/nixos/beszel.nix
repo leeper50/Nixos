@@ -3,6 +3,7 @@
   globals,
   lib,
   localLib,
+  pkgs,
   ...
 }:
 let
@@ -18,6 +19,7 @@ in
         default = "node-1.${globals.domains.tailnet}";
         type = lib.types.str;
       };
+      intelGpu = lib.mkEnableOption "Intel GPU stats via nvtop";
     };
   };
   config = lib.mkMerge [
@@ -31,6 +33,23 @@ in
         };
       };
       users.groups.beszel-agent.gid = 992;
+    })
+    (lib.mkIf (cfg.agent.enable && cfg.agent.intelGpu) {
+      # intel_gpu_top can't be used on a passed-through iGPU (it isn't at 00:02.0
+      # in the guest), so collect with nvtop. nvtop sums per-process usage from
+      # /proc/<pid>/fdinfo, which needs ptrace + dac_read_search outside a user
+      # namespace to see other users' processes (e.g. jellyfin's ffmpeg).
+      services.beszel.agent = {
+        environment.GPU_COLLECTOR = "nvtop";
+        extraPath = [ pkgs.nvtopPackages.intel ];
+      };
+      systemd.services.beszel-agent.serviceConfig = {
+        AmbientCapabilities = [
+          "CAP_DAC_READ_SEARCH"
+          "CAP_SYS_PTRACE"
+        ];
+        PrivateUsers = lib.mkForce false;
+      };
     })
     (lib.mkIf cfg.hub.enable {
       networking.firewall = localLib.mkFirewallRules {
