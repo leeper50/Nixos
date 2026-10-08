@@ -11,7 +11,9 @@ let
   authDomain = "login.${globals.domains.primary}";
   lldapDomain = "ld.${globals.domains.primary}";
   headscaleDomain = "hd.${globals.domains.primary}";
-  baseDn = lib.concatMapStringsSep "," (part: "dc=${part}") (lib.splitString "." globals.domains.primary);
+  baseDn = lib.concatMapStringsSep "," (part: "dc=${part}") (
+    lib.splitString "." globals.domains.primary
+  );
   bindDn = "uid=admin,ou=people,${baseDn}";
 
   autheliaPort = 9091;

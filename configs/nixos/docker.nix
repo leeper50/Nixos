@@ -81,7 +81,10 @@ in
             }
           ];
           dns =
-            if config.local.local then globals.networking.nameservers.local else globals.networking.nameservers.public;
+            if config.local.local then
+              globals.networking.nameservers.local
+            else
+              globals.networking.nameservers.public;
           experimental = true;
           fixed-cidr-v6 = globals.networking.docker.fixedv6Subnet;
           ip6tables = true;

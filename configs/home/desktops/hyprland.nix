@@ -27,71 +27,73 @@ in
     '';
     extraLuaFiles."binds.lua" = {
       autoLoad = true;
-      content = let 
-        screenshot_name = "~/Pictures/Screenshots/$(date +'%Y%m%d_%H%M%S.png')";
-      in ''
-        local mainMod = "SUPER"
-        local noctalia = "noctalia msg "
+      content =
+        let
+          screenshot_name = "~/Pictures/Screenshots/$(date +'%Y%m%d_%H%M%S.png')";
+        in
+        ''
+          local mainMod = "SUPER"
+          local noctalia = "noctalia msg "
 
-        -- Session
-        hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
-        hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
+          -- Session
+          hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
+          hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
 
-        -- Apps
-        hl.bind("ALT + F4", hl.dsp.window.close())
-        hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
-        hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("dolphin"))
-        hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
-        hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(noctalia .. "session lock"))
-        hl.bind(mainMod .. " + Period", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher /emo"))
-        hl.bind(mainMod .. " + Q", hl.dsp.window.close())
-        hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("kitty"))
-        hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
-        hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+          -- Apps
+          hl.bind("ALT + F4", hl.dsp.window.close())
+          hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
+          hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("dolphin"))
+          hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+          hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(noctalia .. "session lock"))
+          hl.bind(mainMod .. " + Period", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher /emo"))
+          hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+          hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("kitty"))
+          hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
+          hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 
-        -- Screenshot
-        hl.bind("Print", hl.dsp.exec_cmd("grimblast copysave screen ${screenshot_name}"))
-        hl.bind("SHIFT + Print", hl.dsp.exec_cmd("grimblast copysave area ${screenshot_name}"))
+          -- Screenshot
+          hl.bind("Print", hl.dsp.exec_cmd("grimblast copysave screen ${screenshot_name}"))
+          hl.bind("SHIFT + Print", hl.dsp.exec_cmd("grimblast copysave area ${screenshot_name}"))
 
-        -- Focus
-        hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
-        hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
-        hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-        hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
+          -- Focus
+          hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+          hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
+          hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+          hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
 
-        -- Move window within layout
-        hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
-        hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
-        hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
-        hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
+          -- Move window within layout
+          hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
+          hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
+          hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+          hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
 
-        -- Workspaces
-        for i = 1, 9 do
-          local key = i % 9
-          hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
-          hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
-        end
+          -- Workspaces
+          for i = 1, 9 do
+            local key = i % 9
+            hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+            hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+          end
 
-        -- Mouse move/resize
-        hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-        hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+          -- Mouse move/resize
+          hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+          hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-        -- Audio & media controls
-        hl.bind("XF86AudioMute", hl.dsp.exec_cmd(noctalia .. "volume-mute"))
-        hl.bind("XF86AudioNext", hl.dsp.exec_cmd(noctalia .. "media next"))
-        hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(noctalia .. "media toggle"))
-        hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(noctalia .. "media previous"))
-        hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd(noctalia .. "mic-mute"))
-        hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("${lib.getExe cycle-audio-output}"))
+          -- Audio & media controls
+          hl.bind("XF86AudioMute", hl.dsp.exec_cmd(noctalia .. "volume-mute"))
+          hl.bind("XF86AudioNext", hl.dsp.exec_cmd(noctalia .. "media next"))
+          hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(noctalia .. "media toggle"))
+          hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(noctalia .. "media previous"))
+          hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd(noctalia .. "mic-mute"))
+          hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("${lib.getExe cycle-audio-output}"))
 
-        -- Volume/brightness
-        hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(noctalia .. "volume-down"), { locked = true, repeating = true })
-        hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(noctalia .. "volume-up"), { locked = true, repeating = true })
-        hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd(noctalia .. "keyboard-backlight-down"), { locked = true, repeating = true })
-        hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd(noctalia .. "keyboard-backlight-up"), { locked = true, repeating = true })
-        hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctalia .. "brightness-down"), { locked = true, repeating = true })
-        hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(noctalia .. "brightness-up"), { locked = true, repeating = true })
-      '';
+          -- Volume/brightness
+          hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(noctalia .. "volume-down"), { locked = true, repeating = true })
+          hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(noctalia .. "volume-up"), { locked = true, repeating = true })
+          hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd(noctalia .. "keyboard-backlight-down"), { locked = true, repeating = true })
+          hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd(noctalia .. "keyboard-backlight-up"), { locked = true, repeating = true })
+          hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctalia .. "brightness-down"), { locked = true, repeating = true })
+          hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(noctalia .. "brightness-up"), { locked = true, repeating = true })
+        '';
     };
     extraLuaFiles."monitors.lua" = lib.mkDefault {
       autoLoad = true;

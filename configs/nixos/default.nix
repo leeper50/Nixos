@@ -211,30 +211,32 @@ in
             });
       in
       {
-        environment.systemPackages = with pkgs; [
-          awww
-          hyprpaper
-          kdePackages.ark
-          kdePackages.dolphin
-          kdePackages.kio
-          kdePackages.kio-extras
-          kdePackages.kdegraphics-thumbnailers
-          kdePackages.kwallet
-          kdePackages.ffmpegthumbs
-          kdePackages.kimageformats
-          kdePackages.qt5compat
-          kdePackages.qtdeclarative
-          kdePackages.qtimageformats
-          kdePackages.qtmultimedia
-          kdePackages.qtsvg
-          kdePackages.qtvirtualkeyboard
-          lan-mouse
-          libsecret
-          mpvpaper
-          sddm-astronaut
-          qview
-        ]
-        ++ [ config.stylix.cursor.package ];
+        environment.systemPackages =
+          with pkgs;
+          [
+            awww
+            hyprpaper
+            kdePackages.ark
+            kdePackages.dolphin
+            kdePackages.kio
+            kdePackages.kio-extras
+            kdePackages.kdegraphics-thumbnailers
+            kdePackages.kwallet
+            kdePackages.ffmpegthumbs
+            kdePackages.kimageformats
+            kdePackages.qt5compat
+            kdePackages.qtdeclarative
+            kdePackages.qtimageformats
+            kdePackages.qtmultimedia
+            kdePackages.qtsvg
+            kdePackages.qtvirtualkeyboard
+            lan-mouse
+            libsecret
+            mpvpaper
+            sddm-astronaut
+            qview
+          ]
+          ++ [ config.stylix.cursor.package ];
         networking.firewall.allowedUDPPorts = [ 4242 ];
         programs = {
           hyprland = {

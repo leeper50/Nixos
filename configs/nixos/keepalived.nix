@@ -11,27 +11,34 @@ let
     answer=$(${pkgs.dnsutils}/bin/dig +short +time=1 +tries=1 @127.0.0.1 dnstest.dellhplaptop.xyz A) || exit 1
     [ -n "$answer" ]
   '';
-  nodes = lib.mapAttrs (name: node: node // {
-    ipv4Addr = globals.networking.hosts.${name}.ipv4;
-    ipv6Addr = globals.networking.hosts.${name}.ipv6;
-  }) {
-    "nas" = {
-      priority = 70;
-      state = "BACKUP";
-    };
-    "node-1" = {
-      priority = 100;
-      state = "MASTER";
-    };
-    "node-2" = {
-      priority = 90;
-      state = "BACKUP";
-    };
-    "node-3" = {
-      priority = 80;
-      state = "BACKUP";
-    };
-  };
+  nodes =
+    lib.mapAttrs
+      (
+        name: node:
+        node
+        // {
+          ipv4Addr = globals.networking.hosts.${name}.ipv4;
+          ipv6Addr = globals.networking.hosts.${name}.ipv6;
+        }
+      )
+      {
+        "nas" = {
+          priority = 70;
+          state = "BACKUP";
+        };
+        "node-1" = {
+          priority = 100;
+          state = "MASTER";
+        };
+        "node-2" = {
+          priority = 90;
+          state = "BACKUP";
+        };
+        "node-3" = {
+          priority = 80;
+          state = "BACKUP";
+        };
+      };
   thisNode = nodes.${config.networking.hostName};
   peers = lib.filterAttrs (name: _: name != config.networking.hostName) nodes;
   peeripv4Addrs = lib.filter (a: a != null) (lib.mapAttrsToList (_: node: node.ipv4Addr) peers);
@@ -94,7 +101,12 @@ in
     {
       networking.firewall = localLib.mkFirewallRules {
         service = "keepalived";
-        sources = lib.filter (a: a != null) (lib.concatMap (n: [ n.ipv4Addr n.ipv6Addr ]) (lib.attrValues nodes));
+        sources = lib.filter (a: a != null) (
+          lib.concatMap (n: [
+            n.ipv4Addr
+            n.ipv6Addr
+          ]) (lib.attrValues nodes)
+        );
         protocols = [ "VRRP" ];
       };
     }

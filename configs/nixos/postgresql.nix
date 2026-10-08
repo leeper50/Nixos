@@ -50,7 +50,9 @@ in
         ensureDBOwnership = true;
       }) cfg.databases;
       settings = {
-        listen_addresses = lib.mkForce "localhost,${globals.networking.hosts.${config.networking.hostName}.ipv4}";
+        listen_addresses = lib.mkForce "localhost,${
+          globals.networking.hosts.${config.networking.hostName}.ipv4
+        }";
       };
     };
     systemd.services.postgresql-set-passwords = lib.mkIf (cfg.databases != [ ]) {

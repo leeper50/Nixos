@@ -184,7 +184,8 @@ in
               Port = 22;
               User = "root";
             };
-          } // lib.mapAttrs (n: _: {HostName = "${n}.${globals.domains.primary}";}) globals.networking.hosts;
+          }
+          // lib.mapAttrs (n: _: { HostName = "${n}.${globals.domains.primary}"; }) globals.networking.hosts;
         };
         vscode = {
           enable = true;
