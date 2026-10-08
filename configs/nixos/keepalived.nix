@@ -43,6 +43,10 @@ let
   peers = lib.filterAttrs (name: _: name != config.networking.hostName) nodes;
   peeripv4Addrs = lib.filter (a: a != null) (lib.mapAttrsToList (_: node: node.ipv4Addr) peers);
   peeripv6Addrs = lib.filter (a: a != null) (lib.mapAttrsToList (_: node: node.ipv6Addr) peers);
+  garpRefresh = ''
+    garp_master_refresh 60
+    garp_master_refresh_repeat 2
+  '';
 in
 {
   config = lib.mkMerge [
@@ -69,6 +73,7 @@ in
             { addr = "10.0.1.1/8"; }
           ];
           virtualRouterId = 51;
+          extraConfig = garpRefresh;
         };
         vrrpInstances.dnsIPv6 = lib.mkIf (thisNode.ipv6Addr != null) {
           interface = "ens18";
@@ -81,6 +86,7 @@ in
             { addr = "${globals.networking.ipv6.prefix}::1:1/${globals.networking.ipv6.subnetMask}"; }
           ];
           virtualRouterId = 52;
+          extraConfig = garpRefresh;
         };
         vrrpScripts.checkDns = {
           fall = 2;
