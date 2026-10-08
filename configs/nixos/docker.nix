@@ -9,6 +9,10 @@
 let
   cfg = config.local.docker;
   komodo_version = "2.3.2";
+  swarmNetworks = {
+    proxy = true;
+    socket-proxy = false;
+  };
 in
 {
   options.local.docker = {
@@ -232,8 +236,8 @@ in
       {
         systemd.services.komodo-core-stack = {
           description = "Deploy Komodo core stack";
-          after = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
-          requires = if cfg.swarm.enable then [ "docker-swarm-init.service" ] else [ "docker.service" ];
+          after = if cfg.swarm.enable then [ "docker-swarm-networks.service" ] else [ "docker.service" ];
+          requires = if cfg.swarm.enable then [ "docker-swarm-networks.service" ] else [ "docker.service" ];
           wantedBy = [ "multi-user.target" ];
           script = ''
             TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
@@ -326,6 +330,52 @@ in
           Type = "simple";
           Restart = "always";
           RestartSec = 10;
+        };
+      };
+      systemd.services.docker-gwbridge = {
+        description = "Create docker_gwbridge with IPv6";
+        after = [ "docker.service" ];
+        requires = [ "docker.service" ];
+        before = [
+          "docker-swarm-init.service"
+          "docker-swarm-join.service"
+        ];
+        requiredBy = [
+          (if cfg.swarm.manager then "docker-swarm-init.service" else "docker-swarm-join.service")
+        ];
+        wantedBy = [ "multi-user.target" ];
+        script = ''
+          if ! ${pkgs.docker}/bin/docker network inspect docker_gwbridge >/dev/null 2>&1; then
+            ${pkgs.docker}/bin/docker network create \
+              --ipv6 \
+              --opt com.docker.network.bridge.name=docker_gwbridge \
+              --opt com.docker.network.bridge.enable_icc=false \
+              --opt com.docker.network.bridge.enable_ip_masquerade=true \
+              docker_gwbridge
+          elif [ "$(${pkgs.docker}/bin/docker network inspect docker_gwbridge --format '{{.EnableIPv6}}')" != true ]; then
+            echo "WARNING: docker_gwbridge has no IPv6; IPv6 clients of published swarm ports lose their source address" >&2
+          fi
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+      };
+      systemd.services.docker-swarm-networks = lib.mkIf cfg.swarm.manager {
+        description = "Create shared Docker Swarm networks";
+        after = [ "docker-swarm-init.service" ];
+        requires = [ "docker-swarm-init.service" ];
+        wantedBy = [ "multi-user.target" ];
+        script = lib.concatStrings (
+          lib.mapAttrsToList (name: attachable: ''
+            if ! ${pkgs.docker}/bin/docker network inspect ${name} >/dev/null 2>&1; then
+              ${pkgs.docker}/bin/docker network create --driver overlay ${lib.optionalString attachable "--attachable"} ${name}
+            fi
+          '') swarmNetworks
+        );
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
         };
       };
       systemd.services.docker-swarm-init = lib.mkIf cfg.swarm.manager {
