@@ -17,26 +17,35 @@ in
   locale = "en_US.UTF-8";
   networking = rec {
     dns = {
-        "19280085.xyz" = [
-          "107.174.237.4"
-        ];
-        "buncha.men" = [
-          "10.0.1.1"
-          "${ipv6.prefix}::1:1"
-        ];
-        "dellhplaptop.xyz" = [
-          "10.0.1.1"
-          "${ipv6.prefix}::1:1"
-        ];
-        "tplinkwifi.net" = [
-          "10.0.0.1"
-          "${ipv6.prefix}:f2a7:31ff:fe94:abac"
-        ];
-        "${domains.primary}" = [
-          "65.75.202.6"
-          "2606:cc0:11:2351::1"
-        ];
-    } // lib.mapAttrs' (n: v: lib.nameValuePair (n + ".${domains.primary}") (lib.filter (a: a != null) [v.ipv4 v.ipv6]) ) hosts;
+      "19280085.xyz" = [
+        "107.174.237.4"
+      ];
+      "buncha.men" = [
+        "10.0.1.1"
+        "${ipv6.prefix}::1:1"
+      ];
+      "dellhplaptop.xyz" = [
+        "10.0.1.1"
+        "${ipv6.prefix}::1:1"
+      ];
+      "tplinkwifi.net" = [
+        "10.0.0.1"
+        "${ipv6.prefix}:f2a7:31ff:fe94:abac"
+      ];
+      "${domains.primary}" = [
+        "65.75.202.6"
+        "2606:cc0:11:2351::1"
+      ];
+    }
+    // lib.mapAttrs' (
+      n: v:
+      lib.nameValuePair (n + ".${domains.primary}") (
+        lib.filter (a: a != null) [
+          v.ipv4
+          v.ipv6
+        ]
+      )
+    ) hosts;
     docker = {
       ipv4Subnet = "172.30.0.0/16";
       ipv6Subnet = "fd06:6a55:3bd2:ed3d::/64";
@@ -139,7 +148,13 @@ in
       "node-2"
       "node-3"
     ];
-    swarmAddresses = lib.concatMap (node: lib.filter (a: a != null) [ hosts.${node}.ipv4 hosts.${node}.ipv6 ]) swarmNodes;
+    swarmAddresses = lib.concatMap (
+      node:
+      lib.filter (a: a != null) [
+        hosts.${node}.ipv4
+        hosts.${node}.ipv6
+      ]
+    ) swarmNodes;
   };
   primaryEmail = "wleeper@mailbox.org";
   sshPort = 34146;
