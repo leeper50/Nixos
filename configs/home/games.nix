@@ -16,7 +16,7 @@ in
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-      limo
+      # limo
       openmw
       wowup-cf
     ]

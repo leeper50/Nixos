@@ -306,7 +306,7 @@ in
       home.packages = with pkgs; [
         bazaar
         blender
-        collabora-desktop
+        # collabora-desktop
         czkawka
         feishin
         ffmpeg-full
