@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # TEMPORARY: authelia from the revision before pnpm 12.9 broke its pnpmDepsHash
+    # (https://github.com/NixOS/nixpkgs/issues/571789). Same 4.39.27 build servercheap
+    # already ran; its DB is at schema 29, so don't pin anything older than that.
+    # Remove together with the overlay in mkPkgs once nixpkgs is fixed.
+    nixpkgs-authelia.url = "github:nixos/nixpkgs/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f";
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -57,7 +62,13 @@
         system:
         import nixpkgs {
           inherit system;
-          overlays = [ nur.overlays.default ];
+          overlays = [
+            nur.overlays.default
+            # TEMPORARY, see the nixpkgs-authelia input.
+            (_: prev: {
+              inherit (inputs.nixpkgs-authelia.legacyPackages.${prev.stdenv.hostPlatform.system}) authelia;
+            })
+          ];
           config.allowUnfree = true;
         };
 
