@@ -1,4 +1,4 @@
-{ globals, pkgs, ... }:
+{ pkgs, ... }:
 let
   rootDir = ../..;
 in
@@ -7,6 +7,7 @@ in
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/murmur.nix
+      /configs/nixos/proxies.nix
     ]
     ++ [
       ./hardware-configuration.nix
@@ -16,6 +17,7 @@ in
     openssl
   ];
   local = {
+    proxies.microsocks.enable = true;
     beszel.agent.enable = true;
     caddy = {
       domain = "19280085.xyz";
@@ -32,10 +34,6 @@ in
         provider = "porkbun";
       };
     };
-  };
-  services.microsocks = {
-    enable = true;
-    ip = globals.networking.tailnet.racknerd.ipv4;
   };
   system.stateVersion = "23.11";
   zramSwap.enable = false;

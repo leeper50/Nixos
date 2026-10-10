@@ -1,7 +1,9 @@
 {
   lib,
   config,
+  globals,
   options,
+  pkgs,
   ...
 }:
 let
@@ -26,6 +28,7 @@ in
         default = 25565;
       };
     };
+    microsocks.enable = lib.mkEnableOption "microsocks SOCKS5 proxy on the host's tailnet address";
     tor = {
       email = lib.mkOption {
         type = lib.types.str;
@@ -101,6 +104,24 @@ in
             port = 4447;
           };
         };
+      };
+    })
+    (lib.mkIf cfg.microsocks.enable {
+      services.microsocks = {
+        enable = true;
+        ip = globals.networking.tailnet.${config.networking.hostName}.ipv4;
+      };
+      systemd.services.microsocks = {
+        after = [ "tailscaled.service" ];
+        wants = [ "tailscaled.service" ];
+        preStart = ''
+          for _ in $(seq 60); do
+            ${pkgs.iproute2}/bin/ip -o addr show | grep -qF " ${config.services.microsocks.ip}/" && exit 0
+            sleep 1
+          done
+          echo "${config.services.microsocks.ip} not assigned after 60s" >&2
+          exit 1
+        '';
       };
     })
     (lib.mkIf cfg.tor.enable {

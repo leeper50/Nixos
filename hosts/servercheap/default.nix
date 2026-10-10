@@ -28,10 +28,13 @@ in
       name = "Freedom General";
       tls.enable = true;
     };
-    proxies.i2p = {
-      enable = true;
-      enableIPv6 = true;
-      port = 59230;
+    proxies = {
+      i2p = {
+        enable = true;
+        enableIPv6 = true;
+        port = 59230;
+      };
+      microsocks.enable = true;
     };
   };
   networking = {
@@ -57,11 +60,6 @@ in
         }
       ];
     };
-  };
-
-  services.microsocks = {
-    enable = true;
-    ip = globals.networking.tailnet.servercheap.ipv4;
   };
   system.stateVersion = "25.11";
 }
