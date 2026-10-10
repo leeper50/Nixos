@@ -314,6 +314,7 @@ in
         gimp
         imgbrd-grabber
         kdePackages.kdenlive
+        marktext
         pulseaudio
         qt5.qttools
         qview
