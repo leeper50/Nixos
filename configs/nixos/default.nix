@@ -41,10 +41,7 @@ in
         extraSpecialArgs = { inherit agenix globals systemType; };
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.${globals.username}.imports = [
-          agenix.homeManagerModules.default
-          ../../secrets
-        ];
+        users.${globals.username}.imports = [ ];
       };
     }
   ]
