@@ -1,13 +1,5 @@
 { globals, ... }:
 {
-  services.fail2ban = {
-    bantime = "24h";
-    enable = true;
-    ignoreIP = [
-      "162.233.151.119/32"
-      "${globals.networking.ipv6.prefix}/${globals.networking.ipv6.subnetMask}"
-    ];
-  };
   services.openssh = {
     allowSFTP = true;
     enable = true;

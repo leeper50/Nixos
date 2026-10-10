@@ -32,15 +32,18 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      local.acme = {
-        certs = {
-          ${cfg.domain} = {
-            group = "caddy";
-            provider = cfg.provider;
-            wildcard = true;
+      local = {
+        acme = {
+          certs = {
+            ${cfg.domain} = {
+              group = "caddy";
+              provider = cfg.provider;
+              wildcard = true;
+            };
           };
+          enable = true;
         };
-        enable = true;
+        fail2ban.jails.caddy.enable = true;
       };
       networking.firewall = localLib.mkFirewallRules {
         service = "caddy";

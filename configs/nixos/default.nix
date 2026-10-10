@@ -33,6 +33,7 @@ in
     ./beszel.nix
     ./caddy.nix
     ./comin.nix
+    ./fail2ban.nix
     ./mounts.nix
     ./networking.nix
     ./ssh.nix
