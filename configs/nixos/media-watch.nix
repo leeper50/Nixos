@@ -50,6 +50,7 @@ in
     };
     paths = lib.mkOption {
       default = [
+        "/mnt/data/Media/Books"
         "/mnt/data/Media/Movies"
         "/mnt/data/Media/TV"
       ];
