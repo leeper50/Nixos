@@ -77,7 +77,7 @@ let
       id = "2sfej-bdebv";
     };
     "Tablet" = {
-      devices = devices.all;
+      devices = lib.filter (name: name != "phone") (devices.all);
       id = "3an97-7phbm";
     };
   };
