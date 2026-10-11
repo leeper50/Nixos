@@ -65,8 +65,8 @@ in
           "XF86AudioPrev" = "${noctalia} media previous";
 
           # Screenshot
-          "Print" = "grimblast copysave screen ${screenshot_name}";
-          "Shift+Print" = "grimblast copysave area ${screenshot_name}";
+          "Print" = "grimblast copysave screen --notify ${screenshot_name}";
+          "Shift+Print" = "grimblast copysave area --notify ${screenshot_name}";
 
           # Volume/brightness
           "--locked XF86AudioLowerVolume" = "${noctalia} volume-down";
