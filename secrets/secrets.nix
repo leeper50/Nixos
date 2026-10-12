@@ -52,6 +52,7 @@ in
     personal
     servercheap
   ];
+  "gotify_comin_token.age".publicKeys = all_keys;
   "headplane_cookie_secret.age".publicKeys = [
     personal
     servercheap
@@ -94,11 +95,6 @@ in
     personal
     racknerd
     servercheap
-  ];
-  "ntfy_access_token.age".publicKeys = all_keys;
-  "ntfy_environment.age".publicKeys = [
-    personal
-    node-3
   ];
   "postgresql_forgejo.age".publicKeys = swarm_keys ++ [ nas ];
   "postgresql_freshrss.age".publicKeys = swarm_keys ++ [ nas ];
