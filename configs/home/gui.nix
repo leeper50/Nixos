@@ -312,6 +312,7 @@ in
         ffmpeg-full
         freac
         gimp
+        handbrake
         imgbrd-grabber
         kdePackages.kdenlive
         marktext
