@@ -4,9 +4,11 @@ let
 in
 {
   imports = map (p: rootDir + p) [
+    /configs/nixos/bentopdf.nix
     /configs/nixos/ntfy.nix
   ];
   local = {
+    bentopdf.enable = true;
     caddy.enable = true;
     docker = {
       komodo = {
