@@ -1,4 +1,5 @@
 {
+  config,
   globals,
   lib,
   osConfig ? null,
@@ -8,22 +9,19 @@
 let
   isSystemModule = systemType != "Standalone" && osConfig == null;
   secrets = import ./secrets.nix;
-  presentSecrets = lib.filterAttrs (name: _: builtins.pathExists ./${name}) secrets;
-  hostSecrets = lib.filterAttrs (
-    name: attrs:
-    globals.hostName == null || !(attrs ? hosts) || builtins.elem globals.hostName attrs.hosts
-  ) presentSecrets;
+  keys = import ./keys.nix;
+  hostKey = if isSystemModule then keys.${globals.hostName} or keys.personal else keys.personal;
+  undecryptable = lib.filter (
+    name:
+    let
+      fileName = baseNameOf config.age.secrets.${name}.file;
+    in
+    secrets ? ${fileName} && !(builtins.elem hostKey secrets.${fileName}.publicKeys)
+  ) (builtins.attrNames config.age.secrets);
 in
 {
-  age.secrets = builtins.mapAttrs (
-    name: attrs:
-    {
-      file = ./${name};
-      mode = attrs.mode or "0400";
-    }
-    // lib.optionalAttrs isSystemModule {
-      group = attrs.group or "root";
-      owner = attrs.owner or "root";
-    }
-  ) hostSecrets;
+  assertions = lib.optional (globals.hostName != null) {
+    assertion = undecryptable == [ ];
+    message = "${globals.hostName} deploys secrets not encrypted to its key (add it to publicKeys in secrets/secrets.nix and rekey): ${lib.concatStringsSep ", " undecryptable}";
+  };
 }

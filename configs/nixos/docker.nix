@@ -126,6 +126,7 @@ in
         );
       in
       {
+        age.secrets."komodo_onboarding_key.age".file = ../../secrets/komodo_onboarding_key.age;
         systemd.services.komodo-periphery = {
           description = "Deploy Komodo periphery";
           after = [ "docker.service" ];
@@ -135,7 +136,7 @@ in
             TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
             trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
 
-            ONBOARDING_KEY_FILE="/run/agenix/komodo_onboarding_key.age"
+            ONBOARDING_KEY_FILE="${config.age.secrets."komodo_onboarding_key.age".path}"
             ONBOARDING_KEY="$([ -f "$ONBOARDING_KEY_FILE" ] && ${pkgs.coreutils}/bin/cat "$ONBOARDING_KEY_FILE" || true)"
 
             ${pkgs.jq}/bin/jq \
@@ -234,6 +235,7 @@ in
         );
       in
       {
+        age.secrets."komodo_admin_password.age".file = ../../secrets/komodo_admin_password.age;
         systemd.services.komodo-core-stack = {
           description = "Deploy Komodo core stack";
           after = if cfg.swarm.enable then [ "docker-swarm-networks.service" ] else [ "docker.service" ];
@@ -243,7 +245,7 @@ in
             TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
             trap "${pkgs.coreutils}/bin/rm -f $TMPFILE" EXIT
 
-            ADMIN_PASS_FILE="/run/agenix/komodo_admin_password.age"
+            ADMIN_PASS_FILE="${config.age.secrets."komodo_admin_password.age".path}"
             if [ ! -f "$ADMIN_PASS_FILE" ]; then
               echo "komodo_admin_password.age not yet available — deploy after rekeying"
               exit 0
@@ -396,6 +398,9 @@ in
           RemainAfterExit = true;
         };
       };
+      age.secrets."docker_swarm_token.age" = lib.mkIf (!cfg.swarm.manager) {
+        file = ../../secrets/docker_swarm_token.age;
+      };
       systemd.services.docker-swarm-join = lib.mkIf (!cfg.swarm.manager) {
         description = "Join Docker Swarm";
         after = [
@@ -406,7 +411,7 @@ in
         wants = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         script = ''
-          TOKEN_FILE="/run/agenix/docker_swarm_token.age"
+          TOKEN_FILE="${config.age.secrets."docker_swarm_token.age".path}"
           if [ ! -f "$TOKEN_FILE" ]; then
             echo "docker_swarm_token.age not yet available — deploy after rekeying"
             exit 0

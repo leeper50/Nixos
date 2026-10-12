@@ -30,10 +30,10 @@ The folder structure is:
 │   ├── 📁 host1   (Host1 configs and imports)
 │   └── 📁 host2   (Host2 configs and imports)
 └── 📁 secrets
-    ├── 📄 default.nix (Imports secrets to hosts)
-    └── 📄 secrets.nix (Define secret rules here)
+    ├── 📄 default.nix (Checks each host can decrypt its secrets)
+    └── 📄 secrets.nix (Who each secret is encrypted to)
 ```
-A service's file should handle everything the service needs to function. (Firewall rules, user/groups & ownership, etc.). A folder may be used for a service if it helps readability. 
+A service's file should handle everything the service needs to function. (Firewall rules, user/groups & ownership, `age.secrets` declarations, etc.). A folder may be used for a service if it helps readability. 
 Files in `/config/darwin` should only be used by Nix-darwin systems.
 Files in `/config/nixos` should only be used by Nixos systems.
 Files in `/config/home` may be used by any home-manager systems.

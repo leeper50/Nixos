@@ -15,6 +15,7 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      age.secrets."ntfy_environment.age".file = ../../secrets/ntfy_environment.age;
       services.ntfy-sh = {
         enable = true;
         environmentFile = config.age.secrets."ntfy_environment.age".path;

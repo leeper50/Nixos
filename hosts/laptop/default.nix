@@ -80,6 +80,7 @@ in
       ];
     };
   };
+  age.secrets."wifi_home_env.age".file = rootDir + /secrets/wifi_home_env.age;
   networking.networkmanager = {
     ensureProfiles = {
       environmentFiles = [ config.age.secrets."wifi_home_env.age".path ];

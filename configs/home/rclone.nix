@@ -4,6 +4,7 @@
   lib,
   pkgs,
   osConfig ? null,
+  systemType,
   ...
 }:
 let
@@ -152,4 +153,17 @@ in
       Install.WantedBy = [ "default.target" ];
     };
   };
+}
+// lib.optionalAttrs (systemType == "Standalone") {
+  age.secrets =
+    lib.genAttrs
+      [
+        "restic_b2_env.age"
+        "restic_password_file.age"
+        "restic_rustfs_env.age"
+        "user_${globals.username}_clear.age"
+      ]
+      (name: {
+        file = ../../secrets/${name};
+      });
 }

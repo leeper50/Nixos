@@ -1,6 +1,7 @@
 {
   agenix,
   globals,
+  lib,
   pkgs,
   self,
   ...
@@ -10,6 +11,19 @@
     agenix.darwinModules.default
     ../../secrets
   ];
+  age.secrets =
+    lib.genAttrs
+      [
+        "restic_b2_env.age"
+        "restic_password_file.age"
+        "restic_rustfs_env.age"
+        "user_${globals.username}_clear.age"
+      ]
+      (name: {
+        file = ../../secrets/${name};
+        group = "1000";
+        owner = "1000";
+      });
   nixpkgs.overlays = [
     (final: prev: {
       inherit (prev.lixPackageSets.stable)

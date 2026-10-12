@@ -55,6 +55,28 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      age.secrets = {
+        "headplane_cookie_secret.age" = {
+          file = ../../secrets/headplane_cookie_secret.age;
+          group = "headscale";
+          owner = "headscale";
+        };
+        "headplane_headscale_api_key.age" = {
+          file = ../../secrets/headplane_headscale_api_key.age;
+          group = "headscale";
+          owner = "headscale";
+        };
+        "headplane_oidc_client_secret.age" = {
+          file = ../../secrets/headplane_oidc_client_secret.age;
+          group = "headscale";
+          owner = "headscale";
+        };
+        "headscale_oidc_client_secret.age" = {
+          file = ../../secrets/headscale_oidc_client_secret.age;
+          group = "headscale";
+          owner = "headscale";
+        };
+      };
       services.headscale = {
         enable = true;
         settings = {

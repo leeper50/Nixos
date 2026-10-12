@@ -156,6 +156,13 @@ in
           message = "local.syncthing: host '${toString globals.hostName}' is not a known syncthing device";
         }
       ];
+      age.secrets."user_${globals.username}_clear.age" = {
+        file = ../../secrets/user_${globals.username}_clear.age;
+      }
+      // lib.optionalAttrs (systemType == "Nixos") {
+        group = globals.username;
+        owner = globals.username;
+      };
       services.syncthing = {
         enable = true;
         guiAddress = "0.0.0.0:8384";

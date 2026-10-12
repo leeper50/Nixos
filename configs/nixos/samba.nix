@@ -6,6 +6,7 @@
   ...
 }:
 let
+  sambaUsers = [ globals.username ];
   macSettings = {
     "fruit:encoding" = "native";
     "fruit:metadata" = "stream";
@@ -22,6 +23,9 @@ let
   };
 in
 {
+  age.secrets = lib.genAttrs (map (user: "user_${user}_clear.age") sambaUsers) (name: {
+    file = ../../secrets/${name};
+  });
   networking.firewall = lib.mkMerge [
     (localLib.mkFirewallRules {
       service = "samba";
@@ -123,7 +127,6 @@ in
         '';
         samba-smbd.postStart =
           let
-            users = [ globals.username ];
             setupUser =
               user:
               let
@@ -137,7 +140,7 @@ in
               '';
           in
           ''
-            ${builtins.concatStringsSep "\n" (map setupUser users)}
+            ${builtins.concatStringsSep "\n" (map setupUser sambaUsers)}
           '';
       }
     ];

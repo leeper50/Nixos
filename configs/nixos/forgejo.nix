@@ -59,6 +59,11 @@ in
       };
     })
     (lib.mkIf cfg.runner.enable {
+      age.secrets."forgejo_token.age" = {
+        file = ../../secrets/forgejo_token.age;
+        group = "forgejo-runner-podman";
+        owner = "forgejo-runner-podman";
+      };
       virtualisation.podman.enable = true;
       users = {
         groups.forgejo-runner-podman.gid = 399;

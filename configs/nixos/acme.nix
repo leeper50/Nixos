@@ -37,6 +37,14 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      age.secrets =
+        lib.genAttrs
+          (map (provider: "acme_${provider}.age") (
+            lib.unique (lib.mapAttrsToList (_: options: options.provider) cfg.certs)
+          ))
+          (name: {
+            file = ../../secrets/${name};
+          });
       # Add machine-specific cert to attrSet as default.
       local.acme.certs."${globals.domains.devicePrimary}" = { };
       security.acme = {

@@ -24,296 +24,93 @@ let
   ++ swarm_keys;
 in
 {
-  "acme_cloudflare.age" = {
-    publicKeys = all_keys;
-  };
-  "acme_porkbun.age" = {
-    publicKeys = all_keys;
-  };
-  "authelia_jwt_secret.age" = {
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "authelia_oidc_hmac_secret.age" = {
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "authelia_oidc_issuer_key.age" = {
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "authelia_storage_encryption_key.age" = {
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "beszel_token.age" = {
-    group = "992";
-    mode = "0444";
-    publicKeys = swarm_keys ++ [
-      nas
-      racknerd
-      servercheap
-    ];
-    hosts = [
-      "laptop"
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-      "racknerd"
-      "servercheap"
-    ];
-  };
-  "docker_swarm_token.age" = {
-    publicKeys = swarm_keys;
-    hosts = [
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
-  "forgejo_token.age" = {
-    group = "forgejo-runner-podman";
-    owner = "forgejo-runner-podman";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ ];
-  };
-  "headplane_cookie_secret.age" = {
-    group = "headscale";
-    owner = "headscale";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "headplane_headscale_api_key.age" = {
-    group = "headscale";
-    owner = "headscale";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "headplane_oidc_client_secret.age" = {
-    group = "headscale";
-    owner = "headscale";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "headscale_oidc_client_secret.age" = {
-    group = "headscale";
-    owner = "headscale";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "headscale_preauth_key.age" = {
-    publicKeys = all_keys;
-  };
-  "jellyfin_api_key.age" = {
-    publicKeys = [
-      nas
-      personal
-    ];
-    hosts = [ "nas" ];
-  };
-  "komodo_admin_password.age" = {
-    publicKeys = [
-      node-1
-      personal
-    ];
-    hosts = [
-      "node-1"
-    ];
-  };
-  "komodo_onboarding_key.age" = {
-    publicKeys = swarm_keys ++ [
-      racknerd
-      servercheap
-    ];
-    hosts = [
-      "node-1"
-      "node-2"
-      "node-3"
-      "racknerd"
-      "servercheap"
-    ];
-  };
-  "lldap_admin_password.age" = {
-    group = "ldap-bind-secret";
-    mode = "0440";
-    owner = "lldap";
-    publicKeys = [
-      personal
-      servercheap
-    ];
-    hosts = [ "servercheap" ];
-  };
-  "murmur_environment.age" = {
-    publicKeys = [
-      personal
-      racknerd
-      servercheap
-    ];
-    hosts = [
-      "racknerd"
-      "servercheap"
-    ];
-  };
-  "murmur_superuser_password.age" = {
-    publicKeys = [
-      personal
-      racknerd
-      servercheap
-    ];
-    hosts = [
-      "racknerd"
-      "servercheap"
-    ];
-  };
-  "ntfy_access_token.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = all_keys;
-  };
-  "ntfy_environment.age" = {
-    publicKeys = [
-      personal
-      node-3
-    ];
-    hosts = [
-      "node-3"
-    ];
-  };
-  "postgresql_forgejo.age" = {
-    publicKeys = swarm_keys ++ [ nas ];
-    hosts = [
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
-  "postgresql_freshrss.age" = {
-    publicKeys = swarm_keys ++ [ nas ];
-    hosts = [
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
-  "postgresql_miniflux.age" = {
-    publicKeys = swarm_keys ++ [ nas ];
-    hosts = [
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
-  "postgresql_rxresume.age" = {
-    publicKeys = swarm_keys ++ [ nas ];
-    hosts = [
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
-  "redis_rxresume.age" = {
-    publicKeys = swarm_keys ++ [ nas ];
-    hosts = [
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
-  };
-  "restic_b2_env.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = all_keys;
-    hosts = [
-      "laptop"
-      "macbook"
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-      "workstation"
-    ];
-  };
-  "restic_rustfs_env.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = all_keys;
-    hosts = [
-      "laptop"
-      "macbook"
-      "nas"
-      "node-1"
-      "node-2"
-      "node-3"
-      "workstation"
-    ];
-  };
-  "restic_password_file.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = all_keys;
-  };
-  "surge_auth_token.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = [ personal ];
-    hosts = [
-      "laptop"
-      "workstation"
-    ];
-  };
-  "tofu_env.age" = {
-    publicKeys = [ personal ];
-    hosts = [ ];
-  };
-  "user_walter_clear.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = all_keys;
-  };
-  "user_walter_hash.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = all_keys;
-  };
-  "wifi_home_env.age" = {
-    group = "1000";
-    owner = "1000";
-    publicKeys = [ personal ];
-    hosts = [
-      "laptop"
-    ];
-  };
+  "acme_cloudflare.age".publicKeys = all_keys;
+  "acme_porkbun.age".publicKeys = all_keys;
+  "authelia_jwt_secret.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "authelia_oidc_hmac_secret.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "authelia_oidc_issuer_key.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "authelia_storage_encryption_key.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "beszel_token.age".publicKeys = swarm_keys ++ [
+    nas
+    racknerd
+    servercheap
+  ];
+  "docker_swarm_token.age".publicKeys = swarm_keys;
+  "forgejo_token.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "headplane_cookie_secret.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "headplane_headscale_api_key.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "headplane_oidc_client_secret.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "headscale_oidc_client_secret.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "headscale_preauth_key.age".publicKeys = all_keys;
+  "jellyfin_api_key.age".publicKeys = [
+    nas
+    personal
+  ];
+  "komodo_admin_password.age".publicKeys = [
+    node-1
+    personal
+  ];
+  "komodo_onboarding_key.age".publicKeys = swarm_keys ++ [
+    racknerd
+    servercheap
+  ];
+  "lldap_admin_password.age".publicKeys = [
+    personal
+    servercheap
+  ];
+  "murmur_environment.age".publicKeys = [
+    personal
+    racknerd
+    servercheap
+  ];
+  "murmur_superuser_password.age".publicKeys = [
+    personal
+    racknerd
+    servercheap
+  ];
+  "ntfy_access_token.age".publicKeys = all_keys;
+  "ntfy_environment.age".publicKeys = [
+    personal
+    node-3
+  ];
+  "postgresql_forgejo.age".publicKeys = swarm_keys ++ [ nas ];
+  "postgresql_freshrss.age".publicKeys = swarm_keys ++ [ nas ];
+  "postgresql_miniflux.age".publicKeys = swarm_keys ++ [ nas ];
+  "postgresql_rxresume.age".publicKeys = swarm_keys ++ [ nas ];
+  "redis_rxresume.age".publicKeys = swarm_keys ++ [ nas ];
+  "restic_b2_env.age".publicKeys = all_keys;
+  "restic_password_file.age".publicKeys = all_keys;
+  "restic_rustfs_env.age".publicKeys = all_keys;
+  "surge_auth_token.age".publicKeys = [ personal ];
+  "tofu_env.age".publicKeys = [ personal ];
+  "user_walter_clear.age".publicKeys = all_keys;
+  "user_walter_hash.age".publicKeys = all_keys;
+  "wifi_home_env.age".publicKeys = [ personal ];
 }

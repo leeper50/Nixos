@@ -129,6 +129,8 @@ in
         wheelNeedsPassword = true;
       };
       time.timeZone = globals.timeZone;
+      age.secrets."user_${globals.username}_hash.age".file =
+        ../../secrets/user_${globals.username}_hash.age;
       users = {
         mutableUsers = false;
         groups = {
@@ -209,6 +211,19 @@ in
             });
       in
       {
+        age.secrets =
+          lib.genAttrs
+            [
+              "restic_b2_env.age"
+              "restic_password_file.age"
+              "restic_rustfs_env.age"
+              "user_${globals.username}_clear.age"
+            ]
+            (name: {
+              file = ../../secrets/${name};
+              group = globals.username;
+              owner = globals.username;
+            });
         environment.systemPackages =
           with pkgs;
           [

@@ -83,6 +83,7 @@ in
         };
       }
       (lib.mkIf cfg.ntfy.enable {
+        age.secrets."ntfy_access_token.age".file = ../../secrets/ntfy_access_token.age;
         services.comin.postDeploymentCommand = postDeploy;
         systemd.services.comin-ntfy = {
           after = [ "comin.service" ];

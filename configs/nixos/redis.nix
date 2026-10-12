@@ -27,6 +27,9 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
+    age.secrets = lib.genAttrs (map (name: "redis_${name}.age") cfg.databases) (name: {
+      file = ../../secrets/${name};
+    });
     networking.firewall = localLib.mkFirewallRules {
       service = "redis";
       sources = globals.networking.swarmAddresses;
@@ -38,7 +41,7 @@ in
         enable = true;
         bind = "127.0.0.1 ${globals.networking.hosts.${config.networking.hostName}.ipv4}";
         inherit port;
-        requirePassFile = "/run/agenix/redis_${name}.age";
+        requirePassFile = config.age.secrets."redis_${name}.age".path;
       }) ports;
     };
     systemd.services.redis-backup = lib.mkIf (cfg.databases != [ ]) {
@@ -49,7 +52,7 @@ in
         mkdir -p /mnt/data/redis-backups
       ''
       + lib.concatMapStrings (name: ''
-        PASSWORD_FILE="/run/agenix/redis_${name}.age"
+        PASSWORD_FILE="${config.age.secrets."redis_${name}.age".path}"
         if [ -f "$PASSWORD_FILE" ]; then
           ${pkgs.valkey}/bin/redis-cli -p ${toString ports.${name}} -a "$(cat "$PASSWORD_FILE")" --no-auth-warning \
             --rdb /mnt/data/redis-backups/${name}.rdb.tmp

@@ -19,6 +19,7 @@ in
 {
   config = lib.mkMerge [
     {
+      age.secrets."headscale_preauth_key.age".file = ../../secrets/headscale_preauth_key.age;
       networking = {
         firewall = {
           allowPing = true;

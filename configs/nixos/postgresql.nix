@@ -26,6 +26,9 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
+    age.secrets = lib.genAttrs (map (name: "postgresql_${name}.age") cfg.databases) (name: {
+      file = ../../secrets/${name};
+    });
     networking.firewall = localLib.mkFirewallRules {
       service = "postgresql";
       sources = globals.networking.swarmAddresses;
@@ -60,7 +63,7 @@ in
       description = "Set PostgreSQL role passwords from agenix secrets";
       requires = [ "postgresql-setup.service" ];
       script = lib.concatMapStrings (name: ''
-        PASSWORD_FILE="/run/agenix/postgresql_${name}.age"
+        PASSWORD_FILE="${config.age.secrets."postgresql_${name}.age".path}"
         if [ -f "$PASSWORD_FILE" ]; then
           ${pkgs.util-linux}/bin/runuser -u postgres -- \
             ${config.services.postgresql.package}/bin/psql -h /run/postgresql -U postgres -d postgres -c \

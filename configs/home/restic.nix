@@ -68,6 +68,11 @@ let
       };
   };
   targetNames = lib.attrNames targetGenerators;
+  targetSecrets = {
+    b2 = "restic_b2_env.age";
+    nas = "restic_rustfs_env.age";
+  };
+  usedTargets = lib.unique (lib.concatMap (backup: backup.targets) (lib.attrValues cfg.backups));
 in
 {
   options.local.restic = {
@@ -125,6 +130,22 @@ in
     ]
     ++ [
       {
+        age.secrets =
+          lib.genAttrs
+            (
+              lib.optional (cfg.backups != { }) "restic_password_file.age"
+              ++ lib.attrVals (lib.filter (target: targetSecrets ? ${target}) usedTargets) targetSecrets
+            )
+            (
+              name:
+              {
+                file = ../../secrets/${name};
+              }
+              // lib.optionalAttrs isNixos {
+                group = globals.username;
+                owner = globals.username;
+              }
+            );
         services.restic.backups = lib.concatMapAttrs (
           name: backup:
           let

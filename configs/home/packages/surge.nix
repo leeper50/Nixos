@@ -73,6 +73,13 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.surge.enable {
+      age.secrets."surge_auth_token.age" = {
+        file = ../../../secrets/surge_auth_token.age;
+      }
+      // lib.optionalAttrs (!isStandalone) {
+        group = globals.username;
+        owner = globals.username;
+      };
       systemd.user.services = {
         surge-settings = mkUserService {
           description = "Render Surge settings.toml with the agenix auth token";
