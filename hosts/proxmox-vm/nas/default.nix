@@ -45,6 +45,7 @@ in
       databases = [
         "forgejo"
         "freshrss"
+        "mealie"
         "miniflux"
         "rxresume"
       ];

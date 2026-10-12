@@ -5,6 +5,7 @@ in
 {
   imports = map (p: rootDir + p) [
     /configs/nixos/bentopdf.nix
+    /configs/nixos/mealie.nix
     /configs/nixos/ntfy.nix
   ];
   local = {
@@ -20,6 +21,7 @@ in
         managerIP = globals.networking.hosts.node-1.ipv4;
       };
     };
+    mealie.enable = true;
     ntfy.enable = true;
   };
   system.stateVersion = "25.11";

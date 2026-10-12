@@ -102,6 +102,7 @@ in
   ];
   "postgresql_forgejo.age".publicKeys = swarm_keys ++ [ nas ];
   "postgresql_freshrss.age".publicKeys = swarm_keys ++ [ nas ];
+  "postgresql_mealie.age".publicKeys = swarm_keys ++ [ nas ];
   "postgresql_miniflux.age".publicKeys = swarm_keys ++ [ nas ];
   "postgresql_rxresume.age".publicKeys = swarm_keys ++ [ nas ];
   "redis_rxresume.age".publicKeys = swarm_keys ++ [ nas ];
