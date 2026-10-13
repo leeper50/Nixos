@@ -7,12 +7,12 @@
 }:
 let
   cfg = config.local.packages;
-  hash = "sha256-nHYSbL1gs92jkYYy/PPiXr8645pbpcfEaipkNnkt+bA=";
+  hash = "sha256-fdAtdALq46c8KXoEoIaiG7euWtLpsrVQG7vIsI35ut8=";
   src = pkgs.fetchurl {
     hash = hash;
     url = "https://github.com/RimSort/RimSort/releases/download/v${version}/RimSort-v${version}-x86_64.AppImage";
   };
-  version = "1.13.1";
+  version = "1.15.0";
   appimageContents = pkgs.appimageTools.extract {
     pname = "rimsort";
     inherit version src;
@@ -22,8 +22,8 @@ let
     version = version;
     inherit src;
     extraPkgs = pkgs: [
-      pkgs.zstd
       pkgs.libxkbfile
+      pkgs.zstd
     ];
     extraInstallCommands = ''
       install -Dm444 -t $out/share/applications \

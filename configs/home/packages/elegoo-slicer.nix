@@ -7,23 +7,23 @@
 }:
 let
   cfg = config.local.packages;
-  hash = "sha256-X3ox1tpXAPddm2qgyBNajP/bIQr9fw61neeTAQTFsyM=";
+  hash = "sha256-ezs/CODQ1Ru0cshYZdG+mwwoOFQj2rocsMOyJdAQGvw=";
   src = pkgs.fetchurl {
     hash = hash;
     url = "https://github.com/elegoo-repo/ElegooSlicer/releases/download/v${version}/ElegooSlicer_Linux_V${version}.AppImage";
   };
-  version = "1.5.3.4";
+  version = "1.5.3.5";
   appimageContents = pkgs.appimageTools.extract {
     pname = "elegoo-slicer";
     inherit version src;
   };
   elegoo-slicer = pkgs.appimageTools.wrapType2 {
     pname = "elegoo-slicer";
-    version = version;
+    inherit version;
     inherit src;
     extraPkgs = pkgs: [
-      pkgs.webkitgtk_4_1
       pkgs.libsoup_3
+      pkgs.webkitgtk_4_1
     ];
     extraInstallCommands = ''
       install -Dm444 ${appimageContents}/ElegooSlicer.png $out/share/pixmaps/elegoo-slicer.png
