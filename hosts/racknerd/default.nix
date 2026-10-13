@@ -24,7 +24,6 @@ in
       enable = true;
       provider = "porkbun";
     };
-    comin.enable = true;
     murmur = {
       enable = true;
       name = "Da Bad One";

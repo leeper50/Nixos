@@ -38,7 +38,6 @@ in
   local = {
     beszel.agent.enable = true;
     caddy.enable = true;
-    comin.enable = true;
     mediaWatch.enable = true;
     local = true;
     postgresql = {

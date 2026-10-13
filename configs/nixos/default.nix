@@ -73,6 +73,8 @@ in
       ];
     }
     {
+      age.secrets."user_${globals.username}_hash.age".file =
+        ../../secrets/user_${globals.username}_hash.age;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
         btrfs-progs
@@ -87,6 +89,22 @@ in
         rsync
         tcpdump
       ];
+      i18n = {
+        defaultLocale = globals.locale;
+        extraLocaleSettings = {
+          LC_ADDRESS = globals.locale;
+          LC_IDENTIFICATION = globals.locale;
+          LC_MEASUREMENT = globals.locale;
+          LC_MONETARY = globals.locale;
+          LC_NAME = globals.locale;
+          LC_NUMERIC = globals.locale;
+          LC_PAPER = globals.locale;
+          LC_TELEPHONE = globals.locale;
+          LC_TIME = globals.locale;
+        };
+      };
+      local.comin.enable = true;
+      networking.hostName = globals.hostName;
       nix = {
         gc = {
           automatic = true;
@@ -105,21 +123,6 @@ in
           ];
         };
       };
-      i18n = {
-        defaultLocale = globals.locale;
-        extraLocaleSettings = {
-          LC_ADDRESS = globals.locale;
-          LC_IDENTIFICATION = globals.locale;
-          LC_MEASUREMENT = globals.locale;
-          LC_MONETARY = globals.locale;
-          LC_NAME = globals.locale;
-          LC_NUMERIC = globals.locale;
-          LC_PAPER = globals.locale;
-          LC_TELEPHONE = globals.locale;
-          LC_TIME = globals.locale;
-        };
-      };
-      networking.hostName = globals.hostName;
       programs.fish.enable = true;
       security.sudo = {
         enable = true;
@@ -129,8 +132,6 @@ in
         wheelNeedsPassword = true;
       };
       time.timeZone = globals.timeZone;
-      age.secrets."user_${globals.username}_hash.age".file =
-        ../../secrets/user_${globals.username}_hash.age;
       users = {
         mutableUsers = false;
         groups = {

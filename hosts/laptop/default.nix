@@ -44,7 +44,6 @@ in
   local = {
     beszel.agent.enable = true;
     caddy.enable = true;
-    comin.enable = true;
     local = true;
     mounts = {
       autoMount = true;
