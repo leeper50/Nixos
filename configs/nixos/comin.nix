@@ -78,11 +78,6 @@ in
               url = "https://fj.dellhplaptop.xyz/wleeper13/Nixos.git";
               branches.main.name = "main";
             }
-            {
-              name = "github";
-              url = "https://github.com/leeper50/Nixos.git";
-              branches.main.name = "main";
-            }
           ];
         };
       }
