@@ -1,13 +1,14 @@
 { disko, ... }:
 let
   rootDir = ../..;
+  homelab = rootDir + /configs/nixos/homelab;
 in
 {
   imports =
-    map (p: rootDir + p) [
-      /configs/nixos/adguardhome.nix
-      /configs/nixos/docker.nix
-      /configs/nixos/keepalived.nix
+    map (p: homelab + p) [
+      /adguardhome.nix
+      /docker.nix
+      /keepalived.nix
     ]
     ++ [
       disko.nixosModules.disko

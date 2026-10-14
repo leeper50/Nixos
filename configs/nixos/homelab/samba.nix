@@ -24,7 +24,7 @@ let
 in
 {
   age.secrets = lib.genAttrs (map (user: "user_${user}_clear.age") sambaUsers) (name: {
-    file = ../../secrets/${name};
+    file = ../../../secrets/${name};
   });
   networking.firewall = lib.mkMerge [
     (localLib.mkFirewallRules {

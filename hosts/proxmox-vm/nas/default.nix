@@ -1,6 +1,7 @@
 { disko, globals, ... }:
 let
   rootDir = ../../..;
+  homelab = rootDir + /configs/nixos/homelab;
   keys = import (rootDir + /secrets/keys.nix);
   backupKeys = [
     keys.node-1
@@ -10,20 +11,20 @@ let
 in
 {
   imports =
-    map (p: rootDir + p) [
-      /configs/nixos/blocky.nix
-      /configs/nixos/keepalived.nix
-      /configs/nixos/media-watch.nix
-      /configs/nixos/nfs.nix
-      /configs/nixos/postgresql.nix
-      /configs/nixos/redis.nix
-      /configs/nixos/rustfs.nix
-      /configs/nixos/samba.nix
-      /configs/nixos/syncthing.nix
+    map (p: homelab + p) [
+      /blocky.nix
+      /keepalived.nix
+      /media-watch.nix
+      /nfs.nix
+      /postgresql.nix
+      /redis.nix
+      /rustfs.nix
+      /samba.nix
     ]
     ++ [
       disko.nixosModules.disko
       (import ../vm-disk-config.nix { dataMountpoint = null; })
+      (rootDir + /configs/nixos/syncthing.nix)
     ];
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";

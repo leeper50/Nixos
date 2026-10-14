@@ -60,7 +60,7 @@ in
     })
     (lib.mkIf cfg.runner.enable {
       age.secrets."forgejo_token.age" = {
-        file = ../../secrets/forgejo_token.age;
+        file = ../../../secrets/forgejo_token.age;
         group = "forgejo-runner-podman";
         owner = "forgejo-runner-podman";
       };

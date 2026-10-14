@@ -1,15 +1,16 @@
 { pkgs, ... }:
 let
   rootDir = ../..;
+  homelab = rootDir + /configs/nixos/homelab;
 in
 {
   imports =
-    map (p: rootDir + p) [
-      /configs/nixos
-      /configs/nixos/murmur.nix
-      /configs/nixos/proxies.nix
+    map (p: homelab + p) [
+      /murmur.nix
+      /proxies.nix
     ]
     ++ [
+      (rootDir + /configs/nixos)
       ./hardware-configuration.nix
     ];
   boot.tmp.cleanOnBoot = true;

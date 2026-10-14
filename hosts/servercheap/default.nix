@@ -1,17 +1,18 @@
 { globals, ... }:
 let
   rootDir = ../..;
+  homelab = rootDir + /configs/nixos/homelab;
 in
 {
   imports =
-    map (p: rootDir + p) [
-      /configs/nixos
-      /configs/nixos/authelia.nix
-      /configs/nixos/headscale.nix
-      /configs/nixos/murmur.nix
-      /configs/nixos/proxies.nix
+    map (p: homelab + p) [
+      /authelia.nix
+      /headscale.nix
+      /murmur.nix
+      /proxies.nix
     ]
     ++ [
+      (rootDir + /configs/nixos)
       ./hardware-configuration.nix
     ];
   local = {

@@ -14,7 +14,7 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      age.secrets."postgresql_mealie.age".file = ../../secrets/postgresql_mealie.age;
+      age.secrets."postgresql_mealie.age".file = ../../../secrets/postgresql_mealie.age;
       services.mealie = {
         enable = true;
         listenAddress = "127.0.0.1";

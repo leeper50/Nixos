@@ -17,7 +17,7 @@ let
     ignored_enabled = true;
     interval = "168h";
   };
-  dns-lists = import ./lib/dns-lists.nix;
+  dns-lists = import ../lib/dns-lists.nix;
   filters = lib.imap1 (id: l: {
     enabled = true;
     inherit id;

@@ -6,7 +6,7 @@
 }:
 let
   ports.dns = 53;
-  dns-lists = import ./lib/dns-lists.nix;
+  dns-lists = import ../lib/dns-lists.nix;
   groupByCategory = f: lists: lib.zipAttrsWith (_: lib.id) (map (l: { ${l.category} = f l; }) lists);
   allowlists = groupByCategory (
     l: lib.concatMapStrings (domain: "*.${domain}\n") l.domains

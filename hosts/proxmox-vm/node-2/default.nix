@@ -1,10 +1,11 @@
 { globals, pkgs, ... }:
 let
   rootDir = ../../..;
+  homelab = rootDir + /configs/nixos/homelab;
 in
 {
-  imports = map (p: rootDir + p) [
-    /configs/nixos/jellyfin.nix
+  imports = map (p: homelab + p) [
+    /jellyfin.nix
   ];
   environment.systemPackages = with pkgs; [
     nvtopPackages.intel
