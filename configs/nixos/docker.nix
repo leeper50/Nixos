@@ -8,7 +8,7 @@
 }:
 let
   cfg = config.local.docker;
-  komodo_version = "2.3.2";
+  komodo_version = "2.3.3";
   swarmNetworks = {
     proxy = true;
     socket-proxy = false;
