@@ -2,6 +2,8 @@
   config,
   globals,
   lib,
+  localLib,
+  pkgs,
   ...
 }:
 let
@@ -9,6 +11,10 @@ let
   pass = config.age.secrets;
 
   forgejoDomain = "git.${globals.domains.primary}";
+  ports = {
+    http = 3000;
+    ssh = 2222;
+  };
 in
 {
   options.local.forgejo = {
@@ -35,16 +41,34 @@ in
       ];
     }
     (lib.mkIf cfg.server.enable {
+      age.secrets."postgresql_forgejo.age".file = ../../../secrets/postgresql_forgejo.age;
+      networking.firewall = localLib.mkFirewallRules {
+        service = "forgejo-ssh";
+        sources = globals.networking.lan;
+        tcpPorts = [ ports.ssh ];
+      };
       services.forgejo = {
-        database.type = "sqlite3";
+        database = {
+          createDatabase = false;
+          host = "nas.local";
+          name = "forgejo";
+          passwordFile = pass."postgresql_forgejo.age".path;
+          type = "postgres";
+          user = "forgejo";
+        };
         enable = true;
         group = "forgejo";
         lfs.enable = true;
+        package = pkgs.forgejo-lts;
         settings = {
           server = {
             DOMAIN = forgejoDomain;
-            ROOT_URL = "https://${config.services.forgejo.settings.server.DOMAIN}:443/";
-            SSH_PORT = 2222;
+            HTTP_ADDR = "127.0.0.1";
+            HTTP_PORT = ports.http;
+            ROOT_URL = "https://${forgejoDomain}/";
+            SSH_LISTEN_PORT = ports.ssh;
+            SSH_PORT = ports.ssh;
+            START_SSH_SERVER = true;
           };
           session.COOKIE_SECURE = true;
         };
@@ -53,9 +77,8 @@ in
       };
     })
     (lib.mkIf (cfg.server.enable && config.services.caddy.enable) {
-      services.caddy.virtualHosts."${forgejoDomain}" = {
-        extraConfig = "reverse_proxy localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
-        useACMEHost = globals.domains.primary;
+      services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+        git = "reverse_proxy 127.0.0.1:${toString ports.http}";
       };
     })
     (lib.mkIf cfg.runner.enable {
