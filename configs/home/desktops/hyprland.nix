@@ -134,6 +134,14 @@ in
           speed = 6;
         }
       ];
+      window_rule = [
+        {
+          # kitty restores a saved "maximized" state on launch, covering other windows
+          name = "kitty-suppress-maximize";
+          match.class = "^kitty$";
+          suppress_event = "maximize";
+        }
+      ];
       config = {
         general = {
           border_size = 1;
@@ -161,7 +169,7 @@ in
           disable_hyprland_logo = true;
           enable_swallow = true;
           force_default_wallpaper = 0;
-          # swallow_regex = "^kitty";
+          swallow_regex = "^kitty";
           vrr = 0;
         };
         input = {
