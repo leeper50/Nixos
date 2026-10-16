@@ -9,7 +9,7 @@
 let
   cfg = config.local.adguardhome;
   logsSettings = {
-    enabled = false;
+    enabled = true;
     ignored = [
       "|dnstest.dellhplaptop.xyz^"
       "|.^"
@@ -144,36 +144,35 @@ in
               safebrowsing_enabled = false;
             };
             inherit filters;
+            http.doh.insecure_enabled = true;
             querylog = logsSettings // {
               file_enabled = true;
               size_memory = 1000;
             };
             statistics = logsSettings;
+            tls.enabled = false;
             user_rules = allowRules;
           };
         };
         resolved.enable = false;
       };
     })
+    # Serve webui over docker reverse proxy.
+    (lib.mkIf (cfg.enable && !config.services.caddy.enable) {
+      networking.firewall = localLib.mkFirewallRules {
+        service = "adguardhome webui";
+        sources = [
+          globals.networking.docker.fixedv6Subnet
+          globals.networking.docker.ipv4Subnet
+          globals.networking.docker.ipv6Subnet
+        ];
+        tcpPorts = [ ports.webui ];
+      };
+    })
     # Serve dns-over-https through caddy.
     (lib.mkIf (cfg.enable && config.services.caddy.enable) {
-      services.adguardhome.settings = {
-        dns.trusted_proxies = [
-          "127.0.0.0/8"
-          "::1/128"
-        ];
-        http.doh.insecure_enabled = true;
-        tls.enabled = false;
-      };
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
-        dns = ''
-          handle /dns-query* {
-            reverse_proxy 127.0.0.1:${toString ports.webui}
-          }
-          handle {
-            abort
-          }
-        '';
+        dns = "reverse_proxy 127.0.0.1:${toString ports.webui}";
       };
     })
   ];
