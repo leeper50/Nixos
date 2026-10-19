@@ -4,6 +4,7 @@
   globals,
   home-manager,
   lib,
+  nix-flatpak,
   pkgs,
   profile,
   stylix,
@@ -39,7 +40,14 @@ in
     ./ssh.nix
     {
       home-manager = {
-        extraSpecialArgs = { inherit agenix globals systemType; };
+        extraSpecialArgs = {
+          inherit
+            agenix
+            globals
+            nix-flatpak
+            systemType
+            ;
+        };
         useGlobalPkgs = true;
         useUserPackages = true;
         users.${globals.username}.imports = [ ];

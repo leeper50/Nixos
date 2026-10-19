@@ -32,6 +32,7 @@ in
   ++ lib.optionals (systemType != "NixDarwin") [
     ./audio/easyeffects.nix
     ./audio/wireplumber.nix
+    ./desktops/flatpak.nix
     ./desktops/hyprland.nix
     ./desktops/noctalia.nix
     ./desktops/sway.nix

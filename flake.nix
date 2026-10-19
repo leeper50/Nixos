@@ -25,6 +25,7 @@
       url = "github:nix-community/home-manager/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # TEMPORARY: authelia from the revision before pnpm 12.9 broke its pnpmDepsHash
     # (https://github.com/NixOS/nixpkgs/issues/571789). Same 4.39.27 build servercheap
