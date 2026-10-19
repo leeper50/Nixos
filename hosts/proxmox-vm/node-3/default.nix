@@ -8,6 +8,7 @@ in
     /bentopdf.nix
     /gotify.nix
     /mealie.nix
+    /redlib.nix
   ];
   local = {
     bentopdf.enable = true;
@@ -24,6 +25,7 @@ in
     };
     gotify.enable = true;
     mealie.enable = true;
+    redlib.enable = true;
   };
   system.stateVersion = "25.11";
 }
