@@ -49,14 +49,12 @@ let
   profileExtensions = {
     force = true;
     packages = with pkgs.nur.repos.rycee.firefox-addons; [
-      # bypass-paywalls-clean
       containerise
       decentraleyes
       indie-wiki-buddy
       istilldontcareaboutcookies
       keepassxc-browser
       new-tab-override
-      reddit-enhancement-suite
       redirect-to-wiki-gg
       ublock-origin
       violentmonkey
