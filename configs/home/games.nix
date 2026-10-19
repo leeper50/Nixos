@@ -16,8 +16,8 @@ in
       mumble
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-      # limo
       openmw
+      r2modman
       wowup-cf
     ]
     ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && systemType == "Nixos") [

@@ -315,6 +315,7 @@ in
         handbrake
         imgbrd-grabber
         kdePackages.kdenlive
+        kdePackages.tokodon
         marktext
         pulseaudio
         qt5.qttools
