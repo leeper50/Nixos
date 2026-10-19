@@ -170,11 +170,6 @@ in
               Port = 22;
               User = "root";
             };
-            "hetzner" = {
-              HostName = "u400147.your-storagebox.de";
-              Port = 23;
-              User = "u400147";
-            };
             "ser8" = {
               HostName = "10.0.0.30";
               Port = 22;

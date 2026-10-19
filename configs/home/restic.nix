@@ -39,17 +39,6 @@ let
           timerConfig.OnCalendar = "Sun *-*-* 13:00:00"; # weekly
         };
       };
-    hetzner =
-      {
-        name,
-        common,
-        location,
-      }:
-      {
-        "${name}-hetzner" = common // {
-          repository = "sftp://u400147@u400147.your-storagebox.de:23//home/Backup/${location}";
-        };
-      };
     nas =
       {
         name,
@@ -122,10 +111,6 @@ in
               message = "local.restic.backups [${lib.concatStringsSep ", " nasBackups}] use the nas target, must be local or use tailscale.";
             }
           ];
-        programs.ssh.knownHosts = {
-          "[u400147.your-storagebox.de]:23".publicKey =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICf9svRenC/PLKIL9nk6K/pxQgoiFC41wTNvoIncOxs";
-        };
       }
     ]
     ++ [

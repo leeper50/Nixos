@@ -75,7 +75,6 @@ in
         "/home/walter"
       ];
       targets = [
-        "hetzner"
         "nas"
       ];
     };

@@ -131,7 +131,6 @@ in
           "/home/walter"
         ];
         targets = [
-          "hetzner"
           "nas"
         ];
       };
@@ -156,7 +155,6 @@ in
           "Games/Limo"
         ];
         targets = [
-          "hetzner"
           "nas"
         ];
       };

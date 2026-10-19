@@ -77,16 +77,6 @@ in
         };
         secrets.pass = resticPasswordFile;
       };
-      Hetzner = {
-        config = sftpSettings // {
-          host = "u400147.your-storagebox.de";
-          idle_timeout = 0;
-          md5sum_command = "md5 -r";
-          port = 23;
-          sha1sum_command = "sha1 -r";
-          user = "u400147";
-        };
-      };
       Nas = {
         config = {
           type = "smb";
