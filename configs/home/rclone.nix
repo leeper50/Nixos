@@ -73,7 +73,7 @@ in
           url = "https://c.dellhplaptop.xyz";
           vendor = "owncloud";
           pacer_min_sleep = "0.01ms";
-          user = globals.username;
+          user = "walter";
         };
         secrets.pass = resticPasswordFile;
       };
@@ -92,9 +92,9 @@ in
           type = "smb";
           host = "nas.${globals.domains.primary}";
           port = 445;
-          user = globals.username;
+          user = "walter";
         };
-        secrets.pass = secretsAttrs."user_${globals.username}_clear.age".path;
+        secrets.pass = secretsAttrs."user_walter_clear.age".path;
       };
       Node1 = {
         config = sftpSettings // {
@@ -128,7 +128,7 @@ in
         config = {
           type = "ftp";
           host = "10.0.0.170";
-          user = globals.username;
+          user = "walter";
           port = 5001;
           explicit_tls = true;
         };
@@ -161,7 +161,7 @@ in
         "restic_b2_env.age"
         "restic_password_file.age"
         "restic_rustfs_env.age"
-        "user_${globals.username}_clear.age"
+        "user_walter_clear.age"
       ]
       (name: {
         file = ../../secrets/${name};

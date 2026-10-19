@@ -29,8 +29,8 @@ in
       enable = true;
       exports = ''
         # Home Dir
-        /mnt/data/home/${globals.username} ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
-        /mnt/data/home/${globals.username} ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)
+        /mnt/data/home/walter ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
+        /mnt/data/home/walter ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)
         # Media Dir
         /mnt/data/Media ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
         /mnt/data/Media ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)

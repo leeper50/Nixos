@@ -159,5 +159,4 @@ in
   primaryEmail = "wleeper@mailbox.org";
   sshPort = 34146;
   timeZone = "America/Chicago";
-  username = "walter";
 }

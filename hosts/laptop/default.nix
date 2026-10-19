@@ -1,7 +1,6 @@
 {
   config,
   disko,
-  globals,
   nur,
   pkgs,
   ...
@@ -36,7 +35,7 @@ in
       Policy.AutoEnable = true;
     };
   };
-  home-manager.users.${globals.username}.local.browsers = {
+  home-manager.users.walter.local.browsers = {
     brave.enable = true;
     firefox.enable = true;
     librewolf.enable = true;
@@ -61,17 +60,19 @@ in
     restic.backups.home = {
       exclude = [
         "*cache*"
-        "/home/${globals.username}/.local/share/Steam"
-        "/home/${globals.username}/.local/share/Trash"
-        "/home/${globals.username}/.ollama"
-        "/home/${globals.username}/.steam"
-        "/home/${globals.username}/Games"
-        "/home/${globals.username}/Nas"
-        "/home/${globals.username}/Sync/Retroarch"
-        "/home/${globals.username}/Temp"
-      ];
+      ]
+        ++ map (s: "/home/walter/" + s) [
+          ".local/share/Steam"
+          ".local/share/Trash"
+          ".ollama"
+          ".steam"
+          "Games"
+          "Nas"
+          "Sync/Retroarch"
+          "Temp"
+        ];
       paths = [
-        "/home/${globals.username}"
+        "/home/walter"
       ];
       targets = [
         "hetzner"
@@ -124,7 +125,7 @@ in
     upower.enable = true;
   };
   system.stateVersion = "26.05";
-  users.users.${globals.username} = {
+  users.users.walter = {
     extraGroups = [ "libvirtd" ];
     packages = with pkgs; [
       asusctl

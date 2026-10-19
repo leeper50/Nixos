@@ -12,7 +12,7 @@ let
   isStandalone = systemType == "Standalone";
   secretsAttrs = if osConfig != null then osConfig.age.secrets else (config.age.secrets or { });
   authTokenFile = secretsAttrs."surge_auth_token.age".path;
-  configHome = if isStandalone then config.xdg.configHome else "/home/${globals.username}/.config";
+  configHome = if isStandalone then config.xdg.configHome else "/home/walter/.config";
   settingsFile = "${configHome}/surge/settings.toml";
   staticSettings = pkgs.writeText "surge-settings.toml" ''
     [network]
@@ -47,7 +47,7 @@ let
     if isStandalone then
       {
         Unit = {
-          ConditionUser = globals.username;
+          ConditionUser = "walter";
           Description = description;
         }
         // lib.optionalAttrs (after != [ ]) { After = after; }
@@ -64,7 +64,7 @@ let
           serviceConfig
           wantedBy
           ;
-        unitConfig.ConditionUser = globals.username;
+        unitConfig.ConditionUser = "walter";
       };
 in
 {
@@ -77,8 +77,8 @@ in
         file = ../../../secrets/surge_auth_token.age;
       }
       // lib.optionalAttrs (!isStandalone) {
-        group = globals.username;
-        owner = globals.username;
+        group = "walter";
+        owner = "walter";
       };
       systemd.user.services = {
         surge-settings = mkUserService {

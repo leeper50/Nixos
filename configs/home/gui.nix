@@ -163,7 +163,7 @@ in
               Port = globals.sshPort;
               ServerAliveCountMax = 3;
               ServerAliveInterval = 15;
-              User = globals.username;
+              User = "walter";
             };
             "gk55" = {
               HostName = "10.0.0.50";

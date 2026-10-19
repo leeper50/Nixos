@@ -9,7 +9,7 @@
 let
   cfg = config.local.restic;
   extraOptionsAttrs = {
-    "${globals.username}" = [ "sftp.args='-i /home/${globals.username}/.ssh/id_ed25519'" ];
+    "walter" = [ "sftp.args='-i /home/walter/.ssh/id_ed25519'" ];
     "root" = [ "sftp.args='-i /etc/ssh/ssh_host_ed25519_key'" ];
   };
   isNixos = systemType == "Nixos";
@@ -95,7 +95,7 @@ in
               description = "Backup targets this share should back up to. Defaults to all targets; hosts can restrict to a subset.";
             };
             user = lib.mkOption {
-              default = globals.username;
+              default = "walter";
               type = lib.types.str;
             };
           };
@@ -142,8 +142,8 @@ in
                 file = ../../secrets/${name};
               }
               // lib.optionalAttrs isNixos {
-                group = globals.username;
-                owner = globals.username;
+                group = "walter";
+                owner = "walter";
               }
             );
         services.restic.backups = lib.concatMapAttrs (

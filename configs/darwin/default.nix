@@ -17,7 +17,7 @@
         "restic_b2_env.age"
         "restic_password_file.age"
         "restic_rustfs_env.age"
-        "user_${globals.username}_clear.age"
+        "user_walter_clear.age"
       ]
       (name: {
         file = ../../secrets/${name};
@@ -73,13 +73,13 @@
       minimize-to-application = true;
       persistent-apps = [
         {
-          app = "/Users/${globals.username}/Applications/Home Manager Apps/Firefox.app";
+          app = "/Users/walter/Applications/Home Manager Apps/Firefox.app";
         }
         {
-          app = "/Users/${globals.username}/Applications/Home Manager Apps/kitty.app";
+          app = "/Users/walter/Applications/Home Manager Apps/kitty.app";
         }
         {
-          app = "/Users/${globals.username}/Applications/Home Manager Apps/Visual Studio Code.app";
+          app = "/Users/walter/Applications/Home Manager Apps/Visual Studio Code.app";
         }
         {
           app = "/System/Applications/System Settings.app";
@@ -109,11 +109,11 @@
       Clicking = true;
     };
   };
-  system.primaryUser = globals.username;
+  system.primaryUser = "walter";
   system.stateVersion = 6;
   time.timeZone = globals.timeZone;
-  users.users.${globals.username} = {
-    home = "/Users/${globals.username}";
+  users.users.walter = {
+    home = "/Users/walter";
     shell = pkgs.fish;
   };
 }

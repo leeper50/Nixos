@@ -24,7 +24,7 @@ in
             systemType = "NixDarwin";
           };
           useGlobalPkgs = true;
-          users.${globals.username}.imports = [
+          users.walter.imports = [
             ./home.nix
           ];
           useUserPackages = true;

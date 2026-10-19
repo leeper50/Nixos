@@ -97,7 +97,7 @@ in
         };
         logDriver = "journald";
       };
-      users.users.${globals.username}.extraGroups = [ "docker" ];
+      users.users.walter.extraGroups = [ "docker" ];
     }
 
     ### Komodo periphery configuration
@@ -189,7 +189,7 @@ in
                 };
                 environment = {
                   KOMODO_DATABASE_URI = "mongodb://mongo:27017";
-                  KOMODO_INIT_ADMIN_USERNAME = globals.username;
+                  KOMODO_INIT_ADMIN_USERNAME = "walter";
                   KOMODO_LOCAL_AUTH = "true";
                 };
                 image = "ghcr.io/moghtech/komodo-core:${komodo_version}";
@@ -428,7 +428,7 @@ in
         };
       };
       systemd.tmpfiles.rules = [
-        "d /etc/docker 0775 ${globals.username} ${globals.username} -"
+        "d /etc/docker 0775 walter walter -"
       ];
     })
   ];

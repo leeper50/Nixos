@@ -1,6 +1,5 @@
 {
   config,
-  globals,
   lib,
   pkgs,
   systemType,
@@ -13,9 +12,9 @@ in
   home = {
     homeDirectory =
       if pkgs.stdenv.hostPlatform.isDarwin then
-        "/Users/${globals.username}"
+        "/Users/walter"
       else
-        "/home/${globals.username}";
+        "/home/walter";
     packages =
       with pkgs;
       [
@@ -33,7 +32,7 @@ in
       ];
     shell.enableFishIntegration = true;
     stateVersion = "26.05";
-    username = globals.username;
+    username = "walter";
   };
   programs = {
     bat.enable = true;

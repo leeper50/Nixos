@@ -21,7 +21,7 @@ in
         authType = "http_auth";
         baseUrl = "https://${freshrssDomain}";
         dataDir = "/var/lib/freshrss";
-        defaultUser = globals.username;
+        defaultUser = "walter";
         enable = true;
         language = "en";
         passwordFile = pkgs.writeText "freshrss-bootstrap-password" "changeme";

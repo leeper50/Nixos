@@ -55,8 +55,8 @@ in
       };
     })
     (lib.mkIf (config.local.local && cfg.user) {
-      fileSystems."/mnt/${globals.username}" = {
-        device = "nas.${globals.domains.primary}:/mnt/data/home/${globals.username}";
+      fileSystems."/mnt/walter" = {
+        device = "nas.${globals.domains.primary}:/mnt/data/home/walter";
         fsType = "nfs";
         options = nfs_options;
       };

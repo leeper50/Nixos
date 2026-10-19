@@ -50,7 +50,7 @@ in
         };
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.${globals.username}.imports = [ ];
+        users.walter.imports = [ ];
       };
     }
   ]
@@ -58,14 +58,14 @@ in
     stylix.nixosModules.stylix
     ../home/stylix.nix
     {
-      home-manager.users.${globals.username}.imports = [
+      home-manager.users.walter.imports = [
         ../home/gui.nix
       ];
     }
   ]
   ++ lib.optionals (profile == "cli") [
     {
-      home-manager.users.${globals.username}.imports = [
+      home-manager.users.walter.imports = [
         ../home
       ];
     }
@@ -81,8 +81,8 @@ in
       ];
     }
     {
-      age.secrets."user_${globals.username}_hash.age".file =
-        ../../secrets/user_${globals.username}_hash.age;
+      age.secrets."user_walter_hash.age".file =
+        ../../secrets/user_walter_hash.age;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
         btrfs-progs
@@ -144,21 +144,21 @@ in
       users = {
         mutableUsers = false;
         groups = {
-          "${globals.username}" = {
+          "walter" = {
             gid = 1000;
-            members = [ globals.username ];
+            members = [ "walter" ];
           };
         };
         users = {
           root = user_settings;
-          ${globals.username} = user_settings // {
+          walter = user_settings // {
             description = "Administrator";
             extraGroups = [
               "networkmanager"
               "wheel"
             ];
-            group = globals.username;
-            hashedPasswordFile = config.age.secrets."user_${globals.username}_hash.age".path;
+            group = "walter";
+            hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
             isNormalUser = true;
           };
         };
@@ -227,12 +227,12 @@ in
               "restic_b2_env.age"
               "restic_password_file.age"
               "restic_rustfs_env.age"
-              "user_${globals.username}_clear.age"
+              "user_walter_clear.age"
             ]
             (name: {
               file = ../../secrets/${name};
-              group = globals.username;
-              owner = globals.username;
+              group = "walter";
+              owner = "walter";
             });
         environment.systemPackages =
           with pkgs;

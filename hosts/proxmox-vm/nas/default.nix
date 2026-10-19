@@ -1,4 +1,4 @@
-{ disko, globals, ... }:
+{ disko, ... }:
 let
   rootDir = ../../..;
   homelab = rootDir + /configs/nixos/homelab;
@@ -64,7 +64,7 @@ in
     rustfs.enable = true;
     syncthing = {
       folder_type = "receiveonly";
-      home = "/mnt/data/home/${globals.username}";
+      home = "/mnt/data/home/walter";
     };
   };
   services.btrfs.autoScrub = {
@@ -74,7 +74,7 @@ in
   };
   system.stateVersion = "25.11";
   users.users = {
-    ${globals.username}.openssh.authorizedKeys.keys = backupKeys;
+    walter.openssh.authorizedKeys.keys = backupKeys;
     root.openssh.authorizedKeys.keys = backupKeys;
   };
 }

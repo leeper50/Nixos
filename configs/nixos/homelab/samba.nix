@@ -6,7 +6,7 @@
   ...
 }:
 let
-  sambaUsers = [ globals.username ];
+  sambaUsers = [ "walter" ];
   macSettings = {
     "fruit:encoding" = "native";
     "fruit:metadata" = "stream";
@@ -104,7 +104,7 @@ in
         "create mask" = "0600";
         "directory mask" = "0700";
         "strict locking" = "no";
-        "valid users" = globals.username;
+        "valid users" = "walter";
       }
       // timeMachineSettings;
     };
@@ -123,7 +123,7 @@ in
       )
       {
         samba-smbd.preStart = ''
-          install -d -m 0700 -o ${globals.username} -g ${globals.username} /mnt/data/TimeMachine
+          install -d -m 0700 -o walter -g walter /mnt/data/TimeMachine
         '';
         samba-smbd.postStart =
           let

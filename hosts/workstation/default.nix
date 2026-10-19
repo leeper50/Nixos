@@ -1,9 +1,4 @@
-{
-  agenix,
-  globals,
-  stylix,
-  ...
-}:
+{ agenix, stylix, ... }:
 let
   rootDir = ../..;
 in
@@ -122,16 +117,18 @@ in
       home = {
         exclude = [
           "*cache*"
-          "/home/${globals.username}/.local/share/Steam"
-          "/home/${globals.username}/.local/share/Trash"
-          "/home/${globals.username}/.ollama"
-          "/home/${globals.username}/.steam"
-          "/home/${globals.username}/Games"
-          "/home/${globals.username}/Nas"
-          "/home/${globals.username}/Temp"
+        ]
+        ++ map (s: "/home/walter/" + s) [
+          ".local/share/Steam"
+          ".local/share/Trash"
+          ".ollama"
+          ".steam"
+          "Games"
+          "Nas"
+          "Temp"
         ];
         paths = [
-          "/home/${globals.username}"
+          "/home/walter"
         ];
         targets = [
           "hetzner"
@@ -140,23 +137,23 @@ in
       };
       steam = {
         exclude = [ ];
-        paths = [
-          "/home/${globals.username}/.config/Limo.conf"
-          "/home/${globals.username}/.config/Limo"
-          "/home/${globals.username}/.config/unity3d/Ludeon Studios"
-          "/home/${globals.username}/.local/share/Aspyr/Sid Meier's Civilization 5/MODS"
-          "/home/${globals.username}/.local/share/Paradox Interactive"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Europa Universalis IV/dlc"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Rimworld/Mods"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Stardew Valley"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
-          "/home/${globals.username}/.local/share/Steam/steamapps/common/Victoria 3/game/dlc"
-          "/home/${globals.username}/.local/share/Steam/steamapps/workshop/content/529340/2883019620"
-          "/home/${globals.username}/.local/share/Steam/steamapps/workshop/content/236850/1193125267"
-          "/home/${globals.username}/.paradoxlauncher"
-          "/home/${globals.username}/Games/Limo"
+        paths = map (s: "/home/walter/" + s) [
+          ".config/Limo.conf"
+          ".config/Limo"
+          ".config/unity3d/Ludeon Studios"
+          ".local/share/Aspyr/Sid Meier's Civilization 5/MODS"
+          ".local/share/Paradox Interactive"
+          ".local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
+          ".local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
+          ".local/share/Steam/steamapps/common/Europa Universalis IV/dlc"
+          ".local/share/Steam/steamapps/common/Rimworld/Mods"
+          ".local/share/Steam/steamapps/common/Stardew Valley"
+          ".local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
+          ".local/share/Steam/steamapps/common/Victoria 3/game/dlc"
+          ".local/share/Steam/steamapps/workshop/content/236850/1193125267"
+          ".local/share/Steam/steamapps/workshop/content/529340/2883019620"
+          ".paradoxlauncher"
+          "Games/Limo"
         ];
         targets = [
           "hetzner"

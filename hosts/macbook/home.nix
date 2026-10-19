@@ -1,4 +1,4 @@
-{ agenix, globals, ... }:
+{ agenix, ... }:
 let
   rootDir = ../..;
 in
@@ -18,6 +18,6 @@ in
       firefox.enable = true;
       librewolf.enable = true;
     };
-    syncthing.home = "/Users/${globals.username}";
+    syncthing.home = "/Users/walter";
   };
 }

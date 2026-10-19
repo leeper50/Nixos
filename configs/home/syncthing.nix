@@ -144,7 +144,7 @@ in
       type = lib.types.str;
     };
     home = lib.mkOption {
-      default = "/home/${globals.username}";
+      default = "/home/walter";
       type = lib.types.str;
     };
   };
@@ -156,12 +156,12 @@ in
           message = "local.syncthing: host '${toString globals.hostName}' is not a known syncthing device";
         }
       ];
-      age.secrets."user_${globals.username}_clear.age" = {
-        file = ../../secrets/user_${globals.username}_clear.age;
+      age.secrets."user_walter_clear.age" = {
+        file = ../../secrets/user_walter_clear.age;
       }
       // lib.optionalAttrs (systemType == "Nixos") {
-        group = globals.username;
-        owner = globals.username;
+        group = "walter";
+        owner = "walter";
       };
       services.syncthing = {
         enable = true;
@@ -189,8 +189,8 @@ in
     }
     (lib.optionalAttrs (systemType == "Nixos") {
       services.syncthing = {
-        guiPasswordFile = config.age.secrets."user_${globals.username}_clear.age".path;
-        settings.gui.user = globals.username;
+        guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
+        settings.gui.user = "walter";
       };
       systemd.services.build-stignore = {
         description = "Populate .stignore files for all shares.";
@@ -230,8 +230,8 @@ in
     })
     (lib.optionalAttrs (systemType != "Nixos") {
       services.syncthing.guiCredentials = {
-        passwordFile = config.age.secrets."user_${globals.username}_clear.age".path;
-        username = globals.username;
+        passwordFile = config.age.secrets."user_walter_clear.age".path;
+        username = "walter";
       };
     })
   ];

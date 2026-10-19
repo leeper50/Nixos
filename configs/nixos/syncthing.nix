@@ -35,8 +35,8 @@ in
         configDir = "${home}/Sync/.config/syncthing";
         databaseDir = "${home}/Sync/.config/syncthing";
         dataDir = "${home}/Sync";
-        group = globals.username;
-        user = globals.username;
+        group = "walter";
+        user = "walter";
       };
     }
     (lib.mkIf config.services.caddy.enable {
