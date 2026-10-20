@@ -29,6 +29,8 @@ The folder structure is:
 ├── 📁 hosts
 │   ├── 📁 host1   (Host1 configs and imports)
 │   └── 📁 host2   (Host2 configs and imports)
+├── 📄 justfile    (Shortcuts: `just test`, `just tofu`, `just vm-builder`)
+├── 📁 scripts     (Fish scripts the justfile runs)
 └── 📁 secrets
     ├── 📄 default.nix (Checks each host can decrypt its secrets)
     └── 📄 secrets.nix (Who each secret is encrypted to)
@@ -40,13 +42,13 @@ Files in `/config/home` may be used by any home-manager systems.
 
 ## Proxmox VMs
 
-VMs are created with OpenTofu (`/OpenTofu`) and installed with nixos-anywhere (`vm-builder.fish`). A VM's Proxmox shape (node, VM id, cores, memory, disks) is set in its `flake.nix` entry as `proxmox = { ... }`. That attribute is exported as `.#proxmoxVms`, written to `OpenTofu/vms.json`, and merged with the defaults in `OpenTofu/main.tf`. Disk serials are `<host>-root` and `<host>-data`, which the disko configs read through `/dev/disk/by-id/virtio-*`.
+VMs are created with OpenTofu (`/OpenTofu`) and installed with nixos-anywhere (`just vm-builder`). A VM's Proxmox shape (node, VM id, cores, memory, disks) is set in its `flake.nix` entry as `proxmox = { ... }`. That attribute is exported as `.#proxmoxVms`, written to `OpenTofu/vms.json`, and merged with the defaults in `OpenTofu/main.tf`. Disk serials are `<host>-root` and `<host>-data`, which the disko configs read through `/dev/disk/by-id/virtio-*`.
 
-Tofu state is committed, encrypted. The Proxmox API token and the state passphrase are kept in `secrets/tofu_env.age`, which `tofu.fish` loads.
+Tofu state is committed, encrypted. The Proxmox API token and the state passphrase are kept in `secrets/tofu_env.age`, which `just tofu` loads.
 
 To add a VM:
 1. Add the host's folder and its `flake.nix` entry, including `proxmox = { ... }`.
-2. Run `./vm-builder.fish --key <host>`, add the printed key to `secrets/keys.nix`, then run `ragenix -r` in `secrets/`.
-3. Run `./tofu.fish apply` to create the VM. This regenerates `OpenTofu/vms.json` first.
-4. Run `./vm-builder.fish --build --root_pass <pass> [--target <ip>] <host>`.
+2. Run `just vm-builder --key <host>`, add the printed key to `secrets/keys.nix`, then run `ragenix -r` in `secrets/`.
+3. Run `just tofu apply` to create the VM. This regenerates `OpenTofu/vms.json` first.
+4. Run `just vm-builder --build --root_pass <pass> [--target <ip>] <host>`.
 5. Commit the Nix changes, `vms.json` and `terraform.tfstate` together.

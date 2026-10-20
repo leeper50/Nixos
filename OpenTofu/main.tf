@@ -7,7 +7,7 @@ terraform {
   }
 
   # State is committed to git, so it is always encrypted. The passphrase comes
-  # from TF_VAR_state_passphrase (secrets/tofu_env.age, loaded by tofu.fish).
+  # from TF_VAR_state_passphrase (secrets/tofu_env.age, loaded by `just tofu`).
   encryption {
     key_provider "pbkdf2" "state" {
       passphrase = var.state_passphrase
@@ -52,7 +52,7 @@ locals {
   }
 
   # Defined per host in flake.nix (`proxmox = { ... }`) and exported with
-  # `nix eval --json .#proxmoxVms`. tofu.fish regenerates this file.
+  # `nix eval --json .#proxmoxVms`. `just tofu` regenerates this file.
   nixos_vms = jsondecode(file("${path.module}/vms.json"))
 
   nixos_vm_config = {

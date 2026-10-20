@@ -6,12 +6,13 @@ for the folder layout and the Proxmox VM workflow.
 
 ## Commands
 
-- Tools: `nix develop` (or direnv via `.envrc`) provides ragenix, tofu,
+- Tools: `nix develop` (or direnv via `.envrc`) provides just, ragenix, tofu,
   nixos-rebuild, nixfmt, deadnix, typos, jq and fish, and installs the
-  pre-commit hook.
-- Check: `./tests/eval.fish [host ...]` dry-run builds every host (or the ones
-  named); it prints nothing on success. CI (`.forgejo/workflows/check.yml`)
-  runs it plus `.#checks.x86_64-linux.pre-commit`.
+  pre-commit hook. Run `just --list` for the shortcuts; the scripts they call
+  live in `scripts/`.
+- Check: `just test [host ...]` dry-run builds every host (or the ones named);
+  it prints nothing on success. CI (`.forgejo/workflows/check.yml`) runs it
+  plus `.#checks.x86_64-linux.pre-commit`.
 - Format: `nix fmt`. The pre-commit hook rejects commits that fail nixfmt,
   deadnix or typos. Prefix unused lambda arguments with `_`; add spellcheck
   false positives to `_typos.toml`. Don't disable the hooks.

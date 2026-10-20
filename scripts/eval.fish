@@ -2,9 +2,9 @@
 
 # Dry-run build every host configuration, or only the ones named as arguments.
 #
-#   ./tests/eval.fish                 # all hosts
-#   ./tests/eval.fish node-1          # just node-1
-#   ./tests/eval.fish node-1 nas      # just node-1 and nas
+#   just test                 # all hosts
+#   just test node-1          # just node-1
+#   just test node-1 nas      # just node-1 and nas
 
 cd (status dirname)/..
 
@@ -42,7 +42,7 @@ function queue_configs
 end
 
 if test (count $argv) -gt 0; and contains -- $argv[1] -h --help
-    echo "usage: ./tests/eval.fish [host...]"
+    echo "usage: just test [host...]"
     echo
     echo "Dry-run build every host configuration, or only the ones named."
     exit 0

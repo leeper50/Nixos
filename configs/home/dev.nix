@@ -13,6 +13,9 @@
     gopls
     gotools
     jdk25
+    just
+    just-formatter
+    just-lsp
     kotlin
     kotlin-language-server
     lldb_22

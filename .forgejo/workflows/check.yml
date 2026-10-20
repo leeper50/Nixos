@@ -13,4 +13,4 @@ jobs:
       - name: Format and lint
         run: nix build --print-build-logs .#checks.x86_64-linux.pre-commit
       - name: Evaluate configurations
-        run: nix develop --command fish ./tests/eval.fish
+        run: nix develop --command just test

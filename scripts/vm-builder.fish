@@ -1,5 +1,10 @@
 #!/usr/bin/env fish
 
+# Generate a VM's host key, or install it with nixos-anywhere.
+#
+#   just vm-builder --key <host>
+#   just vm-builder --build --root_pass <pass> [--target <ip>] <host>
+#
 # --target defaults to the installer ISO's mDNS name, which every fresh VM
 # shares, so only one VM can be installed at a time unless an address is given.
 argparse build key root_pass= target= -- $argv
@@ -10,6 +15,8 @@ if test -z "$argv[1]"
     return 1
 end
 set host "$argv[1]"
+
+cd $NH_FLAKE
 
 if set -q _flag_key
     rm -rdf /tmp/$host

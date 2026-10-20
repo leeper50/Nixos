@@ -3,10 +3,10 @@
 # Run OpenTofu against ./OpenTofu with secrets loaded and the VM inventory
 # regenerated from flake.nix first.
 #
-#   ./tofu.fish plan
-#   ./tofu.fish apply
+#   just tofu plan
+#   just tofu apply
 
-cd (status dirname)
+cd $NH_FLAKE
 
 set -q AGE_IDENTITY; or set AGE_IDENTITY ~/.ssh/id_ed25519
 
