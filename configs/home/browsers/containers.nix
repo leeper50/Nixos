@@ -15,6 +15,7 @@
       "indeed.com"
       "joinhandshake.com"
       "linkedin.com"
+      "mend.io"
       "ziprecruiter.com"
     ];
   };
