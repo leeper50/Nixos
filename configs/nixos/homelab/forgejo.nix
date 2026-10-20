@@ -66,7 +66,10 @@ in
         })
         (localLib.mkFirewallRules {
           service = "forgejo-web";
-          sources = globals.networking.swarmAddresses;
+          sources = [
+            "0.0.0.0"
+            "::/0"
+          ];
           tcpPorts = [ ports.http ];
         })
       ];
@@ -155,7 +158,10 @@ in
     })
     (lib.mkIf (cfg.server.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
-        fj = "reverse_proxy ${httpAddr}:${toString ports.http}";
+        fj = {
+          extraConfig = "reverse_proxy ${httpAddr}:${toString ports.http}";
+          ipFilter = null;
+        };
       };
     })
     (lib.mkIf cfg.runner.enable {
