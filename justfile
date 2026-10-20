@@ -13,6 +13,10 @@ check-clean:
 update:
   nix flake update
 
+# Deploy to a host, Nixos only
+deploy host:
+    nix develop --command nixos-rebuild switch --flake .#"$@" --target-host root@"$@"
+
 # Dry-run build every host, or only the ones named
 test *hosts:
     ./scripts/eval.fish "$@"
