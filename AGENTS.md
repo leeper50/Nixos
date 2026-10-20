@@ -6,16 +6,17 @@ for the folder layout and the Proxmox VM workflow.
 
 ## Commands
 
-- Tools: `nix develop` (or direnv via `.envrc`) provides colmena, ragenix,
-  tofu, nixfmt, deadnix, jq and fish, and installs the pre-commit hook.
+- Tools: `nix develop` (or direnv via `.envrc`) provides ragenix, tofu,
+  nixos-rebuild, nixfmt, deadnix, typos, jq and fish, and installs the
+  pre-commit hook.
 - Check: `./tests/eval.fish [host ...]` dry-run builds every host (or the ones
   named); it prints nothing on success. CI (`.forgejo/workflows/check.yml`)
   runs it plus `.#checks.x86_64-linux.pre-commit`.
 - Format: `nix fmt`. The pre-commit hook rejects commits that fail nixfmt,
   deadnix or typos. Prefix unused lambda arguments with `_`; add spellcheck
   false positives to `_typos.toml`. Don't disable the hooks.
-- Deploy one host manually: `colmena apply --on <host>`. Tags: `local`,
-  `servers`, `swarm`, `remote`.
+- Deploy one host manually (normally comin does it):
+  `nixos-rebuild switch --flake .#<host> --target-host <host> --sudo`.
 
 ## Things that will bite you
 

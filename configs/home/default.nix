@@ -18,7 +18,6 @@ in
         base16-schemes
         bc
         chezmoi
-        colmena
         iperf
         powerline-fonts
       ]

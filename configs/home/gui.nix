@@ -43,7 +43,6 @@ in
       home = {
         packages = with pkgs; [
           chezmoi
-          colmena
           corefonts
           file
           fira-code
@@ -92,7 +91,6 @@ in
         btop.enable = true;
         fastfetch.enable = true;
         fish.shellAliases = {
-          colmena = "colmena --config $FLAKE_DIR/flake.nix";
           cz = "chezmoi";
           update_flake = "nix flake update --flake $FLAKE_DIR";
         };

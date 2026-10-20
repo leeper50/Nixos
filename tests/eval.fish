@@ -2,7 +2,7 @@
 
 # Dry-run build every host configuration, or only the ones named as arguments.
 #
-#   ./tests/eval.fish                 # all hosts (plus the colmena smoke test)
+#   ./tests/eval.fish                 # all hosts
 #   ./tests/eval.fish node-1          # just node-1
 #   ./tests/eval.fish node-1 nas      # just node-1 and nas
 
@@ -74,20 +74,6 @@ set -l tmpdir (mktemp -d)
 set -l jobs (queue_configs nixos nixosConfigurations config.system.build.toplevel $tmpdir (filter_hosts $nixos_hosts))
 set -a jobs (queue_configs home homeConfigurations activationPackage $tmpdir (filter_hosts $home_hosts))
 set -a jobs (queue_configs darwin darwinConfigurations config.system.build.toplevel $tmpdir (filter_hosts $darwin_hosts))
-
-if test (count $requested_hosts) -eq 0
-    set -l colmena_id (job_id colmena)
-    begin
-        # globals is per node, so check every node gets one built for its own name.
-        nix eval .#colmena.meta.nodeSpecialArgs --apply '
-            args: builtins.all (name:
-              args.${name}.globals.hostName == name
-                || throw "colmena node ${name} has globals.hostName ${args.${name}.globals.hostName}"
-            ) (builtins.attrNames args)' >$tmpdir/$colmena_id.out 2>&1
-        echo $status >$tmpdir/$colmena_id.code
-    end &
-    set -a jobs colmena
-end
 
 wait
 
