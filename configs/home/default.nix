@@ -45,19 +45,19 @@ in
         build = ''
           set original_dir (pwd)
           if type -q nixos-rebuild
-            cd $FLAKE_DIR
+            cd $NH_FLAKE
             git pull
-            sudo nixos-rebuild test --flake $FLAKE_DIR/.#(hostname)
+            nh os build --dry
             cd $original_dir
           else if type -q darwin-rebuild
-            cd $FLAKE_DIR
+            cd $NH_FLAKE
             git pull
-            sudo darwin-rebuild build --flake $FLAKE_DIR/.#(hostname)
+            nh darwin build --dry
             cd $original_dir
           else if type -q home-manager
-            cd $FLAKE_DIR
+            cd $NH_FLAKE
             git pull
-            home-manager build --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
+            nh home build -b home_manager_backup
             cd $original_dir
           else
             return 1
@@ -65,9 +65,9 @@ in
         '';
         clean = ''
           if type -q nixos-rebuild; or type -q darwin-rebuild
-            sudo nix-collect-garbage -d
+            sudo nh clean all
           else if type -q home-manager
-            nix-collect-garbage -d
+            nh clean user
           else
             return 1
           end
@@ -85,19 +85,19 @@ in
         update = ''
           set original_dir (pwd)
           if type -q nixos-rebuild
-            cd $FLAKE_DIR
+            cd $NH_FLAKE
             sudo git pull
-            sudo nixos-rebuild switch --flake $FLAKE_DIR/.#(hostname)
+            nh os switch
             cd $original_dir
           else if type -q darwin-rebuild
-            cd $FLAKE_DIR
+            cd $NH_FLAKE
             git pull
-            sudo darwin-rebuild switch --flake $FLAKE_DIR/.#(hostname)
+            nh darwin switch
             cd $original_dir
           else if type -q home-manager
-            cd $FLAKE_DIR
+            cd $NH_FLAKE
             git pull
-            home-manager switch --flake $FLAKE_DIR/.#(hostname) -b home_manager_backup
+            nh home switch -b home_manager_backup
             cd $original_dir
           else
             return 1
@@ -108,7 +108,7 @@ in
         {
           cat = "bat -pp";
           edit_nix = "cd ~/Nix && hx ~/Nix";
-          hm = "home-manager --flake $FLAKE_DIR/.#(hostname)";
+          hm = "home-manager --flake $NH_FLAKE";
           l = "eza";
           rcat = "command cat";
         }
@@ -127,7 +127,7 @@ in
         set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
         set -gx XDG_CONFIG_HOME ${config.xdg.configHome}
         fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
-        set -gx FLAKE_DIR $HOME/Nix
+        set -gx NH_FLAKE $HOME/Nix
       '';
     };
     fzf = {
@@ -190,6 +190,14 @@ in
     };
     home-manager.enable = true;
     htop.enable = true;
+    nh = {
+      clean = {
+        enable = true;
+        extraArgs = "--keep-since 4d --keep 3";
+      };
+      enable = true;
+      flake = "$NH_FLAKE";
+    };
     jq.enable = true;
     lf = {
       enable = true;

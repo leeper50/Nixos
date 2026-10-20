@@ -92,10 +92,7 @@ in
         };
         btop.enable = true;
         fastfetch.enable = true;
-        fish.shellAliases = {
-          cz = "chezmoi";
-          update_flake = "nix flake update --flake $FLAKE_DIR";
-        };
+        fish.shellAliases.cz = "chezmoi";
         git.settings = {
           core.autocrlf = false;
           credential.helper = "store";
