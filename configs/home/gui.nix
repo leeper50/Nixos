@@ -16,7 +16,9 @@ let
     if systemType == "NixDarwin" then
       { darwin.expr = "${nixdFlake}.darwinConfigurations.macbook.options"; }
     else if systemType == "Standalone" then
-      { home-manager.expr = "${nixdFlake}.homeConfigurations.${hostName}.options"; }
+      {
+        home-manager.expr = "${nixdFlake}.homeConfigurations.\"${config.home.username}@${hostName}\".options";
+      }
     else
       { nixos.expr = "${nixdFlake}.nixosConfigurations.${osConfig.networking.hostName}.options"; };
 in

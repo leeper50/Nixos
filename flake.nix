@@ -210,7 +210,7 @@
       };
 
       homeConfigurations = {
-        "workstation" = home-manager.lib.homeManagerConfiguration {
+        "walter@workstation" = home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs "x86_64-linux";
           extraSpecialArgs = inputs // {
             globals = mkGlobals "workstation";
