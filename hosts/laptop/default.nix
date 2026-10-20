@@ -61,16 +61,16 @@ in
       exclude = [
         "*cache*"
       ]
-        ++ map (s: "/home/walter/" + s) [
-          ".local/share/Steam"
-          ".local/share/Trash"
-          ".ollama"
-          ".steam"
-          "Games"
-          "Nas"
-          "Sync/Retroarch"
-          "Temp"
-        ];
+      ++ map (s: "/home/walter/" + s) [
+        ".local/share/Steam"
+        ".local/share/Trash"
+        ".ollama"
+        ".steam"
+        "Games"
+        "Nas"
+        "Sync/Retroarch"
+        "Temp"
+      ];
       paths = [
         "/home/walter"
       ];

@@ -81,8 +81,7 @@ in
       ];
     }
     {
-      age.secrets."user_walter_hash.age".file =
-        ../../secrets/user_walter_hash.age;
+      age.secrets."user_walter_hash.age".file = ../../secrets/user_walter_hash.age;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
         btrfs-progs

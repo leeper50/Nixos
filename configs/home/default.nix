@@ -10,11 +10,7 @@ let
 in
 {
   home = {
-    homeDirectory =
-      if pkgs.stdenv.hostPlatform.isDarwin then
-        "/Users/walter"
-      else
-        "/home/walter";
+    homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/walter" else "/home/walter";
     packages =
       with pkgs;
       [

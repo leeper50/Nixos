@@ -10,5 +10,7 @@ jobs:
         uses: actions/checkout@v5
       - name: Install nix
         uses: https://github.com/cachix/install-nix-action@v31
+      - name: Format and lint
+        run: nix build --print-build-logs .#checks.x86_64-linux.pre-commit
       - name: Evaluate configurations
-        run: nix shell nixpkgs#fish nixpkgs#jq --command fish ./tests/eval.fish
+        run: nix develop --command fish ./tests/eval.fish

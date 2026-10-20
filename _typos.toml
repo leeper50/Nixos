@@ -1,0 +1,21 @@
+# Spellcheck config for typos (https://github.com/crate-ci/typos), run by the
+# pre-commit hook. Add false positives here rather than disabling the hook.
+
+[files]
+extend-exclude = [
+  "*.age",               # encrypted, base64 noise
+  "flake.lock",
+  "OpenTofu/*.tfstate*", # encrypted state
+  "configs/home/lf-icons", # file extensions, not words
+]
+
+[default]
+extend-ignore-re = [
+  # IPv6 addresses/prefixes: hex groups like "18ba" and "6ede" read as words
+  "[0-9a-fA-F]{0,4}(:[0-9a-fA-F]{0,4}){2,7}",
+]
+
+[default.extend-words]
+browseable = "browseable"     # samba option
+ser = "ser"                   # Proxmox host ser8
+thumbnailers = "thumbnailers" # freedesktop thumbnailer spec
