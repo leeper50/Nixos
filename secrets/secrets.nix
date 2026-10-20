@@ -48,9 +48,29 @@ in
     servercheap
   ];
   "docker_swarm_token.age".publicKeys = swarm_keys;
-  "forgejo_token.age".publicKeys = [
+  "forgejo_token_node-1.age".publicKeys = [
+    node-1
     personal
-    servercheap
+  ];
+  "forgejo_token_node-2.age".publicKeys = [
+    node-2
+    personal
+  ];
+  "forgejo_internal_token.age".publicKeys = [
+    node-2
+    personal
+  ];
+  "forgejo_lfs_jwt_secret.age".publicKeys = [
+    node-2
+    personal
+  ];
+  "forgejo_secret_key.age".publicKeys = [
+    node-2
+    personal
+  ];
+  "forgejo_mailer_password.age".publicKeys = [
+    node-2
+    personal
   ];
   "gotify_comin_token.age".publicKeys = all_keys;
   "headplane_cookie_secret.age".publicKeys = [

@@ -5,6 +5,7 @@ let
 in
 {
   imports = map (p: homelab + p) [
+    /forgejo.nix
     /jellyfin.nix
   ];
   environment.systemPackages = with pkgs; [
@@ -23,6 +24,13 @@ in
         labels = [ "intel_gpu" ];
         managerIP = globals.networking.hosts.node-1.ipv4;
       };
+    };
+    forgejo = {
+      runner = {
+        enable = true;
+        uuid = "3e9af3ee-ad9b-48f9-a9ad-9349cf9629ea";
+      };
+      server.enable = true;
     };
     jellyfin.enable = true;
   };
