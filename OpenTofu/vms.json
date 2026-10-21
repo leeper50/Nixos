@@ -1,7 +1,7 @@
 {
   "nas": {
     "cores": 4,
-    "data_disk_size": 0,
+    "data_disk_size": 200,
     "datastore_id": "nvme_tower",
     "disk_size": 64,
     "memory": 6144,

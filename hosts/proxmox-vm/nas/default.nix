@@ -12,6 +12,7 @@ in
 {
   imports =
     map (p: homelab + p) [
+      /attic.nix
       /blocky.nix
       /keepalived.nix
       /media-watch.nix
@@ -23,7 +24,10 @@ in
     ]
     ++ [
       disko.nixosModules.disko
-      (import ../vm-disk-config.nix { dataMountpoint = null; })
+      (import ../vm-disk-config.nix {
+        dataMountpoint = "/mnt/attic";
+        dataFormat = "xfs";
+      })
       (rootDir + /configs/nixos/syncthing.nix)
     ];
   fileSystems."/mnt/data" = {
@@ -37,6 +41,7 @@ in
     ];
   };
   local = {
+    attic.enable = true;
     beszel.agent.enable = true;
     caddy.enable = true;
     mediaWatch.enable = true;

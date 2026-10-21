@@ -142,7 +142,7 @@
             memory = 6144;
             datastore_id = "nvme_tower";
             disk_size = 64;
-            data_disk_size = 0;
+            data_disk_size = 200;
             pci_mappings = [ "tower-sata" ];
           };
         };
