@@ -261,6 +261,7 @@
             packages =
               inputs.self.checks.${system}.pre-commit.enabledPackages
               ++ [
+                pkgs.attic-client
                 pkgs.fish
                 pkgs.jq
                 pkgs.just
