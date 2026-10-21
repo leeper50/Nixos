@@ -23,10 +23,13 @@ jobs:
             extra-trusted-public-keys = homelab:RZqMHktrUvp6ig42m8tNe4+WtQv9TR5NB9Vyskzkm7E=
             connect-timeout = 5
             fallback = true
+            sandbox = true
+            sandbox-fallback = false
       - name: Use nix build users
         run: |
           echo "build-users-group = nixbld" >> /etc/nix/nix.conf
           nix config show build-users-group
+          nix config show sandbox
       - name: Log in to attic
         env:
           ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
