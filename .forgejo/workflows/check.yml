@@ -19,11 +19,14 @@ jobs:
         uses: https://github.com/cachix/install-nix-action@v31
         with:
           extra_nix_config: |
-            build-users-group = nixbld
             extra-substituters = https://attic.nas.dellhp.party/homelab
             extra-trusted-public-keys = homelab:RZqMHktrUvp6ig42m8tNe4+WtQv9TR5NB9Vyskzkm7E=
             connect-timeout = 5
             fallback = true
+      - name: Use nix build users
+        run: |
+          echo "build-users-group = nixbld" >> /etc/nix/nix.conf
+          nix config show build-users-group
       - name: Log in to attic
         env:
           ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
