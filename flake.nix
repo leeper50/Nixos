@@ -152,7 +152,7 @@
           vm_id = 1001;
           cores = 12;
           memory = 16384;
-          disk_size = 32;
+          disk_size = 64;
           data_disk_size = 64;
           usb_mappings = [
             "zigbee"
