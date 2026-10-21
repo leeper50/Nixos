@@ -15,7 +15,7 @@ update:
 
 # Deploy to a host, Nixos only
 deploy host:
-    nix develop --command nixos-rebuild switch --flake .#"$@" --target-host root@"$@"
+    nix develop --command nh os switch -H {{host}} --target-host root@{{host}}
 
 # Dry-run build every host, or only the ones named
 test *hosts:
