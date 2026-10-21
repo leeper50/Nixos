@@ -26,6 +26,10 @@ in
 {
   "acme_cloudflare.age".publicKeys = all_keys;
   "acme_porkbun.age".publicKeys = all_keys;
+  "atticd_env.age".publicKeys = [
+    nas
+    personal
+  ];
   "authelia_jwt_secret.age".publicKeys = [
     personal
     servercheap
