@@ -95,7 +95,6 @@ in
         ncdu
         nmap
         rsync
-        sbomnix
         tcpdump
       ];
       i18n = {
