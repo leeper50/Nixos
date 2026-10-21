@@ -23,6 +23,10 @@ in
   options.local.forgejo = {
     runner = {
       enable = lib.mkEnableOption "forgejo runner";
+      nixHost = lib.mkEnableOption ''
+        a `nix:host` label that runs jobs directly on the host, using its nix
+        daemon, store and network instead of a container
+      '';
       token = lib.mkOption {
         type = lib.types.str;
         default = "";
@@ -213,7 +217,8 @@ in
             "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
             "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
             "ubuntu-20.04:docker://docker.gitea.com/runner-images:ubuntu-20.04"
-          ];
+          ]
+          ++ lib.optional cfg.runner.nixHost "nix:host";
           server.connections = {
             default = {
               url = "https://${forgejoDomain}/";
@@ -242,6 +247,28 @@ in
       systemd.tmpfiles.rules = [
         "d /var/lib/forgejo-runner/${config.networking.hostName} 0750 ${runnerUser} ${runnerUser} -"
       ];
+    })
+    (lib.mkIf (cfg.runner.enable && cfg.runner.nixHost) {
+      services.forgejo-runner.instances."${config.networking.hostName}".hostPackages = with pkgs; [
+        bash
+        config.nix.package
+        coreutils
+        curl
+        findutils
+        gawk
+        gnugrep
+        gnused
+        gnutar
+        gzip
+        nodejs
+        wget
+      ];
+      # CI builds now land in this host's store; collect garbage during a
+      # build once free space drops below min-free, up to max-free.
+      nix.settings = {
+        max-free = 20 * 1024 * 1024 * 1024;
+        min-free = 5 * 1024 * 1024 * 1024;
+      };
     })
   ];
 }
