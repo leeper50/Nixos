@@ -28,6 +28,7 @@ in
     forgejo = {
       runner = {
         enable = true;
+        nixHost = true;
         uuid = "3e9af3ee-ad9b-48f9-a9ad-9349cf9629ea";
       };
       server.enable = true;
