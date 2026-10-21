@@ -84,6 +84,7 @@ in
       age.secrets."user_walter_hash.age".file = ../../secrets/user_walter_hash.age;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
+        attic-client
         btrfs-progs
         busybox
         curl
@@ -125,10 +126,14 @@ in
         };
         settings = {
           auto-optimise-store = true;
+          connect-timeout = 5;
           experimental-features = [
             "nix-command"
             "flakes"
           ];
+          extra-substituters = [ globals.attic.url ];
+          extra-trusted-public-keys = [ globals.attic.publicKey ];
+          fallback = true;
         };
       };
       programs.fish.enable = true;

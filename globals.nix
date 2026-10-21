@@ -11,6 +11,10 @@ let
   };
 in
 {
+  attic = {
+    publicKey = "homelab:RZqMHktrUvp6ig42m8tNe4+WtQv9TR5NB9Vyskzkm7E=";
+    url = "https://attic.nas.${domains.tailnet}/homelab";
+  };
   inherit domains;
   fullName = "Walter Leeper";
   inherit hostName;
