@@ -202,7 +202,12 @@ in
           podman = lib.mkForce false;
         };
         settings = {
-          container.docker_host = "automount";
+          container = {
+            docker_host = "automount";
+            # Nix needs namespaces for its build sandbox. Docker is rootless,
+            # so "privileged" stays within the runner user's namespace.
+            privileged = true;
+          };
           runner.labels = [
             "docker:docker://data.forgejo.org/oci/node:20-bullseye"
             "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
