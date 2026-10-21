@@ -30,8 +30,7 @@ in
         environmentFile = config.age.secrets."atticd_env.age".path;
         settings = {
           api-endpoint = "https://attic.${config.local.caddy.domain}/";
-          # Peer auth over the socket as the atticd system user.
-          database.url = "postgresql:///atticd?host=/run/postgresql";
+          database.url = "postgresql:///atticd?host=/run/postgresql&user=atticd";
           garbage-collection.default-retention-period = "30 days";
           listen = "127.0.0.1:${toString ports.atticd}";
           storage = {
