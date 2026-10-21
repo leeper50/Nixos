@@ -107,7 +107,9 @@ set -l failed
 set -l push_failed
 for label in $jobs
     set -l id (job_id $label)
-    if test (cat $tmpdir/$id.code) -ne 0
+    # A missing or empty code (e.g. the disk filled up) counts as a failure.
+    set -l code (cat $tmpdir/$id.code 2>/dev/null)
+    if test "$code" != 0
         cat $tmpdir/$id.out
         set -a failed $label
     else if test -e $tmpdir/$id.pushfail
