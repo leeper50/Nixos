@@ -5,32 +5,10 @@ on:
   pull_request:
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: nix
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Create nix build users
-        run: |
-          groupadd -g 30000 nixbld
-          for i in $(seq 1 32); do
-            useradd -u $((30000 + i)) -g nixbld -G nixbld -M -d /var/empty \
-              -s /usr/sbin/nologin -c "Nix build user $i" nixbld$i
-          done
-      - name: Install nix
-        uses: https://github.com/cachix/install-nix-action@v31
-        with:
-          extra_nix_config: |
-            extra-substituters = https://attic.nas.dellhp.party/homelab
-            extra-trusted-public-keys = homelab:RZqMHktrUvp6ig42m8tNe4+WtQv9TR5NB9Vyskzkm7E=
-            connect-timeout = 5
-            fallback = true
-            sandbox = true
-            sandbox-fallback = false
-      - name: Use nix build users
-        run: |
-          echo "build-users-group = nixbld" >> /etc/nix/nix.conf
-          nix config show build-users-group
-          nix config show sandbox
       - name: Log in to attic
         env:
           ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
