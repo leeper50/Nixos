@@ -2,6 +2,7 @@
   config,
   lib,
   localLib,
+  pkgs,
   ...
 }:
 let
@@ -53,10 +54,22 @@ in
       # boots and lose ownership of storage outside /var/lib. A static user
       # keeps the data disk's files readable.
       systemd.services.atticd = {
-        serviceConfig.DynamicUser = lib.mkForce false;
+        serviceConfig = {
+          DynamicUser = lib.mkForce false;
+          # Runs as root after the data disk is mounted. A tmpfiles rule can
+          # run before the mount and only fix the directory underneath it.
+          ExecStartPre = [
+            (
+              "+"
+              + pkgs.writeShellScript "atticd-storage-dir" ''
+                chown atticd:atticd ${cfg.storagePath}
+                chmod 0750 ${cfg.storagePath}
+              ''
+            )
+          ];
+        };
         unitConfig.RequiresMountsFor = [ cfg.storagePath ];
       };
-      systemd.tmpfiles.rules = [ "d ${cfg.storagePath} 0750 atticd atticd -" ];
       users.groups.atticd = { };
       users.users.atticd = {
         group = "atticd";
