@@ -11,6 +11,10 @@
 
 cd (status dirname)/..
 
+# CI runs as root, which nh refuses by default. Building never escalates, so
+# the check only gets in the way.
+set -gx NH_BYPASS_ROOT_CHECK true
+
 function list_attrs
     nix eval --json .#$argv[1] --apply builtins.attrNames 2>/dev/null | jq -r '.[]'
 end
