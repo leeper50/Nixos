@@ -305,7 +305,7 @@ in
         ffmpeg-full
         freac
         gimp
-        handbrake
+        # handbrake
         imgbrd-grabber
         kdePackages.kdenlive
         kdePackages.tokodon
