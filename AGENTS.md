@@ -12,8 +12,9 @@ for the folder layout and the Proxmox VM workflow.
   live in `scripts/`.
 - Check: `just test [host ...]` builds every NixOS host and pushes it to the
   attic cache when logged in, and dry-runs the Home Manager and darwin hosts
-  (or only the ones named); it prints nothing on success. CI (`.forgejo/workflows/check.yml`) runs it
-  plus `.#checks.x86_64-linux.pre-commit`.
+  (or only the ones named); it prints nothing on success. CI
+  (`.forgejo/workflows/check.yml`) runs it plus
+  `.#checks.x86_64-linux.pre-commit` on pull requests and on pushes to `main`.
 - Format: `nix fmt`. The pre-commit hook rejects commits that fail nixfmt,
   deadnix or typos. Prefix unused lambda arguments with `_`; add spellcheck
   false positives to `_typos.toml`. Don't disable the hooks.
@@ -22,9 +23,10 @@ for the folder layout and the Proxmox VM workflow.
 
 ## Things that will bite you
 
-- **Pushing to `main` deploys.** Every NixOS host runs comin, which pulls
-  `main` from the Forgejo remote and builds and switches on the host itself.
-  Never push without being asked.
+- **`main` deploys.** Every NixOS host runs comin, which pulls `main` from the
+  Forgejo remote and builds and switches on the host itself. `main` is
+  protected: changes reach it only through a pull request whose CI passed.
+  Never push a branch, open a pull request or merge without being asked.
 - **Flakes only see git-tracked files.** `git add` new files before evaluating,
   or the flake will say they don't exist.
 - **Host shells are fish.** Bash one-liners over SSH fail; send scripts with
@@ -56,12 +58,17 @@ for the folder layout and the Proxmox VM workflow.
   `secrets/`. Never print or commit decrypted secrets.
 - **Swarm VMs** (`node-1..3`) are built by `mkSwarmHost` in `flake.nix`, which
   also holds each VM's Proxmox shape for OpenTofu.
+- **Branches:** work on a short-lived branch off `main` named after the
+  change (`attic-substituter`, `flake-bump`) and open a pull request into
+  `main`. CI must pass and the branch must be up to date with `main` before it
+  merges; CI builds land in the attic cache, so hosts download them after the
+  merge instead of building.
 - **Commits:** `<scope>: <change>`, lowercase and imperative, where scope is
   the module or host touched (`redlib: switch to luciferscircle fork`,
   `node-3: enable redlib`, `flake: bump nixpkgs`).
   - Add a body only when the diff doesn't explain why: workarounds, pins,
     non-obvious choices.
-  - One logical change per commit, since each commit on `main` is a deploy
-    and `git revert` is the rollback. Keep `flake.lock` bumps in their own
-    commit.
+  - One logical change per commit, since pull requests are rebased onto
+    `main` commit by commit and `git revert` is the rollback. Keep
+    `flake.lock` bumps in their own commit.
   - No vague subjects (`fixes`, `update`, `wip`).
