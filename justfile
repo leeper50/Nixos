@@ -17,7 +17,7 @@ update:
 deploy host:
     nix develop --command nh os switch -H {{host}} --target-host root@{{host}}
 
-# Dry-run build every host, or only the ones named
+# Build and cache every NixOS host and dry-run the rest, or only the ones named
 test *hosts:
     ./scripts/eval.fish "$@"
 

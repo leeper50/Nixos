@@ -1,8 +1,9 @@
 #!/usr/bin/env fish
 
-# Dry-run build every host configuration, or only the ones named as arguments.
-# NixOS and darwin builds go through nh, whose own --dry is ignored by `build`, so nix's
-# --dry-run is passed through instead.
+# Build every NixOS host and push it to the attic cache, and dry-run build the
+# Home Manager and nix-darwin configurations, or only the hosts named as
+# arguments. Pushing is skipped when the attic client isn't logged in to a
+# server that has the cache.
 #
 #   just test                 # all hosts
 #   just test node-1          # just node-1
@@ -28,22 +29,29 @@ end
 
 function queue_configs
     set -l label $argv[1]
-    set -l nh_cmd $argv[2]
-    set -l host_flag $argv[3]
-    set -l tmpdir $argv[4]
-    test (count $argv) -ge 5; or return 0
-    for h in $argv[5..]
+    set -l tmpdir $argv[2]
+    test (count $argv) -ge 3; or return 0
+    for h in $argv[3..]
         set -l full_label "$label: $h"
         set -l id (job_id $full_label)
         begin
-            # nh home also hands extra args to the `nix eval` it uses to find
-            # the configuration, which rejects --dry-run.
-            if test $nh_cmd = home
-                nix build --dry-run .#homeConfigurations.$h.activationPackage
-            else
-                nh $nh_cmd build . $host_flag $h --no-nom -d never -- --dry-run
+            switch $label
+                case nixos
+                    nh os build . -H $h --no-nom -d never -o $tmpdir/$id.result
+                case home
+                    # nh home also hands extra args to the `nix eval` it uses
+                    # to find the configuration, which rejects --dry-run.
+                    nix build --dry-run .#homeConfigurations.$h.activationPackage
+                case darwin
+                    # nh's own --dry is ignored by `build`, so nix's is passed.
+                    nh darwin build . -H $h --no-nom -d never -- --dry-run
             end >$tmpdir/$id.out 2>&1
-            echo $status >$tmpdir/$id.code
+            set -l code $status
+            echo $code >$tmpdir/$id.code
+            if test $code -eq 0; and set -q attic_push; and test -L $tmpdir/$id.result
+                attic push $attic_cache (realpath $tmpdir/$id.result) >>$tmpdir/$id.out 2>&1
+                or touch $tmpdir/$id.pushfail
+            end
         end &
         echo $full_label
     end
@@ -52,7 +60,8 @@ end
 if test (count $argv) -gt 0; and contains -- $argv[1] -h --help
     echo "usage: just test [host...]"
     echo
-    echo "Dry-run build every host configuration, or only the ones named."
+    echo "Build every NixOS host and push it to attic, dry-run the rest,"
+    echo "or only the hosts named."
     exit 0
 end
 
@@ -77,24 +86,42 @@ if test (count $unknown) -gt 0
     exit 2
 end
 
+set -g attic_cache homelab
+if command -q attic; and attic cache info $attic_cache >/dev/null 2>&1
+    set -g attic_push
+end
+
 set -l tmpdir (mktemp -d)
 
-set -l jobs (queue_configs nixos os -H $tmpdir (filter_hosts $nixos_hosts))
-set -a jobs (queue_configs home home -c $tmpdir (filter_hosts $home_hosts))
-set -a jobs (queue_configs darwin darwin -H $tmpdir (filter_hosts $darwin_hosts))
+set -l jobs (queue_configs nixos $tmpdir (filter_hosts $nixos_hosts))
+set -a jobs (queue_configs home $tmpdir (filter_hosts $home_hosts))
+set -a jobs (queue_configs darwin $tmpdir (filter_hosts $darwin_hosts))
 
 wait
 
 set -l failed
+set -l push_failed
 for label in $jobs
     set -l id (job_id $label)
     if test (cat $tmpdir/$id.code) -ne 0
         cat $tmpdir/$id.out
         set -a failed $label
+    else if test -e $tmpdir/$id.pushfail
+        cat $tmpdir/$id.out
+        set -a push_failed $label
     end
 end
 
 rm -rf $tmpdir
+
+# A failed push leaves the cache behind but the build itself is fine.
+if test (count $push_failed) -gt 0
+    echo >&2
+    echo "warning: built but not pushed to attic:" >&2
+    for f in $push_failed
+        echo "  - $f" >&2
+    end
+end
 
 if test (count $failed) -gt 0
     echo

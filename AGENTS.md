@@ -10,8 +10,9 @@ for the folder layout and the Proxmox VM workflow.
   nixos-rebuild, nixfmt, deadnix, typos, jq and fish, and installs the
   pre-commit hook. Run `just --list` for the shortcuts; the scripts they call
   live in `scripts/`.
-- Check: `just test [host ...]` dry-run builds every host (or the ones named);
-  it prints nothing on success. CI (`.forgejo/workflows/check.yml`) runs it
+- Check: `just test [host ...]` builds every NixOS host and pushes it to the
+  attic cache when logged in, and dry-runs the Home Manager and darwin hosts
+  (or only the ones named); it prints nothing on success. CI (`.forgejo/workflows/check.yml`) runs it
   plus `.#checks.x86_64-linux.pre-commit`.
 - Format: `nix fmt`. The pre-commit hook rejects commits that fail nixfmt,
   deadnix or typos. Prefix unused lambda arguments with `_`; add spellcheck
