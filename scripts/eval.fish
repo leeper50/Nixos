@@ -1,6 +1,8 @@
 #!/usr/bin/env fish
 
 # Dry-run build every host configuration, or only the ones named as arguments.
+# NixOS and darwin builds go through nh, whose own --dry is ignored by `build`, so nix's
+# --dry-run is passed through instead.
 #
 #   just test                 # all hosts
 #   just test node-1          # just node-1
@@ -26,15 +28,21 @@ end
 
 function queue_configs
     set -l label $argv[1]
-    set -l flake_attr $argv[2]
-    set -l build_attr $argv[3]
+    set -l nh_cmd $argv[2]
+    set -l host_flag $argv[3]
     set -l tmpdir $argv[4]
     test (count $argv) -ge 5; or return 0
     for h in $argv[5..]
         set -l full_label "$label: $h"
         set -l id (job_id $full_label)
         begin
-            nix build --dry-run .#$flake_attr.$h.$build_attr >$tmpdir/$id.out 2>&1
+            # nh home also hands extra args to the `nix eval` it uses to find
+            # the configuration, which rejects --dry-run.
+            if test $nh_cmd = home
+                nix build --dry-run .#homeConfigurations.$h.activationPackage
+            else
+                nh $nh_cmd build . $host_flag $h --no-nom -d never -- --dry-run
+            end >$tmpdir/$id.out 2>&1
             echo $status >$tmpdir/$id.code
         end &
         echo $full_label
@@ -71,9 +79,9 @@ end
 
 set -l tmpdir (mktemp -d)
 
-set -l jobs (queue_configs nixos nixosConfigurations config.system.build.toplevel $tmpdir (filter_hosts $nixos_hosts))
-set -a jobs (queue_configs home homeConfigurations activationPackage $tmpdir (filter_hosts $home_hosts))
-set -a jobs (queue_configs darwin darwinConfigurations config.system.build.toplevel $tmpdir (filter_hosts $darwin_hosts))
+set -l jobs (queue_configs nixos os -H $tmpdir (filter_hosts $nixos_hosts))
+set -a jobs (queue_configs home home -c $tmpdir (filter_hosts $home_hosts))
+set -a jobs (queue_configs darwin darwin -H $tmpdir (filter_hosts $darwin_hosts))
 
 wait
 

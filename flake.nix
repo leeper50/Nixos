@@ -264,6 +264,7 @@
                 pkgs.fish
                 pkgs.jq
                 pkgs.just
+                pkgs.nh
                 pkgs.opentofu
                 pkgs.ragenix
               ]
