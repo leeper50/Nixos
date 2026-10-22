@@ -1,8 +1,10 @@
 {
   comin,
   config,
+  globals,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -80,9 +82,24 @@ in
             }
           ];
         };
+        # The flake's `secrets` input is a private repo on Forgejo, fetched over
+        # SSH by root with this host's SSH key (a read-only deploy key there).
+        # Nix runs git to fetch it, which comin's unit doesn't provide.
+        systemd.services.comin.path = [ pkgs.git ];
+        programs.ssh = {
+          extraConfig = ''
+            Match host ${globals.forgejo.domain} localuser root
+              IdentityFile /etc/ssh/ssh_host_ed25519_key
+              IdentitiesOnly yes
+          '';
+          knownHosts.forgejo = {
+            hostNames = [ "[${globals.forgejo.domain}]:${toString globals.forgejo.sshPort}" ];
+            publicKey = globals.forgejo.sshHostKey;
+          };
+        };
       }
       (lib.mkIf cfg.gotify.enable {
-        age.secrets."gotify_comin_token.age".file = ../../secrets/gotify_comin_token.age;
+        age.secrets."gotify_comin_token.age".file = "${secrets}/gotify_comin_token.age";
         services.comin = {
           postBuildCommand = postBuild;
           postDeploymentCommand = postDeploy;

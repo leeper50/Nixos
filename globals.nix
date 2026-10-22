@@ -16,6 +16,12 @@ in
     url = "https://attic.nas.${domains.tailnet}/homelab";
   };
   inherit domains;
+  # Forgejo's built-in SSH server, which serves the private secrets repo.
+  forgejo = {
+    domain = "fj.dellhplaptop.xyz";
+    sshHostKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQChp3/x74IDn0WRd74au4WT8/EnfQcBFzb+HwQUS/AdSCSI54x3hSETFtwQHLIHEyOEFgkj6R6lDpd5Uj3FglWTRI4nFo+4deJhZP6rk9ekVNLTSwWyO2aXjKTxGpe12pmA4RvgOMQwHgmO6w1INrxKyk/na7GzjhAO4BiVAUaR2fsk+KNNYVwpaAzwXlWhc+dq9fflrVosRNMJvPA1lfGcEvChauMYwpCuvzfv5bDVQkzDJVw6967EEM657HswbF3zFbi72eI6kaB/CM+IYPSZVcbCFnJA7sdmL5JN43Gu8FjKHfunMzqyYQuCgtIzPt/AzsKPQPLej5ECLCGf0unFrI5Gf3zSIKABrEe81BPU0hAGIr9CP0lLS2ZiWRaDCX2nmHwsGl4123a3t/lhcyqr6aqVZKWe8hP/Nhlc/t05tqAsovJfpnrPiC6ufCNdlvSNsVU48L8z9y4XfaPAkdHO6KnxqdihGEOT61B78kJFjwaKmMcaw3HyF/BN6w8I0xsbOEKYsHOv9FW5xSsJ2LAki3GFay6iJsAKOC8ttkNRAphoBVwV9ngNEIUyUBspJWluVx7bD+EiVjh/vgdRwUqklogmF4Jf/Pdl2W59tw5ovXqW6nE01seRu6nooyn2OBbWlyH0C5Adn1N3Vi4M1Txc1bqWvvEGEFOWwnxlqx7luw==";
+    sshPort = 2222;
+  };
   fullName = "Walter Leeper";
   inherit hostName;
   locale = "en_US.UTF-8";
