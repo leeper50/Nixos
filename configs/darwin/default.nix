@@ -4,12 +4,13 @@
   lib,
   pkgs,
   self,
+  secrets,
   ...
 }:
 {
   imports = [
     agenix.darwinModules.default
-    ../../secrets
+    "${secrets}/default.nix"
   ];
   age.secrets =
     lib.genAttrs
@@ -20,7 +21,7 @@
         "user_walter_clear.age"
       ]
       (name: {
-        file = ../../secrets/${name};
+        file = "${secrets}/${name}";
         group = "1000";
         owner = "1000";
       });

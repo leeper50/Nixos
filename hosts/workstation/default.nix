@@ -1,4 +1,9 @@
-{ agenix, stylix, ... }:
+{
+  agenix,
+  secrets,
+  stylix,
+  ...
+}:
 let
   rootDir = ../..;
 in
@@ -10,9 +15,9 @@ in
       /configs/home/restic.nix
       /configs/home/stylix.nix
       /configs/home/syncthing.nix
-      /secrets
     ]
     ++ [
+      "${secrets}/default.nix"
       agenix.homeManagerModules.default
       stylix.homeModules.stylix
     ];

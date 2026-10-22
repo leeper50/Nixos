@@ -22,7 +22,7 @@ if set -q _flag_key
     rm -rdf /tmp/$host
     mkdir -p /tmp/$host/etc/ssh/
     ssh-keygen -N '' -f /tmp/$host/etc/ssh/ssh_host_ed25519_key -t ed25519 -a 32 -C "root@$host" &>/dev/null
-    echo "Add to secrets/keys.nix"
+    echo "Add to secrets/keys.nix, and as a read-only deploy key on the private secrets repo:"
     echo "$host = \"$(cat /tmp/$host/etc/ssh/ssh_host_ed25519_key.pub)\";"
     return $status
 end

@@ -4,6 +4,7 @@
   lib,
   localLib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -49,8 +50,8 @@ in
     }
     (lib.mkIf cfg.enable {
       age.secrets = {
-        "murmur_environment.age".file = ../../../secrets/murmur_environment.age;
-        "murmur_superuser_password.age".file = ../../../secrets/murmur_superuser_password.age;
+        "murmur_environment.age".file = "${secrets}/murmur_environment.age";
+        "murmur_superuser_password.age".file = "${secrets}/murmur_superuser_password.age";
       };
       networking.firewall = localLib.mkFirewallRules {
         service = "murmur";

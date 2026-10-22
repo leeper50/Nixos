@@ -4,6 +4,7 @@
   lib,
   localLib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -126,7 +127,7 @@ in
         );
       in
       {
-        age.secrets."komodo_onboarding_key.age".file = ../../../secrets/komodo_onboarding_key.age;
+        age.secrets."komodo_onboarding_key.age".file = "${secrets}/komodo_onboarding_key.age";
         systemd.services.komodo-periphery = {
           description = "Deploy Komodo periphery";
           after = [ "docker.service" ];
@@ -235,7 +236,7 @@ in
         );
       in
       {
-        age.secrets."komodo_admin_password.age".file = ../../../secrets/komodo_admin_password.age;
+        age.secrets."komodo_admin_password.age".file = "${secrets}/komodo_admin_password.age";
         systemd.services.komodo-core-stack = {
           description = "Deploy Komodo core stack";
           after = if cfg.swarm.enable then [ "docker-swarm-networks.service" ] else [ "docker.service" ];
@@ -399,7 +400,7 @@ in
         };
       };
       age.secrets."docker_swarm_token.age" = lib.mkIf (!cfg.swarm.manager) {
-        file = ../../../secrets/docker_swarm_token.age;
+        file = "${secrets}/docker_swarm_token.age";
       };
       systemd.services.docker-swarm-join = lib.mkIf (!cfg.swarm.manager) {
         description = "Join Docker Swarm";

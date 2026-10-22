@@ -4,6 +4,7 @@
   lib,
   localLib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -28,7 +29,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     age.secrets = lib.genAttrs (map (name: "redis_${name}.age") cfg.databases) (name: {
-      file = ../../../secrets/${name};
+      file = "${secrets}/${name}";
     });
     networking.firewall = localLib.mkFirewallRules {
       service = "redis";

@@ -3,6 +3,7 @@
   disko,
   nur,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -79,7 +80,7 @@ in
       ];
     };
   };
-  age.secrets."wifi_home_env.age".file = rootDir + /secrets/wifi_home_env.age;
+  age.secrets."wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
   networking.networkmanager = {
     ensureProfiles = {
       environmentFiles = [ config.age.secrets."wifi_home_env.age".path ];

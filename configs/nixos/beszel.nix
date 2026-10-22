@@ -4,6 +4,7 @@
   lib,
   localLib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -25,7 +26,7 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.agent.enable {
       age.secrets."beszel_token.age" = {
-        file = ../../secrets/beszel_token.age;
+        file = "${secrets}/beszel_token.age";
         group = "beszel-agent";
         mode = "0444";
       };

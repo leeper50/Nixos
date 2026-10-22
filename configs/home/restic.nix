@@ -4,6 +4,7 @@
   lib,
   osConfig ? null,
   systemType,
+  secrets,
   ...
 }:
 let
@@ -124,7 +125,7 @@ in
             (
               name:
               {
-                file = ../../secrets/${name};
+                file = "${secrets}/${name}";
               }
               // lib.optionalAttrs isNixos {
                 group = "walter";

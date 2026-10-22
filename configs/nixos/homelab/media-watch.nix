@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -61,7 +62,7 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    age.secrets."jellyfin_api_key.age".file = ../../../secrets/jellyfin_api_key.age;
+    age.secrets."jellyfin_api_key.age".file = "${secrets}/jellyfin_api_key.age";
     boot.kernel.sysctl = {
       "fs.inotify.max_user_instances" = 512;
       "fs.inotify.max_user_watches" = 524288;

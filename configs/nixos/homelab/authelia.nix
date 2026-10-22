@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  secrets,
   ...
 }:
 let
@@ -35,12 +36,12 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       age.secrets = {
-        "authelia_jwt_secret.age".file = ../../../secrets/authelia_jwt_secret.age;
-        "authelia_oidc_hmac_secret.age".file = ../../../secrets/authelia_oidc_hmac_secret.age;
-        "authelia_oidc_issuer_key.age".file = ../../../secrets/authelia_oidc_issuer_key.age;
-        "authelia_storage_encryption_key.age".file = ../../../secrets/authelia_storage_encryption_key.age;
+        "authelia_jwt_secret.age".file = "${secrets}/authelia_jwt_secret.age";
+        "authelia_oidc_hmac_secret.age".file = "${secrets}/authelia_oidc_hmac_secret.age";
+        "authelia_oidc_issuer_key.age".file = "${secrets}/authelia_oidc_issuer_key.age";
+        "authelia_storage_encryption_key.age".file = "${secrets}/authelia_storage_encryption_key.age";
         "lldap_admin_password.age" = {
-          file = ../../../secrets/lldap_admin_password.age;
+          file = "${secrets}/lldap_admin_password.age";
           group = "ldap-bind-secret";
           mode = "0440";
           owner = "lldap";

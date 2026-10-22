@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  secrets,
   ...
 }:
 let
@@ -19,7 +20,7 @@ in
 {
   config = lib.mkMerge [
     {
-      age.secrets."headscale_preauth_key.age".file = ../../secrets/headscale_preauth_key.age;
+      age.secrets."headscale_preauth_key.age".file = "${secrets}/headscale_preauth_key.age";
       networking = {
         firewall = {
           allowPing = true;

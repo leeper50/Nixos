@@ -569,6 +569,7 @@
         "nixpkgs-authelia": "nixpkgs-authelia",
         "nur": "nur",
         "plasma-manager": "plasma-manager",
+        "secrets": "secrets",
         "stylix": "stylix"
       }
     },
@@ -591,6 +592,22 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792666923,
+        "narHash": "sha256-jCmwmLPqQTcUp/IP3OHQNnFsUZ4LINxWvh661qy3EjI=",
+        "ref": "refs/heads/main",
+        "rev": "3607447b861f1b81c5bae98d00490d2febc77f17",
+        "revCount": 2,
+        "type": "git",
+        "url": "ssh://git@fj.dellhplaptop.xyz:2222/wleeper13/nix-private.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@fj.dellhplaptop.xyz:2222/wleeper13/nix-private.git"
       }
     },
     "stylix": {

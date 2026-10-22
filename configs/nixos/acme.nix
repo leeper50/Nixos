@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  secrets,
   ...
 }:
 let
@@ -43,7 +44,7 @@ in
             lib.unique (lib.mapAttrsToList (_: options: options.provider) cfg.certs)
           ))
           (name: {
-            file = ../../secrets/${name};
+            file = "${secrets}/${name}";
           });
       # Add machine-specific cert to attrSet as default.
       local.acme.certs."${globals.domains.devicePrimary}" = { };

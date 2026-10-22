@@ -5,6 +5,7 @@
   pkgs,
   osConfig ? null,
   systemType,
+  secrets,
   ...
 }:
 let
@@ -154,6 +155,6 @@ in
         "user_walter_clear.age"
       ]
       (name: {
-        file = ../../secrets/${name};
+        file = "${secrets}/${name}";
       });
 }

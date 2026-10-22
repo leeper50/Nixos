@@ -41,6 +41,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    # Agenix secrets, keys.nix and secrets.nix live in a private repo. Every
+    # host fetches it over SSH with its host key (see configs/nixos/ssh.nix).
+    secrets = {
+      url = "git+ssh://git@fj.dellhplaptop.xyz:2222/wleeper13/nix-private.git";
+      flake = false;
+    };
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";

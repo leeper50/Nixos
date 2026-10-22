@@ -5,6 +5,7 @@
   localLib,
   pkgs,
   utils,
+  secrets,
   ...
 }:
 let
@@ -48,11 +49,11 @@ in
       ];
     }
     (lib.mkIf cfg.server.enable {
-      age.secrets."forgejo_internal_token.age".file = ../../../secrets/forgejo_internal_token.age;
-      age.secrets."forgejo_lfs_jwt_secret.age".file = ../../../secrets/forgejo_lfs_jwt_secret.age;
-      age.secrets."forgejo_mailer_password.age".file = ../../../secrets/forgejo_mailer_password.age;
-      age.secrets."forgejo_secret_key.age".file = ../../../secrets/forgejo_secret_key.age;
-      age.secrets."postgresql_forgejo.age".file = ../../../secrets/postgresql_forgejo.age;
+      age.secrets."forgejo_internal_token.age".file = "${secrets}/forgejo_internal_token.age";
+      age.secrets."forgejo_lfs_jwt_secret.age".file = "${secrets}/forgejo_lfs_jwt_secret.age";
+      age.secrets."forgejo_mailer_password.age".file = "${secrets}/forgejo_mailer_password.age";
+      age.secrets."forgejo_secret_key.age".file = "${secrets}/forgejo_secret_key.age";
+      age.secrets."postgresql_forgejo.age".file = "${secrets}/postgresql_forgejo.age";
       local.restic.backups.forgejo = {
         exclude = [
           "/var/lib/forgejo/data/queues"
@@ -170,7 +171,7 @@ in
     })
     (lib.mkIf cfg.runner.enable {
       age.secrets."forgejo_token_${globals.hostName}.age" = {
-        file = ../../../secrets/forgejo_token_${globals.hostName}.age;
+        file = "${secrets}/forgejo_token_${globals.hostName}.age";
         group = runnerUser;
         owner = runnerUser;
       };

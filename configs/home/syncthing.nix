@@ -4,6 +4,7 @@
   lib,
   systemType,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -157,7 +158,7 @@ in
         }
       ];
       age.secrets."user_walter_clear.age" = {
-        file = ../../secrets/user_walter_clear.age;
+        file = "${secrets}/user_walter_clear.age";
       }
       // lib.optionalAttrs (systemType == "Nixos") {
         group = "walter";

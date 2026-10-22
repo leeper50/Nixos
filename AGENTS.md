@@ -53,9 +53,13 @@ for the folder layout and the Proxmox VM workflow.
 - **Scope:** `configs/nixos` is NixOS-only, `configs/darwin` nix-darwin-only,
   `configs/home` works under any Home Manager setup. In standalone Home
   Manager `osConfig` is `null`, so guard any use of it.
-- **Secrets:** agenix (ragenix). A module declares its own `age.secrets.*`;
-  `secrets/secrets.nix` only lists recipients. Rekey with `ragenix -r` in
-  `secrets/`. Never print or commit decrypted secrets.
+- **Secrets:** agenix (ragenix), kept in the private repo behind the flake's
+  `secrets` input. A module takes `secrets` as an argument and declares its
+  own `age.secrets.*` with `file = "${secrets}/<name>.age"`. `secrets.nix`
+  there only lists recipients. `./secrets` is a git-ignored clone of that
+  repo for editing: rekey with `ragenix -r` in it, push, then run
+  `nix flake update secrets` here (in its own commit). Never print or commit
+  decrypted secrets.
 - **Swarm VMs** (`node-1..3`) are built by `mkSwarmHost` in `flake.nix`, which
   also holds each VM's Proxmox shape for OpenTofu.
 - **Branches:** work on a short-lived branch off `main` named after the

@@ -3,6 +3,7 @@
   globals,
   lib,
   localLib,
+  secrets,
   ...
 }:
 let
@@ -14,7 +15,7 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      age.secrets."restic_rustfs_env.age".file = ../../../secrets/restic_rustfs_env.age;
+      age.secrets."restic_rustfs_env.age".file = "${secrets}/restic_rustfs_env.age";
       networking.firewall = localLib.mkFirewallRules {
         service = "rustfs";
         sources = globals.networking.lan;

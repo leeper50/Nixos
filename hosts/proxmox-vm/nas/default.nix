@@ -1,8 +1,8 @@
-{ disko, ... }:
+{ disko, secrets, ... }:
 let
   rootDir = ../../..;
   homelab = rootDir + /configs/nixos/homelab;
-  keys = import (rootDir + /secrets/keys.nix);
+  keys = import "${secrets}/keys.nix";
   backupKeys = [
     keys.node-1
     keys.node-2

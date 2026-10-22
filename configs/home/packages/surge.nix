@@ -5,6 +5,7 @@
   osConfig ? null,
   pkgs,
   systemType,
+  secrets,
   ...
 }:
 let
@@ -74,7 +75,7 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.surge.enable {
       age.secrets."surge_auth_token.age" = {
-        file = ../../../secrets/surge_auth_token.age;
+        file = "${secrets}/surge_auth_token.age";
       }
       // lib.optionalAttrs (!isStandalone) {
         group = "walter";

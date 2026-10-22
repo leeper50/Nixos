@@ -9,6 +9,7 @@
   profile,
   stylix,
   systemType,
+  secrets,
   ...
 }:
 let
@@ -27,7 +28,7 @@ in
   imports = [
     agenix.nixosModules.default
     home-manager.nixosModules.home-manager
-    ../../secrets
+    "${secrets}/default.nix"
     ../home/restic.nix
     ./acme.nix
     ./avahi.nix
@@ -45,6 +46,7 @@ in
             agenix
             globals
             nix-flatpak
+            secrets
             systemType
             ;
         };
@@ -81,7 +83,7 @@ in
       ];
     }
     {
-      age.secrets."user_walter_hash.age".file = ../../secrets/user_walter_hash.age;
+      age.secrets."user_walter_hash.age".file = "${secrets}/user_walter_hash.age";
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
         attic-client
@@ -233,7 +235,7 @@ in
               "user_walter_clear.age"
             ]
             (name: {
-              file = ../../secrets/${name};
+              file = "${secrets}/${name}";
               group = "walter";
               owner = "walter";
             });

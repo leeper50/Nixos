@@ -1,4 +1,4 @@
-{ agenix, ... }:
+{ agenix, secrets, ... }:
 let
   rootDir = ../..;
 in
@@ -7,9 +7,9 @@ in
     map (p: rootDir + p) [
       /configs/home/gui.nix
       /configs/home/syncthing.nix
-      /secrets
     ]
     ++ [
+      "${secrets}/default.nix"
       agenix.homeManagerModules.default
     ];
   local = {
