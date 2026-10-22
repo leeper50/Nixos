@@ -91,6 +91,7 @@ in
             Match host ${globals.forgejo.domain} localuser root
               IdentityFile /etc/ssh/ssh_host_ed25519_key
               IdentitiesOnly yes
+              ConnectTimeout 5
           '';
           knownHosts.forgejo = {
             hostNames = [ "[${globals.forgejo.domain}]:${toString globals.forgejo.sshPort}" ];
