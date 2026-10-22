@@ -9,14 +9,8 @@ jobs:
     env:
       BRANCH: flake-update
     steps:
-      # The host runner has no git, without which checkout downloads a
-      # tarball that can't be committed to.
       - name: Install git
         run: echo "$(nix build --no-link --print-out-paths nixpkgs#git)/bin" >> "$GITHUB_PATH"
-      # A personal access token rather than the automatic one: Forgejo doesn't
-      # start workflows for pushes or pull requests made with the automatic
-      # token, so check.yml would never run on the pull request and it could
-      # never merge into the protected main.
       - name: Checkout
         uses: actions/checkout@v5
         with:
