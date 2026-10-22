@@ -272,6 +272,7 @@
                 pkgs.jq
                 pkgs.just
                 pkgs.nh
+                pkgs.openssh
                 pkgs.opentofu
                 pkgs.ragenix
               ]
