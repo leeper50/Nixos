@@ -262,6 +262,7 @@ in
         gnused
         gnutar
         gzip
+        jq
         nodejs
         openssh
         wget
