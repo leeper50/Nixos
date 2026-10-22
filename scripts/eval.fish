@@ -1,4 +1,7 @@
-#!/usr/bin/env fish
+#!/usr/bin/env -S fish --no-config
+# --no-config: NixOS's fish config replaces PATH with the system default when
+# the environment wasn't set up by a login session (as under the CI runner),
+# which drops the dev shell's tools.
 
 # Build every NixOS host and push it to the attic cache, and dry-run build the
 # Home Manager and nix-darwin configurations, or only the hosts named as
@@ -15,8 +18,13 @@ cd (status dirname)/..
 # the check only gets in the way.
 set -gx NH_BYPASS_ROOT_CHECK true
 
+# Prints one name per line; exits the script if the flake doesn't evaluate.
 function list_attrs
-    nix eval --json .#$argv[1] --apply builtins.attrNames 2>/dev/null | jq -r '.[]'
+    nix eval --raw .#$argv[1] --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null
+    or begin
+        echo "error: could not evaluate .#$argv[1]; run `nix eval .#$argv[1]` to see why" >&2
+        exit 1
+    end
 end
 
 function job_id
@@ -75,6 +83,10 @@ set -l nixos_hosts (list_attrs nixosConfigurations)
 set -l home_hosts (list_attrs homeConfigurations)
 set -l darwin_hosts (list_attrs darwinConfigurations)
 set -l known_hosts $nixos_hosts $home_hosts $darwin_hosts
+if test (count $known_hosts) -eq 0
+    echo "error: found no host configurations to build" >&2
+    exit 1
+end
 
 set -l unknown
 for h in $requested_hosts
