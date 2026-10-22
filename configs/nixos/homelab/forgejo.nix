@@ -257,6 +257,7 @@ in
         curl
         findutils
         gawk
+        git
         gnugrep
         gnused
         gnutar
