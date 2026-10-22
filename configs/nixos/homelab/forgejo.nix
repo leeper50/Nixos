@@ -262,6 +262,7 @@ in
         gnutar
         gzip
         nodejs
+        openssh
         wget
       ];
       # CI builds now land in this host's store; collect garbage during a
