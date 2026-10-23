@@ -108,9 +108,12 @@ in
         {
           cat = "bat -pp";
           edit_nix = "cd ~/Nix && hx ~/Nix";
+          gc = "git checkout";
+          gcm = "git checkout main";
           hm = "home-manager --flake $NH_FLAKE";
           l = "eza";
-          rcat = "command cat";
+          rcat = "${pkgs.coreutils}/bin/cat";
+          rls = "${pkgs.coreutils}/bin/ls";
         }
         (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           rs = "sudo systemctl";
