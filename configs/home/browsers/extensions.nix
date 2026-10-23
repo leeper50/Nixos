@@ -49,11 +49,12 @@ let
   profileExtensions = {
     force = true;
     packages = with pkgs.nur.repos.rycee.firefox-addons; [
+      bitwarden
       containerise
       decentraleyes
       indie-wiki-buddy
       istilldontcareaboutcookies
-      keepassxc-browser
+      # keepassxc-browser
       new-tab-override
       redirect-to-wiki-gg
       ublock-origin

@@ -298,6 +298,8 @@ in
       '';
       home.packages = with pkgs; [
         bazaar
+        bitwarden-desktop
+        bitwarden-cli
         blender
         # collabora-desktop
         czkawka

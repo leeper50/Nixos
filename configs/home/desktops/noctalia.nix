@@ -24,6 +24,12 @@
       };
       brightness.minimum_brightness = 0.05;
       location.auto_locate = true;
+      plugins = {
+        auto_update = "all";
+        enabled = [
+          "noctalia/bitwarden"
+        ];
+      };
       widget = {
         media.hide_when_no_media = true;
       };
