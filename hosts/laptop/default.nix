@@ -36,10 +36,13 @@ in
       Policy.AutoEnable = true;
     };
   };
-  home-manager.users.walter.local.browsers = {
-    brave.enable = true;
-    firefox.enable = true;
-    librewolf.enable = true;
+  home-manager.users.walter.local = {
+    browsers = {
+      brave.enable = true;
+      firefox.enable = true;
+      librewolf.enable = true;
+    };
+    games.emulators.enable = true;
   };
   local = {
     beszel.agent.enable = true;

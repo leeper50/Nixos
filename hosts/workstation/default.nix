@@ -107,6 +107,7 @@ in
       firefox.enable = true;
       librewolf.enable = true;
     };
+    games.emulators.enable = true;
     packages = {
       cream-linux.enable = true;
       elegoo-slicer.enable = true;
