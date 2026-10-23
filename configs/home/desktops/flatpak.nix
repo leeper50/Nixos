@@ -1,7 +1,7 @@
 { nix-flatpak, pkgs, ... }:
 let
-  photocraft_version = "0.10.0";
-  photocraft_sha256 = "2b6acaf90812bcc8781e136e150bf4c670e8b67beaa23b8809933b55a1ad54cd";
+  photocraft_version = "0.14.0";
+  photocraft_sha256 = "sha256-DJAys0rsYrThRnd1UDK6rJvBeIROR0SThp6j5UnMYbk=";
 in
 {
   imports = [
