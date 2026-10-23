@@ -6,6 +6,7 @@ in
 {
   imports = map (p: homelab + p) [
     /forgejo.nix
+    /vaultwarden.nix
   ];
   local = {
     beszel.hub.enable = true;
@@ -25,6 +26,7 @@ in
       };
     };
     fail2ban.jails.traefik.enable = true;
+    vaultwarden.enable = true;
   };
   networking.firewall = localLib.mkFirewallRules {
     service = "traefik";

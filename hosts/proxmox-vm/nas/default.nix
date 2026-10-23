@@ -53,6 +53,7 @@ in
         "mealie"
         "miniflux"
         "rxresume"
+        "vaultwarden"
       ];
       enable = true;
     };
