@@ -61,7 +61,6 @@ in
       ipv6Subnet = "fd06:6a55:3bd2:ed3d::/64";
       fixedv6Subnet = "fda3:db28:76bb:e314::/64";
     };
-    dockerRootless.ipv4Subnet = "172.29.0.0/16";
     hosts = {
       action-runner = {
         ipv4 = "10.0.0.34";

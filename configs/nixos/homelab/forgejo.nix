@@ -4,15 +4,12 @@
   lib,
   localLib,
   pkgs,
-  utils,
   secrets,
   ...
 }:
 let
   cfg = config.local.forgejo;
   pass = config.age.secrets;
-  runnerUser = "forgejo-runner-podman";
-  runnerUid = 399;
   httpAddr = "0.0.0.0";
   forgejoDomain = "fj.dellhplaptop.xyz";
   ports = {
@@ -170,84 +167,33 @@ in
       };
     })
     (lib.mkIf cfg.runner.enable {
-      age.secrets."forgejo_token_${globals.hostName}.age" = {
-        file = "${secrets}/forgejo_token_${globals.hostName}.age";
-        group = runnerUser;
-        owner = runnerUser;
-      };
-      virtualisation.docker.rootless = {
+      age.secrets."forgejo_token_${globals.hostName}.age".file =
+        "${secrets}/forgejo_token_${globals.hostName}.age";
+      virtualisation.docker.enable = true;
+      services.forgejo-runner.instances.${config.networking.hostName} = {
         enable = true;
-        daemon.settings = {
-          bip = lib.replaceStrings [ ".0/16" ] [ ".1/24" ] globals.networking.dockerRootless.ipv4Subnet;
-          default-address-pools = [
-            {
-              base = globals.networking.dockerRootless.ipv4Subnet;
-              size = 24;
-            }
-          ];
-        };
-      };
-      systemd.user.services.docker.unitConfig.ConditionUser = lib.mkForce runnerUser;
-      users = {
-        groups.${runnerUser}.gid = runnerUid;
-        users.${runnerUser} = {
-          autoSubUidGidRange = true;
-          createHome = true;
-          group = runnerUser;
-          home = "/var/lib/${runnerUser}";
-          isSystemUser = true;
-          linger = true;
-          uid = runnerUid;
-        };
-      };
-      services.forgejo-runner.instances."${config.networking.hostName}" = {
-        enable = true;
-        runtimes = {
-          docker = lib.mkForce false;
-          podman = lib.mkForce false;
-        };
+        secrets.server.connections.default.token_url = pass."forgejo_token_${globals.hostName}.age".path;
         settings = {
           container = {
             docker_host = "automount";
-            # Nix needs namespaces for its build sandbox. Docker is rootless,
-            # so "privileged" stays within the runner user's namespace.
             privileged = true;
           };
-          runner.labels = [
-            "docker:docker://data.forgejo.org/oci/node:20-bullseye"
-            "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
-            "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
-            "ubuntu-20.04:docker://docker.gitea.com/runner-images:ubuntu-20.04"
-          ]
-          ++ lib.optional cfg.runner.nixHost "nix:host";
-          server.connections = {
-            default = {
-              url = "https://${forgejoDomain}/";
-              token_url = "file:${pass."forgejo_token_${globals.hostName}.age".path}";
-              uuid = cfg.runner.uuid;
-            };
+          runner = {
+            capacity = 2;
+            labels = [
+              "docker:docker://data.forgejo.org/oci/node:20-bullseye"
+              "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
+              "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
+              "ubuntu-20.04:docker://docker.gitea.com/runner-images:ubuntu-20.04"
+            ]
+            ++ lib.optional cfg.runner.nixHost "nix:host";
+          };
+          server.connections.default = {
+            url = "https://${forgejoDomain}/";
+            inherit (cfg.runner) uuid;
           };
         };
       };
-      # Must match the upstream unit name, which escapes the instance name
-      # (node-2 -> node\x2d2); otherwise this defines a separate, unused unit.
-      systemd.services."forgejo-runner-${utils.escapeSystemdPath config.networking.hostName}" =
-        let
-          uid = toString runnerUid;
-        in
-        {
-          after = [ "user@${uid}.service" ];
-          wants = [ "user@${uid}.service" ];
-          environment.DOCKER_HOST = "unix:///run/user/${uid}/docker.sock";
-          serviceConfig = {
-            DynamicUser = lib.mkForce false;
-            Group = runnerUser;
-            User = runnerUser;
-          };
-        };
-      systemd.tmpfiles.rules = [
-        "d /var/lib/forgejo-runner/${config.networking.hostName} 0750 ${runnerUser} ${runnerUser} -"
-      ];
     })
     (lib.mkIf (cfg.runner.enable && cfg.runner.nixHost) {
       services.forgejo-runner.instances."${config.networking.hostName}".hostPackages = with pkgs; [
