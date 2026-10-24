@@ -597,11 +597,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1792854453,
-        "narHash": "sha256-vEMUcICggnRABYoB3gPPlrDI4IX4b72YJZxw8BcfFm0=",
+        "lastModified": 1792856178,
+        "narHash": "sha256-6N3SEEcO6ZIssarM4to5aMyLiX+fjoOHuVaBBCBto04=",
         "ref": "refs/heads/main",
-        "rev": "9ac2b992c65a46681fca053677d9605c9aafe5bc",
-        "revCount": 8,
+        "rev": "c7f0e0c1f10151cc8020cdfaf367fcc2621b5f80",
+        "revCount": 10,
         "type": "git",
         "url": "ssh://git@fj.dellhplaptop.xyz:2222/wleeper13/nix-private.git"
       },
