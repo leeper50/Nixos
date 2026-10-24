@@ -128,6 +128,10 @@ in
       ];
     };
     tailnet = {
+      action-runner = {
+        ipv4 = "100.64.0.12";
+        ipv6 = "fd7a:115c:a1e0::c";
+      };
       laptop = {
         ipv4 = "100.64.0.9";
         ipv6 = "fd7a:115c:a1e0::9";
