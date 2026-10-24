@@ -23,24 +23,21 @@ let
         ${url}/message > /dev/null
   '';
 
-  # comin's postBuildCommand: runs after every build and sends a low-priority
-  # "build succeeded" notification with the commit. Failed builds also report
-  # "built" (with COMIN_ERROR_MSG set), and unchanged hosts report
-  # "already built"; both are skipped.
-  postBuild = pkgs.writeShellScript "comin-post-build" ''
-    [ "$COMIN_STATUS" = "built" ] && [ -z "$COMIN_ERROR_MSG" ] || exit 0
-    ${notify} "comin: ${hostName} build succeeded" 2 \
-      "$COMIN_GIT_REF ''${COMIN_GIT_SHA:0:8}: $COMIN_GIT_MSG"
-  '';
-
-  # comin's postDeploymentCommand: runs after every switch attempt and sends a
-  # high-priority notification with the commit and error when the deployment
-  # did not finish as "done". Eval/build failures never reach this point.
+  # comin's postDeploymentCommand: runs after every switch attempt. comin only
+  # deploys generations that aren't already deployed, so unchanged hosts stay
+  # quiet, and hosts whose system CI already built ("already built", which
+  # skips the build) still report. Sends a low-priority notification when the
+  # deployment finished as "done", and a high-priority one with the error
+  # otherwise. Eval/build failures never reach this point.
   postDeploy = pkgs.writeShellScript "comin-post-deploy" ''
-    [ "$COMIN_STATUS" = "done" ] && exit 0
-    ${notify} "comin: ${hostName} deployment $COMIN_STATUS" 8 \
-      "$COMIN_GIT_REF ''${COMIN_GIT_SHA:0:8}: $COMIN_GIT_MSG
+    if [ "$COMIN_STATUS" = "done" ]; then
+      ${notify} "comin: ${hostName} deployed" 2 \
+        "$COMIN_GIT_REF ''${COMIN_GIT_SHA:0:8}: $COMIN_GIT_MSG"
+    else
+      ${notify} "comin: ${hostName} deployment $COMIN_STATUS" 8 \
+        "$COMIN_GIT_REF ''${COMIN_GIT_SHA:0:8}: $COMIN_GIT_MSG
     $COMIN_ERROR_MSG"
+    fi
   '';
 
   # Run by the comin-gotify timer every 5 minutes: reads the
@@ -65,7 +62,7 @@ in
   imports = [ comin.nixosModules.comin ];
   options.local.comin = {
     enable = lib.mkEnableOption "comin GitOps agent";
-    gotify.enable = lib.mkEnableOption "gotify notifications on comin failures" // {
+    gotify.enable = lib.mkEnableOption "gotify notifications for comin deployments and failures" // {
       default = true;
     };
   };
@@ -101,10 +98,7 @@ in
       }
       (lib.mkIf cfg.gotify.enable {
         age.secrets."gotify_comin_token.age".file = "${secrets}/gotify_comin_token.age";
-        services.comin = {
-          postBuildCommand = postBuild;
-          postDeploymentCommand = postDeploy;
-        };
+        services.comin.postDeploymentCommand = postDeploy;
         systemd.services.comin-gotify = {
           after = [ "comin.service" ];
           serviceConfig = {
