@@ -25,14 +25,7 @@ in
         managerIP = globals.networking.hosts.node-1.ipv4;
       };
     };
-    forgejo = {
-      runner = {
-        enable = true;
-        nixHost = true;
-        uuid = "3e9af3ee-ad9b-48f9-a9ad-9349cf9629ea";
-      };
-      server.enable = true;
-    };
+    forgejo.server.enable = true;
     jellyfin.enable = true;
   };
   system.stateVersion = "25.11";
