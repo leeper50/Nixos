@@ -108,14 +108,19 @@ in
         {
           cat = "bat -pp";
           edit_nix = "cd ~/Nix && hx ~/Nix";
+          gb = "git branch";
           gc = "git checkout";
           gcm = "git checkout main";
+          gl = "git push";
+          gp = "git push";
+          gs = "git switch";
           hm = "home-manager --flake $NH_FLAKE";
           l = "eza";
           rcat = "${pkgs.coreutils}/bin/cat";
           rls = "${pkgs.coreutils}/bin/ls";
         }
         (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+          j = "journalctl";
           rs = "sudo systemctl";
           s = "systemctl";
           us = "systemctl --user";
