@@ -24,6 +24,9 @@ in
 {
   options.local = {
     local = lib.mkEnableOption "local";
+    walter.enable = lib.mkEnableOption "the walter user" // {
+      default = true;
+    };
   };
   imports = [
     agenix.nixosModules.default
@@ -52,7 +55,6 @@ in
         };
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.walter.imports = [ ];
       };
     }
   ]
@@ -60,16 +62,20 @@ in
     stylix.nixosModules.stylix
     ../home/stylix.nix
     {
-      home-manager.users.walter.imports = [
-        ../home/gui.nix
-      ];
+      home-manager.users.walter = lib.mkIf config.local.walter.enable {
+        imports = [
+          ../home/gui.nix
+        ];
+      };
     }
   ]
   ++ lib.optionals (profile == "cli") [
     {
-      home-manager.users.walter.imports = [
-        ../home
-      ];
+      home-manager.users.walter = lib.mkIf config.local.walter.enable {
+        imports = [
+          ../home
+        ];
+      };
     }
   ];
   config = lib.mkMerge [
@@ -83,7 +89,9 @@ in
       ];
     }
     {
-      age.secrets."user_walter_hash.age".file = "${secrets}/user_walter_hash.age";
+      age.secrets."user_walter_hash.age" = lib.mkIf config.local.walter.enable {
+        file = "${secrets}/user_walter_hash.age";
+      };
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
         attic-client
@@ -148,24 +156,25 @@ in
       time.timeZone = globals.timeZone;
       users = {
         mutableUsers = false;
-        groups = {
-          "walter" = {
-            gid = 1000;
-            members = [ "walter" ];
-          };
+        groups.walter = lib.mkIf config.local.walter.enable {
+          gid = 1000;
+          members = [ "walter" ];
         };
         users = {
           root = user_settings;
-          walter = user_settings // {
-            description = "Administrator";
-            extraGroups = [
-              "networkmanager"
-              "wheel"
-            ];
-            group = "walter";
-            hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
-            isNormalUser = true;
-          };
+          walter = lib.mkIf config.local.walter.enable (
+            user_settings
+            // {
+              description = "Administrator";
+              extraGroups = [
+                "networkmanager"
+                "wheel"
+              ];
+              group = "walter";
+              hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
+              isNormalUser = true;
+            }
+          );
         };
       };
     }

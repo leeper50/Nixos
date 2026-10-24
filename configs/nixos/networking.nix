@@ -6,6 +6,7 @@
   ...
 }:
 let
+  cfg = config.local.networking;
   ipToDomains = lib.zipAttrs (
     lib.concatLists (
       lib.mapAttrsToList (
@@ -18,9 +19,14 @@ let
   );
 in
 {
+  options.local.networking = {
+    tailscale.enable = lib.mkOption {
+      default = true;
+      type = lib.types.bool;
+    };
+  };
   config = lib.mkMerge [
     {
-      age.secrets."headscale_preauth_key.age".file = "${secrets}/headscale_preauth_key.age";
       networking = {
         firewall = {
           allowPing = true;
@@ -31,6 +37,9 @@ in
         networkmanager.enable = true;
         nftables.enable = true;
       };
+    }
+    (lib.mkIf (cfg.tailscale.enable) {
+      age.secrets."headscale_preauth_key.age".file = "${secrets}/headscale_preauth_key.age";
       services.tailscale = {
         authKeyFile = config.age.secrets."headscale_preauth_key.age".path;
         enable = true;
@@ -38,7 +47,7 @@ in
           "--login-server=https://hd.${globals.domains.primary}"
         ];
       };
-    }
+    })
     (lib.mkIf (config.local.local) {
       networking = {
         defaultGateway.address = globals.networking.ipv4.gateway;
