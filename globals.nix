@@ -63,6 +63,10 @@ in
     };
     dockerRootless.ipv4Subnet = "172.29.0.0/16";
     hosts = {
+      action-runner = {
+        ipv4 = "10.0.0.34";
+        ipv6 = "${ipv6.prefix}::34";
+      };
       laptop = {
         ipv4 = "10.0.0.71";
         ipv6 = "${ipv6.prefix}:73b7:bc38:4b1c:18ba";

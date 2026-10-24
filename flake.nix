@@ -128,6 +128,23 @@
         };
 
       hosts = {
+        action-runner = mkHost {
+          modules = [
+            ./hosts/proxmox-vm
+            ./hosts/proxmox-vm/action-runner
+          ];
+          profile = "cli";
+          proxmox = {
+            node_name = "tower";
+            vm_id = 1005;
+            cores = 6;
+            memory = 6144;
+            datastore_id = "nvme_tower";
+            disk_size = 64;
+            data_disk_size = 0;
+          };
+        };
+
         laptop = mkHost {
           modules = [
             ./hosts/laptop

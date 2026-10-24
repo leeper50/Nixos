@@ -1,4 +1,13 @@
 {
+  "action-runner": {
+    "cores": 6,
+    "data_disk_size": 0,
+    "datastore_id": "nvme_tower",
+    "disk_size": 64,
+    "memory": 6144,
+    "node_name": "tower",
+    "vm_id": 1005
+  },
   "nas": {
     "cores": 4,
     "data_disk_size": 200,
