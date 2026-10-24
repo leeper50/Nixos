@@ -19,7 +19,6 @@ in
     ];
   local = {
     adguardhome.enable = true;
-    beszel.agent.enable = true;
     docker.swarm.enable = true;
     local = true;
     mounts.media = true;

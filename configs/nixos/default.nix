@@ -121,7 +121,10 @@ in
           LC_TIME = globals.locale;
         };
       };
-      local.comin.enable = true;
+      local = {
+        beszel.agent.enable = true;
+        comin.enable = true;
+      };
       networking.hostName = globals.hostName;
       nix = {
         gc = {

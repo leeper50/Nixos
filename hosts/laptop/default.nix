@@ -45,7 +45,6 @@ in
     games.emulators.enable = true;
   };
   local = {
-    beszel.agent.enable = true;
     caddy.enable = true;
     local = true;
     mounts = {

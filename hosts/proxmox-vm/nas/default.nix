@@ -42,7 +42,6 @@ in
   };
   local = {
     attic.enable = true;
-    beszel.agent.enable = true;
     caddy.enable = true;
     mediaWatch.enable = true;
     local = true;

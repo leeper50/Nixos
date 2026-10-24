@@ -13,7 +13,6 @@ in
   ];
   hardware.enableRedistributableFirmware = true;
   local = {
-    beszel.agent.intelGpu = true;
     caddy.enable = true;
     docker = {
       komodo = {

@@ -17,7 +17,6 @@ in
     ];
   local = {
     authelia.enable = true;
-    beszel.agent.enable = true;
     caddy = {
       domain = globals.domains.primary;
       enable = true;

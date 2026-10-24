@@ -19,7 +19,6 @@ in
   ];
   local = {
     proxies.microsocks.enable = true;
-    beszel.agent.enable = true;
     caddy = {
       domain = "19280085.xyz";
       enable = true;
