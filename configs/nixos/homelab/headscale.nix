@@ -10,8 +10,7 @@ let
   cfg = config.local.headscale;
   pass = config.age.secrets;
 
-  authDomain = "login.${globals.domains.primary}";
-  headscaleDomain = "hd.${globals.domains.primary}";
+  headscaleDomain = "hd.${config.local.caddy.domain}";
 
   # Setup explicit extra records from caddy virtual host from each machine.
   tailnetRecords = lib.concatLists (
@@ -107,7 +106,7 @@ in
         oidc = {
           client_id = "headscale";
           client_secret_path = pass."headscale_oidc_client_secret.age".path;
-          issuer = "https://${authDomain}";
+          issuer = "https://login.${config.local.authelia.domain}";
           only_start_if_oidc_is_available = true;
           pkce = {
             enabled = true;
@@ -125,9 +124,9 @@ in
         oidc = {
           client_id = "headplane";
           client_secret_path = pass."headplane_oidc_client_secret.age".path;
-          issuer = "https://${authDomain}";
-          use_pkce = true;
+          issuer = "https://login.${config.local.authelia.domain}";
           token_endpoint_auth_method = "client_secret_basic";
+          use_pkce = true;
         };
       };
       systemd.services.headscale = {
@@ -147,7 +146,7 @@ in
             }
           }
         '';
-        useACMEHost = globals.domains.primary;
+        useACMEHost = config.local.caddy.domain;
       };
     })
   ];
