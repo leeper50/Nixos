@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  pkgs,
   secrets,
   ...
 }:
@@ -9,13 +10,17 @@ let
   cfg = config.local.authelia;
   pass = config.age.secrets;
 
-  authDomain = "login.${globals.domains.primary}";
-  lldapDomain = "ld.${globals.domains.primary}";
-  headscaleDomain = "hd.${globals.domains.primary}";
-  baseDn = lib.concatMapStringsSep "," (part: "dc=${part}") (
-    lib.splitString "." globals.domains.primary
-  );
-  bindDn = "uid=admin,ou=people,${baseDn}";
+  users = {
+    walter = {
+      displayname = globals.fullName;
+      email = globals.primaryEmail;
+      groups = [ "admins" ];
+    };
+  };
+  hashSecret = name: "authelia_password_hash_${name}.age";
+  hashVar = name: "hash_${lib.replaceStrings [ "-" ] [ "_" ] name}";
+  usersDir = "/run/authelia-main-users";
+  usersFile = "${usersDir}/users.yml";
 
   autheliaPort = 9091;
   commonOidcClient = {
@@ -31,7 +36,11 @@ let
 in
 {
   options.local.authelia = {
-    enable = lib.mkEnableOption "Authelia (OIDC provider) backed by LLDAP";
+    domain = lib.mkOption {
+      default = config.local.caddy.domain;
+      type = lib.types.str;
+    };
+    enable = lib.mkEnableOption "Authelia (OIDC provider) with a declarative users file";
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
@@ -40,13 +49,14 @@ in
         "authelia_oidc_hmac_secret.age".file = "${secrets}/authelia_oidc_hmac_secret.age";
         "authelia_oidc_issuer_key.age".file = "${secrets}/authelia_oidc_issuer_key.age";
         "authelia_storage_encryption_key.age".file = "${secrets}/authelia_storage_encryption_key.age";
-        "lldap_admin_password.age" = {
-          file = "${secrets}/lldap_admin_password.age";
-          group = "ldap-bind-secret";
-          mode = "0440";
-          owner = "lldap";
-        };
-      };
+      }
+      // lib.mapAttrs' (
+        name: _:
+        lib.nameValuePair (hashSecret name) {
+          file = "${secrets}/${hashSecret name}";
+          owner = "authelia-main";
+        }
+      ) users;
       services.authelia.instances.main = {
         enable = true;
         secrets = {
@@ -55,16 +65,12 @@ in
           oidcIssuerPrivateKeyFile = pass."authelia_oidc_issuer_key.age".path;
           storageEncryptionKeyFile = pass."authelia_storage_encryption_key.age".path;
         };
-        environmentVariables = {
-          AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = pass."lldap_admin_password.age".path;
-        };
         settings = {
           access_control.default_policy = "one_factor";
-          authentication_backend.ldap = {
-            address = "ldap://127.0.0.1:3890";
-            base_dn = baseDn;
-            implementation = "lldap";
-            user = bindDn;
+          authentication_backend = {
+            file.path = usersFile;
+            password_change.disable = true;
+            password_reset.disable = true;
           };
           identity_providers.oidc.clients =
             mkOidcClient config.services.headscale.enable {
@@ -72,7 +78,7 @@ in
               client_id = "headscale";
               client_name = "Headscale";
               client_secret = "$pbkdf2-sha512$310000$bqQR9jguvCA3dHh8twp7Xg$BL/QJrhvx7KUX/tNeC.W4qY6vX88EtCL6DXts4kh3447MYvQz631iYQApPmsh3asn1/DM6ydKXZ9aUahkBhDrA";
-              redirect_uris = [ "https://${headscaleDomain}/oidc/callback" ];
+              redirect_uris = [ "${config.services.headscale.settings.server_url}/oidc/callback" ];
               scopes = [
                 "openid"
                 "profile"
@@ -85,7 +91,7 @@ in
               client_id = "headplane";
               client_name = "Headplane";
               client_secret = "$pbkdf2-sha512$310000$hPEHI5nF1jxjuq2hraFgsg$SAnFIc.C4YY0Nq3wUPgapva76X4j2J7bGlL4svCejLHEYRVyDh7u7KevS3yyH8e0fJszj5jAWOiJ/xaDC2sRTA";
-              redirect_uris = [ "https://${headscaleDomain}/admin/oidc/callback" ];
+              redirect_uris = [ "${config.services.headplane.settings.server.base_url}/admin/oidc/callback" ];
               scopes = [
                 "openid"
                 "email"
@@ -103,57 +109,45 @@ in
           };
           session.cookies = [
             {
-              authelia_url = "https://${authDomain}";
-              domain = globals.domains.primary;
+              authelia_url = "https://login.${cfg.domain}";
+              domain = cfg.domain;
             }
           ];
           storage.local.path = "/var/lib/authelia-main/db.sqlite3";
         };
       };
-      services.lldap = {
-        enable = true;
-        settings = {
-          force_ldap_user_pass_reset = "always";
-          http_host = "127.0.0.1";
-          http_url = "https://${lldapDomain}";
-          ldap_base_dn = baseDn;
-          ldap_host = "127.0.0.1";
-          ldap_user_email = "bojenkins@mailbox.org";
-          ldap_user_pass_file = pass."lldap_admin_password.age".path;
-        };
-      };
       systemd.services = {
-        authelia-main = {
-          after = [ "lldap.service" ];
-          wants = [ "lldap.service" ];
+        authelia-main.restartTriggers = [ config.systemd.services.authelia-main-users.script ];
+        authelia-main-users = {
+          before = [ "authelia-main.service" ];
+          requiredBy = [ "authelia-main.service" ];
+          script = ''
+            umask 0077
+            ${lib.getExe pkgs.jq} -n \
+              ${
+                lib.concatMapStringsSep " \\\n  " (
+                  name: "--rawfile ${hashVar name} ${pass.${hashSecret name}.path}"
+                ) (lib.attrNames users)
+              } \
+              --argjson users ${lib.escapeShellArg (builtins.toJSON users)} \
+              '{ users: ($users | with_entries(.value.password = ($ARGS.named["hash_" + (.key | gsub("-"; "_"))] | rtrimstr("\n")))) }' \
+              > ${usersFile}
+          '';
+          serviceConfig = {
+            Group = "authelia-main";
+            RemainAfterExit = true;
+            RuntimeDirectory = baseNameOf usersDir;
+            RuntimeDirectoryMode = "0700";
+            Type = "oneshot";
+            User = "authelia-main";
+          };
         };
-        lldap.serviceConfig = {
-          DynamicUser = lib.mkForce false;
-          Group = "lldap";
-          User = "lldap";
-        };
-      };
-      users = {
-        users.lldap = {
-          extraGroups = [ "ldap-bind-secret" ];
-          group = "lldap";
-          isSystemUser = true;
-        };
-        groups = {
-          lldap = { };
-          ldap-bind-secret = { };
-        };
-        users.authelia-main.extraGroups = [ "ldap-bind-secret" ];
       };
     })
     (lib.mkIf (cfg.enable && config.services.caddy.enable) {
-      services.caddy.virtualHosts.${authDomain} = {
+      services.caddy.virtualHosts."login.${cfg.domain}" = {
         extraConfig = "reverse_proxy 127.0.0.1:${toString autheliaPort}";
-        useACMEHost = globals.domains.primary;
-      };
-      services.caddy.virtualHosts.${lldapDomain} = {
-        extraConfig = "reverse_proxy 127.0.0.1:${toString config.services.lldap.settings.http_port}";
-        useACMEHost = globals.domains.primary;
+        useACMEHost = cfg.domain;
       };
     })
   ];
