@@ -171,7 +171,13 @@ in
               description = "Administrator";
               extraGroups = [
                 "networkmanager"
+                "users"
                 "wheel"
+              ]
+              ++ lib.optionals (profile == "gui") [
+                "audio"
+                "input"
+                "video"
               ];
               group = "walter";
               hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
