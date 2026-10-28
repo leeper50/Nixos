@@ -7,6 +7,14 @@
 }:
 let
   editor = if systemType == "Standalone" then "helix" else "hx";
+  nhTarget =
+    {
+      Nixos = "os";
+      NixDarwin = "darwin";
+      Standalone = "home";
+    }
+    .${systemType};
+  hmBackup = lib.optionalString (systemType == "Standalone") " -b home_manager_backup";
 in
 {
   home = {
@@ -43,35 +51,10 @@ in
       enable = true;
       functions = {
         build = ''
-          set original_dir (pwd)
-          if type -q nixos-rebuild
-            cd $NH_FLAKE
-            git pull
-            nh os build --dry
-            cd $original_dir
-          else if type -q darwin-rebuild
-            cd $NH_FLAKE
-            git pull
-            nh darwin build --dry
-            cd $original_dir
-          else if type -q home-manager
-            cd $NH_FLAKE
-            git pull
-            nh home build -b home_manager_backup
-            cd $original_dir
-          else
-            return 1
-          end
+          git -C $NH_FLAKE pull;
+          nh ${nhTarget} build${if systemType == "Standalone" then hmBackup else " --dry"}
         '';
-        clean = ''
-          if type -q nixos-rebuild; or type -q darwin-rebuild
-            sudo nh clean all
-          else if type -q home-manager
-            nh clean user
-          else
-            return 1
-          end
-        '';
+        clean = if systemType == "Standalone" then "nh clean user" else "sudo nh clean all";
         lf = ''
           set tmp_file "$HOME/.cache/lf-lastdir"
           command lf --last-dir-path="$tmp_file" $argv
@@ -83,25 +66,8 @@ in
           end
         '';
         update = ''
-          set original_dir (pwd)
-          if type -q nixos-rebuild
-            cd $NH_FLAKE
-            sudo git pull
-            nh os switch
-            cd $original_dir
-          else if type -q darwin-rebuild
-            cd $NH_FLAKE
-            git pull
-            nh darwin switch
-            cd $original_dir
-          else if type -q home-manager
-            cd $NH_FLAKE
-            git pull
-            nh home switch -b home_manager_backup
-            cd $original_dir
-          else
-            return 1
-          end
+          ${lib.optionalString (systemType == "Nixos") "sudo "}git -C $NH_FLAKE pull;
+          nh ${nhTarget} switch${hmBackup}
         '';
       };
       plugins = [
