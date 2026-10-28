@@ -18,6 +18,7 @@ in
     "vm.vfs_cache_pressure" = 500;
   };
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 1;
   boot.loader.systemd-boot.enable = true;
   networking = {
     defaultGateway6.interface = "ens18";
