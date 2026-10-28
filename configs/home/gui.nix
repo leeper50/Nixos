@@ -301,13 +301,11 @@ in
         bitwarden-desktop
         bitwarden-cli
         blender
-        # collabora-desktop
         czkawka
         feishin
         ffmpeg-full
         freac
         gimp
-        # handbrake
         imgbrd-grabber
         kdePackages.kdenlive
         kdePackages.tokodon
