@@ -1,13 +1,7 @@
-{ disko, secrets, ... }:
+{ disko, ... }:
 let
   rootDir = ../../..;
   homelab = rootDir + /configs/nixos/homelab;
-  keys = import "${secrets}/keys.nix";
-  backupKeys = [
-    keys.node-1
-    keys.node-2
-    keys.node-3
-  ];
 in
 {
   imports =
@@ -78,8 +72,4 @@ in
     fileSystems = [ "/mnt/data" ];
   };
   system.stateVersion = "25.11";
-  users.users = {
-    walter.openssh.authorizedKeys.keys = backupKeys;
-    root.openssh.authorizedKeys.keys = backupKeys;
-  };
 }
