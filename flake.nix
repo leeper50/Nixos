@@ -58,7 +58,12 @@
         ;
       inherit (nixpkgs) lib;
 
-      mkGlobals = hostName: import ./globals.nix { inherit lib hostName; };
+      mkGlobals =
+        hostName:
+        import ./globals.nix {
+          inherit lib hostName;
+          sshKeys = import "${inputs.secrets}/keys.nix";
+        };
 
       # Systems that get a dev shell, formatter and checks.
       forAllSystems = lib.genAttrs [

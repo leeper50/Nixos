@@ -1,6 +1,7 @@
 {
   lib,
   hostName,
+  sshKeys,
 }:
 let
   domains = rec {
@@ -25,6 +26,7 @@ in
   fullName = "Walter Leeper";
   inherit hostName;
   locale = "en_US.UTF-8";
+  inherit sshKeys;
   networking = rec {
     dns = {
       "19280085.xyz" = [
