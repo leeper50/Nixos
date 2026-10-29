@@ -57,6 +57,8 @@ in
           nixd
           nixfmt
           oxipng
+          pdfcraft
+          photocraft
           pistol
           qownnotes
           remmina
@@ -310,6 +312,7 @@ in
         kdePackages.kdenlive
         kdePackages.tokodon
         marktext
+        parsec-bin
         pulseaudio
         qt5.qttools
         qview
