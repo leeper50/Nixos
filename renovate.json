@@ -1,0 +1,30 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "timezone": "America/Chicago",
+  "rebaseWhen": "behind-base-branch",
+  "semanticCommits": "disabled",
+  "nix": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Bump every flake input in one PR, like the old update-flake-lock workflow",
+      "matchManagers": ["nix"],
+      "groupName": "flake inputs",
+      "groupSlug": "flake-update",
+      "commitMessagePrefix": "flake:",
+      "commitMessageAction": "bump",
+      "group": {
+        "commitMessageTopic": "inputs"
+      },
+      "schedule": ["before 5am"]
+    },
+    {
+      "description": "secrets is a private SSH repo, bumped by hand in its own commit after rekeying",
+      "matchManagers": ["nix"],
+      "matchDepNames": ["secrets"],
+      "enabled": false
+    }
+  ]
+}
