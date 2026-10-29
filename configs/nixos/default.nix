@@ -290,7 +290,10 @@ in
             withUWSM = true;
             xwayland.enable = true;
           };
-          sway.enable = true;
+          sway = {
+            enable = true;
+            extraPackages = [ ];
+          };
           steam = {
             enable = true;
             extest.enable = true;
@@ -320,6 +323,7 @@ in
           flatpak.enable = true;
           gnome.gnome-keyring.enable = true;
           hypridle.enable = lib.mkForce false;
+          pcscd.enable = true;
           printing.enable = true;
           pulseaudio.enable = false;
           pipewire = {
