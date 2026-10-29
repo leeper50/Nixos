@@ -22,7 +22,13 @@
               content = {
                 type = "luks";
                 name = "cryptroot";
-                settings.allowDiscards = true;
+                settings = {
+                  allowDiscards = true;
+                  crypttabExtraOpts = [
+                    "fido2-device=auto"
+                    "token-timeout=10"
+                  ];
+                };
                 content = {
                   type = "btrfs";
                   extraArgs = [ "-f" ];

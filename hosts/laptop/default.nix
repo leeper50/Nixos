@@ -16,6 +16,7 @@ in
       /configs/nixos
       /configs/nixos/power.nix
       /configs/nixos/syncthing.nix
+      /configs/nixos/u2f.nix
     ]
     ++ [
       ./disk-config.nix
@@ -60,6 +61,7 @@ in
       surge.enable = true;
       waifu2x.enable = true;
     };
+    u2f.enable = true;
     restic.backups.home = {
       exclude = [
         "*cache*"
