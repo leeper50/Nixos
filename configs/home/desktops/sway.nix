@@ -1,3 +1,4 @@
+# Docs: https://github.com/swaywm/sway/wiki
 {
   config,
   lib,

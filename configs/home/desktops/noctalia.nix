@@ -1,37 +1,37 @@
+# Docs: https://docs.noctalia.dev/noctalia/
 {
   programs.noctalia = {
     enable = true;
     systemd.enable = true;
     settings = {
       bar.default = {
+        margin_ends = 0;
+        radius = 0;
         start = [
           "workspaces"
         ];
         center = [
           "clock"
-          "media"
+          "notifications"
         ];
         end = [
           "tray"
-          "notifications"
           "clipboard"
           "bluetooth"
-          "privacy"
           "volume"
           "brightness"
           "battery"
         ];
       };
       brightness.minimum_brightness = 0.05;
-      location.auto_locate = true;
-      plugins = {
-        auto_update = "all";
-        enabled = [
-          "noctalia/bitwarden"
-        ];
-      };
-      widget = {
-        media.hide_when_no_media = true;
+      shell.launcher = {
+        app_grid = true;
+        categories = false;
+        default_view = "all";
+        layout = "simple";
+        show_session_button = false;
+        show_settings_button = false;
+        track_usage = false;
       };
     };
   };
