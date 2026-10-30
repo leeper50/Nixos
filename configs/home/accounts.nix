@@ -117,6 +117,7 @@ in
         isDefault = true;
         search = {
           default = "ddg";
+          force = true;
           privateDefault = "ddg";
         };
         withExternalGnupg = true;
@@ -136,10 +137,4 @@ in
       "privacy.donottrackheader.enabled" = true;
     };
   };
-
-  # Thunderbird file cleanup
-  home.activation.removeThunderbirdSearch = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-    rm -f "$HOME/.thunderbird/default/search.json.mozlz4"
-    rm -f "$HOME/.thunderbird/default/search.json.mozlz4.home_manager_backup"
-  '';
 }
