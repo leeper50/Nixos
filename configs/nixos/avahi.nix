@@ -20,11 +20,11 @@
         nssmdns4 = true;
         nssmdns6 = true;
         openFirewall = false;
-        publish = {
-          addresses = true;
-          domain = true;
-          enable = true;
-          workstation = true;
+        settings.publish = {
+          "disable-publishing" = false;
+          publish-addresses = true;
+          publish-domain = true;
+          publish-workstation = true;
         };
         extraServiceFiles.timemachine = ''
           <?xml version="1.0" standalone='no'?>
