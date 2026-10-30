@@ -88,6 +88,10 @@ in
       address = "wleeper@mailbox.org";
       primary = true;
       userName = "wleeper@mailbox.org";
+      gpg = {
+        key = "6014E165D58C6C21";
+        signByDefault = true;
+      };
     };
     "Gmail" = gmailSettings // {
       address = "wleeper49@gmail.com";
@@ -115,6 +119,7 @@ in
           default = "ddg";
           privateDefault = "ddg";
         };
+        withExternalGnupg = true;
       };
     };
     settings = {

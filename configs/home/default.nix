@@ -1,6 +1,5 @@
 {
   config,
-  globals,
   lib,
   pkgs,
   systemType,
@@ -8,7 +7,6 @@
 }:
 let
   editor = if systemType == "Standalone" then "helix" else "hx";
-  signingKey = globals.sshKeys.email;
   nhTarget =
     {
       Nixos = "os";
@@ -113,14 +111,9 @@ in
     git = {
       enable = true;
       lfs.enable = true;
-      settings.gpg.ssh.allowedSignersFile = toString (
-        pkgs.writeText "allowed_signers" ''
-          ${globals.primaryEmail} namespaces="git" ${signingKey}
-        ''
-      );
       signing = {
-        format = "ssh";
-        key = signingKey;
+        format = "openpgp";
+        key = "2F7A99CBD7D51B34F8921A6E6014E165D58C6C21";
         signByDefault = true;
       };
     };

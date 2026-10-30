@@ -4,9 +4,10 @@
 [files]
 extend-exclude = [
   "*.age",               # encrypted, base64 noise
+  "configs/home/lf-icons", # file extensions, not words
   "flake.lock",
   "OpenTofu/*.tfstate*", # encrypted state
-  "configs/home/lf-icons", # file extensions, not words
+  "public.asc",
 ]
 
 [default]

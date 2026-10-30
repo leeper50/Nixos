@@ -43,6 +43,11 @@ in
     {
       fonts.fontconfig.enable = true;
       home = {
+        file.".config/chezmoi/chezmoi.toml".text = ''
+          encryption = "gpg"
+          [gpg]
+            recipient = "2F7A99CBD7D51B34F8921A6E6014E165D58C6C21"
+        '';
         packages = with pkgs; [
           chezmoi
           corefonts
@@ -102,6 +107,19 @@ in
           user = {
             email = globals.primaryEmail;
             name = globals.fullName;
+          };
+        };
+        gpg = {
+          enable = true;
+          publicKeys = [
+            {
+              source = ../../public.asc;
+              trust = 5;
+            }
+          ];
+          scdaemonSettings = {
+            disable-ccid = true;
+            pcsc-shared = true;
           };
         };
         kitty = {
@@ -275,6 +293,11 @@ in
             };
           };
         };
+      };
+      services.gpg-agent = {
+        enable = true;
+        pinentry.package =
+          if pkgs.stdenv.hostPlatform.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-qt;
       };
     }
     (lib.mkIf (systemType != "NixDarwin") {
