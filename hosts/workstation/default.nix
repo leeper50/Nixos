@@ -31,7 +31,7 @@ in
           output = "DP-1",
           position = "auto-left",
           scale = "1",
-          vrr = 0
+          vrr = 3
         })
         hl.monitor({
           bitdepth = 8,
@@ -39,7 +39,7 @@ in
           output = "DP-2",
           position = "auto-right",
           scale = "2",
-          vrr = 0
+          vrr = 3
         })
         hl.workspace_rule({monitor = "DP-1", workspace = "1"})
         hl.workspace_rule({monitor = "DP-1", workspace = "3"})

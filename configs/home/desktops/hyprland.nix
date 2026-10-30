@@ -1,3 +1,4 @@
+# Docs: https://wiki.hypr.land/
 { lib, pkgs, ... }:
 let
   cycle-audio-output = import ./cycle-audio-output.nix { inherit pkgs; };
@@ -12,9 +13,7 @@ in
     wtype
     xdg-desktop-portal-hyprland
   ];
-
   stylix.targets.hyprland.enable = true;
-
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
@@ -34,11 +33,9 @@ in
         ''
           local mainMod = "SUPER"
           local noctalia = "noctalia msg "
-
           -- Session
           hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
           hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(noctalia .. "panel-toggle session"))
-
           -- Apps
           hl.bind("ALT + F4", hl.dsp.window.close())
           hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
@@ -50,34 +47,28 @@ in
           hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("kitty"))
           hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(noctalia .. "panel-toggle launcher"))
           hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-
           -- Screenshot
           hl.bind("Print", hl.dsp.exec_cmd("grimblast copysave screen --notify ${screenshot_name}"))
           hl.bind("SHIFT + Print", hl.dsp.exec_cmd("grimblast copysave area --notify ${screenshot_name}"))
-
           -- Focus
           hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
           hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
           hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
           hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
-
           -- Move window within layout
           hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
           hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
           hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
           hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
-
           -- Workspaces
           for i = 1, 9 do
             local key = i % 9
             hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
             hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
           end
-
           -- Mouse move/resize
           hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
           hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
-
           -- Audio & media controls
           hl.bind("XF86AudioMute", hl.dsp.exec_cmd(noctalia .. "volume-mute"))
           hl.bind("XF86AudioNext", hl.dsp.exec_cmd(noctalia .. "media next"))
@@ -85,7 +76,6 @@ in
           hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(noctalia .. "media previous"))
           hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd(noctalia .. "mic-mute"))
           hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("${lib.getExe cycle-audio-output}"))
-
           -- Volume/brightness
           hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(noctalia .. "volume-down"), { locked = true, repeating = true })
           hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(noctalia .. "volume-up"), { locked = true, repeating = true })
@@ -103,35 +93,10 @@ in
     settings = {
       animation = [
         {
-          bezier = "easeOut";
-          enabled = true;
-          leaf = "windows";
-          speed = 7;
-        }
-        {
-          leaf = "windowsOut";
-          enabled = true;
-          speed = 7;
-          bezier = "default";
-          style = "popin 80%";
-        }
-        {
           bezier = "default";
           enabled = true;
-          leaf = "border";
-          speed = 10;
-        }
-        {
-          bezier = "default";
-          enabled = true;
-          leaf = "fade";
-          speed = 7;
-        }
-        {
-          bezier = "default";
-          enabled = true;
-          leaf = "workspaces";
-          speed = 6;
+          leaf = "global";
+          speed = 5;
         }
       ];
       window_rule = [
@@ -170,7 +135,7 @@ in
           enable_swallow = true;
           force_default_wallpaper = 0;
           swallow_regex = "^kitty";
-          vrr = 0;
+          vrr = 1;
         };
         input = {
           follow_mouse = 1;
@@ -182,62 +147,6 @@ in
         };
         xwayland.force_zero_scaling = true;
       };
-      curve = {
-        _args = [
-          "easeOut"
-          {
-            type = "bezier";
-            points = [
-              [
-                0.05
-                0.9
-              ]
-              [
-                0.1
-                1.05
-              ]
-            ];
-          }
-        ];
-      };
-      env = [
-        {
-          _args = [
-            "GDK_BACKEND"
-            "wayland,x11"
-          ];
-        }
-        {
-          _args = [
-            "MOZ_ENABLE_WAYLAND"
-            "1"
-          ];
-        }
-        {
-          _args = [
-            "NIXOS_OZONE_WL"
-            "1"
-          ];
-        }
-        {
-          _args = [
-            "QT_QPA_PLATFORM"
-            "wayland;xcb"
-          ];
-        }
-        {
-          _args = [
-            "QT_QPA_PLATFORMTHEME"
-            "kde"
-          ];
-        }
-        {
-          _args = [
-            "QT_WAYLAND_DISABLE_WINDOWDECORATION"
-            "1"
-          ];
-        }
-      ];
       gesture = {
         action = "workspace";
         direction = "horizontal";
