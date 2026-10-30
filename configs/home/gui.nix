@@ -120,6 +120,9 @@ in
           scdaemonSettings = {
             disable-ccid = true;
             pcsc-shared = true;
+          }
+          // lib.optionalAttrs (systemType == "Standalone") {
+            pcsc-driver = "/usr/lib/libpcsclite_real.so.1";
           };
         };
         kitty = {
