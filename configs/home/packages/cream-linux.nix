@@ -7,12 +7,15 @@
 }:
 let
   cfg = config.local.packages;
-  creamlinux = import (pkgs.fetchFromGitHub {
-    hash = "sha256-E8oJ073yhtFiCMVuixPvQbdYJNSTxu7ICTGMuq+jce8=";
+  hash = "sha256-78NexMKBlJltCGb1qDK4B2kYNMdVAWNxgSUDnNjOJhM=";
+  src = pkgs.fetchFromGitHub {
+    hash = hash;
     owner = "Novattz";
     repo = "creamlinux-installer";
-    rev = "main";
-  }) { inherit pkgs; };
+    rev = "v${version}";
+  };
+  version = "1.8.0";
+  creamlinux = import src { inherit pkgs; };
 in
 {
   options.local.packages.cream-linux.enable = lib.mkEnableOption "cream-linux";

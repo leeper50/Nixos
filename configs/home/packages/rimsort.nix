@@ -7,12 +7,12 @@
 }:
 let
   cfg = config.local.packages;
-  hash = "sha256-fdAtdALq46c8KXoEoIaiG7euWtLpsrVQG7vIsI35ut8=";
+  hash = "sha256-wsdjJotUa6bfp81AbuEehmzExtVOavgy7fUFejLUfHw=";
   src = pkgs.fetchurl {
     hash = hash;
     url = "https://github.com/RimSort/RimSort/releases/download/v${version}/RimSort-v${version}-x86_64.AppImage";
   };
-  version = "1.15.0";
+  version = "1.17.4";
   appimageContents = pkgs.appimageTools.extract {
     pname = "rimsort";
     inherit version src;
