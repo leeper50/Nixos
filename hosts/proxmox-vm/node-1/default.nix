@@ -5,6 +5,7 @@ let
 in
 {
   imports = map (p: homelab + p) [
+    /renovate.nix
     /vaultwarden.nix
   ];
   local = {
@@ -21,6 +22,7 @@ in
       };
     };
     fail2ban.jails.traefik.enable = true;
+    renovate.enable = true;
     vaultwarden.enable = true;
   };
   networking.firewall = localLib.mkFirewallRules {
