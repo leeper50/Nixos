@@ -24,7 +24,7 @@ in
           RENOVATE_TOKEN = pass."renovate_token.age".path;
         };
         runtimePackages = [ config.nix.package ];
-        schedule = "hourly";
+        schedule = "*:0/5";
         settings = {
           autodiscover = true;
           endpoint = "https://${globals.forgejo.domain}/api/v1";
