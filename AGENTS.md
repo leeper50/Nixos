@@ -57,7 +57,9 @@ for the folder layout and the Proxmox VM workflow.
   `secrets` input. A module takes `secrets` as an argument and declares its
   own `age.secrets.*` with `file = "${secrets}/<name>.age"`. `secrets.nix`
   there only lists recipients. `./secrets` is a git-ignored clone of that
-  repo for editing: rekey with `ragenix -r` in it, push, then run
+  repo for editing: rekey with `ragenix -r` in it and push only once the
+  rekey is complete, since Renovate's nightly lock file maintenance PR bumps
+  `secrets` with the other inputs. To land it sooner, run
   `nix flake update secrets` here (in its own commit). Never print or commit
   decrypted secrets.
 - **Swarm VMs** (`node-1..3`) are built by `mkSwarmHost` in `flake.nix`, which
