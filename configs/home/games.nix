@@ -30,11 +30,9 @@ in
   };
   config = {
     home.packages = [
-      pkgs.discord
       pkgs.mumble
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-      pkgs.openmw
       pkgs.r2modman
       pkgs.wowup-cf
     ]

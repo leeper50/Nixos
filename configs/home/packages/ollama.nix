@@ -32,14 +32,12 @@ in
         {
           home.packages = with pkgs; [
             claude-code
-            jan
           ];
         }
       else
         {
           environment.systemPackages = with pkgs; [
             claude-code
-            jan
           ];
         }
     ))

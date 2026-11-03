@@ -335,6 +335,7 @@ in
         freac
         gimp
         imgbrd-grabber
+        kdePackages.filelight
         kdePackages.kdenlive
         kdePackages.tokodon
         marktext
