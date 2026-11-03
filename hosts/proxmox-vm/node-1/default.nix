@@ -28,8 +28,8 @@ in
   networking.firewall = localLib.mkFirewallRules {
     service = "traefik";
     sources = [
-      "0.0.0.0"
-      "::0"
+      "0.0.0.0/0"
+      "::/0"
     ];
     tcpPorts = [
       80
