@@ -98,6 +98,47 @@ in
         };
         logDriver = "journald";
       };
+      # dockerd starts every container at once, so one that shares another
+      # container's network fails with "cannot join network namespace" if
+      # it beats that container, and dockerd never retries it.
+      # Start those once their network is running.
+      systemd.services.docker-netns-dependents = {
+        description = "Start containers that failed to join another container's network";
+        after = [ "docker.service" ];
+        bindsTo = [ "docker.service" ];
+        wantedBy = [
+          "docker.service"
+          "multi-user.target"
+        ];
+        path = [ pkgs.docker ];
+        script = ''
+          for _ in $(seq 60); do
+            waiting=0
+            for id in $(docker ps -aq --filter status=exited --filter status=created); do
+              state=$(docker inspect --format '{{.HostConfig.NetworkMode}}|{{.State.Error}}' "$id") || continue
+              case "$state" in
+                container:*"|"*"cannot join network namespace"*) ;;
+                *) continue ;;
+              esac
+              target=''${state%%|*}
+              target=''${target#container:}
+              if [ "$(docker inspect --format '{{.State.Running}}' "$target" 2>/dev/null)" = true ]; then
+                docker start "$id" >/dev/null && echo "Started $(docker inspect --format '{{.Name}}' "$id")"
+              else
+                waiting=1
+              fi
+            done
+            [ "$waiting" = 0 ] && exit 0
+            sleep 5
+          done
+          echo "Gave up: some containers' network containers never started" >&2
+          exit 1
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+      };
       users.users.walter.extraGroups = [ "docker" ];
     }
 
