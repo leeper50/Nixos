@@ -7,6 +7,13 @@
 }:
 let
   cfg = config.local.caddy;
+  dockerSubnets = with globals.networking.docker; [
+    ipv4Subnet
+    ipv6Subnet
+    fixedv6Subnet
+  ];
+  localIps =
+    globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets;
 in
 {
   options.local.caddy = {
@@ -49,7 +56,7 @@ in
         service = "caddy";
         sources =
           if config.local.local then
-            globals.networking.lan
+            globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets
           else
             [
               "0.0.0.0/0"
@@ -82,12 +89,12 @@ in
           ''
           + lib.optionalString config.local.local ''
             (local_ips) {
-              @local_ips client_ip ${lib.strings.join " " globals.networking.lan}
+              @local_ips client_ip ${lib.strings.join " " localIps}
             }
             (friendly_ips) {
               @friendly_ips client_ip ${
                 lib.strings.join " " (
-                  globals.networking.lan
+                  localIps
                   ++ [
                     globals.networking.hosts.racknerd.ipv4
                     globals.networking.hosts.servercheap.ipv4
