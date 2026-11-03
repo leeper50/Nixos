@@ -220,6 +220,10 @@ in
                     "kuma.__docker" = "";
                     "release_notes" = "https://github.com/moghtech/komodo/releases";
                     "traefik.enable" = "true";
+                    "traefik.http.routers.komodo-webhooks.entryPoints" = "https";
+                    "traefik.http.routers.komodo-webhooks.middlewares" = "webhooks@file";
+                    "traefik.http.routers.komodo-webhooks.rule" =
+                      "Host(`k.dellhplaptop.xyz`) && PathPrefix(`/listener/`)";
                     "traefik.http.routers.komodo.entryPoints" = "https";
                     "traefik.http.routers.komodo.middlewares" = "localonly@file";
                     "traefik.http.routers.komodo.rule" = "Host(`k.dellhplaptop.xyz`)";
@@ -231,6 +235,7 @@ in
                 };
                 environment = {
                   KOMODO_DATABASE_URI = "mongodb://mongo:27017";
+                  KOMODO_HOST = "https://k.dellhplaptop.xyz";
                   KOMODO_INIT_ADMIN_USERNAME = "walter";
                   KOMODO_LOCAL_AUTH = "true";
                 };
