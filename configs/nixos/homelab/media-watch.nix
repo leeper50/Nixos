@@ -38,7 +38,7 @@ in
   options.local.mediaWatch = {
     enable = lib.mkEnableOption "mediaWatch";
     debounce = lib.mkOption {
-      default = 30;
+      default = 5;
       type = lib.types.int;
       description = ''
         Seconds of filesystem quiet to wait for before triggering a scan, so
