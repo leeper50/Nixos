@@ -31,6 +31,7 @@ in
           output = "DP-1",
           position = "auto-left",
           scale = "1",
+          supports_hdr = -1,
           vrr = 3
         })
         hl.monitor({
@@ -39,6 +40,7 @@ in
           output = "DP-2",
           position = "auto-right",
           scale = "2",
+          supports_hdr = -1,
           vrr = 3
         })
         hl.workspace_rule({monitor = "DP-1", workspace = "1"})
