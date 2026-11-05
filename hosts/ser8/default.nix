@@ -86,6 +86,7 @@ in
       ];
     };
     networkmanager = {
+      unmanaged = [ "enp1s0" ];
       ensureProfiles = {
         environmentFiles = [ config.age.secrets."wifi_home_env.age".path ];
         profiles.home = {
