@@ -5,7 +5,6 @@
   ...
 }:
 let
-  cfg = config.local.gotify;
   port = 8082;
 in
 {
@@ -13,7 +12,7 @@ in
     enable = lib.mkEnableOption "gotify";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.gotify.enable {
       services.gotify = {
         enable = true;
         environment = {
@@ -27,7 +26,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.gotify.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         g = {
           extraConfig = "reverse_proxy 127.0.0.1:${toString port}";

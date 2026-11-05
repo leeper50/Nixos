@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.browsers;
   chromiumPackage = pkgs.brave;
   firefoxPackage = pkgs.firefox-bin;
   floorpPackage = pkgs.floorp-bin;
@@ -66,7 +65,7 @@ in
   };
   imports = [ ./extensions.nix ];
   config = lib.mkMerge [
-    (lib.mkIf cfg.brave.enable {
+    (lib.mkIf config.local.browsers.brave.enable {
       programs.chromium = {
         commandLineArgs = [
           "--proxy-pac-url=https://c.dellhplaptop.xyz/public/proxy.pac"
@@ -75,7 +74,7 @@ in
         package = chromiumPackage;
       };
     })
-    (lib.mkIf cfg.firefox.enable {
+    (lib.mkIf config.local.browsers.firefox.enable {
       stylix.targets = {
         firefox = {
           colorTheme.enable = true;
@@ -86,7 +85,7 @@ in
         package = firefoxPackage;
       };
     })
-    (lib.mkIf cfg.floorp.enable {
+    (lib.mkIf config.local.browsers.floorp.enable {
       stylix.targets = {
         floorp = {
           colorTheme.enable = true;
@@ -97,7 +96,7 @@ in
         package = floorpPackage;
       };
     })
-    (lib.mkIf cfg.librewolf.enable {
+    (lib.mkIf config.local.browsers.librewolf.enable {
       stylix.targets = {
         librewolf = {
           colorTheme.enable = true;

@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.docker;
   komodo_version = "2.3.4";
   swarmNetworks = {
     proxy = true;
@@ -42,19 +41,28 @@ in
     {
       assertions = [
         {
-          assertion = !(!cfg.swarm.enable && cfg.swarm.manager);
+          assertion = !(!config.local.docker.swarm.enable && config.local.docker.swarm.manager);
           message = "local.docker.swarm.manager should not be true when not using swarm.";
         }
         {
-          assertion = !(!cfg.swarm.enable && cfg.swarm.managerIP != null);
+          assertion = !(!config.local.docker.swarm.enable && config.local.docker.swarm.managerIP != null);
           message = "local.docker.swarm.managerIP should not be set when not using swarm.";
         }
         {
-          assertion = !((cfg.komodo.core.enable || cfg.komodo.periphery.enable) && cfg.komodo.coreIP == null);
+          assertion =
+            !(
+              (config.local.docker.komodo.core.enable || config.local.docker.komodo.periphery.enable)
+              && config.local.docker.komodo.coreIP == null
+            );
           message = "local.docker.komodo.coreIP must be set when using komodo.";
         }
         {
-          assertion = !(!cfg.komodo.core.enable && !cfg.komodo.periphery.enable && cfg.komodo.coreIP != null);
+          assertion =
+            !(
+              !config.local.docker.komodo.core.enable
+              && !config.local.docker.komodo.periphery.enable
+              && config.local.docker.komodo.coreIP != null
+            );
           message = "local.docker.komodo.coreIP is set, but neither core or periphery are enabled.";
         }
       ];
@@ -94,7 +102,7 @@ in
           fixed-cidr-v6 = globals.networking.docker.fixedv6Subnet;
           ip6tables = true;
           ipv6 = true;
-          labels = map (label: "${label}=true") cfg.swarm.labels;
+          labels = map (label: "${label}=true") config.local.docker.swarm.labels;
         };
         logDriver = "journald";
       };
@@ -143,14 +151,14 @@ in
     }
 
     ### Komodo periphery configuration
-    (lib.mkIf cfg.komodo.periphery.enable (
+    (lib.mkIf config.local.docker.komodo.periphery.enable (
       let
         komodoPeripheryStackFile = pkgs.writeText "komodo-periphery-stack-base.json" (
           builtins.toJSON {
             services.periphery = {
               environment = {
                 PERIPHERY_CONNECT_AS = config.networking.hostName;
-                PERIPHERY_CORE_ADDRESS = "ws://${cfg.komodo.coreIP}:9120";
+                PERIPHERY_CORE_ADDRESS = "ws://${config.local.docker.komodo.coreIP}:9120";
                 PERIPHERY_CORE_PUBLIC_KEYS = "MCowBQYDK2VuAyEAsxfy2FMcYn36sr7Sj/syAkaFxGIH6LKaOnYTF+578jo=";
                 PERIPHERY_SSL_ENABLED = "true";
               };
@@ -200,18 +208,18 @@ in
     ))
 
     ### Komodo core configuration
-    (lib.mkIf cfg.komodo.core.enable (
+    (lib.mkIf config.local.docker.komodo.core.enable (
       let
         komodoCoreStackFile = pkgs.writeText "komodo-core-stack-base.json" (
           builtins.toJSON {
             networks.komodo = {
               attachable = true;
-              driver = if cfg.swarm.enable then "overlay" else "bridge";
+              driver = if config.local.docker.swarm.enable then "overlay" else "bridge";
             };
             networks.proxy.external = true;
             services = {
               core = {
-                deploy = lib.optionalAttrs cfg.swarm.enable {
+                deploy = lib.optionalAttrs config.local.docker.swarm.enable {
                   labels = {
                     "homepage.group" = "Infrastructure";
                     "homepage.href" = "https://k.dellhplaptop.xyz";
@@ -258,7 +266,7 @@ in
                 ];
               };
               mongo = {
-                deploy = lib.optionalAttrs cfg.swarm.enable {
+                deploy = lib.optionalAttrs config.local.docker.swarm.enable {
                   mode = "replicated";
                   replicas = 1;
                   placement.constraints = [ "node.role == manager" ];
@@ -285,8 +293,16 @@ in
         age.secrets."komodo_admin_password.age".file = "${secrets}/komodo_admin_password.age";
         systemd.services.komodo-core-stack = {
           description = "Deploy Komodo core stack";
-          after = if cfg.swarm.enable then [ "docker-swarm-networks.service" ] else [ "docker.service" ];
-          requires = if cfg.swarm.enable then [ "docker-swarm-networks.service" ] else [ "docker.service" ];
+          after =
+            if config.local.docker.swarm.enable then
+              [ "docker-swarm-networks.service" ]
+            else
+              [ "docker.service" ];
+          requires =
+            if config.local.docker.swarm.enable then
+              [ "docker-swarm-networks.service" ]
+            else
+              [ "docker.service" ];
           wantedBy = [ "multi-user.target" ];
           script = ''
             TMPFILE="$(${pkgs.coreutils}/bin/mktemp)"
@@ -304,7 +320,7 @@ in
               ${komodoCoreStackFile} > "$TMPFILE"
           ''
           + (
-            if cfg.swarm.enable then
+            if config.local.docker.swarm.enable then
               ''
                 ${pkgs.docker}/bin/docker stack deploy \
                 --compose-file "$TMPFILE" \
@@ -325,7 +341,7 @@ in
     ))
 
     ### Swarm configuration
-    (lib.mkIf cfg.swarm.enable {
+    (lib.mkIf config.local.docker.swarm.enable {
       boot.kernelModules = [
         "ip_vs"
         "ip_vs_rr"
@@ -390,7 +406,12 @@ in
           "docker-swarm-join.service"
         ];
         requiredBy = [
-          (if cfg.swarm.manager then "docker-swarm-init.service" else "docker-swarm-join.service")
+          (
+            if config.local.docker.swarm.manager then
+              "docker-swarm-init.service"
+            else
+              "docker-swarm-join.service"
+          )
         ];
         wantedBy = [ "multi-user.target" ];
         script = ''
@@ -410,7 +431,7 @@ in
           RemainAfterExit = true;
         };
       };
-      systemd.services.docker-swarm-networks = lib.mkIf cfg.swarm.manager {
+      systemd.services.docker-swarm-networks = lib.mkIf config.local.docker.swarm.manager {
         description = "Create shared Docker Swarm networks";
         after = [ "docker-swarm-init.service" ];
         requires = [ "docker-swarm-init.service" ];
@@ -427,7 +448,7 @@ in
           RemainAfterExit = true;
         };
       };
-      systemd.services.docker-swarm-init = lib.mkIf cfg.swarm.manager {
+      systemd.services.docker-swarm-init = lib.mkIf config.local.docker.swarm.manager {
         description = "Initialize Docker Swarm";
         after = [ "docker.service" ];
         requires = [ "docker.service" ];
@@ -435,7 +456,7 @@ in
         script = ''
           if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | ${pkgs.ripgrep}/bin/rg -qx active; then
             ${pkgs.docker}/bin/docker swarm init \
-              --advertise-addr ${cfg.swarm.managerIP} \
+              --advertise-addr ${config.local.docker.swarm.managerIP} \
               --default-addr-pool 172.31.0.0/16 \
               --default-addr-pool-mask-length 24
           fi
@@ -445,10 +466,10 @@ in
           RemainAfterExit = true;
         };
       };
-      age.secrets."docker_swarm_token.age" = lib.mkIf (!cfg.swarm.manager) {
+      age.secrets."docker_swarm_token.age" = lib.mkIf (!config.local.docker.swarm.manager) {
         file = "${secrets}/docker_swarm_token.age";
       };
-      systemd.services.docker-swarm-join = lib.mkIf (!cfg.swarm.manager) {
+      systemd.services.docker-swarm-join = lib.mkIf (!config.local.docker.swarm.manager) {
         description = "Join Docker Swarm";
         after = [
           "docker.service"
@@ -466,7 +487,7 @@ in
           if ! ${pkgs.docker}/bin/docker info --format '{{.Swarm.LocalNodeState}}' | ${pkgs.ripgrep}/bin/rg -qx active; then
             ${pkgs.docker}/bin/docker swarm join \
               --token "$(cat "$TOKEN_FILE")" \
-              ${cfg.swarm.managerIP}:2377
+              ${config.local.docker.swarm.managerIP}:2377
           fi
         '';
         serviceConfig = {

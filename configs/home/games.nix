@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.games;
   retroarch_dir = "~/Sync/Retroarch";
 in
 {
@@ -39,10 +38,12 @@ in
     ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && systemType == "Nixos") [
       pkgs.heroic
     ]
-    ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && cfg.emulators.enable) cfg.emulators.list;
+    ++ lib.optionals (
+      pkgs.stdenv.hostPlatform.isLinux && config.local.games.emulators.enable
+    ) config.local.games.emulators.list;
     programs = {
       prismlauncher.enable = pkgs.stdenv.hostPlatform.isLinux;
-      retroarch = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && cfg.emulators.enable) {
+      retroarch = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && config.local.games.emulators.enable) {
         enable = true;
         cores = {
           bsnes-hd.enable = true;

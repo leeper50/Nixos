@@ -7,9 +7,7 @@
   ...
 }:
 let
-  cfg = config.local.headscale;
   pass = config.age.secrets;
-
   headscaleDomain = "hd.${config.local.caddy.domain}";
 
   # Setup explicit extra records from caddy virtual host from each machine.
@@ -54,7 +52,7 @@ in
     enable = lib.mkEnableOption "Headscale coordination server with Headplane admin UI";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.headscale.enable {
       age.secrets = {
         "headplane_cookie_secret.age" = {
           file = "${secrets}/headplane_cookie_secret.age";
@@ -101,7 +99,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && config.local.authelia.enable) {
+    (lib.mkIf (config.local.headscale.enable && config.local.authelia.enable) {
       services.headscale.settings = {
         oidc = {
           client_id = "headscale";
@@ -134,7 +132,7 @@ in
         wants = [ "authelia-main.service" ];
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.headscale.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts.${headscaleDomain} = {
         extraConfig = ''
           handle /admin* {

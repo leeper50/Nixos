@@ -5,8 +5,6 @@
   ...
 }:
 let
-  cfg = config.local.browsers;
-
   containers = import ./containers.nix;
   cookieStoreId = name: "firefox-container-${toString containers.${name}.id}";
   defaultContainer = lib.findFirst (name: containers.${name}.default or false) null (
@@ -91,7 +89,7 @@ let
 in
 {
   config = lib.mkMerge [
-    (lib.mkIf cfg.brave.enable {
+    (lib.mkIf config.local.browsers.brave.enable {
       programs.chromium.extensions = [
         { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
         { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv
@@ -104,15 +102,15 @@ in
         { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violent monkey
       ];
     })
-    (lib.mkIf cfg.firefox.enable {
+    (lib.mkIf config.local.browsers.firefox.enable {
       programs.firefox.profiles.default.extensions = profileExtensions;
       programs.firefox.policies."3rdparty".Extensions = policyExtensions;
     })
-    (lib.mkIf cfg.floorp.enable {
+    (lib.mkIf config.local.browsers.floorp.enable {
       programs.floorp.profiles.default.extensions = profileExtensions;
       programs.floorp.policies."3rdparty".Extensions = policyExtensions;
     })
-    (lib.mkIf cfg.librewolf.enable {
+    (lib.mkIf config.local.browsers.librewolf.enable {
       programs.librewolf.profiles.default.extensions = profileExtensions;
       programs.librewolf.policies."3rdparty".Extensions = policyExtensions;
     })

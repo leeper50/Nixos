@@ -5,7 +5,6 @@
   ...
 }:
 let
-  cfg = config.local.fail2ban;
   ipIgnoreList = [
     "::1"
     "127.0.0.1/8"
@@ -63,7 +62,7 @@ in
         ignoreIP = ipIgnoreList;
       };
     }
-    (lib.mkIf cfg.jails.caddy.enable {
+    (lib.mkIf config.local.fail2ban.jails.caddy.enable {
       services.fail2ban.jails = {
         # 401/403 codes
         caddy-auth = caddyJail "${caddyLogDir}/access-*.log" ''"status":40[13],'' {
@@ -77,7 +76,7 @@ in
         };
       };
     })
-    (lib.mkIf cfg.jails.traefik.enable {
+    (lib.mkIf config.local.fail2ban.jails.traefik.enable {
       services.fail2ban.jails = {
         # 401/403 codes
         traefik-auth = traefikJail ''"DownstreamStatus":40[13],'' {

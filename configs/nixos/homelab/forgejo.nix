@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.forgejo;
   pass = config.age.secrets;
   httpAddr = "0.0.0.0";
   forgejoDomain = "fj.dellhplaptop.xyz";
@@ -40,12 +39,12 @@ in
     {
       assertions = [
         {
-          assertion = !(cfg.runner.enable && cfg.runner.uuid == "");
+          assertion = !(config.local.forgejo.runner.enable && config.local.forgejo.runner.uuid == "");
           message = "Must set local.forgejo.runner.uuid when using forgejo runner.";
         }
       ];
     }
-    (lib.mkIf cfg.server.enable {
+    (lib.mkIf config.local.forgejo.server.enable {
       age.secrets."forgejo_internal_token.age".file = "${secrets}/forgejo_internal_token.age";
       age.secrets."forgejo_lfs_jwt_secret.age".file = "${secrets}/forgejo_lfs_jwt_secret.age";
       age.secrets."forgejo_mailer_password.age".file = "${secrets}/forgejo_mailer_password.age";
@@ -158,7 +157,7 @@ in
         users.forgejo.uid = 398;
       };
     })
-    (lib.mkIf (cfg.server.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.forgejo.server.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         fj = {
           extraConfig = "reverse_proxy ${httpAddr}:${toString ports.http}";
@@ -166,7 +165,7 @@ in
         };
       };
     })
-    (lib.mkIf cfg.runner.enable {
+    (lib.mkIf config.local.forgejo.runner.enable {
       age.secrets."forgejo_token_${globals.hostName}.age".file =
         "${secrets}/forgejo_token_${globals.hostName}.age";
       virtualisation.docker.enable = true;
@@ -186,16 +185,16 @@ in
               "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
               "ubuntu-20.04:docker://docker.gitea.com/runner-images:ubuntu-20.04"
             ]
-            ++ lib.optional cfg.runner.nixHost "nix:host";
+            ++ lib.optional config.local.forgejo.runner.nixHost "nix:host";
           };
           server.connections.default = {
             url = "https://${forgejoDomain}/";
-            inherit (cfg.runner) uuid;
+            inherit (config.local.forgejo.runner) uuid;
           };
         };
       };
     })
-    (lib.mkIf (cfg.runner.enable && cfg.runner.nixHost) {
+    (lib.mkIf (config.local.forgejo.runner.enable && config.local.forgejo.runner.nixHost) {
       services.forgejo-runner.instances."${config.networking.hostName}".hostPackages = with pkgs; [
         bash
         config.nix.package

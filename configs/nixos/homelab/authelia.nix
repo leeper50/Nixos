@@ -7,9 +7,7 @@
   ...
 }:
 let
-  cfg = config.local.authelia;
   pass = config.age.secrets;
-
   users = {
     walter = {
       displayname = globals.fullName;
@@ -43,7 +41,7 @@ in
     enable = lib.mkEnableOption "Authelia (OIDC provider) with a declarative users file";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.authelia.enable {
       age.secrets = {
         "authelia_jwt_secret.age".file = "${secrets}/authelia_jwt_secret.age";
         "authelia_oidc_hmac_secret.age".file = "${secrets}/authelia_oidc_hmac_secret.age";
@@ -109,8 +107,8 @@ in
           };
           session.cookies = [
             {
-              authelia_url = "https://login.${cfg.domain}";
-              domain = cfg.domain;
+              authelia_url = "https://login.${config.local.authelia.domain}";
+              domain = config.local.authelia.domain;
             }
           ];
           storage.local.path = "/var/lib/authelia-main/db.sqlite3";
@@ -144,10 +142,10 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
-      services.caddy.virtualHosts."login.${cfg.domain}" = {
+    (lib.mkIf (config.local.authelia.enable && config.services.caddy.enable) {
+      services.caddy.virtualHosts."login.${config.local.authelia.domain}" = {
         extraConfig = "reverse_proxy 127.0.0.1:${toString autheliaPort}";
-        useACMEHost = cfg.domain;
+        useACMEHost = config.local.authelia.domain;
       };
     })
   ];

@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.packages;
   hash = "sha256-wsdjJotUa6bfp81AbuEehmzExtVOavgy7fUFejLUfHw=";
   src = pkgs.fetchurl {
     hash = hash;
@@ -36,7 +35,7 @@ let
 in
 {
   options.local.packages.rimsort.enable = lib.mkEnableOption "rimsort";
-  config = lib.mkIf cfg.rimsort.enable (
+  config = lib.mkIf config.local.packages.rimsort.enable (
     if systemType == "Standalone" then
       {
         home.packages = [ rimsort ];

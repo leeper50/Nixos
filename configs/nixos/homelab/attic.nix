@@ -7,7 +7,6 @@
   ...
 }:
 let
-  cfg = config.local.attic;
   ports.atticd = 8090;
 in
 {
@@ -23,7 +22,7 @@ in
     };
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.attic.enable {
       # Holds ATTIC_SERVER_TOKEN_RS256_SECRET_BASE64, generated with
       # `openssl genrsa -traditional 4096 | base64 -w0`.
       age.secrets."atticd_env.age".file = "${secrets}/atticd_env.age";
@@ -37,7 +36,7 @@ in
           listen = "127.0.0.1:${toString ports.atticd}";
           storage = {
             type = "local";
-            path = cfg.storagePath;
+            path = config.local.attic.storagePath;
           };
         };
       };
@@ -63,13 +62,13 @@ in
             (
               "+"
               + pkgs.writeShellScript "atticd-storage-dir" ''
-                chown atticd:atticd ${cfg.storagePath}
-                chmod 0750 ${cfg.storagePath}
+                chown atticd:atticd ${config.local.attic.storagePath}
+                chmod 0750 ${config.local.attic.storagePath}
               ''
             )
           ];
         };
-        unitConfig.RequiresMountsFor = [ cfg.storagePath ];
+        unitConfig.RequiresMountsFor = [ config.local.attic.storagePath ];
       };
       users.groups.atticd = { };
       users.users.atticd = {
@@ -77,7 +76,7 @@ in
         isSystemUser = true;
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.attic.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         attic = "reverse_proxy 127.0.0.1:${toString ports.atticd}";
       };

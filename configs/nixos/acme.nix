@@ -5,9 +5,6 @@
   secrets,
   ...
 }:
-let
-  cfg = config.local.acme;
-in
 {
   options.local.acme = {
     enable = lib.mkEnableOption "acme";
@@ -37,11 +34,11 @@ in
     };
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.acme.enable {
       age.secrets =
         lib.genAttrs
           (map (provider: "acme_${provider}.age") (
-            lib.unique (lib.mapAttrsToList (_: options: options.provider) cfg.certs)
+            lib.unique (lib.mapAttrsToList (_: options: options.provider) config.local.acme.certs)
           ))
           (name: {
             file = "${secrets}/${name}";
@@ -61,16 +58,16 @@ in
           environmentFile = config.age.secrets."acme_${options.provider}.age".path;
           extraDomainNames = lib.optional options.wildcard "*.${name}";
           group = options.group;
-        }) cfg.certs;
+        }) config.local.acme.certs;
       };
       systemd.services = lib.mapAttrs' (
         name: _:
         lib.nameValuePair "acme-order-renew-${name}" {
           environment.LEGO_DISABLE_CNAME_SUPPORT = "true";
         }
-      ) cfg.certs;
+      ) config.local.acme.certs;
     })
-    (lib.mkIf (cfg.enable && config.services.tailscale.enable) {
+    (lib.mkIf (config.local.acme.enable && config.services.tailscale.enable) {
       # Add tailscale machine cert to attrSet.
       local.acme.certs."${globals.domains.deviceTailnet}" = { };
     })

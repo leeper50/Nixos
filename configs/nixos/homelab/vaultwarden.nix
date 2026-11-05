@@ -7,7 +7,6 @@
   ...
 }:
 let
-  cfg = config.local.vaultwarden;
   port = 8222;
 in
 {
@@ -15,7 +14,7 @@ in
     enable = lib.mkEnableOption "vaultwarden";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.vaultwarden.enable {
       age.secrets."vaultwarden_env.age".file = "${secrets}/vaultwarden_env.age";
       services.vaultwarden = {
         config = {
@@ -40,7 +39,7 @@ in
         environmentFile = config.age.secrets."vaultwarden_env.age".path;
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.vaultwarden.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         vault = {
           # The admin panel is LAN-only
@@ -58,7 +57,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && !config.services.caddy.enable) {
+    (lib.mkIf (config.local.vaultwarden.enable && !config.services.caddy.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "vaultwarden";
         sources = with globals.networking.docker; [

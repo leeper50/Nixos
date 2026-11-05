@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.restic;
   extraOptionsAttrs = {
     "walter" = [ "sftp.args='-i /home/walter/.ssh/id_ed25519'" ];
     "root" = [ "sftp.args='-i /etc/ssh/ssh_host_ed25519_key'" ];
@@ -62,7 +61,9 @@ let
     b2 = "restic_b2_env.age";
     nas = "restic_rustfs_env.age";
   };
-  usedTargets = lib.unique (lib.concatMap (backup: backup.targets) (lib.attrValues cfg.backups));
+  usedTargets = lib.unique (
+    lib.concatMap (backup: backup.targets) (lib.attrValues config.local.restic.backups)
+  );
 in
 {
   options.local.restic = {
@@ -104,7 +105,9 @@ in
       {
         assertions =
           let
-            nasBackups = lib.attrNames (lib.filterAttrs (_: backup: lib.elem "nas" backup.targets) cfg.backups);
+            nasBackups = lib.attrNames (
+              lib.filterAttrs (_: backup: lib.elem "nas" backup.targets) config.local.restic.backups
+            );
           in
           [
             {
@@ -119,7 +122,7 @@ in
         age.secrets =
           lib.genAttrs
             (
-              lib.optional (cfg.backups != { }) "restic_password_file.age"
+              lib.optional (config.local.restic.backups != { }) "restic_password_file.age"
               ++ lib.attrVals (lib.filter (target: targetSecrets ? ${target}) usedTargets) targetSecrets
             )
             (
@@ -156,7 +159,7 @@ in
           lib.mergeAttrsList (
             map (target: targetGenerators.${target} { inherit name common location; }) backup.targets
           )
-        ) cfg.backups;
+        ) config.local.restic.backups;
       }
     ]
   );

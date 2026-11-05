@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.mediaWatch;
   watcher = pkgs.writeShellApplication {
     name = "media-watch";
     runtimeInputs = with pkgs; [
@@ -19,15 +18,15 @@ let
         key=$(tr -d '[:space:]' < "$CREDENTIALS_DIRECTORY/api-key")
         curl --config <(printf 'header = "Authorization: MediaBrowser Token=\\"%s\\""\n' "$key") \
           --fail --max-time 30 --request POST --retry 3 --show-error --silent \
-          "${cfg.jellyfinUrl}/Library/Refresh"
+          "${config.local.mediaWatch.jellyfinUrl}/Library/Refresh"
       }
       inotifywait --event close_write --event create --event delete \
         --event moved_from --event moved_to \
         --exclude '(\.part|\.!qB|\.tmp|~)$' \
         --format '%w%f' --monitor --quiet --recursive \
-        ${lib.escapeShellArgs cfg.paths} |
+        ${lib.escapeShellArgs config.local.mediaWatch.paths} |
         while read -r path; do
-          while read -r -t ${toString cfg.debounce} drained; do path=$drained; done
+          while read -r -t ${toString config.local.mediaWatch.debounce} drained; do path=$drained; done
           echo "changed: $path — refreshing Jellyfin libraries"
           refresh || echo "refresh failed"
         done
@@ -61,7 +60,7 @@ in
       '';
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf config.local.mediaWatch.enable {
     age.secrets."jellyfin_api_key.age".file = "${secrets}/jellyfin_api_key.age";
     boot.kernel.sysctl = {
       "fs.inotify.max_user_instances" = 512;
@@ -83,7 +82,7 @@ in
         ProtectKernelModules = true;
         ProtectKernelTunables = true;
         ProtectSystem = "strict";
-        RequiresMountsFor = cfg.paths;
+        RequiresMountsFor = config.local.mediaWatch.paths;
         Restart = "always";
         RestartSec = 10;
         RestrictAddressFamilies = [

@@ -6,15 +6,12 @@
   secrets,
   ...
 }:
-let
-  cfg = config.local.rustfs;
-in
 {
   options.local.rustfs = {
     enable = lib.mkEnableOption "rustfs";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.rustfs.enable {
       age.secrets."restic_rustfs_env.age".file = "${secrets}/restic_rustfs_env.age";
       networking.firewall = localLib.mkFirewallRules {
         service = "rustfs";
@@ -34,7 +31,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.rustfs.enable && config.services.caddy.enable) {
       # Console on rustfs.*, S3 API on s3.*.
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         rustfs = "reverse_proxy 127.0.0.1:9001";

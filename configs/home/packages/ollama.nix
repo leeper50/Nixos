@@ -5,9 +5,6 @@
   systemType,
   ...
 }:
-let
-  cfg = config.local.packages;
-in
 {
   options.local.packages.ollama = {
     context_length = lib.mkOption {
@@ -17,17 +14,17 @@ in
     enable = lib.mkEnableOption "ollama";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.ollama.enable {
+    (lib.mkIf config.local.packages.ollama.enable {
       services.ollama = {
         enable = true;
         environmentVariables = {
-          "OLLAMA_CONTEXT_LENGTH" = toString cfg.ollama.context_length;
+          "OLLAMA_CONTEXT_LENGTH" = toString config.local.packages.ollama.context_length;
           "OLLAMA_ORIGINS" = "*";
         };
         package = pkgs.ollama-vulkan;
       };
     })
-    (lib.mkIf cfg.ollama.enable (
+    (lib.mkIf config.local.packages.ollama.enable (
       if systemType == "Standalone" then
         {
           home.packages = with pkgs; [

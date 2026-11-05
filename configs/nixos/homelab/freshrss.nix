@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.freshrss;
   freshrssDomain = "rss.${globals.domains.primary}";
   autheliaPort = 9091;
 in
@@ -15,7 +14,7 @@ in
     enable = lib.mkEnableOption "RSS reader";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.freshrss.enable {
       services.freshrss = {
         api.enable = true;
         authType = "http_auth";
@@ -29,13 +28,13 @@ in
         virtualHost = freshrssDomain;
       };
     })
-    (lib.mkIf (cfg.enable && config.local.authelia.enable) {
+    (lib.mkIf (config.local.freshrss.enable && config.local.authelia.enable) {
       systemd.services.freshrss = {
         after = [ "authelia-main.service" ];
         wants = [ "authelia-main.service" ];
       };
     })
-    (lib.mkIf (cfg.enable && config.local.caddy.enable or false) {
+    (lib.mkIf (config.local.freshrss.enable && config.local.caddy.enable or false) {
       services.freshrss.webserver = "caddy";
       services.caddy.virtualHosts."${freshrssDomain}" = {
         extraConfig = lib.mkForce ''

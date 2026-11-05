@@ -8,8 +8,9 @@
   ...
 }:
 let
-  cfg = config.local.redis;
-  ports = lib.listToAttrs (lib.imap0 (i: name: lib.nameValuePair name (6379 + i)) cfg.databases);
+  ports = lib.listToAttrs (
+    lib.imap0 (i: name: lib.nameValuePair name (6379 + i)) config.local.redis.databases
+  );
 in
 {
   options.local.redis = {
@@ -27,8 +28,8 @@ in
       '';
     };
   };
-  config = lib.mkIf cfg.enable {
-    age.secrets = lib.genAttrs (map (name: "redis_${name}.age") cfg.databases) (name: {
+  config = lib.mkIf config.local.redis.enable {
+    age.secrets = lib.genAttrs (map (name: "redis_${name}.age") config.local.redis.databases) (name: {
       file = "${secrets}/${name}";
     });
     networking.firewall = localLib.mkFirewallRules {
@@ -45,10 +46,10 @@ in
         requirePassFile = config.age.secrets."redis_${name}.age".path;
       }) ports;
     };
-    systemd.services.redis-backup = lib.mkIf (cfg.databases != [ ]) {
-      after = map (name: "redis-${name}.service") cfg.databases;
+    systemd.services.redis-backup = lib.mkIf (config.local.redis.databases != [ ]) {
+      after = map (name: "redis-${name}.service") config.local.redis.databases;
       description = "Dump Redis databases for backup";
-      requires = map (name: "redis-${name}.service") cfg.databases;
+      requires = map (name: "redis-${name}.service") config.local.redis.databases;
       script = ''
         mkdir -p /mnt/data/redis-backups
       ''
@@ -61,13 +62,13 @@ in
         else
           echo "redis_${name}.age not yet available — deploy after rekeying"
         fi
-      '') cfg.databases;
+      '') config.local.redis.databases;
       serviceConfig = {
         Type = "oneshot";
       };
       unitConfig.RequiresMountsFor = [ "/mnt/data" ];
     };
-    systemd.timers.redis-backup = lib.mkIf (cfg.databases != [ ]) {
+    systemd.timers.redis-backup = lib.mkIf (config.local.redis.databases != [ ]) {
       description = "Daily Redis dump timer";
       timerConfig = {
         OnCalendar = "*-*-* 12:00:00";

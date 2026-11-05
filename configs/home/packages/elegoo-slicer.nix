@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.packages;
   hash = "sha256-ezs/CODQ1Ru0cshYZdG+mwwoOFQj2rocsMOyJdAQGvw=";
   src = pkgs.fetchurl {
     hash = hash;
@@ -45,7 +44,7 @@ let
 in
 {
   options.local.packages.elegoo-slicer.enable = lib.mkEnableOption "elegoo-slicer";
-  config = lib.mkIf cfg.elegoo-slicer.enable (
+  config = lib.mkIf config.local.packages.elegoo-slicer.enable (
     if systemType == "Standalone" then
       {
         home.packages = [
