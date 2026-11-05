@@ -41,6 +41,10 @@ let
     };
     policies = import ./policies.nix;
   };
+  commonStylixSettings = {
+    colorTheme.enable = true;
+    profileNames = [ "default" ];
+  };
   proxySettings = {
     "browser.fixup.domainsuffixwhitelist.i2p" = true;
     "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
@@ -75,34 +79,19 @@ in
       };
     })
     (lib.mkIf config.local.browsers.firefox.enable {
-      stylix.targets = {
-        firefox = {
-          colorTheme.enable = true;
-          profileNames = [ "default" ];
-        };
-      };
+      stylix.targets.firefox = commonStylixSettings;
       programs.firefox = lib.recursiveUpdate commonFirefoxSettings {
         package = firefoxPackage;
       };
     })
     (lib.mkIf config.local.browsers.floorp.enable {
-      stylix.targets = {
-        floorp = {
-          colorTheme.enable = true;
-          profileNames = [ "default" ];
-        };
-      };
+      stylix.targets.floorp = commonStylixSettings;
       programs.floorp = lib.recursiveUpdate commonFirefoxSettings {
         package = floorpPackage;
       };
     })
     (lib.mkIf config.local.browsers.librewolf.enable {
-      stylix.targets = {
-        librewolf = {
-          colorTheme.enable = true;
-          profileNames = [ "default" ];
-        };
-      };
+      stylix.targets.librewolf = commonStylixSettings;
       programs.librewolf = lib.recursiveUpdate commonFirefoxSettings {
         package = librewolfPackage;
         profiles.default.settings = proxySettings;
