@@ -67,6 +67,10 @@ let
 in
 {
   options.local.restic = {
+    enable = lib.mkOption {
+      default = true;
+      type = lib.types.bool;
+    };
     backups = lib.mkOption {
       default = { };
       type = lib.types.attrsOf (
@@ -130,10 +134,15 @@ in
               {
                 file = "${secrets}/${name}";
               }
-              // lib.optionalAttrs isNixos {
-                group = "walter";
-                owner = "walter";
-              }
+              // lib.optionalAttrs isNixos (
+                let
+                  owner = if config.local.walter.enable then "walter" else "root";
+                in
+                {
+                  group = owner;
+                  inherit owner;
+                }
+              )
             );
         services.restic.backups = lib.concatMapAttrs (
           name: backup:

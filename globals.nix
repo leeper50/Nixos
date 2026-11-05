@@ -92,6 +92,10 @@ in
         ipv4 = "107.174.237.4";
         ipv6 = null;
       };
+      ser8 = {
+        ipv4 = "10.0.0.30";
+        ipv6 = "${ipv6.prefix}::30";
+      };
       servercheap = {
         ipv4 = "65.75.202.6";
         ipv6 = "2606:cc0:11:2351::1";
@@ -157,6 +161,10 @@ in
       racknerd = {
         ipv4 = "100.64.0.3";
         ipv6 = "fd7a:115c:a1e0::3";
+      };
+      ser8 = {
+        ipv4 = "100.64.0.13";
+        ipv6 = "fd7a:115c:a1e0::d";
       };
       servercheap = {
         ipv4 = "100.64.0.2";

@@ -190,6 +190,11 @@ in
               Port = 22;
               User = "root";
             };
+            "ser8" = {
+              HostName = "ser8.local";
+              Port = 22;
+              User = "root";
+            };
           }
           // lib.mapAttrs (n: _: { HostName = "${n}.${globals.domains.primary}"; }) globals.networking.hosts;
         };

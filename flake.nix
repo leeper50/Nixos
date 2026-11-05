@@ -206,6 +206,13 @@
           profile = "cli";
         };
 
+        ser8 = mkHost {
+          modules = [
+            ./hosts/ser8
+          ];
+          profile = "gui";
+        };
+
         servercheap = mkHost {
           modules = [
             ./hosts/servercheap

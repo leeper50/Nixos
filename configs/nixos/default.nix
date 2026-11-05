@@ -23,6 +23,14 @@ let
 in
 {
   options.local = {
+    desktop = lib.mkOption {
+      type = lib.types.enum [
+        "hyprland"
+        "plasma"
+      ];
+      default = "hyprland";
+      description = "Desktop environment for gui hosts: hyprland and sway, or a minimal KDE Plasma.";
+    };
     local = lib.mkEnableOption "local";
     walter.enable = lib.mkEnableOption "the walter user" // {
       default = true;
@@ -122,8 +130,8 @@ in
         };
       };
       local = {
-        beszel.agent.enable = true;
-        comin.enable = true;
+        beszel.agent.enable = lib.mkDefault true;
+        comin.enable = lib.mkDefault true;
       };
       networking.hostName = globals.hostName;
       nix = {
@@ -243,100 +251,117 @@ in
               '';
             });
       in
-      {
-        age.secrets =
-          lib.genAttrs
-            [
-              "restic_b2_env.age"
-              "restic_password_file.age"
-              "restic_rustfs_env.age"
-              "user_walter_clear.age"
-            ]
-            (name: {
-              file = "${secrets}/${name}";
-              group = "walter";
-              owner = "walter";
-            });
-        environment.systemPackages =
-          with pkgs;
-          [
-            awww
-            hyprpaper
-            kdePackages.ark
-            kdePackages.dolphin
-            kdePackages.kio
-            kdePackages.kio-extras
-            kdePackages.kdegraphics-thumbnailers
-            kdePackages.kwallet
-            kdePackages.ffmpegthumbs
-            kdePackages.kimageformats
-            kdePackages.qt5compat
-            kdePackages.qtdeclarative
-            kdePackages.qtimageformats
-            kdePackages.qtmultimedia
-            kdePackages.qtsvg
-            kdePackages.qtvirtualkeyboard
-            lan-mouse
-            libsecret
-            mpvpaper
-            sddm-astronaut
-            qview
-          ]
-          ++ [ config.stylix.cursor.package ];
-        networking.firewall.allowedUDPPorts = [ 4242 ];
-        programs = {
-          hyprland = {
-            enable = true;
-            withUWSM = true;
-            xwayland.enable = true;
-          };
-          sway = {
-            enable = true;
-            extraPackages = [ ];
-          };
-          steam = {
-            enable = true;
-            extest.enable = true;
-            extraCompatPackages = with pkgs; [
-              proton-ge-bin
-            ];
-            extraPackages = with pkgs; [
-              gamescope
-            ];
-            gamescopeSession.enable = true;
-            localNetworkGameTransfers.openFirewall = true;
-            protontricks.enable = true;
-            remotePlay.openFirewall = true;
-          };
-        };
-        security.polkit.enable = true;
-        services = {
-          displayManager.sddm = {
-            enable = true;
-            package = pkgs.kdePackages.sddm;
-            theme = "sddm-astronaut-theme";
-            wayland = {
-              compositor = "kwin";
+      lib.mkMerge [
+        {
+          age.secrets = lib.mkIf config.local.walter.enable (
+            lib.genAttrs
+              [
+                "restic_b2_env.age"
+                "restic_password_file.age"
+                "restic_rustfs_env.age"
+                "user_walter_clear.age"
+              ]
+              (name: {
+                file = "${secrets}/${name}";
+                group = "walter";
+                owner = "walter";
+              })
+          );
+          security.polkit.enable = true;
+          services = {
+            displayManager.sddm = {
               enable = true;
+              wayland = {
+                compositor = "kwin";
+                enable = true;
+              };
+            };
+            flatpak.enable = true;
+            pcscd.enable = true;
+            printing.enable = true;
+            pulseaudio.enable = false;
+            pipewire = {
+              alsa.enable = true;
+              alsa.support32Bit = true;
+              enable = true;
+              pulse.enable = true;
+            };
+            udisks2.enable = true;
+            xserver.enable = true;
+          };
+        }
+        (lib.mkIf (config.local.desktop == "hyprland") {
+          environment.systemPackages =
+            with pkgs;
+            [
+              awww
+              hyprpaper
+              kdePackages.ark
+              kdePackages.dolphin
+              kdePackages.kio
+              kdePackages.kio-extras
+              kdePackages.kdegraphics-thumbnailers
+              kdePackages.kwallet
+              kdePackages.ffmpegthumbs
+              kdePackages.kimageformats
+              kdePackages.qt5compat
+              kdePackages.qtdeclarative
+              kdePackages.qtimageformats
+              kdePackages.qtmultimedia
+              kdePackages.qtsvg
+              kdePackages.qtvirtualkeyboard
+              lan-mouse
+              libsecret
+              mpvpaper
+              sddm-astronaut
+              qview
+            ]
+            ++ [ config.stylix.cursor.package ];
+          networking.firewall.allowedUDPPorts = [ 4242 ];
+          programs = {
+            hyprland = {
+              enable = true;
+              withUWSM = true;
+              xwayland.enable = true;
+            };
+            sway = {
+              enable = true;
+              extraPackages = [ ];
+            };
+            steam = {
+              enable = true;
+              extest.enable = true;
+              extraCompatPackages = with pkgs; [
+                proton-ge-bin
+              ];
+              extraPackages = with pkgs; [
+                gamescope
+              ];
+              gamescopeSession.enable = true;
+              localNetworkGameTransfers.openFirewall = true;
+              protontricks.enable = true;
+              remotePlay.openFirewall = true;
             };
           };
-          flatpak.enable = true;
-          gnome.gnome-keyring.enable = true;
-          hypridle.enable = lib.mkForce false;
-          pcscd.enable = true;
-          printing.enable = true;
-          pulseaudio.enable = false;
-          pipewire = {
-            alsa.enable = true;
-            alsa.support32Bit = true;
-            enable = true;
-            pulse.enable = true;
+          services = {
+            displayManager.sddm = {
+              package = pkgs.kdePackages.sddm;
+              theme = "sddm-astronaut-theme";
+            };
+            gnome.gnome-keyring.enable = true;
+            hypridle.enable = lib.mkForce false;
           };
-          udisks2.enable = true;
-          xserver.enable = true;
-        };
-        xdg.portal.enable = true;
-      }
+          xdg.portal.enable = true;
+        })
+        (lib.mkIf (config.local.desktop == "plasma") {
+          environment.plasma6.excludePackages = with pkgs.kdePackages; [
+            elisa
+            khelpcenter
+            krdp
+          ];
+          services.desktopManager.plasma6.enable = true;
+        })
+      ]
     ))
   ];
 }

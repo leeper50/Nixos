@@ -40,7 +40,7 @@
       MaxAuthTries = 3;
       MaxSessions = 2;
       PasswordAuthentication = false;
-      PermitRootLogin = "yes";
+      PermitRootLogin = "prohibit-password";
       PermitTunnel = "no";
       PubkeyAuthentication = true;
       TCPKeepAlive = false;
