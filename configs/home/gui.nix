@@ -185,16 +185,6 @@ in
               ServerAliveInterval = 15;
               User = "walter";
             };
-            "gk55" = {
-              HostName = "10.0.0.50";
-              Port = 22;
-              User = "root";
-            };
-            "ser8" = {
-              HostName = "10.0.0.30";
-              Port = 22;
-              User = "root";
-            };
             "tower" = {
               HostName = "10.0.0.51";
               Port = 22;

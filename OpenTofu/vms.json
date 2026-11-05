@@ -13,7 +13,7 @@
     "data_disk_size": 200,
     "datastore_id": "nvme_tower",
     "disk_size": 64,
-    "memory": 6144,
+    "memory": 4096,
     "node_name": "tower",
     "pci_mappings": [
       "tower-sata"
@@ -21,11 +21,12 @@
     "vm_id": 1004
   },
   "node-1": {
-    "cores": 12,
+    "cores": 6,
     "data_disk_size": 64,
+    "datastore_id": "nvme_tower",
     "disk_size": 64,
-    "memory": 16384,
-    "node_name": "ser8",
+    "memory": 8192,
+    "node_name": "tower",
     "usb_mappings": [
       "zigbee",
       "zwave"
@@ -33,11 +34,11 @@
     "vm_id": 1001
   },
   "node-2": {
-    "cores": 8,
+    "cores": 4,
     "data_disk_size": 64,
     "datastore_id": "nvme_tower",
     "disk_size": 64,
-    "memory": 8192,
+    "memory": 6144,
     "node_name": "tower",
     "pci_mappings": [
       "tower-igpu"
@@ -47,9 +48,10 @@
   "node-3": {
     "cores": 4,
     "data_disk_size": 32,
+    "datastore_id": "nvme_tower",
     "disk_size": 32,
     "memory": 4096,
-    "node_name": "gk55",
+    "node_name": "tower",
     "vm_id": 1003
   }
 }
