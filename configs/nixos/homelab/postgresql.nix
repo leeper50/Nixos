@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.postgresql;
   ports.postgresql = 5432;
 in
 {
@@ -26,10 +25,12 @@ in
       '';
     };
   };
-  config = lib.mkIf cfg.enable {
-    age.secrets = lib.genAttrs (map (name: "postgresql_${name}.age") cfg.databases) (name: {
-      file = "${secrets}/${name}";
-    });
+  config = lib.mkIf config.local.postgresql.enable {
+    age.secrets =
+      lib.genAttrs (map (name: "postgresql_${name}.age") config.local.postgresql.databases)
+        (name: {
+          file = "${secrets}/${name}";
+        });
     networking.firewall = localLib.mkFirewallRules {
       service = "postgresql";
       sources = globals.networking.swarmAddresses;
@@ -45,21 +46,21 @@ in
               if lib.hasInfix ":" address then "128" else "32"
             }  scram-sha-256\n"
           ) globals.networking.swarmAddresses
-        ) cfg.databases
+        ) config.local.postgresql.databases
       );
       enable = true;
-      ensureDatabases = cfg.databases;
+      ensureDatabases = config.local.postgresql.databases;
       ensureUsers = map (name: {
         inherit name;
         ensureDBOwnership = true;
-      }) cfg.databases;
+      }) config.local.postgresql.databases;
       settings = {
         listen_addresses = lib.mkForce "localhost,${
           globals.networking.hosts.${config.networking.hostName}.ipv4
         }";
       };
     };
-    systemd.services.postgresql-set-passwords = lib.mkIf (cfg.databases != [ ]) {
+    systemd.services.postgresql-set-passwords = lib.mkIf (config.local.postgresql.databases != [ ]) {
       after = [ "postgresql-setup.service" ];
       description = "Set PostgreSQL role passwords from agenix secrets";
       requires = [ "postgresql-setup.service" ];
@@ -72,14 +73,14 @@ in
         else
           echo "postgresql_${name}.age not yet available — deploy after rekeying"
         fi
-      '') cfg.databases;
+      '') config.local.postgresql.databases;
       serviceConfig = {
         RemainAfterExit = true;
         Type = "oneshot";
       };
       wantedBy = [ "multi-user.target" ];
     };
-    systemd.services.postgresql-backup = lib.mkIf (cfg.databases != [ ]) {
+    systemd.services.postgresql-backup = lib.mkIf (config.local.postgresql.databases != [ ]) {
       after = [ "postgresql.service" ];
       description = "Dump PostgreSQL databases for backup";
       requires = [ "postgresql.service" ];
@@ -88,7 +89,7 @@ in
           -f /mnt/data/postgresql-backups/${name}.dump.tmp ${name}
         chmod 0644 /mnt/data/postgresql-backups/${name}.dump.tmp
         mv /mnt/data/postgresql-backups/${name}.dump.tmp /mnt/data/postgresql-backups/${name}.dump
-      '') cfg.databases;
+      '') config.local.postgresql.databases;
       serviceConfig = {
         ExecStartPre = [
           (
@@ -105,7 +106,7 @@ in
       };
       unitConfig.RequiresMountsFor = [ "/mnt/data" ];
     };
-    systemd.timers.postgresql-backup = lib.mkIf (cfg.databases != [ ]) {
+    systemd.timers.postgresql-backup = lib.mkIf (config.local.postgresql.databases != [ ]) {
       description = "Daily PostgreSQL dump timer";
       timerConfig = {
         OnCalendar = "*-*-* 12:00:00";

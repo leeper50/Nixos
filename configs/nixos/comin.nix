@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.comin;
   hostName = config.networking.hostName;
   tokenPath = config.age.secrets."gotify_comin_token.age".path;
   url = "https://g.dellhplaptop.xyz";
@@ -66,7 +65,7 @@ in
       default = true;
     };
   };
-  config = lib.mkIf cfg.enable (
+  config = lib.mkIf config.local.comin.enable (
     lib.mkMerge [
       {
         services.comin = {
@@ -96,7 +95,7 @@ in
           };
         };
       }
-      (lib.mkIf cfg.gotify.enable {
+      (lib.mkIf config.local.comin.gotify.enable {
         age.secrets."gotify_comin_token.age".file = "${secrets}/gotify_comin_token.age";
         services.comin.postDeploymentCommand = postDeploy;
         systemd.services.comin-gotify = {

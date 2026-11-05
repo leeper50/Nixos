@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.caddy;
   dockerSubnets = with globals.networking.docker; [
     ipv4Subnet
     ipv6Subnet
@@ -33,18 +32,18 @@ in
   options.services.caddy.virtualHosts = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
-        config.extraConfig = lib.mkIf cfg.enable (lib.mkBefore "import hardening");
+        config.extraConfig = lib.mkIf config.local.caddy.enable (lib.mkBefore "import hardening");
       }
     );
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.caddy.enable {
       local = {
         acme = {
           certs = {
-            ${cfg.domain} = {
+            ${config.local.caddy.domain} = {
               group = "caddy";
-              provider = cfg.provider;
+              provider = config.local.caddy.provider;
               wildcard = true;
             };
           };
@@ -116,14 +115,14 @@ in
           '';
           virtualHosts = lib.mkMerge [
             {
-              "*.${cfg.domain}" = {
+              "*.${config.local.caddy.domain}" = {
                 extraConfig = "abort";
-                serverAliases = [ cfg.domain ];
-                useACMEHost = cfg.domain;
+                serverAliases = [ config.local.caddy.domain ];
+                useACMEHost = config.local.caddy.domain;
               };
-              "w.${cfg.domain}" = {
+              "w.${config.local.caddy.domain}" = {
                 extraConfig = "reverse_proxy localhost:${toString config.services.whoami.port}";
-                useACMEHost = cfg.domain;
+                useACMEHost = config.local.caddy.domain;
               };
             }
             (lib.mkIf config.services.tailscale.enable {

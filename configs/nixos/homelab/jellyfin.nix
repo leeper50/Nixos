@@ -7,7 +7,6 @@
   ...
 }:
 let
-  cfg = config.local.jellyfin;
   ports = {
     discovery = 7359;
     http = 8096;
@@ -21,7 +20,7 @@ in
       type = lib.types.str;
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf config.local.jellyfin.enable {
     hardware.graphics = {
       enable = true;
       extraPackages = with pkgs; [
@@ -47,7 +46,7 @@ in
       };
     };
     systemd.services.jellyfin = {
-      environment.JELLYFIN_PublishedServerUrl = cfg.publishedServerUrl;
+      environment.JELLYFIN_PublishedServerUrl = config.local.jellyfin.publishedServerUrl;
       unitConfig.RequiresMountsFor = [ "/mnt/media" ];
     };
     users.users.jellyfin.extraGroups = [

@@ -5,7 +5,6 @@
   ...
 }:
 let
-  cfg = config.local.u2f;
   mappings = lib.concatStringsSep ":" [
     "walter"
     "Mi7MXvTRvWnYuPjVZxo4Dapx7wQrwDj1KQPBTUsWx93t5WW8jMoI1qYIVNfo4pYaUxm8hG5gLPMKDpFIZ9ZEcQ==,289Zf5usJahaIkN2wUzvRXJ/OvUBxHKrjKu+ebyRkucLTeirPlr9B22tEu4Gy7CQxL9MNJJxodgpLBS6RxBYVg==,es256,+presence+pin"
@@ -19,7 +18,7 @@ in
     enable = lib.mkEnableOption "YubiKey (FIDO2 PIN and touch) as an alternative to the password";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.u2f.enable {
       security.pam = {
         services.noctalia = { };
         u2f = {

@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.redlib;
   port = 8080;
   version = "sha-7f192ae";
 in
@@ -15,7 +14,7 @@ in
     enable = lib.mkEnableOption "redlib";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.redlib.enable {
       virtualisation.oci-containers = {
         backend = "docker";
         containers.redlib = {
@@ -43,7 +42,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.redlib.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         red = "reverse_proxy 127.0.0.1:${toString port}";
       };

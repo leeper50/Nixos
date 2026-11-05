@@ -7,16 +7,15 @@
   ...
 }:
 let
-  cfg = config.local.renovate;
-  pass = config.age.secrets;
   deployKey = "forgejo-deploy-key";
+  pass = config.age.secrets;
 in
 {
   options.local.renovate = {
     enable = lib.mkEnableOption "renovate";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.renovate.enable {
       age.secrets."renovate_github_token.age".file = "${secrets}/renovate_github_token.age";
       age.secrets."renovate_token.age".file = "${secrets}/renovate_token.age";
       age.secrets."renovate_deploy_key.age".file = "${secrets}/renovate_deploy_key.age";

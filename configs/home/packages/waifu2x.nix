@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.packages;
   waifu2x-ncnn-vulkan = pkgs.stdenv.mkDerivation {
     buildInputs = [
       pkgs.stdenv.cc.cc.lib
@@ -36,7 +35,7 @@ let
 in
 {
   options.local.packages.waifu2x.enable = lib.mkEnableOption "waifu2x";
-  config = lib.mkIf cfg.waifu2x.enable (
+  config = lib.mkIf config.local.packages.waifu2x.enable (
     if systemType == "Standalone" then
       { home.packages = [ waifu2x-ncnn-vulkan ]; }
     else

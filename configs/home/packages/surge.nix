@@ -9,7 +9,6 @@
   ...
 }:
 let
-  cfg = config.local.packages;
   isStandalone = systemType == "Standalone";
   secretsAttrs = if osConfig != null then osConfig.age.secrets else (config.age.secrets or { });
   authTokenFile = secretsAttrs."surge_auth_token.age".path;
@@ -73,7 +72,7 @@ in
     enable = lib.mkEnableOption "surge";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.surge.enable {
+    (lib.mkIf config.local.packages.surge.enable {
       age.secrets."surge_auth_token.age" = {
         file = "${secrets}/surge_auth_token.age";
       }
@@ -108,7 +107,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.surge.enable) (
+    (lib.mkIf (config.local.packages.surge.enable) (
       if systemType == "Standalone" then
         {
           home.packages = [ pkgs.surge-downloader ];

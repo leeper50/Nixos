@@ -6,9 +6,6 @@
   pkgs,
   ...
 }:
-let
-  cfg = config.local.proxies;
-in
 {
   options.local.proxies = {
     i2p = {
@@ -57,18 +54,18 @@ in
     {
       assertions = [
         {
-          assertion = !(cfg.tor.enable && cfg.tor.name == "");
+          assertion = !(config.local.proxies.tor.enable && config.local.proxies.tor.name == "");
           message = "tor.name must be set when using tor.";
         }
       ];
     }
-    (lib.mkIf cfg.i2p.enable {
+    (lib.mkIf config.local.proxies.i2p.enable {
       networking.firewall = {
         allowedTCPPorts = [
-          cfg.i2p.port
+          config.local.proxies.i2p.port
         ];
         allowedUDPPorts = [
-          cfg.i2p.port
+          config.local.proxies.i2p.port
         ];
       };
       services.i2pd = {
@@ -78,9 +75,9 @@ in
             "http://i2p-projekt.i2p/hosts.txt,"
             + "http://inr.i2p/export/alive-hosts.txt,"
             + "http://stats.i2p/cg";
-          bandwidth = cfg.i2p.bandwidth;
+          bandwidth = config.local.proxies.i2p.bandwidth;
           ipv4 = true;
-          ipv6 = cfg.i2p.enableIPv6;
+          ipv6 = config.local.proxies.i2p.enableIPv6;
           http = {
             address = "0.0.0.0";
             enabled = true;
@@ -92,7 +89,7 @@ in
             enabled = true;
             port = 4444;
           };
-          port = cfg.i2p.port;
+          port = config.local.proxies.i2p.port;
           sam = {
             address = "0.0.0.0";
             enabled = true;
@@ -106,7 +103,7 @@ in
         };
       };
     })
-    (lib.mkIf cfg.microsocks.enable {
+    (lib.mkIf config.local.proxies.microsocks.enable {
       services.microsocks = {
         enable = true;
         ip = globals.networking.tailnet.${config.networking.hostName}.ipv4;
@@ -124,7 +121,7 @@ in
         '';
       };
     })
-    (lib.mkIf cfg.tor.enable {
+    (lib.mkIf config.local.proxies.tor.enable {
       services.tor = {
         enable = true;
         relay = {
@@ -132,39 +129,39 @@ in
           role = "bridge";
         };
         settings = {
-          ContactInfo = cfg.tor.email;
+          ContactInfo = config.local.proxies.tor.email;
           ExitRelay = false;
-          Nickname = cfg.tor.name;
-          ORPort = cfg.tor.port;
+          Nickname = config.local.proxies.tor.name;
+          ORPort = config.local.proxies.tor.port;
           RelayBandwidthBurst = "200 KBytes";
           RelayBandwidthRate = "100 KBytes";
         };
       };
-      networking.firewall.allowedTCPPorts = [ cfg.tor.port ];
+      networking.firewall.allowedTCPPorts = [ config.local.proxies.tor.port ];
       systemd.tmpfiles.rules = [
         "d /var/lib/tor 0750 tor tor -"
       ];
     })
-    (lib.mkIf cfg.yggdrasil.enable {
+    (lib.mkIf config.local.proxies.yggdrasil.enable {
       networking.firewall = {
         allowedTCPPorts = [
-          cfg.yggdrasil.port
+          config.local.proxies.yggdrasil.port
         ];
         allowedUDPPorts = [
-          cfg.yggdrasil.port
+          config.local.proxies.yggdrasil.port
         ];
       };
       services.yggdrasil = {
         enable = true;
         settings = {
           Listen =
-            if cfg.yggdrasil.enableIPv6 then
+            if config.local.proxies.yggdrasil.enableIPv6 then
               [
-                "tcp://[::]:${toString cfg.yggdrasil.port}"
+                "tcp://[::]:${toString config.local.proxies.yggdrasil.port}"
               ]
             else
               [
-                "tcp://0.0.0.0:${toString cfg.yggdrasil.port}"
+                "tcp://0.0.0.0:${toString config.local.proxies.yggdrasil.port}"
               ];
           Peers = [
             "quic://mo.us.ygg.triplebit.org:443"

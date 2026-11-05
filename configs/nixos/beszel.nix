@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.beszel;
   ports.hub = 8090;
 in
 {
@@ -24,7 +23,7 @@ in
     };
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.agent.enable {
+    (lib.mkIf config.local.beszel.agent.enable {
       age.secrets."beszel_token.age" = {
         file = "${secrets}/beszel_token.age";
         group = "beszel-agent";
@@ -33,14 +32,14 @@ in
       services.beszel.agent = {
         enable = true;
         environment = {
-          "HUB_URL" = "http://${cfg.agent.hubHost}:${toString ports.hub}";
+          "HUB_URL" = "http://${config.local.beszel.agent.hubHost}:${toString ports.hub}";
           "KEY" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrW1b08xk0bva1Tyo+fmVAroFqflvQMEhikCpt/WphI";
           "TOKEN_FILE" = config.age.secrets."beszel_token.age".path;
         };
       };
       users.groups.beszel-agent.gid = 992;
     })
-    (lib.mkIf (cfg.agent.enable && cfg.agent.intelGpu) {
+    (lib.mkIf (config.local.beszel.agent.enable && config.local.beszel.agent.intelGpu) {
       services.beszel.agent = {
         environment.GPU_COLLECTOR = "nvtop";
         extraPath = [ pkgs.nvtopPackages.intel ];
@@ -53,7 +52,7 @@ in
         PrivateUsers = lib.mkForce false;
       };
     })
-    (lib.mkIf cfg.hub.enable {
+    (lib.mkIf config.local.beszel.hub.enable {
       networking.firewall = localLib.mkFirewallRules {
         service = "beszel";
         sources = [

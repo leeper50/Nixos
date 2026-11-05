@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.mounts;
   nfs_common = [
     "_netdev"
     "hard"
@@ -19,7 +18,7 @@ let
   nfs_options =
     nfs_common
     ++ (
-      if cfg.autoMount then
+      if config.local.mounts.autoMount then
         [
           "noauto" # don't mount on boot
           "x-systemd.automount" # mount when accessed
@@ -47,14 +46,14 @@ in
         nfs-utils
       ];
     })
-    (lib.mkIf (config.local.local && cfg.media) {
+    (lib.mkIf (config.local.local && config.local.mounts.media) {
       fileSystems."/mnt/media" = {
         device = "nas.${globals.domains.primary}:/mnt/data/Media";
         fsType = "nfs";
         options = nfs_options;
       };
     })
-    (lib.mkIf (config.local.local && cfg.user) {
+    (lib.mkIf (config.local.local && config.local.mounts.user) {
       fileSystems."/mnt/walter" = {
         device = "nas.${globals.domains.primary}:/mnt/data/home/walter";
         fsType = "nfs";

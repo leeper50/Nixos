@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.syncthing;
   devices = {
     all = devices.desktops ++ devices.mobiles ++ devices.servers;
     desktops = [
@@ -47,7 +46,7 @@ let
         "(?d)*.surge"
         "(?d)*.part"
       ];
-      path = "${cfg.home}/Downloads";
+      path = "${config.local.syncthing.home}/Downloads";
     };
     "FreeTube" = {
       devices = lib.filter (name: name != "macbook") (devices.desktops ++ devices.servers);
@@ -58,7 +57,7 @@ let
         "SingletonLock"
         "SingletonSocket"
       ];
-      path = "${cfg.home}/.var/app/io.freetubeapp.FreeTube/config/FreeTube";
+      path = "${config.local.syncthing.home}/.var/app/io.freetubeapp.FreeTube/config/FreeTube";
     };
     "GlobalShare" = {
       devices = devices.all;
@@ -100,8 +99,8 @@ let
   enabledFolders = lib.mapAttrs (name: folder: {
     inherit (folder) devices id;
     ignores = defaultIgnores ++ folder.ignores or [ ];
-    path = folder.path or "${cfg.home}/Sync/${name}";
-    type = folder.type or cfg.folder_type;
+    path = folder.path or "${config.local.syncthing.home}/Sync/${name}";
+    type = folder.type or config.local.syncthing.folder_type;
   }) (lib.filterAttrs (_: folder: lib.elem globals.hostName folder.devices) folders);
   buildStignore = pkgs.writeShellApplication {
     name = "build-stignore";

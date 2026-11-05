@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.mealie;
   port = 9000;
 in
 {
@@ -14,7 +13,7 @@ in
     enable = lib.mkEnableOption "mealie";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.mealie.enable {
       age.secrets."postgresql_mealie.age".file = "${secrets}/postgresql_mealie.age";
       services.mealie = {
         enable = true;
@@ -45,7 +44,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.mealie.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         m = "reverse_proxy 127.0.0.1:${toString port}";
       };

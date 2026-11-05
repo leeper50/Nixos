@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.local.networking;
   ipToDomains = lib.zipAttrs (
     lib.concatLists (
       lib.mapAttrsToList (
@@ -38,7 +37,7 @@ in
         nftables.enable = true;
       };
     }
-    (lib.mkIf (cfg.tailscale.enable) {
+    (lib.mkIf (config.local.networking.tailscale.enable) {
       age.secrets."headscale_preauth_key.age".file = "${secrets}/headscale_preauth_key.age";
       services.tailscale = {
         authKeyFile = config.age.secrets."headscale_preauth_key.age".path;

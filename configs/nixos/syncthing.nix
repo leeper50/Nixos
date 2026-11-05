@@ -5,10 +5,6 @@
   localLib,
   ...
 }:
-let
-  cfg = config.local.syncthing;
-  home = cfg.home;
-in
 {
   imports = [
     ../home/syncthing.nix
@@ -32,9 +28,9 @@ in
         ];
       };
       services.syncthing = {
-        configDir = "${home}/Sync/.config/syncthing";
-        databaseDir = "${home}/Sync/.config/syncthing";
-        dataDir = "${home}/Sync";
+        configDir = "${config.local.syncthing.home}/Sync/.config/syncthing";
+        databaseDir = "${config.local.syncthing.home}/Sync/.config/syncthing";
+        dataDir = "${config.local.syncthing.home}/Sync";
         group = "walter";
         user = "walter";
       };

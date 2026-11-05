@@ -7,7 +7,6 @@
   ...
 }:
 let
-  cfg = config.local.adguardhome;
   logsSettings = {
     enabled = true;
     ignored = [
@@ -101,7 +100,7 @@ in
     enable = lib.mkEnableOption "adguardhome";
   };
   config = lib.mkMerge [
-    (lib.mkIf (cfg.enable) {
+    (lib.mkIf (config.local.adguardhome.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "adguardhome";
         sources = dnsSources;
@@ -158,7 +157,7 @@ in
       };
     })
     # Serve webui over docker reverse proxy.
-    (lib.mkIf (cfg.enable && !config.services.caddy.enable) {
+    (lib.mkIf (config.local.adguardhome.enable && !config.services.caddy.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "adguardhome webui";
         sources = [
@@ -170,7 +169,7 @@ in
       };
     })
     # Serve dns-over-https through caddy.
-    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+    (lib.mkIf (config.local.adguardhome.enable && config.services.caddy.enable) {
       services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
         dns = "reverse_proxy 127.0.0.1:${toString ports.webui}";
       };

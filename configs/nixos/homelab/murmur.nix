@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.local.murmur;
   pass = config.age.secrets;
 in
 {
@@ -39,16 +38,22 @@ in
     {
       assertions = [
         {
-          assertion = !(cfg.enable && cfg.tls.enable && (cfg.tls.provider == null || cfg.tls.domain == null));
+          assertion =
+            !(
+              config.local.murmur.enable
+              && config.local.murmur.tls.enable
+              && (config.local.murmur.tls.provider == null || config.local.murmur.tls.domain == null)
+            );
           message = "Murmur tls is enabled, but either `tls.provider` or `tls.domain` are not set properly.";
         }
         {
-          assertion = !(cfg.enable && cfg.public && !cfg.tls.enable);
+          assertion =
+            !(config.local.murmur.enable && config.local.murmur.public && !config.local.murmur.tls.enable);
           message = "Public murmur servers need tls enabled to be registered.";
         }
       ];
     }
-    (lib.mkIf cfg.enable {
+    (lib.mkIf config.local.murmur.enable {
       age.secrets = {
         "murmur_environment.age".file = "${secrets}/murmur_environment.age";
         "murmur_superuser_password.age".file = "${secrets}/murmur_superuser_password.age";
@@ -67,7 +72,7 @@ in
         enable = true;
         environmentFile = pass."murmur_environment.age".path;
         password = "$MURMUR_PASSWORD";
-        welcometext = cfg.welcomeMessage;
+        welcometext = config.local.murmur.welcomeMessage;
       };
       systemd.services.murmur.serviceConfig.RestrictAddressFamilies = lib.mkForce [
         "AF_INET"
@@ -92,24 +97,24 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && cfg.tls.enable) {
+    (lib.mkIf (config.local.murmur.enable && config.local.murmur.tls.enable) {
       local.acme = {
-        certs.${cfg.tls.domain} = {
+        certs.${config.local.murmur.tls.domain} = {
           group = "murmur";
-          provider = cfg.tls.provider;
+          provider = config.local.murmur.tls.provider;
           wildcard = false;
         };
         enable = true;
       };
-      services.murmur.tls.useACMEHost = cfg.tls.domain;
+      services.murmur.tls.useACMEHost = config.local.murmur.tls.domain;
     })
-    (lib.mkIf (cfg.enable && cfg.public) {
+    (lib.mkIf (config.local.murmur.enable && config.local.murmur.public) {
       services.murmur = {
         password = lib.mkForce "";
-        registerHostname = cfg.tls.domain;
-        registerName = cfg.name;
+        registerHostname = config.local.murmur.tls.domain;
+        registerName = config.local.murmur.name;
         registerPassword = "$MURMUR_REGISTER_PASSWORD";
-        registerUrl = "https://${cfg.tls.domain}";
+        registerUrl = "https://${config.local.murmur.tls.domain}";
       };
     })
   ];
