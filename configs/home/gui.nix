@@ -170,33 +170,37 @@ in
         ssh = {
           enable = true;
           enableDefaultConfig = false;
-          settings = {
-            "*" = {
-              AddKeysToAgent = "no";
-              Compression = false;
-              ControlMaster = "auto";
-              ControlPath = "~/.ssh/master-%r@%n:%p";
-              ControlPersist = "10m";
-              ForwardAgent = false;
-              HashKnownHosts = false;
-              IdentityFile = "~/.ssh/id_ed25519";
-              Port = globals.sshPort;
-              ServerAliveCountMax = 3;
-              ServerAliveInterval = 15;
-              User = "walter";
-            };
-            "tower" = {
-              HostName = "10.0.0.51";
-              Port = 22;
-              User = "root";
-            };
-            "ser8" = {
-              HostName = "ser8.local";
-              Port = 22;
-              User = "root";
-            };
-          }
-          // lib.mapAttrs (n: _: { HostName = "${n}.${globals.domains.primary}"; }) globals.networking.hosts;
+          settings =
+            lib.recursiveUpdate
+              (lib.mapAttrs (n: _: { HostName = "${n}.${globals.domains.primary}"; }) globals.networking.hosts)
+              {
+                "*" = {
+                  AddKeysToAgent = "no";
+                  Compression = false;
+                  ControlMaster = "auto";
+                  ControlPath = "~/.ssh/master-%r@%n:%p";
+                  ControlPersist = "10m";
+                  ForwardAgent = false;
+                  HashKnownHosts = false;
+                  IdentityFile = "~/.ssh/id_ed25519";
+                  Port = globals.sshPort;
+                  ServerAliveCountMax = 3;
+                  ServerAliveInterval = 15;
+                  User = "walter";
+                };
+                "action-runner" = {
+                  User = "root";
+                };
+                "tower" = {
+                  HostName = "10.0.0.51";
+                  Port = 22;
+                  User = "root";
+                };
+                "ser8" = {
+                  HostName = "ser8.local";
+                  User = "root";
+                };
+              };
         };
         vscode = {
           enable = true;
