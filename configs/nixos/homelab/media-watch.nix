@@ -18,15 +18,15 @@ let
         key=$(tr -d '[:space:]' < "$CREDENTIALS_DIRECTORY/api-key")
         curl --config <(printf 'header = "Authorization: MediaBrowser Token=\\"%s\\""\n' "$key") \
           --fail --max-time 30 --request POST --retry 3 --show-error --silent \
-          "${config.local.mediaWatch.jellyfinUrl}/Library/Refresh"
+          "${config.local.media-watch.jellyfinUrl}/Library/Refresh"
       }
       inotifywait --event close_write --event create --event delete \
         --event moved_from --event moved_to \
         --exclude '(\.part|\.!qB|\.tmp|~)$' \
         --format '%w%f' --monitor --quiet --recursive \
-        ${lib.escapeShellArgs config.local.mediaWatch.paths} |
+        ${lib.escapeShellArgs config.local.media-watch.paths} |
         while read -r path; do
-          while read -r -t ${toString config.local.mediaWatch.debounce} drained; do path=$drained; done
+          while read -r -t ${toString config.local.media-watch.debounce} drained; do path=$drained; done
           echo "changed: $path — refreshing Jellyfin libraries"
           refresh || echo "refresh failed"
         done
@@ -34,8 +34,8 @@ let
   };
 in
 {
-  options.local.mediaWatch = {
-    enable = lib.mkEnableOption "mediaWatch";
+  options.local.media-watch = {
+    enable = lib.mkEnableOption "media-watch";
     debounce = lib.mkOption {
       default = 5;
       type = lib.types.int;
@@ -60,7 +60,7 @@ in
       '';
     };
   };
-  config = lib.mkIf config.local.mediaWatch.enable {
+  config = lib.mkIf config.local.media-watch.enable {
     age.secrets."jellyfin_api_key.age".file = "${secrets}/jellyfin_api_key.age";
     boot.kernel.sysctl = {
       "fs.inotify.max_user_instances" = 512;
@@ -82,7 +82,7 @@ in
         ProtectKernelModules = true;
         ProtectKernelTunables = true;
         ProtectSystem = "strict";
-        RequiresMountsFor = config.local.mediaWatch.paths;
+        RequiresMountsFor = config.local.media-watch.paths;
         Restart = "always";
         RestartSec = 10;
         RestrictAddressFamilies = [

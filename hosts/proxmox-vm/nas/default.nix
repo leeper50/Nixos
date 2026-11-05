@@ -37,7 +37,7 @@ in
   local = {
     attic.enable = true;
     caddy.enable = true;
-    mediaWatch.enable = true;
+    media-watch.enable = true;
     local = true;
     postgresql = {
       databases = [
