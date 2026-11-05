@@ -158,7 +158,7 @@
             node_name = "tower";
             vm_id = 1004;
             cores = 4;
-            memory = 6144;
+            memory = 4096;
             datastore_id = "nvme_tower";
             disk_size = 64;
             data_disk_size = 200;
@@ -167,10 +167,11 @@
         };
 
         "node-1" = mkSwarmHost "node-1" {
-          node_name = "ser8";
+          node_name = "tower";
           vm_id = 1001;
-          cores = 12;
-          memory = 16384;
+          cores = 6;
+          memory = 8192;
+          datastore_id = "nvme_tower";
           disk_size = 64;
           data_disk_size = 64;
           usb_mappings = [
@@ -181,18 +182,19 @@
         "node-2" = mkSwarmHost "node-2" {
           node_name = "tower";
           vm_id = 1002;
-          cores = 8;
-          memory = 8192;
+          cores = 4;
+          memory = 6144;
           datastore_id = "nvme_tower";
           disk_size = 64;
           data_disk_size = 64;
           pci_mappings = [ "tower-igpu" ];
         };
         "node-3" = mkSwarmHost "node-3" {
-          node_name = "gk55";
+          node_name = "tower";
           vm_id = 1003;
           cores = 4;
           memory = 4096;
+          datastore_id = "nvme_tower";
           disk_size = 32;
           data_disk_size = 32;
         };

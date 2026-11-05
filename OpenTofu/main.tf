@@ -40,8 +40,8 @@ provider "proxmox" {
 
 locals {
   nixos_vm_defaults = {
-    node_name      = "ser8"
-    datastore_id   = "local-lvm"
+    node_name      = "tower"
+    datastore_id   = "nvme_tower"
     cores          = 2
     memory         = 2048
     disk_size      = 40
@@ -201,12 +201,12 @@ resource "proxmox_hardware_mapping_usb" "usb" {
   for_each = {
     zigbee = {
       comment = "Sonoff Zigbee 3.0 USB Dongle Plus"
-      node    = "ser8"
+      node    = "tower"
       id      = "10c4:ea60"
     }
     zwave = {
       comment = "Nabu Casa ZWA-2"
-      node    = "ser8"
+      node    = "tower"
       id      = "303a:4001"
     }
   }
