@@ -479,11 +479,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793802453,
-        "narHash": "sha256-Z9x/djA4DLKbLzaKAtQJRtWuGehHP2mlqJo2ji+gtJo=",
+        "lastModified": 1793857921,
+        "narHash": "sha256-fcsNjm8LsZ2xuaNrue3nOY9MsfK25ll7HgOCKRf5HZk=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "459cf0855eb92e2c49b5e6428b2bf846d5cfacf8",
+        "rev": "81a048af85b2db382174ef3d32ec2a612b4f7b50",
         "type": "github"
       },
       "original": {
@@ -580,11 +580,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1793637298,
-        "narHash": "sha256-kenSPG+q+09at/+awpU+m6aRICK+Of/iLRxFCjas8+Y=",
+        "lastModified": 1793912956,
+        "narHash": "sha256-rEuYzMlE18+npJbuAbOHhr+E8Amn2Fyiyd2CDQEUg8E=",
         "ref": "refs/heads/main",
-        "rev": "61cb8629a10c1c91b5bffd7b1e301bb248fc3d65",
-        "revCount": 16,
+        "rev": "1d7d6e19e6a80741cc214eaeb7e9c0f0f5afac7e",
+        "revCount": 24,
         "type": "git",
         "url": "ssh://git@fj.dellhplaptop.xyz:2222/wleeper13/nix-private.git"
       },
