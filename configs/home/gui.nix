@@ -11,6 +11,7 @@
   ...
 }:
 let
+  isPlasma = systemType == "Nixos" && osConfig.local.desktop == "plasma";
   nixdFlake = "(builtins.getFlake \"${config.home.homeDirectory}/Nix\")";
   nixdOptions =
     if systemType == "NixDarwin" then
@@ -31,14 +32,15 @@ in
     ./games.nix
     ./rclone.nix
   ]
-  ++ lib.optionals (systemType != "NixDarwin") [
+  ++ lib.optionals (systemType != "NixDarwin" && !isPlasma) [
     ./audio/easyeffects.nix
     ./audio/wireplumber.nix
     ./desktops/flatpak.nix
     ./desktops/hyprland.nix
     ./desktops/noctalia.nix
     ./desktops/sway.nix
-  ];
+  ]
+  ++ lib.optional isPlasma ./desktops/plasma.nix;
   config = lib.mkMerge [
     {
       fonts.fontconfig.enable = true;
@@ -198,7 +200,6 @@ in
                 };
                 "ser8" = {
                   HostName = "ser8.local";
-                  User = "root";
                 };
               };
         };
@@ -324,7 +325,6 @@ in
         </Menu>
       '';
       home.packages = with pkgs; [
-        bazaar
         bitwarden-desktop
         bitwarden-cli
         blender

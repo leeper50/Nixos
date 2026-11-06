@@ -10,12 +10,17 @@
 }:
 let
   rootDir = ../..;
+  familyUsers = [
+    "carrie"
+    "david"
+  ];
 in
 {
   imports =
     map (p: rootDir + p) [
       /configs/nixos
       /configs/nixos/power.nix
+      /configs/nixos/u2f.nix
     ]
     ++ [
       ./disk-config.nix
@@ -23,15 +28,13 @@ in
       disko.nixosModules.disko
       nur.modules.nixos.default
     ];
-  age.secrets = {
-    "user_carrie_hash.age" = {
-      file = "${secrets}/user_carrie_hash.age";
+  age.secrets =
+    lib.genAttrs' familyUsers (
+      name: lib.nameValuePair "user_${name}_hash.age" { file = "${secrets}/user_${name}_hash.age"; }
+    )
+    // {
+      "wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
     };
-    "user_david_hash.age" = {
-      file = "${secrets}/user_david_hash.age";
-    };
-    "wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
-  };
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
@@ -50,10 +53,13 @@ in
       Policy.AutoEnable = true;
     };
   };
+  home-manager.users.walter.local = {
+    browsers.firefox.enable = true;
+  };
   local = {
     desktop = "plasma";
     local = true;
-    restic.enable = false;
+    # restic.enable = false;
     restic.backups.home = {
       exclude = [
         "*cache*"
@@ -67,7 +73,8 @@ in
       ];
       user = "root";
     };
-    walter.enable = false;
+    u2f.enable = true;
+    walter.enable = true;
   };
   networking = {
     defaultGateway6.interface = "enp1s0";
@@ -111,7 +118,10 @@ in
       };
     };
   };
-  nix.settings.allowed-users = [ "root" ];
+  nix.settings.allowed-users = [
+    "root"
+    "walter"
+  ];
   programs = {
     firefox = {
       enable = true;
@@ -131,7 +141,10 @@ in
     flatpak.enable = lib.mkForce false;
     fstrim.enable = true;
     openssh.settings = {
-      AllowUsers = [ "root" ];
+      AllowUsers = [
+        "root"
+        "walter"
+      ];
       KbdInteractiveAuthentication = lib.mkForce false;
     };
     power-profiles-daemon.enable = true;
@@ -143,35 +156,18 @@ in
   };
   system.stateVersion = "26.05";
   users = {
-    groups = {
-      carrie = { };
-      david = { };
-    };
-    users = {
-      carrie = {
-        description = "Carrie";
-        extraGroups = [
-          "audio"
-          "input"
-          "users"
-          "video"
-        ];
-        group = "carrie";
-        hashedPasswordFile = config.age.secrets."user_carrie_hash.age".path;
-        isNormalUser = true;
-      };
-      david = {
-        description = "David";
-        extraGroups = [
-          "audio"
-          "input"
-          "users"
-          "video"
-        ];
-        group = "david";
-        hashedPasswordFile = config.age.secrets."user_david_hash.age".path;
-        isNormalUser = true;
-      };
-    };
+    groups = lib.genAttrs familyUsers (_: { });
+    users = lib.genAttrs familyUsers (name: {
+      description = lib.toSentenceCase name;
+      extraGroups = [
+        "audio"
+        "input"
+        "users"
+        "video"
+      ];
+      group = name;
+      hashedPasswordFile = config.age.secrets."user_${name}_hash.age".path;
+      isNormalUser = true;
+    });
   };
 }

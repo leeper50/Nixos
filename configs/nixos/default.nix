@@ -6,6 +6,7 @@
   lib,
   nix-flatpak,
   pkgs,
+  plasma-manager,
   profile,
   stylix,
   systemType,
@@ -57,6 +58,7 @@ in
             agenix
             globals
             nix-flatpak
+            plasma-manager
             secrets
             systemType
             ;
@@ -355,6 +357,7 @@ in
         })
         (lib.mkIf (config.local.desktop == "plasma") {
           environment.plasma6.excludePackages = with pkgs.kdePackages; [
+            discover
             elisa
             khelpcenter
             krdp

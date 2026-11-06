@@ -1,7 +1,10 @@
-{ nix-flatpak, ... }:
+{ nix-flatpak, pkgs, ... }:
 {
   imports = [
     nix-flatpak.homeManagerModules.nix-flatpak
+  ];
+  home.packages = [
+    pkgs.bazaar
   ];
   services.flatpak = {
     enable = true;
