@@ -136,7 +136,7 @@ in
               }
               // lib.optionalAttrs isNixos (
                 let
-                  owner = if config.local.walter.enable then "walter" else "root";
+                  owner = if config.local.users.walter.enable then "walter" else "root";
                 in
                 {
                   group = owner;

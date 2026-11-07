@@ -1,9 +1,28 @@
 {
+  config,
   lib,
   options,
   pkgs,
   ...
 }:
+let
+  forceGtkFiles =
+    { config, lib, ... }:
+    lib.mkIf (config.stylix.enable && config.stylix.targets.gtk.enable) {
+      gtk.gtk2.force = true;
+      xdg.configFile =
+        lib.genAttrs
+          [
+            "gtk-3.0/gtk.css"
+            "gtk-3.0/settings.ini"
+            "gtk-4.0/gtk.css"
+            "gtk-4.0/settings.ini"
+          ]
+          (_: {
+            force = true;
+          });
+    };
+in
 {
   config = lib.mkMerge (
     [
@@ -52,5 +71,9 @@
         stylix.targets.gtk.enable = true;
       }
     ]
+    ++ lib.optional (options ? home-manager) { home-manager.sharedModules = [ forceGtkFiles ]; }
+    ++ lib.optional (options ? home) (forceGtkFiles {
+      inherit config lib;
+    })
   );
 }

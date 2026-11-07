@@ -13,15 +13,6 @@
   secrets,
   ...
 }:
-let
-  user_settings = {
-    openssh.authorizedKeys.keys = [
-      globals.sshKeys.email
-      globals.sshKeys.workstation
-    ];
-    shell = pkgs.fish;
-  };
-in
 {
   options.local = {
     desktop = lib.mkOption {
@@ -33,9 +24,6 @@ in
       description = "Desktop environment for gui hosts: hyprland and sway, or a minimal KDE Plasma.";
     };
     local = lib.mkEnableOption "local";
-    walter.enable = lib.mkEnableOption "the walter user" // {
-      default = true;
-    };
   };
   imports = [
     agenix.nixosModules.default
@@ -51,6 +39,7 @@ in
     ./mounts.nix
     ./networking.nix
     ./ssh.nix
+    ./users.nix
     {
       home-manager = {
         extraSpecialArgs = {
@@ -71,22 +60,6 @@ in
   ++ lib.optionals (profile == "gui") [
     stylix.nixosModules.stylix
     ../home/stylix.nix
-    {
-      home-manager.users.walter = lib.mkIf config.local.walter.enable {
-        imports = [
-          ../home/gui.nix
-        ];
-      };
-    }
-  ]
-  ++ lib.optionals (profile == "cli") [
-    {
-      home-manager.users.walter = lib.mkIf config.local.walter.enable {
-        imports = [
-          ../home
-        ];
-      };
-    }
   ];
   config = lib.mkMerge [
     {
@@ -99,9 +72,6 @@ in
       ];
     }
     {
-      age.secrets."user_walter_hash.age" = lib.mkIf config.local.walter.enable {
-        file = "${secrets}/user_walter_hash.age";
-      };
       boot.kernelPackages = pkgs.linuxPackages_latest;
       environment.systemPackages = with pkgs; [
         attic-client
@@ -167,35 +137,6 @@ in
         wheelNeedsPassword = true;
       };
       time.timeZone = globals.timeZone;
-      users = {
-        mutableUsers = false;
-        groups.walter = lib.mkIf config.local.walter.enable {
-          gid = 1000;
-          members = [ "walter" ];
-        };
-        users = {
-          root = user_settings;
-          walter = lib.mkIf config.local.walter.enable (
-            user_settings
-            // {
-              description = "Administrator";
-              extraGroups = [
-                "networkmanager"
-                "users"
-                "wheel"
-              ]
-              ++ lib.optionals (profile == "gui") [
-                "audio"
-                "input"
-                "video"
-              ];
-              group = "walter";
-              hashedPasswordFile = config.age.secrets."user_walter_hash.age".path;
-              isNormalUser = true;
-            }
-          );
-        };
-      };
     }
     (lib.mkIf (profile == "gui") (
       let
@@ -255,7 +196,7 @@ in
       in
       lib.mkMerge [
         {
-          age.secrets = lib.mkIf config.local.walter.enable (
+          age.secrets = lib.mkIf config.local.users.walter.enable (
             lib.genAttrs
               [
                 "restic_b2_env.age"

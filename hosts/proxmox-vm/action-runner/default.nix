@@ -15,7 +15,7 @@ in
       uuid = "04f4e7b8-0cb7-4a22-82ce-d29e2be00bf5";
     };
     local = true;
-    walter.enable = false;
+    users.walter.enable = false;
   };
   system.stateVersion = "25.11";
 }

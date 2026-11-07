@@ -10,10 +10,6 @@
 }:
 let
   rootDir = ../..;
-  familyUsers = [
-    "carrie"
-    "david"
-  ];
 in
 {
   imports =
@@ -29,13 +25,7 @@ in
       disko.nixosModules.disko
       nur.modules.nixos.default
     ];
-  age.secrets =
-    lib.genAttrs' familyUsers (
-      name: lib.nameValuePair "user_${name}_hash.age" { file = "${secrets}/user_${name}_hash.age"; }
-    )
-    // {
-      "wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
-    };
+  age.secrets."wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
@@ -93,7 +83,10 @@ in
       user = "root";
     };
     u2f.enable = true;
-    walter.enable = true;
+    users = {
+      carrie.enable = true;
+      david.enable = true;
+    };
   };
   networking = {
     defaultGateway6.interface = "enp1s0";
@@ -139,8 +132,8 @@ in
   };
   nix.settings.allowed-users = [
     "root"
-    "walter"
-  ];
+  ]
+  ++ lib.attrNames (lib.filterAttrs (_: user: user.enable) config.local.users);
   programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {
@@ -162,26 +155,4 @@ in
     upower.enable = true;
   };
   system.stateVersion = "26.05";
-  users = {
-    groups = lib.genAttrs familyUsers (_: { });
-    users = lib.genAttrs familyUsers (name: {
-      description = lib.toSentenceCase name;
-      extraGroups = [
-        "audio"
-        "input"
-        "users"
-        "video"
-      ];
-      group = name;
-      hashedPasswordFile = config.age.secrets."user_${name}_hash.age".path;
-      isNormalUser = true;
-      packages = with pkgs; [
-        bitwarden-desktop
-        collabora-desktop
-        firefox
-        rustdesk
-        thunderbird
-      ];
-    });
-  };
 }

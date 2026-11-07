@@ -304,15 +304,6 @@ in
       };
     }
     (lib.mkIf (systemType != "NixDarwin") {
-      home.activation.removeStylixGtkFiles = (
-        lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-          rm -f $HOME/.gtkrc-2.0 \
-                $HOME/.config/gtk-3.0/gtk.css \
-                $HOME/.config/gtk-3.0/settings.ini \
-                $HOME/.config/gtk-4.0/gtk.css \
-                $HOME/.config/gtk-4.0/settings.ini
-        ''
-      );
       # Get dolphin working with hyprland
       home.file.".config/menus/applications.menu".text = ''
         <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
