@@ -43,10 +43,10 @@ in
       firefox.enable = true;
       librewolf.enable = true;
     };
-    games.emulators.enable = true;
   };
   local = {
     caddy.enable = true;
+    games.emulators.enable = true;
     local = true;
     mounts = {
       autoMount = true;

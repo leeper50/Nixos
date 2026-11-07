@@ -29,9 +29,10 @@ in
     ./browsers
     ./default.nix
     ./dev.nix
-    ./games.nix
     ./rclone.nix
   ]
+  # NixOS imports games.nix as a system module so it can set up steam.
+  ++ lib.optional (systemType != "Nixos") ./games.nix
   ++ lib.optionals (systemType != "NixDarwin" && !isPlasma) [
     ./audio/easyeffects.nix
     ./audio/wireplumber.nix

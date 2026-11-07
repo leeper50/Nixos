@@ -45,11 +45,11 @@ in
         firefox.enable = true;
         librewolf.enable = true;
       };
-      games.emulators.enable = true;
     };
   };
   local = {
     desktop = "plasma";
+    games.emulators.enable = true;
     local = true;
     packages = {
       cream-linux.enable = true;

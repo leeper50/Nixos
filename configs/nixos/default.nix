@@ -59,6 +59,7 @@
   ]
   ++ lib.optionals (profile == "gui") [
     stylix.nixosModules.stylix
+    ../home/games.nix
     ../home/stylix.nix
   ];
   config = lib.mkMerge [
@@ -270,20 +271,6 @@
             sway = {
               enable = true;
               extraPackages = [ ];
-            };
-            steam = {
-              enable = true;
-              extest.enable = true;
-              extraCompatPackages = with pkgs; [
-                proton-ge-bin
-              ];
-              extraPackages = with pkgs; [
-                gamescope
-              ];
-              gamescopeSession.enable = true;
-              localNetworkGameTransfers.openFirewall = true;
-              protontricks.enable = true;
-              remotePlay.openFirewall = true;
             };
           };
           services = {
