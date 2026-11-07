@@ -39,16 +39,36 @@ in
     };
   };
   home-manager.users = {
-    walter.local = {
-      browsers = {
-        brave.enable = true;
-        firefox.enable = true;
-        librewolf.enable = true;
+    walter = {
+      wayland.windowManager.hyprland.extraLuaFiles."monitors.lua" = {
+        autoLoad = true;
+        content = ''
+          hl.monitor({
+            mode = "highrr",
+            output = "DP-1",
+            supports_hdr = -1
+          })
+          hl.monitor({
+            mode = "highrr",
+            output = "HDMI-A-1",
+            supports_hdr = -1
+          })
+          hl.workspace_rule({monitor = "DP-1", workspace = "1"})
+          hl.workspace_rule({monitor = "DP-1", workspace = "3"})
+          hl.workspace_rule({monitor = "HDMI-A-1", workspace = "2"})
+          hl.workspace_rule({monitor = "HDMI-A-1", workspace = "4"})
+        '';
+      };
+      local = {
+        browsers = {
+          brave.enable = true;
+          firefox.enable = true;
+          librewolf.enable = true;
+        };
       };
     };
   };
   local = {
-    desktop = "plasma";
     games.emulators.enable = true;
     local = true;
     packages = {

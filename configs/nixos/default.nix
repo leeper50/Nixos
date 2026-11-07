@@ -15,15 +15,7 @@
 }:
 {
   options.local = {
-    desktop = lib.mkOption {
-      type = lib.types.enum [
-        "hyprland"
-        "plasma"
-      ];
-      default = "hyprland";
-      description = "Desktop environment for gui hosts: hyprland and sway, or a minimal KDE Plasma.";
-    };
-    local = lib.mkEnableOption "local";
+    local = lib.mkEnableOption "Enable if the host is on the lan.";
   };
   imports = [
     agenix.nixosModules.default
@@ -141,59 +133,103 @@
     }
     (lib.mkIf (profile == "gui") (
       let
-        sddm-astronaut =
-          (pkgs.sddm-astronaut.override {
-            embeddedTheme = "japanese_aesthetic";
-            themeConfig = {
-              Background = "Backgrounds/wallpaper.jxl";
+        # sddm-astronaut =
+        #   (pkgs.sddm-astronaut.override {
+        #     embeddedTheme = "japanese_aesthetic";
+        #     themeConfig = {
+        #       Background = "Backgrounds/wallpaper.jxl";
 
-              # === Base 16 Gruvbox Colors ===
-              HeaderTextColor = "#d5c4a1";
-              DateTextColor = "#d5c4a1";
-              TimeTextColor = "#d5c4a1";
+        #       # === Base 16 Gruvbox Colors ===
+        #       HeaderTextColor = "#d5c4a1";
+        #       DateTextColor = "#d5c4a1";
+        #       TimeTextColor = "#d5c4a1";
 
-              FormBackgroundColor = "#282828";
-              BackgroundColor = "#282828";
-              DimBackgroundColor = "#282828";
+        #       FormBackgroundColor = "#282828";
+        #       BackgroundColor = "#282828";
+        #       DimBackgroundColor = "#282828";
 
-              LoginFieldBackgroundColor = "#3c3836";
-              PasswordFieldBackgroundColor = "#3c3836";
-              LoginFieldTextColor = "#d5c4a1";
-              PasswordFieldTextColor = "#d5c4a1";
-              UserIconColor = "#d5c4a1";
-              PasswordIconColor = "#d5c4a1";
+        #       LoginFieldBackgroundColor = "#3c3836";
+        #       PasswordFieldBackgroundColor = "#3c3836";
+        #       LoginFieldTextColor = "#d5c4a1";
+        #       PasswordFieldTextColor = "#d5c4a1";
+        #       UserIconColor = "#d5c4a1";
+        #       PasswordIconColor = "#d5c4a1";
 
-              PlaceholderTextColor = "#665c54";
-              WarningColor = "#fb4934";
+        #       PlaceholderTextColor = "#665c54";
+        #       WarningColor = "#fb4934";
 
-              LoginButtonTextColor = "#ebdbb2";
-              LoginButtonBackgroundColor = "#504945";
-              SystemButtonsIconsColor = "#d5c4a1";
-              SessionButtonTextColor = "#d5c4a1";
-              VirtualKeyboardButtonTextColor = "#d5c4a1";
+        #       LoginButtonTextColor = "#ebdbb2";
+        #       LoginButtonBackgroundColor = "#504945";
+        #       SystemButtonsIconsColor = "#d5c4a1";
+        #       SessionButtonTextColor = "#d5c4a1";
+        #       VirtualKeyboardButtonTextColor = "#d5c4a1";
 
-              DropdownTextColor = "#ebdbb2";
-              DropdownSelectedBackgroundColor = "#665c54";
-              DropdownBackgroundColor = "#504945";
+        #       DropdownTextColor = "#ebdbb2";
+        #       DropdownSelectedBackgroundColor = "#665c54";
+        #       DropdownBackgroundColor = "#504945";
 
-              HighlightTextColor = "#ebdbb2";
-              HighlightBackgroundColor = "#504945";
-              HighlightBorderColor = "transparent";
+        #       HighlightTextColor = "#ebdbb2";
+        #       HighlightBackgroundColor = "#504945";
+        #       HighlightBorderColor = "transparent";
 
-              HoverUserIconColor = "#665c54";
-              HoverPasswordIconColor = "#665c54";
-              HoverSystemButtonsIconsColor = "#665c54";
-              HoverSessionButtonTextColor = "#665c54";
-              HoverVirtualKeyboardButtonTextColor = "#665c54";
-            };
-          }).overrideAttrs
-            (oldAttrs: {
-              installPhase = oldAttrs.installPhase + ''
-                chmod u+w $out/share/sddm/themes/sddm-astronaut-theme/Backgrounds/
-                cp ${../home/wallpaper.jxl} \
-                  $out/share/sddm/themes/sddm-astronaut-theme/Backgrounds/wallpaper.jxl
-              '';
-            });
+        #       HoverUserIconColor = "#665c54";
+        #       HoverPasswordIconColor = "#665c54";
+        #       HoverSystemButtonsIconsColor = "#665c54";
+        #       HoverSessionButtonTextColor = "#665c54";
+        #       HoverVirtualKeyboardButtonTextColor = "#665c54";
+        #     };
+        #   }).overrideAttrs
+        #     (oldAttrs: {
+        #       installPhase = oldAttrs.installPhase + ''
+        #         chmod u+w $out/share/sddm/themes/sddm-astronaut-theme/Backgrounds/
+        #         cp ${../home/wallpaper.jxl} \
+        #           $out/share/sddm/themes/sddm-astronaut-theme/Backgrounds/wallpaper.jxl
+        #       '';
+        #     });
+        users = lib.filterAttrs (_: user: user.enable) config.local.users;
+        desktops = lib.unique (lib.mapAttrsToList (_: user: user.desktop) users);
+        uses = desktop: lib.elem desktop desktops;
+        # The same commands as each desktop's own session file. SDDM sets the
+        # desktop names from the session file, so set them here instead.
+        startDesktop = {
+          hyprland = ''
+            export XDG_CURRENT_DESKTOP=Hyprland XDG_SESSION_DESKTOP=Hyprland
+            exec ${config.programs.uwsm.package}/bin/uwsm start -e -D Hyprland hyprland.desktop
+          '';
+          plasma =
+            let
+              plasma-workspace = pkgs.kdePackages.plasma-workspace;
+            in
+            ''
+              export XDG_CURRENT_DESKTOP=KDE XDG_SESSION_DESKTOP=KDE
+              exec ${plasma-workspace}/libexec/plasma-dbus-run-session-if-needed ${plasma-workspace}/bin/startplasma-wayland
+            '';
+        };
+        # SDDM remembers one last session for everyone, so this session starts
+        # whichever desktop the logged-in user has.
+        userSession = pkgs.writeTextFile {
+          name = "user-session";
+          destination = "/share/wayland-sessions/user.desktop";
+          text = ''
+            [Desktop Entry]
+            Name=Default
+            Comment=Your own desktop
+            Exec=${pkgs.writeShellScript "user-session" ''
+              case "$USER" in
+              ${lib.concatStrings (
+                lib.mapAttrsToList (name: user: ''
+                  ${name})
+                    ${startDesktop.${user.desktop}};;
+                '') users
+              )}
+              *)
+                ${startDesktop.${lib.head desktops}};;
+              esac
+            ''}
+            Type=Application
+          '';
+          passthru.providedSessions = [ "user" ];
+        };
       in
       lib.mkMerge [
         {
@@ -213,12 +249,18 @@
           );
           security.polkit.enable = true;
           services = {
-            displayManager.sddm = {
-              enable = true;
-              wayland = {
-                compositor = "kwin";
+            displayManager = {
+              defaultSession = "user";
+              sddm = {
                 enable = true;
+                # Always preselect the Default session, not the previous user's pick.
+                settings.Users.RememberLastSession = false;
+                wayland = {
+                  compositor = "kwin";
+                  enable = true;
+                };
               };
+              sessionPackages = [ userSession ];
             };
             flatpak.enable = true;
             pcscd.enable = true;
@@ -234,7 +276,7 @@
             xserver.enable = true;
           };
         }
-        (lib.mkIf (config.local.desktop == "hyprland") {
+        (lib.mkIf (uses "hyprland") {
           environment.systemPackages =
             with pkgs;
             [
@@ -257,7 +299,6 @@
               lan-mouse
               libsecret
               mpvpaper
-              sddm-astronaut
               qview
             ]
             ++ [ config.stylix.cursor.package ];
@@ -275,7 +316,8 @@
           };
           services = {
             displayManager.sddm = {
-              package = pkgs.kdePackages.sddm;
+              # Plasma sets the same package when both desktops are installed.
+              package = lib.mkDefault pkgs.kdePackages.sddm;
               theme = "sddm-astronaut-theme";
             };
             gnome.gnome-keyring.enable = true;
@@ -283,7 +325,7 @@
           };
           xdg.portal.enable = true;
         })
-        (lib.mkIf (config.local.desktop == "plasma") {
+        (lib.mkIf (uses "plasma") {
           environment.plasma6.excludePackages = with pkgs.kdePackages; [
             discover
             elisa

@@ -11,7 +11,7 @@
   ...
 }:
 let
-  isPlasma = systemType == "Nixos" && osConfig.local.desktop == "plasma";
+  isPlasma = systemType == "Nixos" && osConfig.local.users.walter.desktop == "plasma";
   nixdFlake = "(builtins.getFlake \"${config.home.homeDirectory}/Nix\")";
   nixdOptions =
     if systemType == "NixDarwin" then

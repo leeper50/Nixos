@@ -23,11 +23,18 @@ let
     walter = {
       admin = true;
       description = "Administrator";
+      desktop = "hyprland";
       gid = 1000;
       homeModules = [ (if profile == "gui" then ../home/gui.nix else ../home) ];
     };
-    carrie.homeModules = [ familyHome ];
-    david.homeModules = [ familyHome ];
+    carrie = {
+      desktop = "plasma";
+      homeModules = [ familyHome ];
+    };
+    david = {
+      desktop = "plasma";
+      homeModules = [ familyHome ];
+    };
   };
   enabled = lib.filterAttrs (name: _: config.local.users.${name}.enable) users;
   adminSettings = {
@@ -39,7 +46,15 @@ let
   };
 in
 {
-  options.local.users = lib.mapAttrs (name: _: {
+  options.local.users = lib.mapAttrs (name: user: {
+    desktop = lib.mkOption {
+      type = lib.types.enum [
+        "hyprland"
+        "plasma"
+      ];
+      default = user.desktop;
+      description = "Desktop the login screen starts for ${name} on gui hosts. Hosts install every enabled user's desktop.";
+    };
     enable = lib.mkEnableOption "Enable the ${name} user" // {
       default = name == "walter";
     };
