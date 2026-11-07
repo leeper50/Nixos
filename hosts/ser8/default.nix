@@ -18,6 +18,7 @@ in
 {
   imports =
     map (p: rootDir + p) [
+      /configs/home/packages
       /configs/nixos
       /configs/nixos/power.nix
       /configs/nixos/u2f.nix
@@ -39,12 +40,6 @@ in
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
   };
-  environment.systemPackages = with pkgs; [
-    bitwarden-desktop
-    collabora-desktop
-    rustdesk
-    thunderbird
-  ];
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
@@ -53,17 +48,41 @@ in
       Policy.AutoEnable = true;
     };
   };
-  home-manager.users.walter.local = {
-    browsers.firefox.enable = true;
+  home-manager.users = {
+    walter.local = {
+      browsers = {
+        brave.enable = true;
+        firefox.enable = true;
+        librewolf.enable = true;
+      };
+      games.emulators.enable = true;
+    };
   };
   local = {
     desktop = "plasma";
     local = true;
-    # restic.enable = false;
+    packages = {
+      cream-linux.enable = true;
+      elegoo-slicer.enable = true;
+      ollama = {
+        context_length = 32768;
+        enable = true;
+      };
+      rimsort.enable = true;
+      surge.enable = true;
+      waifu2x.enable = true;
+    };
     restic.backups.home = {
       exclude = [
-        "*cache*"
+        ".local/share/Steam"
         ".local/share/Trash"
+        ".ollama"
+        ".steam"
+        "*cache*"
+        "Games"
+        "Nas"
+        "Sync/Retroarch"
+        "Temp"
       ];
       paths = [
         "/home"
@@ -122,19 +141,7 @@ in
     "root"
     "walter"
   ];
-  programs = {
-    firefox = {
-      enable = true;
-      policies = {
-        DisableTelemetry = true;
-        ExtensionSettings."uBlock0@raymondhill.net" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-          installation_mode = "force_installed";
-        };
-      };
-    };
-    nix-ld.enable = true;
-  };
+  programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services = {
     btrfs.autoScrub.enable = true;
@@ -168,6 +175,13 @@ in
       group = name;
       hashedPasswordFile = config.age.secrets."user_${name}_hash.age".path;
       isNormalUser = true;
+      packages = with pkgs; [
+        bitwarden-desktop
+        collabora-desktop
+        firefox
+        rustdesk
+        thunderbird
+      ];
     });
   };
 }
