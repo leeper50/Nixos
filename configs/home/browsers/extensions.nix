@@ -89,7 +89,7 @@ let
 in
 {
   config = lib.mkMerge [
-    (lib.mkIf config.local.browsers.brave.enable {
+    (lib.mkIf config.local.browsers.chromium.enable {
       programs.chromium.extensions = [
         { id = "dnhpnfgdlenaccegplpojghhmaamnnfp"; } # augmented steam
         { id = "ajopnjidmegmdimjlfnijceegpefgped"; } # betterttv

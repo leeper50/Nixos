@@ -105,7 +105,7 @@ in
   };
   local = {
     browsers = {
-      brave.enable = true;
+      chromium.enable = true;
       firefox.enable = true;
       librewolf.enable = true;
     };

@@ -48,13 +48,15 @@ in
             mode = "highrr",
             output = "DP-1",
             position = "auto-left",
-            supports_hdr = -1
+            supports_hdr = -1,
+            vrr = 2,
           })
           hl.monitor({
             mode = "highrr",
             output = "HDMI-A-1",
             position = "auto-right",
-            supports_hdr = -1
+            supports_hdr = -1,
+            vrr = 2,
           })
           hl.workspace_rule({monitor = "DP-1", workspace = "1"})
           hl.workspace_rule({monitor = "DP-1", workspace = "3"})
@@ -64,7 +66,7 @@ in
       };
       local = {
         browsers = {
-          brave.enable = true;
+          chromium.enable = true;
           firefox.enable = true;
           librewolf.enable = true;
         };
@@ -75,6 +77,10 @@ in
     caddy.enable = true;
     games.emulators.enable = true;
     local = true;
+    mounts = {
+      media = true;
+      user = true;
+    };
     packages = {
       cream-linux.enable = true;
       elegoo-slicer.enable = true;

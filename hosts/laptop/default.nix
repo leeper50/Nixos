@@ -39,7 +39,7 @@ in
   };
   home-manager.users.walter.local = {
     browsers = {
-      brave.enable = true;
+      chromium.enable = true;
       firefox.enable = true;
       librewolf.enable = true;
     };

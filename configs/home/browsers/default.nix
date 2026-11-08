@@ -6,7 +6,7 @@
   ...
 }:
 let
-  chromiumPackage = pkgs.brave;
+  chromiumPackage = pkgs.chromium;
   firefoxPackage = pkgs.firefox-bin;
   floorpPackage = pkgs.floorp-bin;
   librewolfPackage = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.librewolf else pkgs.librewolf-bin;
@@ -62,14 +62,14 @@ let
 in
 {
   options.local.browsers = {
-    brave.enable = lib.mkEnableOption "brave";
+    chromium.enable = lib.mkEnableOption "chromium";
     firefox.enable = lib.mkEnableOption "firefox";
     floorp.enable = lib.mkEnableOption "floorp";
     librewolf.enable = lib.mkEnableOption "librewolf";
   };
   imports = [ ./extensions.nix ];
   config = lib.mkMerge [
-    (lib.mkIf config.local.browsers.brave.enable {
+    (lib.mkIf config.local.browsers.chromium.enable {
       programs.chromium = {
         commandLineArgs = [
           "--proxy-pac-url=https://c.dellhplaptop.xyz/public/proxy.pac"
