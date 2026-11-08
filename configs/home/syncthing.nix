@@ -13,6 +13,7 @@ let
     desktops = [
       "laptop"
       "macbook"
+      "ser8"
       "workstation"
     ];
     mobiles = [
@@ -173,6 +174,7 @@ in
             "moto-g".id = "5NSRNJQ-XGLQYCX-M3ZKVYC-KDP3MMU-JJQWBBC-CSKWW6Y-FEUAHDW-YSZFQAA";
             "nas".id = "PGRFMYY-55TDV4M-5PZK35F-OOYCALV-JM5MBXK-CQZ4JEX-2VZLFBW-AFLJPAN";
             "phone".id = "LBLFNCY-MRGPFRW-XOIMRGV-T4Q57PM-CEA3YTC-P5YIPGG-3BBOH45-XLADQAL";
+            "ser8".id = "C4SX6CY-XCTV4RT-QYKDWN3-72ERWJ4-2BXI5VW-YDABL22-PYWQSAC-YSF7YQI";
             "tablet".id = "PBXQVP4-BPXY3EV-U45PSLY-ZTYAEKP-L4VJKS5-SJ2B6EE-5DZOUKV-PZKFJQZ";
             "workstation".id = "HMZTYV2-S3KY47A-SV67FII-75SN5JX-PGNLXYQ-JVKBLXB-3FKNC4J-PPV5SAZ";
           };

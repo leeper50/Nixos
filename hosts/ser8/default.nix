@@ -17,6 +17,7 @@ in
       /configs/home/packages
       /configs/nixos
       /configs/nixos/power.nix
+      /configs/nixos/syncthing.nix
       /configs/nixos/u2f.nix
     ]
     ++ [
@@ -69,6 +70,7 @@ in
     };
   };
   local = {
+    caddy.enable = true;
     games.emulators.enable = true;
     local = true;
     packages = {
