@@ -36,6 +36,7 @@
     tombi
     typescript-language-server
     typos-lsp
+    unrar
     vscode-css-languageserver
     vscode-json-languageserver
     yaml-language-server

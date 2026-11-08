@@ -26,9 +26,12 @@ in
           emulators to be installed.'';
         default = with pkgs; [
           azahar
+          cemu
           eden
           rpcs3
           shadps4-qtlauncher
+          xdvdfs-cli
+          xemu
           xenia-canary
         ];
         type = lib.types.listOf lib.types.package;
