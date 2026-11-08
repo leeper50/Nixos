@@ -61,7 +61,6 @@ in
       surge.enable = true;
       waifu2x.enable = true;
     };
-    u2f.enable = true;
     restic.backups.home = {
       exclude = [
         "*cache*"
@@ -83,6 +82,7 @@ in
         "nas"
       ];
     };
+    u2f.enable = true;
   };
   age.secrets."wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
   networking.networkmanager = {

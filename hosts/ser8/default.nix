@@ -47,11 +47,13 @@ in
           hl.monitor({
             mode = "highrr",
             output = "DP-1",
+            position = "auto-left",
             supports_hdr = -1
           })
           hl.monitor({
             mode = "highrr",
             output = "HDMI-A-1",
+            position = "auto-right",
             supports_hdr = -1
           })
           hl.workspace_rule({monitor = "DP-1", workspace = "1"})
