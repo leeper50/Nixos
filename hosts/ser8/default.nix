@@ -160,7 +160,6 @@ in
   security.rtkit.enable = true;
   services = {
     btrfs.autoScrub.enable = true;
-    flatpak.enable = lib.mkForce false;
     fstrim.enable = true;
     openssh.settings = {
       AllowUsers = [
