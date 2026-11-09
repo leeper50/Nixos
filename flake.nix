@@ -134,9 +134,9 @@
             node_name = "tower";
             vm_id = 1005;
             cores = 6;
-            memory = 6144;
+            memory = 8192;
             datastore_id = "nvme_tower";
-            disk_size = 64;
+            disk_size = 128;
             data_disk_size = 0;
           };
         };
