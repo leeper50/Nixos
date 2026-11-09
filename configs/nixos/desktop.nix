@@ -10,6 +10,7 @@
 {
   imports = [
     ../home/packages
+    ./nix-ld.nix
     ./power.nix
     ./syncthing.nix
     ./u2f.nix

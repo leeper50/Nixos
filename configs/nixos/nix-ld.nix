@@ -1,0 +1,127 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.local.nix-ld;
+in
+{
+  options.local.nix-ld = {
+    enable = lib.mkEnableOption "nix-ld with a common library set for unpatched binaries";
+  };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      programs.nix-ld = {
+        enable = true;
+        libraries = with pkgs; [
+          acl
+          alsa-lib
+          atk
+          attr
+          bzip2
+          cairo
+          coreutils
+          cups
+          curl
+          dbus
+          dbus-glib
+          e2fsprogs
+          expat
+          ffmpeg
+          flac
+          fontconfig
+          freeglut
+          freetype
+          fuse
+          gdk-pixbuf
+          glew_1_10
+          glib
+          gsettings-desktop-schemas
+          gtk3
+          icu
+          krb5
+          libcaca
+          libcanberra
+          libcap
+          libdrm
+          libelf
+          libgbm
+          libgcrypt
+          libGL
+          libICE
+          libidn
+          libjpeg
+          libmikmod
+          libnotify
+          libogg
+          libpng
+          libpulseaudio
+          librsvg
+          libsamplerate
+          libSM
+          libsodium
+          libssh
+          libtheora
+          libtiff
+          libudev0-shim
+          libusb1
+          libva
+          libvdpau
+          libvorbis
+          libvpx
+          libX11
+          libxcb
+          libxcb-cursor
+          libXcomposite
+          libxcrypt
+          libXcursor
+          libXdamage
+          libXext
+          libXfixes
+          libXft
+          libXi
+          libXinerama
+          libxml2
+          libXmu
+          libXrandr
+          libXrender
+          libXScrnSaver
+          libxshmfence
+          libXt
+          libXtst
+          libXxf86vm
+          networkmanager
+          nspr
+          nss
+          openssl
+          pango
+          pciutils
+          pipewire
+          pixman
+          SDL
+          SDL2
+          SDL2_image
+          SDL2_mixer
+          SDL2_ttf
+          speex
+          stdenv.cc.cc
+          systemd
+          tbb
+          util-linux
+          vulkan-loader
+          xcbutil
+          xcbutilimage
+          xcbutilkeysyms
+          xcbutilrenderutil
+          xcbutilwm
+          xz
+          zenity
+          zlib
+          zstd
+        ];
+      };
+    })
+  ];
+}
