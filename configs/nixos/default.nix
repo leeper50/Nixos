@@ -296,7 +296,6 @@
               kdePackages.qtmultimedia
               kdePackages.qtsvg
               kdePackages.qtvirtualkeyboard
-              lan-mouse
               libsecret
               mpvpaper
               qview
