@@ -85,6 +85,7 @@ in
     };
     networkmanager.unmanaged = [ "enp1s0" ];
   };
+  powerManagement.powertop.enable = false;
   nix.settings.allowed-users = [
     "root"
   ]
