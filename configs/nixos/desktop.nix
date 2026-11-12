@@ -80,6 +80,10 @@
   services = {
     btrfs.autoScrub.enable = true;
     fstrim.enable = true;
+    mullvad-vpn = {
+      enable = true;
+      gui.enable = true;
+    };
     power-profiles-daemon.enable = true;
     upower.enable = true;
   };

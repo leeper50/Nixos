@@ -59,6 +59,7 @@ in
           fira-code-symbols
           fira-sans
           keepassxc
+          handbrake
           libavif
           libjxl
           libwebp

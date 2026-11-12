@@ -11,6 +11,10 @@
             url = "https://www.icy-veins.com/wow-forever/enhancement-shaman-leveling#leveling-talent-build";
           }
           {
+            name = "Wowhead Wow Forever Shaman";
+            url = "https://www.wowhead.com/forever/guide/classes/shaman/enhancement/dps-leveling-tips#leveling-tips";
+          }
+          {
             name = "Factorio Mall Hubs (space age)";
             url = "https://factorioblueprints.tech/blueprint/1c6af359-e3e6-4df8-bb20-106048e996a0?selected=d02a6c53-7ac1-4681-bbbf-83ab50da117b&type=book";
           }
