@@ -20,9 +20,11 @@
     kotlin-language-server
     lldb_22
     markdown-oxide
+    ninja
     nixos-anywhere
     onefetch
     opentofu
+    python3
     ragenix
     restic
     rsync

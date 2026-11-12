@@ -65,7 +65,6 @@ in
           nixd
           nixfmt
           oxipng
-          pdfcraft
           photocraft
           pistol
           qownnotes
@@ -325,6 +324,7 @@ in
         ffmpeg-full
         freac
         gimp
+        handbrake
         imgbrd-grabber
         kdePackages.filelight
         kdePackages.kdenlive

@@ -6,6 +6,7 @@ in
 {
   imports = map (p: homelab + p) [
     /bentopdf.nix
+    /gatus.nix
     /gotify.nix
     /mealie.nix
     /redlib.nix
@@ -23,6 +24,7 @@ in
         managerIP = globals.networking.hosts.node-1.ipv4;
       };
     };
+    gatus.reporter.enable = true;
     gotify.enable = true;
     mealie.enable = true;
     redlib.enable = true;

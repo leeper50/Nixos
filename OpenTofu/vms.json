@@ -3,8 +3,8 @@
     "cores": 6,
     "data_disk_size": 0,
     "datastore_id": "nvme_tower",
-    "disk_size": 64,
-    "memory": 6144,
+    "disk_size": 128,
+    "memory": 8192,
     "node_name": "tower",
     "vm_id": 1005
   },

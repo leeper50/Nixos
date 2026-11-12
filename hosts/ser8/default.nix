@@ -1,11 +1,8 @@
 {
   config,
-  disko,
   globals,
   lib,
-  nur,
   pkgs,
-  secrets,
   ...
 }:
 let
@@ -14,84 +11,37 @@ in
 {
   imports =
     map (p: rootDir + p) [
-      /configs/home/packages
       /configs/nixos
-      /configs/nixos/power.nix
-      /configs/nixos/syncthing.nix
-      /configs/nixos/u2f.nix
+      /configs/nixos/desktop.nix
     ]
     ++ [
       ./disk-config.nix
       ./hardware-configuration.nix
-      disko.nixosModules.disko
-      nur.modules.nixos.default
     ];
-  age.secrets."wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    systemd-boot.enable = true;
-  };
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-    settings = {
-      General.Experimental = true;
-      Policy.AutoEnable = true;
-    };
-  };
-  home-manager.users = {
-    walter = {
-      wayland.windowManager.hyprland.extraLuaFiles."monitors.lua" = {
-        autoLoad = true;
-        content = ''
-          hl.monitor({
-            mode = "highrr",
-            output = "DP-1",
-            position = "auto-left",
-            supports_hdr = -1,
-            vrr = 2,
-          })
-          hl.monitor({
-            mode = "highrr",
-            output = "HDMI-A-1",
-            position = "auto-right",
-            supports_hdr = -1,
-            vrr = 2,
-          })
-          hl.workspace_rule({monitor = "DP-1", workspace = "1"})
-          hl.workspace_rule({monitor = "DP-1", workspace = "3"})
-          hl.workspace_rule({monitor = "HDMI-A-1", workspace = "2"})
-          hl.workspace_rule({monitor = "HDMI-A-1", workspace = "4"})
-        '';
-      };
-      local = {
-        browsers = {
-          chromium.enable = true;
-          firefox.enable = true;
-          librewolf.enable = true;
-        };
-      };
-    };
+  home-manager.users.walter.wayland.windowManager.hyprland.extraLuaFiles."monitors.lua" = {
+    autoLoad = true;
+    content = ''
+      hl.monitor({
+        mode = "highrr",
+        output = "DP-1",
+        position = "auto-left",
+        supports_hdr = -1,
+        vrr = 2,
+      })
+      hl.monitor({
+        mode = "highrr",
+        output = "HDMI-A-1",
+        position = "auto-right",
+        supports_hdr = -1,
+        vrr = 2,
+      })
+      hl.workspace_rule({monitor = "DP-1", workspace = "1"})
+      hl.workspace_rule({monitor = "DP-1", workspace = "3"})
+      hl.workspace_rule({monitor = "HDMI-A-1", workspace = "2"})
+      hl.workspace_rule({monitor = "HDMI-A-1", workspace = "4"})
+    '';
   };
   local = {
-    caddy.enable = true;
-    games.emulators.enable = true;
-    local = true;
-    mounts = {
-      media = true;
-      user = true;
-    };
-    packages = {
-      cream-linux.enable = true;
-      elegoo-slicer.enable = true;
-      ollama = {
-        context_length = 32768;
-        enable = true;
-      };
-      rimsort.enable = true;
-      surge.enable = true;
-      waifu2x.enable = true;
-    };
     restic.backups.home = {
       exclude = [
         ".local/share/Steam"
@@ -112,7 +62,6 @@ in
       ];
       user = "root";
     };
-    u2f.enable = true;
     users = {
       carrie.enable = true;
       david.enable = true;
@@ -134,41 +83,14 @@ in
         }
       ];
     };
-    networkmanager = {
-      unmanaged = [ "enp1s0" ];
-      ensureProfiles = {
-        environmentFiles = [ config.age.secrets."wifi_home_env.age".path ];
-        profiles.home = {
-          connection = {
-            id = "home";
-            type = "wifi";
-          };
-          wifi = {
-            mode = "infrastructure";
-            ssid = "$WIFI_SSID";
-          };
-          wifi-security = {
-            key-mgmt = "sae";
-            psk = "$WIFI_PASSWORD";
-          };
-          ipv4.method = "auto";
-          ipv6 = {
-            method = "auto";
-            ip6-privacy = "0";
-          };
-        };
-      };
-    };
+    networkmanager.unmanaged = [ "enp1s0" ];
   };
+  powerManagement.powertop.enable = false;
   nix.settings.allowed-users = [
     "root"
   ]
   ++ lib.attrNames (lib.filterAttrs (_: user: user.enable) config.local.users);
-  programs.nix-ld.enable = true;
-  security.rtkit.enable = true;
   services = {
-    btrfs.autoScrub.enable = true;
-    fstrim.enable = true;
     openssh.settings = {
       AllowUsers = [
         "root"
@@ -176,12 +98,10 @@ in
       ];
       KbdInteractiveAuthentication = lib.mkForce false;
     };
-    power-profiles-daemon.enable = true;
     printing.drivers = with pkgs; [
       gutenprint
       hplip
     ];
-    upower.enable = true;
   };
   system.stateVersion = "26.05";
 }
