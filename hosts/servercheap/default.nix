@@ -7,6 +7,7 @@ in
   imports =
     map (p: homelab + p) [
       /authelia.nix
+      /gatus.nix
       /headscale.nix
       /murmur.nix
       /proxies.nix
@@ -21,6 +22,7 @@ in
       domain = globals.domains.primary;
       enable = true;
     };
+    gatus.enable = true;
     headscale.enable = true;
     murmur = {
       enable = true;
