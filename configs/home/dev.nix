@@ -53,10 +53,7 @@
         };
       };
     };
-    direnv = {
-      enable = true;
-      enableFishIntegration = true;
-    };
+    direnv.enable = true;
     gcc.enable = systemType != "Standalone";
     gitui.enable = true;
     helix = {

@@ -4,8 +4,6 @@
     plasma-manager.homeModules.plasma-manager
   ];
   home.packages = with pkgs; [ nixos-icons ];
-  programs.fish.shellAliases."repair_kde" =
-    "kbuildsycoca6 --noincremental && kquitapp6 plasmashell && kstart plasmashell";
   programs.plasma = {
     enable = true;
     input.keyboard.numlockOnStartup = "on";

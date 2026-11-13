@@ -45,6 +45,7 @@ in
   config = lib.mkMerge [
     {
       fonts.fontconfig.enable = true;
+      local.fish.gui.enable = true;
       home = {
         file.".config/chezmoi/chezmoi.toml".text = ''
           encryption = "gpg"
@@ -101,7 +102,6 @@ in
         };
         btop.enable = true;
         fastfetch.enable = true;
-        fish.shellAliases.cz = "chezmoi";
         git.settings = {
           core.autocrlf = false;
           credential.helper = "store";
@@ -346,82 +346,6 @@ in
             instance = "Alacritty";
             general = "Alacritty";
           };
-        };
-        fish = {
-          functions = {
-            crop = ''
-              test -f "$argv[1]"; or return 1
-              set stem (string split -r -m1 . "$argv[1]")[1]
-              magick "$argv[1]" $argv[2..-1] -crop 16:9 +repage -quality 90 "$stem.png"
-            '';
-            dl = ''
-              if not type -q yt-dlp
-                  echo "yt-dlp not found"
-                  return 127
-              end
-              argparse a f= i t p -- $argv
-              or return 2
-              set args
-              if set -q _flag_a
-                  set -a args -x --audio-format opus --audio-quality 0
-              end
-              if set -q _flag_i
-                  set -a args --ignore-config
-              end
-              if set -q _flag_f
-                  if not test -f "$_flag_f"
-                      echo "Batch file not found: $_flag_f"
-                      return 3
-                  end
-                  set -a args --batch-file $_flag_f
-              end
-              if set -q _flag_t
-                  set -a args -o "%(title)s.%(ext)s"
-              end
-              if set -q _flag_p
-                  set -a args --proxy socks5h://node-1.${globals.domains.tailnet}:1080
-              end
-              if test -z "$argv[1]"; and not set -q _flag_f
-                  echo "Missing URL"
-                  return 1
-              end
-              if test -n "$argv[1]"
-                  set -a args $argv[1]
-              end
-              yt-dlp $args
-              return $status
-            '';
-            rename_media = ''
-              if not type -q md5sum
-                  echo "md5sum not found"
-                  return 127
-              end
-              for file in *.{avif,bmp,gif,heic,jpg,jpeg,jxl,m4v,mkv,mp4,png,tiff,webp}
-                  test -f "$file"; or continue
-                  set ext (string split -r -m1 . "$file")[2]
-                  set hash (md5sum "$file" | string split ' ')[1]
-                  if test "$file" != "$hash.$ext"
-                      mv -n "$file" "$hash.$ext"
-                  end
-              end
-            '';
-          };
-          shellAliases =
-            let
-              excludes = lib.strings.concatMapStringsSep " " (e: "--exclude ${e}") [
-                ".DS_Store"
-                ".stfolder"
-                ".stignore"
-              ];
-              local = "$HOME/Pictures/Wallpapers/";
-              remote = "Copyparty:/Tablet/";
-            in
-            {
-              bisync = "rclone bisync -P ${local} ${remote} ${excludes} $argv";
-              helix = "hx";
-              pull = "rclone sync -P ${remote} ${local} ${excludes} $argv";
-              push = "rclone sync -P ${local} ${remote} ${excludes} $argv";
-            };
         };
         mpv = {
           bindings = {

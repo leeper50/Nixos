@@ -53,7 +53,6 @@ let
   };
 in
 {
-  programs.fish.shellAliases.ncdu = "rclone ncdu";
   programs.rclone = {
     enable = true;
     requiresUnit = "rclone-secrets.service";

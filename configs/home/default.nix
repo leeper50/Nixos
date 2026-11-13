@@ -1,22 +1,6 @@
+{ lib, pkgs, ... }:
 {
-  config,
-  lib,
-  pkgs,
-  systemType,
-  ...
-}:
-let
-  editor = if systemType == "Standalone" then "helix" else "hx";
-  nhTarget =
-    {
-      Nixos = "os";
-      NixDarwin = "darwin";
-      Standalone = "home";
-    }
-    .${systemType};
-  hmBackup = lib.optionalString (systemType == "Standalone") " -b home_manager_backup";
-in
-{
+  imports = [ ./fish.nix ];
   home = {
     homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/walter" else "/home/walter";
     packages =
@@ -33,7 +17,6 @@ in
         hwinfo
         trashy
       ];
-    shell.enableFishIntegration = true;
     stateVersion = "26.05";
     username = "walter";
   };
@@ -42,72 +25,12 @@ in
     eza = {
       colors = "always";
       enable = true;
-      enableFishIntegration = true;
       git = true;
       icons = "always";
     };
     fd.enable = true;
-    fish = {
-      enable = true;
-      functions = {
-        build = ''
-          git -C $NH_FLAKE pull;
-          nh ${nhTarget} build${if systemType == "Standalone" then hmBackup else " --dry"}
-        '';
-        clean = if systemType == "Standalone" then "nh clean user" else "sudo nh clean all";
-        lf = ''
-          set tmp_file "$HOME/.cache/lf-lastdir"
-          command lf --last-dir-path="$tmp_file" $argv
-          if test -f $tmp_file
-            set last_dir (cat $tmp_file)
-            if test -d "$last_dir" -a "$last_dir" != (pwd)
-              cd $last_dir
-            end
-          end
-        '';
-        update = ''
-          ${lib.optionalString (systemType == "Nixos") "sudo "}git -C $NH_FLAKE pull;
-          nh ${nhTarget} switch${hmBackup}
-        '';
-      };
-      plugins = [
-        {
-          name = "plugin-git";
-          src = pkgs.fishPlugins.plugin-git.src;
-        }
-      ];
-      shellAliases = lib.mkMerge [
-        {
-          cat = "bat -pp";
-          edit_nix = "cd ~/Nix && hx ~/Nix";
-          hm = "home-manager --flake $NH_FLAKE";
-          l = "eza";
-          rcat = "${pkgs.coreutils}/bin/cat";
-          rls = "${pkgs.coreutils}/bin/ls";
-        }
-        (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-          j = "journalctl";
-          rs = "sudo systemctl";
-          s = "systemctl";
-          us = "systemctl --user";
-        })
-      ];
-      shellInit = ''
-        set fish_greeting
-        set -gx EDITOR ${editor}
-        set -gx TERM xterm-256color
-        set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
-        set -gx MANROFFOPT -c
-        set -gx XDG_CONFIG_DIRS "$XDG_CONFIG_DIRS:/etc/xdg"
-        set -gx XDG_CONFIG_HOME ${config.xdg.configHome}
-        fish_add_path $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.bun/bin $HOME/go/bin
-        set -gx NH_FLAKE $HOME/Nix
-      '';
-    };
-    fzf = {
-      enable = true;
-      enableFishIntegration = true;
-    };
+    fish.enable = true;
+    fzf.enable = true;
     git = {
       enable = true;
       lfs.enable = true;
