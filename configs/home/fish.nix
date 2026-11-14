@@ -352,22 +352,38 @@ in
     })
     # Aliases: GUI systems, Linux only
     (lib.mkIf (cfg.gui.enable && !isDarwin) {
-      programs.fish.shellAliases =
-        let
-          excludes = lib.strings.concatMapStringsSep " " (e: "--exclude ${e}") [
-            ".DS_Store"
-            ".stfolder"
-            ".stignore"
-          ];
-          local = "$HOME/Pictures/Wallpapers/";
-          remote = "Copyparty:/Tablet/";
-        in
-        {
-          bisync = "rclone bisync -P ${local} ${remote} ${excludes} $argv";
-          helix = "hx";
-          pull = "rclone sync -P ${remote} ${local} ${excludes} $argv";
-          push = "rclone sync -P ${local} ${remote} ${excludes} $argv";
-        };
+      programs.fish = {
+        shellAliases.helix = "hx";
+        functions =
+          let
+            excludes = lib.strings.concatMapStringsSep " " (e: "--exclude ${e}") [
+              ".DS_Store"
+              ".stfolder"
+              ".stignore"
+            ];
+            pairs = [
+              {
+                local = "$HOME/Pictures/Wallpapers/";
+                remote = "Copyparty:/Tablet/";
+              }
+              {
+                local = "$HOME/Temp/Wallpapers/";
+                remote = "Copyparty:/Wallpapers/";
+              }
+            ];
+            # One rclone call per pair; keep going on failure, but return non-zero if any failed.
+            mkSync = cmd: ''
+              set -l failed 0
+              ${lib.concatMapStringsSep "\n" (p: "rclone ${cmd p} ${excludes} $argv; or set failed 1") pairs}
+              return $failed
+            '';
+          in
+          {
+            bisync = mkSync (p: ''bisync -P "${p.local}" "${p.remote}"'');
+            pull = mkSync (p: ''sync -P "${p.remote}" "${p.local}"'');
+            push = mkSync (p: ''sync -P "${p.local}" "${p.remote}"'');
+          };
+      };
     })
     # Aliases: Plasma desktop
     (lib.mkIf (config.programs.plasma.enable or false) {
