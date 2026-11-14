@@ -7,7 +7,7 @@
 }:
 let
   port = 8080;
-  version = "sha-7f192ae";
+  version = "sha-60c8fcd";
 in
 {
   options.local.redlib = {
@@ -18,7 +18,7 @@ in
       virtualisation.oci-containers = {
         backend = "docker";
         containers.redlib = {
-          image = "docker.io/luciferscircle/redlib:${version}";
+          image = "ghcr.io/nachtalb/redlib:${version}";
           environment = {
             ALL_PROXY = "socks5h://${globals.networking.hosts.node-1.ipv4}:1080";
             REDLIB_DEFAULT_LAYOUT = "compact";
@@ -37,6 +37,7 @@ in
             REDLIB_DEFAULT_USE_HLS = "on";
             REDLIB_DEFAULT_WIDE = "on";
             REDLIB_ROBOTS_DISABLE_INDEXING = "on";
+            SFW_ONLY = "off";
           };
           extraOptions = [ "--network=host" ];
         };
