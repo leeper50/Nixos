@@ -9,6 +9,7 @@
   services.flatpak = {
     enable = true;
     packages = [
+      "app.fluxer.Fluxer"
       "io.freetubeapp.FreeTube"
       "org.jellyfin.JellyfinDesktop"
     ];
