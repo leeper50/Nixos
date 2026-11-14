@@ -30,6 +30,10 @@
       Locked = true;
       Value = "blocked";
     };
+    Translations = {
+      Locked = false;
+      Value = "available";
+    };
   };
   AutofillAddressEnabled = false;
   AutofillCreditCardEnabled = false;
@@ -83,4 +87,5 @@
   HardwareAcceleration = true;
   OfferToSaveLogins = false;
   PictureInPicture = false;
+  TranslateEnabled = true;
 }

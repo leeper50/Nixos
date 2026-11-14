@@ -15,15 +15,15 @@ let
     languagePacks = [ "en-US" ];
     profiles = {
       default = {
-        isDefault = true;
-        name = "default";
         bookmarks = {
           force = true;
           settings = import ./bookmarks.nix;
         };
-        search = import ./search.nix;
-        containersForce = true;
         containers = lib.mapAttrs (_: c: { inherit (c) id color icon; }) (import ./containers.nix);
+        containersForce = true;
+        isDefault = true;
+        name = "default";
+        search = import ./search.nix;
         settings = {
           "browser.aboutConfig.showWarning" = false;
           "browser.download.viewableInternally.typeWasRegistered.jxl" = true;
