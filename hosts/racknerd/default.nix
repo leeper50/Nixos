@@ -1,18 +1,11 @@
 { pkgs, ... }:
-let
-  rootDir = ../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports =
-    map (p: homelab + p) [
-      /murmur.nix
-      /proxies.nix
-    ]
-    ++ [
-      (rootDir + /configs/nixos)
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ../../configs/nixos
+    ../../configs/nixos/homelab/murmur.nix
+    ../../configs/nixos/homelab/proxies.nix
+    ./hardware-configuration.nix
+  ];
   boot.tmp.cleanOnBoot = true;
   environment.systemPackages = with pkgs; [
     openssl

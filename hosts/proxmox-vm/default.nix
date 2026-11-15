@@ -4,15 +4,11 @@
   lib,
   ...
 }:
-let
-  rootDir = ../..;
-in
 {
-  imports =
-    map (p: rootDir + p) [
-      /configs/nixos
-    ]
-    ++ [ ./hardware-configuration.nix ];
+  imports = [
+    ../../configs/nixos
+    ./hardware-configuration.nix
+  ];
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
     "vm.vfs_cache_pressure" = 500;

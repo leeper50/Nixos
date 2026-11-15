@@ -1,15 +1,11 @@
 { globals, ... }:
-let
-  rootDir = ../../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports = map (p: homelab + p) [
-    /bentopdf.nix
-    /gatus.nix
-    /gotify.nix
-    /mealie.nix
-    /redlib.nix
+  imports = [
+    ../../../configs/nixos/homelab/bentopdf.nix
+    ../../../configs/nixos/homelab/gatus.nix
+    ../../../configs/nixos/homelab/gotify.nix
+    ../../../configs/nixos/homelab/mealie.nix
+    ../../../configs/nixos/homelab/redlib.nix
   ];
   local = {
     bentopdf.enable = true;

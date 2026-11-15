@@ -1,12 +1,8 @@
 { globals, localLib, ... }:
-let
-  rootDir = ../../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports = map (p: homelab + p) [
-    /renovate.nix
-    /vaultwarden.nix
+  imports = [
+    ../../../configs/nixos/homelab/renovate.nix
+    ../../../configs/nixos/homelab/vaultwarden.nix
   ];
   local = {
     beszel.hub.enable = true;

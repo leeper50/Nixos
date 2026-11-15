@@ -4,23 +4,17 @@
   stylix,
   ...
 }:
-let
-  rootDir = ../..;
-in
 {
-  imports =
-    map (p: rootDir + p) [
-      /configs/home/gui.nix
-      /configs/home/packages
-      /configs/home/restic.nix
-      /configs/home/stylix.nix
-      /configs/home/syncthing.nix
-    ]
-    ++ [
-      "${secrets}/default.nix"
-      agenix.homeManagerModules.default
-      stylix.homeModules.stylix
-    ];
+  imports = [
+    ../../configs/home/gui.nix
+    ../../configs/home/packages
+    ../../configs/home/restic.nix
+    ../../configs/home/stylix.nix
+    ../../configs/home/syncthing.nix
+    "${secrets}/default.nix"
+    agenix.homeManagerModules.default
+    stylix.homeModules.stylix
+  ];
   wayland.windowManager = {
     hyprland.extraLuaFiles."monitors.lua" = {
       autoLoad = true;

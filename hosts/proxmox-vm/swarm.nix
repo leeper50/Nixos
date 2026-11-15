@@ -1,22 +1,15 @@
 { disko, ... }:
-let
-  rootDir = ../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports =
-    map (p: homelab + p) [
-      /adguardhome.nix
-      /docker.nix
-      /keepalived.nix
-    ]
-    ++ [
-      disko.nixosModules.disko
-      (import ./vm-disk-config.nix {
-        dataMountpoint = "/var/lib/docker";
-        dataFormat = "xfs";
-      })
-    ];
+  imports = [
+    ../../configs/nixos/homelab/adguardhome.nix
+    ../../configs/nixos/homelab/docker.nix
+    ../../configs/nixos/homelab/keepalived.nix
+    disko.nixosModules.disko
+    (import ./vm-disk-config.nix {
+      dataMountpoint = "/var/lib/docker";
+      dataFormat = "xfs";
+    })
+  ];
   local = {
     adguardhome.enable = true;
     docker.swarm.enable = true;

@@ -1,12 +1,8 @@
 { globals, pkgs, ... }:
-let
-  rootDir = ../../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports = map (p: homelab + p) [
-    /forgejo.nix
-    /jellyfin.nix
+  imports = [
+    ../../../configs/nixos/homelab/forgejo.nix
+    ../../../configs/nixos/homelab/jellyfin.nix
   ];
   environment.systemPackages = with pkgs; [
     nvtopPackages.intel

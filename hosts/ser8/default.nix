@@ -5,19 +5,13 @@
   pkgs,
   ...
 }:
-let
-  rootDir = ../..;
-in
 {
-  imports =
-    map (p: rootDir + p) [
-      /configs/nixos
-      /configs/nixos/desktop.nix
-    ]
-    ++ [
-      ./disk-config.nix
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ../../configs/nixos
+    ../../configs/nixos/desktop.nix
+    ./disk-config.nix
+    ./hardware-configuration.nix
+  ];
   home-manager.users.walter.wayland.windowManager.hyprland.extraLuaFiles."monitors.lua" = {
     autoLoad = true;
     content = ''

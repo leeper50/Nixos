@@ -1,12 +1,9 @@
 { disko, ... }:
-let
-  rootDir = ../../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports = map (p: homelab + p) [ /forgejo.nix ] ++ [
-    disko.nixosModules.disko
+  imports = [
+    ../../../configs/nixos/homelab/forgejo.nix
     (import ../vm-disk-config.nix { dataMountpoint = null; })
+    disko.nixosModules.disko
   ];
   local = {
     forgejo.runner = {

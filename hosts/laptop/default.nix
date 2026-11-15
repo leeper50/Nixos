@@ -1,18 +1,12 @@
 { pkgs, ... }:
-let
-  rootDir = ../..;
-in
 {
-  imports =
-    map (p: rootDir + p) [
-      /configs/nixos
-      /configs/nixos/desktop.nix
-    ]
-    ++ [
-      ./disk-config.nix
-      ./gpu.nix
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ../../configs/nixos
+    ../../configs/nixos/desktop.nix
+    ./disk-config.nix
+    ./gpu.nix
+    ./hardware-configuration.nix
+  ];
   local = {
     mounts.autoMount = true;
     restic.backups.home = {

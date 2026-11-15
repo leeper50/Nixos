@@ -1,21 +1,14 @@
 { globals, ... }:
-let
-  rootDir = ../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports =
-    map (p: homelab + p) [
-      /authelia.nix
-      /gatus.nix
-      /headscale.nix
-      /murmur.nix
-      /proxies.nix
-    ]
-    ++ [
-      (rootDir + /configs/nixos)
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ../../configs/nixos
+    ../../configs/nixos/homelab/authelia.nix
+    ../../configs/nixos/homelab/gatus.nix
+    ../../configs/nixos/homelab/headscale.nix
+    ../../configs/nixos/homelab/murmur.nix
+    ../../configs/nixos/homelab/proxies.nix
+    ./hardware-configuration.nix
+  ];
   local = {
     authelia.enable = true;
     caddy = {

@@ -1,29 +1,22 @@
 { disko, ... }:
-let
-  rootDir = ../../..;
-  homelab = rootDir + /configs/nixos/homelab;
-in
 {
-  imports =
-    map (p: homelab + p) [
-      /attic.nix
-      /blocky.nix
-      /keepalived.nix
-      /media-watch.nix
-      /nfs.nix
-      /postgresql.nix
-      /redis.nix
-      /rustfs.nix
-      /samba.nix
-    ]
-    ++ [
-      disko.nixosModules.disko
-      (import ../vm-disk-config.nix {
-        dataMountpoint = "/mnt/attic";
-        dataFormat = "xfs";
-      })
-      (rootDir + /configs/nixos/syncthing.nix)
-    ];
+  imports = [
+    ../../../configs/nixos/homelab/attic.nix
+    ../../../configs/nixos/homelab/blocky.nix
+    ../../../configs/nixos/homelab/keepalived.nix
+    ../../../configs/nixos/homelab/media-watch.nix
+    ../../../configs/nixos/homelab/nfs.nix
+    ../../../configs/nixos/homelab/postgresql.nix
+    ../../../configs/nixos/homelab/redis.nix
+    ../../../configs/nixos/homelab/rustfs.nix
+    ../../../configs/nixos/homelab/samba.nix
+    ../../../configs/nixos/syncthing.nix
+    disko.nixosModules.disko
+    (import ../vm-disk-config.nix {
+      dataMountpoint = "/mnt/attic";
+      dataFormat = "xfs";
+    })
+  ];
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/f7f51e6b-f23b-4aee-9498-6430dff7401e";
     fsType = "btrfs";
