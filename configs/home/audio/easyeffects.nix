@@ -7,6 +7,11 @@ let
         device-profile = "Headphones";
         preset-name = "Flip Channels";
       };
+    "alsa_output.usb-SteelSeries_Arctis_Nova_7-00.analog-stereo" = {
+      device-description = "Wireless Headphones";
+      device-profile = "Analog Output";
+      preset-name = "Arctis Nova 7";
+    };
     "alsa_output.usb-FIIO_FiiO_K11-01.analog-stereo" = {
       device-description = "Headphones";
       device-profile = "Analog Output";
@@ -24,7 +29,7 @@ in
     enable = true;
     settings = {
       StreamInputs = {
-        inputDevice = "alsa_input.usb-Samson_Technologies_Samson_Q2U_Microphone-00.analog-stereo";
+        useDefaultInputDevice = true;
         plugins = "rnnoise#0";
       };
       StreamOutputs.plugins = "equalizer#0";

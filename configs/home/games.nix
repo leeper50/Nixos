@@ -60,6 +60,7 @@ in
         pkgs.mumble
       ]
       ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+        pkgs.amethyst-mod-manager
         pkgs.r2modman
         pkgs.wowup-cf
       ]
@@ -128,6 +129,7 @@ in
         };
         vesktop = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           enable = true;
+          mutableSettings = true;
           settings = {
             arRPC = false;
             clickTrayToShowHide = true;
@@ -141,6 +143,7 @@ in
             settings = {
               autoUpdate = false;
               autoUpdateNotification = false;
+              mutableSettings = true;
               notifyAboutUpdates = false;
               plugins = {
                 AnonymiseFileNames.enabled = true;

@@ -36,6 +36,7 @@
     '';
   };
   local = {
+    packages.ollama.context_length = 32768;
     restic.backups.home = {
       exclude = [
         ".local/share/Steam"
@@ -85,6 +86,7 @@
   ]
   ++ lib.attrNames (lib.filterAttrs (_: user: user.enable) config.local.users);
   services = {
+    ollama.environmentVariables.OLLAMA_IGPU_ENABLE = "1";
     openssh.settings = {
       AllowUsers = [
         "root"
