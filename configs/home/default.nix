@@ -119,6 +119,7 @@
         };
       };
     };
+    zellij.enable = true;
   };
   targets.genericLinux.enable = pkgs.stdenv.hostPlatform.isLinux;
   xdg.configFile."lf/icons".source = ./lf-icons;

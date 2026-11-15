@@ -93,6 +93,7 @@ in
           '';
         };
         fzf.enableFishIntegration = true;
+        zellij.enableFishIntegration = true;
       };
     }
     (lib.mkIf config.programs.lf.enable {
@@ -327,6 +328,7 @@ in
         hm = "home-manager --flake $NH_FLAKE";
         rcat = "${pkgs.coreutils}/bin/cat";
         rls = "${pkgs.coreutils}/bin/ls";
+        z = "${pkgs.zellij}/bin/zellij";
       };
     }
     (lib.mkIf config.programs.bat.enable {
