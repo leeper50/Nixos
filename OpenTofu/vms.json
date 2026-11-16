@@ -9,14 +9,22 @@
     "vm_id": 1005
   },
   "nas": {
-    "cores": 4,
+    "cores": 10,
     "data_disk_size": 200,
     "datastore_id": "nvme_tower",
     "disk_size": 64,
-    "memory": 4096,
+    "extra_disks": {
+      "docker": 128
+    },
+    "memory": 20480,
     "node_name": "tower",
     "pci_mappings": [
-      "tower-sata"
+      "tower-sata",
+      "tower-igpu"
+    ],
+    "usb_mappings": [
+      "zigbee",
+      "zwave"
     ],
     "vm_id": 1004
   },
@@ -27,10 +35,6 @@
     "disk_size": 64,
     "memory": 8192,
     "node_name": "tower",
-    "usb_mappings": [
-      "zigbee",
-      "zwave"
-    ],
     "vm_id": 1001
   },
   "node-2": {
@@ -40,9 +44,6 @@
     "disk_size": 64,
     "memory": 6144,
     "node_name": "tower",
-    "pci_mappings": [
-      "tower-igpu"
-    ],
     "vm_id": 1002
   },
   "node-3": {

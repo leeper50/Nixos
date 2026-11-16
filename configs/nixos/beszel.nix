@@ -16,7 +16,7 @@ in
     agent = {
       enable = lib.mkEnableOption "beszel agent";
       hubHost = lib.mkOption {
-        default = "node-1.${globals.domains.tailnet}";
+        default = "nas.${globals.domains.tailnet}";
         type = lib.types.str;
       };
       intelGpu = lib.mkEnableOption "Intel GPU stats via nvtop";

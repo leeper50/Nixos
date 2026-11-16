@@ -89,6 +89,11 @@ in
           maxretry = 3;
         };
       };
+      # Ensure traefik access log exists
+      systemd.tmpfiles.rules = [
+        "d ${dirOf traefikAccessLog} 0755 root root -"
+        "f ${traefikAccessLog} 0644 root root -"
+      ];
       services.logrotate.settings.traefik = {
         files = traefikAccessLog;
         compress = true;

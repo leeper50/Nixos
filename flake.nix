@@ -111,18 +111,6 @@
         }
         // lib.optionalAttrs (proxmox != null) { inherit proxmox; };
 
-      mkSwarmHost =
-        name: proxmox:
-        mkHost {
-          modules = [
-            ./hosts/proxmox-vm
-            ./hosts/proxmox-vm/swarm.nix
-            ./hosts/proxmox-vm/${name}
-          ];
-          profile = "cli";
-          inherit proxmox;
-        };
-
       hosts = {
         action-runner = mkHost {
           modules = [
@@ -157,46 +145,21 @@
           proxmox = {
             node_name = "tower";
             vm_id = 1004;
-            cores = 4;
-            memory = 4096;
+            cores = 10;
+            memory = 20480;
             datastore_id = "nvme_tower";
             disk_size = 64;
             data_disk_size = 200;
-            pci_mappings = [ "tower-sata" ];
+            extra_disks.docker = 128;
+            pci_mappings = [
+              "tower-sata"
+              "tower-igpu"
+            ];
+            usb_mappings = [
+              "zigbee"
+              "zwave"
+            ];
           };
-        };
-
-        "node-1" = mkSwarmHost "node-1" {
-          node_name = "tower";
-          vm_id = 1001;
-          cores = 6;
-          memory = 8192;
-          datastore_id = "nvme_tower";
-          disk_size = 64;
-          data_disk_size = 64;
-          usb_mappings = [
-            "zigbee"
-            "zwave"
-          ];
-        };
-        "node-2" = mkSwarmHost "node-2" {
-          node_name = "tower";
-          vm_id = 1002;
-          cores = 4;
-          memory = 6144;
-          datastore_id = "nvme_tower";
-          disk_size = 64;
-          data_disk_size = 64;
-          pci_mappings = [ "tower-igpu" ];
-        };
-        "node-3" = mkSwarmHost "node-3" {
-          node_name = "tower";
-          vm_id = 1003;
-          cores = 4;
-          memory = 4096;
-          datastore_id = "nvme_tower";
-          disk_size = 32;
-          data_disk_size = 32;
         };
 
         racknerd = mkHost {

@@ -25,10 +25,9 @@ let
   publicDomain = "status.${globals.domains.primary}";
   tailnetDomain = "status.${globals.domains.deviceTailnet}";
   dnsTest = "dnstest.dellhplaptop.xyz";
-  # node-3's own Caddy, skipping the VIP and LAN DNS.
   gotify = {
-    host = "g.node-3.${globals.domains.primary}";
-    ip = net.hosts.node-3.ipv4;
+    host = "g.nas.${globals.domains.primary}";
+    ip = net.hosts.nas.ipv4;
   };
 
   dig = server: name: ''
@@ -51,16 +50,7 @@ let
     vip-ipv6 = dig (lib.elemAt net.nameservers.local 1) dnsTest;
     gotify = "${curl} -o /dev/null --resolve ${gotify.host}:443:${gotify.ip} https://${gotify.host}/health";
     gotify-via-vip = "${curl} -o /dev/null https://g.dellhplaptop.xyz/health";
-  }
-  # Each keepalived member's resolver, to catch lost redundancy early.
-  // lib.listToAttrs (
-    map (node: lib.nameValuePair "dns-${node}" (dig net.hosts.${node}.ipv4 dnsTest)) [
-      "node-1"
-      "node-2"
-      "node-3"
-      "nas"
-    ]
-  );
+  };
 
   # Server side.
   reporters = lib.attrNames (

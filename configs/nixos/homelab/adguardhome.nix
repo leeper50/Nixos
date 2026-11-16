@@ -157,7 +157,7 @@ in
       };
     })
     # Serve webui over docker reverse proxy.
-    (lib.mkIf (config.local.adguardhome.enable && !config.services.caddy.enable) {
+    (lib.mkIf (config.local.adguardhome.enable && config.virtualisation.docker.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "adguardhome webui";
         sources = [

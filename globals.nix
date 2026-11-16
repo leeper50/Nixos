@@ -171,11 +171,7 @@ in
         ipv6 = "fd7a:115c:a1e0::2";
       };
     };
-    swarmNodes = [
-      "node-1"
-      "node-2"
-      "node-3"
-    ];
+    swarmNodes = [ "nas" ];
     swarmAddresses = lib.concatMap (
       node:
       lib.filter (a: a != null) [

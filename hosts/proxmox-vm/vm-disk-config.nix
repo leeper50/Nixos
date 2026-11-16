@@ -1,6 +1,7 @@
 {
   dataMountpoint ? "/data",
   dataFormat ? "btrfs",
+  extraDisks ? { },
 }:
 { config, lib, ... }:
 {
@@ -98,6 +99,22 @@
           };
         };
       };
-    };
+    }
+    // lib.mapAttrs (name: disk: {
+      type = "disk";
+      device = "/dev/disk/by-id/virtio-${config.networking.hostName}-${name}";
+      content = {
+        type = "gpt";
+        partitions.data = {
+          content = {
+            type = "filesystem";
+            format = disk.format or "xfs";
+            inherit (disk) mountpoint;
+            mountOptions = [ "noatime" ];
+          };
+          size = "100%";
+        };
+      };
+    }) extraDisks;
   };
 }

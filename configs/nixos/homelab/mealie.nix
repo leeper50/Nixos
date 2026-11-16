@@ -1,12 +1,13 @@
 {
   config,
+  globals,
   lib,
   localLib,
   secrets,
   ...
 }:
 let
-  port = 9000;
+  port = 9010;
 in
 {
   options.local.mealie = {
@@ -23,7 +24,7 @@ in
         settings = {
           "BASE_URL" = "https://m.dellhplaptop.xyz";
           "DB_ENGINE" = "postgres";
-          "POSTGRES_SERVER" = "nas.local";
+          "POSTGRES_SERVER" = globals.networking.hosts.nas.ipv4;
           "TZ" = "America/Chicago";
         };
       };

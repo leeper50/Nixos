@@ -86,19 +86,9 @@ in
         };
         secrets.pass = secretsAttrs."user_walter_clear.age".path;
       };
-      Node1 = {
+      NasSftp = {
         config = sftpSettings // {
-          host = "node-1.${globals.domains.primary}";
-        };
-      };
-      Node2 = {
-        config = sftpSettings // {
-          host = "node-2.${globals.domains.primary}";
-        };
-      };
-      Node3 = {
-        config = sftpSettings // {
-          host = "node-3.${globals.domains.primary}";
+          host = "nas.${globals.domains.primary}";
         };
       };
       RustFS = {

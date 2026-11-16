@@ -46,6 +46,7 @@ locals {
     memory         = 2048
     disk_size      = 40
     data_disk_size = 100
+    extra_disks    = {}
     cpu_type       = "host"
     pci_mappings   = []
     usb_mappings   = []
@@ -129,6 +130,19 @@ resource "proxmox_virtual_environment_vm" "nixos_vm" {
     }
   }
 
+  # Extra disks (name => size), serial <host>-<name>, on virtio2 onwards.
+  dynamic "disk" {
+    for_each = { for i, name in sort(keys(each.value.extra_disks)) : name => i }
+    content {
+      datastore_id = each.value.data_datastore_id
+      interface    = "virtio${disk.value + 2}"
+      serial       = "${each.key}-${disk.key}"
+      iothread     = true
+      discard      = "on"
+      size         = each.value.extra_disks[disk.key]
+    }
+  }
+
   dynamic "hostpci" {
     for_each = each.value.pci_mappings
     content {
@@ -169,7 +183,7 @@ resource "proxmox_download_file" "nixos_installer_iso" {
 resource "proxmox_hardware_mapping_pci" "pci" {
   for_each = {
     tower-igpu = {
-      comment      = "tower Intel UHD 730 (node-2 / Jellyfin)"
+      comment      = "tower Intel UHD 730 (nas / Jellyfin)"
       node         = "tower"
       id           = "8086:4692"
       path         = "0000:00:02.0"

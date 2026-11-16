@@ -6,7 +6,7 @@
   ...
 }:
 let
-  port = 8080;
+  port = 8081;
   version = "sha-60c8fcd";
 in
 {
@@ -20,7 +20,7 @@ in
         containers.redlib = {
           image = "ghcr.io/nachtalb/redlib:${version}";
           environment = {
-            ALL_PROXY = "socks5h://${globals.networking.hosts.node-1.ipv4}:1080";
+            ALL_PROXY = "socks5h://${globals.networking.hosts.nas.ipv4}:1080";
             REDLIB_DEFAULT_LAYOUT = "compact";
             REDLIB_DEFAULT_SHOW_NSFW = "on";
             REDLIB_DEFAULT_SUBSCRIPTIONS = lib.concatStringsSep "+" [
@@ -39,7 +39,7 @@ in
             REDLIB_ROBOTS_DISABLE_INDEXING = "on";
             SFW_ONLY = "off";
           };
-          extraOptions = [ "--network=host" ];
+          ports = [ "127.0.0.1:${toString port}:8080" ];
         };
       };
     })

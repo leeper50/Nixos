@@ -13,8 +13,17 @@ let
   forgejoDomain = "fj.dellhplaptop.xyz";
   ports = {
     http = 3002;
+    # Traefik 2222 -> Forgejo 2223
     ssh = 2222;
+    sshListen = 2223;
   };
+  proxySources =
+    globals.networking.swarmAddresses
+    ++ (with globals.networking.docker; [
+      ipv4Subnet
+      ipv6Subnet
+      fixedv6Subnet
+    ]);
 in
 {
   options.local.forgejo = {
@@ -62,15 +71,16 @@ in
       networking.firewall = lib.mkMerge [
         (localLib.mkFirewallRules {
           service = "forgejo-ssh";
-          sources = globals.networking.swarmAddresses;
-          tcpPorts = [ ports.ssh ];
+          sources = proxySources;
+          tcpPorts = [ ports.sshListen ];
         })
         (localLib.mkFirewallRules {
           service = "forgejo-web";
           sources = [
             "0.0.0.0"
             "::/0"
-          ];
+          ]
+          ++ proxySources;
           tcpPorts = [ ports.http ];
         })
       ];
@@ -117,7 +127,7 @@ in
           security = {
             PASSWORD_HASH_ALGO = "pbkdf2_hi";
             REVERSE_PROXY_LIMIT = 1;
-            REVERSE_PROXY_TRUSTED_PROXIES = lib.concatStringsSep "," globals.networking.swarmAddresses;
+            REVERSE_PROXY_TRUSTED_PROXIES = lib.concatStringsSep "," proxySources;
           };
           server = {
             BUILTIN_SSH_SERVER_USER = "git";
@@ -127,7 +137,7 @@ in
             OFFLINE_MODE = true;
             ROOT_URL = "https://${forgejoDomain}/";
             SSH_DOMAIN = forgejoDomain;
-            SSH_LISTEN_PORT = ports.ssh;
+            SSH_LISTEN_PORT = ports.sshListen;
             SSH_PORT = ports.ssh;
             SSH_SERVER_USE_PROXY_PROTOCOL = true;
             START_SSH_SERVER = true;

@@ -280,7 +280,7 @@ in
               set -a args -o "%(title)s.%(ext)s"
           end
           if set -q _flag_p
-              set -a args --proxy socks5h://node-1.${globals.domains.tailnet}:1080
+              set -a args --proxy socks5h://nas.${globals.domains.tailnet}:1080
           end
           if test -z "$argv[1]"; and not set -q _flag_f
               echo "Missing URL"

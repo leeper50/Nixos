@@ -7,7 +7,7 @@
   ...
 }:
 let
-  ports.atticd = 8090;
+  ports.atticd = 8091;
 in
 {
   options.local.attic = {

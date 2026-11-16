@@ -22,10 +22,6 @@ let
         }
       )
       {
-        "nas" = {
-          priority = 70;
-          state = "BACKUP";
-        };
         "node-1" = {
           priority = 100;
           state = "MASTER";

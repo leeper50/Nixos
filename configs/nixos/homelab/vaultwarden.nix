@@ -57,7 +57,8 @@ in
         };
       };
     })
-    (lib.mkIf (config.local.vaultwarden.enable && !config.services.caddy.enable) {
+    # Serve over docker reverse proxy.
+    (lib.mkIf (config.local.vaultwarden.enable && config.virtualisation.docker.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "vaultwarden";
         sources = with globals.networking.docker; [

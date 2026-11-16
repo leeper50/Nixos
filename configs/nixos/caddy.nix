@@ -13,6 +13,11 @@ let
   ];
   localIps =
     globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets;
+  cfg = config.local.caddy;
+  traefikIps = with globals.networking.hosts.nas; [
+    ipv4
+    ipv6
+  ];
 in
 {
   options.local.caddy = {
@@ -21,6 +26,22 @@ in
       type = lib.types.str;
     };
     enable = lib.mkEnableOption "caddy";
+    traefikPassthrough = {
+      enable = lib.mkEnableOption ''
+        Serving Caddy behind Traefik on the same host. Traefik owns 80/443 and
+        passes this host's domains through over TCP with the PROXY protocol, so
+        Caddy still sees the client's address. Caddy listens on these ports,
+        reachable only from the Docker subnets
+      '';
+      httpPort = lib.mkOption {
+        default = 8080;
+        type = lib.types.port;
+      };
+      httpsPort = lib.mkOption {
+        default = 8443;
+        type = lib.types.port;
+      };
+    };
     provider = lib.mkOption {
       default = "cloudflare";
       type = lib.types.enum [
@@ -51,24 +72,41 @@ in
         };
         fail2ban.jails.caddy.enable = true;
       };
-      networking.firewall = localLib.mkFirewallRules {
-        service = "caddy";
-        sources =
-          if config.local.local then
-            globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets
-          else
-            [
-              "0.0.0.0/0"
-              "::/0"
+      assertions = [
+        {
+          assertion = !cfg.traefikPassthrough.enable || config.virtualisation.docker.enable;
+          message = "local.caddy.traefikPassthrough needs Traefik, which runs in Docker.";
+        }
+      ];
+      networking.firewall =
+        if cfg.traefikPassthrough.enable then
+          localLib.mkFirewallRules {
+            service = "caddy";
+            sources = dockerSubnets;
+            tcpPorts = with cfg.traefikPassthrough; [
+              httpPort
+              httpsPort
             ];
-        tcpPorts = [
-          80
-          443
-        ];
-        udpPorts = [
-          443
-        ];
-      };
+          }
+        else
+          localLib.mkFirewallRules {
+            service = "caddy";
+            sources =
+              if config.local.local then
+                globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets
+              else
+                [
+                  "0.0.0.0/0"
+                  "::/0"
+                ];
+            tcpPorts = [
+              80
+              443
+            ];
+            udpPorts = [
+              443
+            ];
+          };
       services = {
         caddy = {
           email = globals.primaryEmail;
@@ -103,16 +141,26 @@ in
               }
             }
           '';
-          globalConfig = lib.optionalString config.local.local ''
-            servers {
-              trusted_proxies static ${
-                lib.strings.join " " [
-                  globals.networking.hosts.node-1.ipv4
-                  globals.networking.hosts.node-1.ipv6
-                ]
+          globalConfig =
+            lib.optionalString cfg.traefikPassthrough.enable ''
+              http_port ${toString cfg.traefikPassthrough.httpPort}
+              https_port ${toString cfg.traefikPassthrough.httpsPort}
+            ''
+            + lib.optionalString (config.local.local || cfg.traefikPassthrough.enable) ''
+              servers {
+                ${lib.optionalString config.local.local "trusted_proxies static ${
+                  lib.strings.join " " (traefikIps ++ lib.optionals cfg.traefikPassthrough.enable dockerSubnets)
+                }"}
+                ${lib.optionalString cfg.traefikPassthrough.enable ''
+                  listener_wrappers {
+                    proxy_protocol {
+                      allow ${lib.strings.join " " dockerSubnets}
+                    }
+                    tls
+                  }
+                ''}
               }
-            }
-          '';
+            '';
           virtualHosts = lib.mkMerge [
             {
               "*.${config.local.caddy.domain}" = {
