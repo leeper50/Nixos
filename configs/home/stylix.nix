@@ -30,6 +30,7 @@ in
         stylix = {
           base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
           enable = true;
+          polarity = "dark";
           fonts = {
             emoji = {
               name = "Noto Color Emoji";
