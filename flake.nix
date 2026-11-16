@@ -52,7 +52,6 @@
     let
       inherit (inputs)
         darwin
-        home-manager
         nixpkgs
         nur
         ;
@@ -182,6 +181,13 @@
           ];
           profile = "cli";
         };
+
+        workstation = mkHost {
+          modules = [
+            ./hosts/workstation
+          ];
+          profile = "gui";
+        };
       };
     in
     {
@@ -196,20 +202,6 @@
           };
           modules = [
             ./hosts/macbook
-          ];
-        };
-      };
-
-      homeConfigurations = {
-        "walter@workstation" = home-manager.lib.homeManagerConfiguration {
-          pkgs = mkPkgs "x86_64-linux";
-          extraSpecialArgs = inputs // {
-            globals = mkGlobals "workstation";
-            systemType = "Standalone";
-            hostName = "workstation";
-          };
-          modules = [
-            ./hosts/workstation
           ];
         };
       };

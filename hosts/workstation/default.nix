@@ -1,165 +1,75 @@
 {
-  agenix,
-  secrets,
-  stylix,
+  config,
+  globals,
+  lib,
   ...
 }:
 {
   imports = [
-    ../../configs/home/gui.nix
-    ../../configs/home/packages
-    ../../configs/home/restic.nix
-    ../../configs/home/stylix.nix
-    ../../configs/home/syncthing.nix
-    "${secrets}/default.nix"
-    agenix.homeManagerModules.default
-    stylix.homeModules.stylix
+    ../../configs/nixos
+    ../../configs/nixos/desktop.nix
+    ./disk-config.nix
+    ./hardware-configuration.nix
   ];
-  wayland.windowManager = {
-    hyprland.extraLuaFiles."monitors.lua" = {
-      autoLoad = true;
-      content = ''
-        hl.monitor({
-          bitdepth = 8,
-          mode = "2560x1440@120Hz",
-          output = "DP-1",
-          position = "auto-left",
-          scale = "1",
-          supports_hdr = -1,
-          vrr = 3
-        })
-        hl.monitor({
-          bitdepth = 8,
-          mode = "3840x2160@120Hz",
-          output = "DP-2",
-          position = "auto-right",
-          scale = "2",
-          supports_hdr = -1,
-          vrr = 3
-        })
-        hl.workspace_rule({monitor = "DP-1", workspace = "1"})
-        hl.workspace_rule({monitor = "DP-1", workspace = "3"})
-        hl.workspace_rule({monitor = "DP-2", workspace = "2"})
-        hl.workspace_rule({monitor = "DP-2", workspace = "4"})
-
-        hl.bind("SUPER + M", function()
-          hl.monitor({output = "DP-1", disabled = true})
-          hl.monitor({output = "DP-2", disabled = false})
-        end)
-        hl.bind("SUPER + SHIFT + M", function()
-          hl.monitor({output = "DP-1", disabled = false})
-          hl.monitor({output = "DP-2", disabled = false})
-        end)
-        hl.bind("SUPER + N", function()
-          hl.monitor({output = "DP-1", disabled = false})
-          hl.monitor({output = "DP-2", disabled = true})
-        end)
-        hl.bind("SUPER + SHIFT + N", function()
-          hl.monitor({output = "DP-1", disabled = false})
-          hl.monitor({output = "DP-2", disabled = false})
-        end)
-      '';
-    };
-    sway.config = {
-      output = {
-        DP-1 = {
-          adaptive_sync = "on";
-          mode = "2560x1440@120Hz";
-          position = "0 0";
-          render_bit_depth = "10";
-          scale = "1";
-        };
-        DP-2 = {
-          adaptive_sync = "on";
-          mode = "3840x2160@120Hz";
-          position = "2560 0";
-          render_bit_depth = "10";
-          scale = "1.5";
-        };
+  home-manager.users.walter.programs.plasma = {
+    kscreenlocker.lockOnResume = false;
+    powerdevil.AC = {
+      autoSuspend = {
+        action = lib.mkForce "sleep";
+        idleTimeout = 600;
       };
-      workspaceOutputAssign = [
-        {
-          output = "DP-1";
-          workspace = "1";
-        }
-        {
-          output = "DP-2";
-          workspace = "2";
-        }
-        {
-          output = "DP-1";
-          workspace = "3";
-        }
-        {
-          output = "DP-2";
-          workspace = "4";
-        }
-      ];
+      powerProfile = lib.mkForce "performance";
     };
   };
   local = {
-    browsers = {
-      chromium.enable = true;
-      firefox.enable = true;
-      librewolf.enable = true;
+    mounts.autoMount = true;
+    packages.ollama.context_length = 32768;
+    sunshine.enable = true;
+    users.walter.desktop = "plasma";
+  };
+  networking = {
+    defaultGateway6.interface = "enp4s0";
+    interfaces.enp4s0 = {
+      ipv4.addresses = [
+        {
+          address = globals.networking.hosts.${config.networking.hostName}.ipv4;
+          prefixLength = lib.toIntBase10 globals.networking.ipv4.subnetMask;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = globals.networking.hosts.${config.networking.hostName}.ipv6;
+          prefixLength = lib.toIntBase10 globals.networking.ipv6.subnetMask;
+        }
+      ];
+      # Wake-on-LAN by magic packet.
+      wakeOnLan.enable = true;
     };
-    games.emulators.enable = true;
-    packages = {
-      cream-linux.enable = true;
-      elegoo-slicer.enable = true;
-      ollama = {
-        context_length = 32768;
-        enable = true;
-      };
-      rimsort.enable = true;
-      surge.enable = true;
-      waifu2x.enable = true;
+    networkmanager = {
+      ensureProfiles.profiles.home.ipv6.token = "::31";
+      # Prevent NetworkManager from removing static ips.
+      unmanaged = [ "enp4s0" ];
     };
-    restic.backups = {
-      home = {
-        exclude = [
-          "*cache*"
-        ]
-        ++ map (s: "/home/walter/" + s) [
-          ".local/share/Steam"
-          ".local/share/Trash"
-          ".ollama"
-          ".steam"
-          "Games"
-          "Nas"
-          "Temp"
-        ];
-        paths = [
-          "/home/walter"
-        ];
-        targets = [
-          "nas"
-        ];
-      };
-      steam = {
-        exclude = [ ];
-        paths = map (s: "/home/walter/" + s) [
-          ".config/Limo.conf"
-          ".config/Limo"
-          ".config/unity3d/Ludeon Studios"
-          ".local/share/Aspyr/Sid Meier's Civilization 5/MODS"
-          ".local/share/Paradox Interactive"
-          ".local/share/Steam/steamapps/common/Europa Universalis IV/builtin_dlc"
-          ".local/share/Steam/steamapps/common/Europa Universalis IV/dlc_metadata"
-          ".local/share/Steam/steamapps/common/Europa Universalis IV/dlc"
-          ".local/share/Steam/steamapps/common/Rimworld/Mods"
-          ".local/share/Steam/steamapps/common/Stardew Valley"
-          ".local/share/Steam/steamapps/common/Victoria 3/game/dlc_metadata"
-          ".local/share/Steam/steamapps/common/Victoria 3/game/dlc"
-          ".local/share/Steam/steamapps/workshop/content/236850/1193125267"
-          ".local/share/Steam/steamapps/workshop/content/529340/2883019620"
-          ".paradoxlauncher"
-          "Games/Limo"
-        ];
-        targets = [
-          "nas"
-        ];
-      };
+  };
+  # USB autosuspend drops controllers.
+  powerManagement.powertop.enable = false;
+  programs = {
+    gamemode.enable = true;
+    gamescope.enable = true;
+  };
+  services = {
+    sunshine.settings = {
+      adapter_name = "/dev/dri/renderD128";
+      encoder = "vaapi";
+      sunshine_name = "gamehost";
+    };
+  };
+  system.stateVersion = "26.11";
+  systemd = {
+    # No resume device is set up for the btrfs swapfile.
+    targets = {
+      hibernate.enable = false;
+      hybrid-sleep.enable = false;
     };
   };
 }

@@ -12,6 +12,7 @@
     ../home/packages
     ./nix-ld.nix
     ./power.nix
+    ./sunshine.nix
     ./syncthing.nix
     ./u2f.nix
     disko.nixosModules.disko

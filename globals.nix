@@ -88,6 +88,10 @@ in
         ipv4 = "65.75.202.6";
         ipv6 = "2606:cc0:11:2351::1";
       };
+      workstation = {
+        ipv4 = "10.0.0.31";
+        ipv6 = "${ipv6.prefix}::31";
+      };
     };
     ipv4 = rec {
       gateway = "10.0.0.1";
@@ -145,6 +149,10 @@ in
       servercheap = {
         ipv4 = "100.64.0.2";
         ipv6 = "fd7a:115c:a1e0::2";
+      };
+      workstation = {
+        ipv4 = "100.64.0.14";
+        ipv6 = "fd7a:115c:a1e0::e";
       };
     };
     swarmNodes = [ "nas" ];

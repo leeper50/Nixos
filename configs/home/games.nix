@@ -57,6 +57,7 @@ in
     })
     (forWalter {
       home.packages = [
+        pkgs.moonlight-qt
         pkgs.mumble
       ]
       ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
