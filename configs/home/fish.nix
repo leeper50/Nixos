@@ -93,7 +93,6 @@ in
           '';
         };
         fzf.enableFishIntegration = true;
-        zellij.enableFishIntegration = true;
       };
     }
     (lib.mkIf config.programs.lf.enable {

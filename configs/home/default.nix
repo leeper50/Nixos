@@ -119,8 +119,17 @@
         };
       };
     };
-    zellij.enable = true;
+    zellij = {
+      enable = true;
+      settings = {
+        show_startup_tips = false;
+        # stylix names its zellij theme "default"
+        theme = "default";
+      };
+    };
   };
   targets.genericLinux.enable = pkgs.stdenv.hostPlatform.isLinux;
   xdg.configFile."lf/icons".source = ./lf-icons;
+  # zellij writes its own config.kdl on first run; let Home Manager replace it
+  xdg.configFile."zellij/config.kdl".force = true;
 }
