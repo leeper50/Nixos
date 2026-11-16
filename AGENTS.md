@@ -11,7 +11,7 @@ for the folder layout and the Proxmox VM workflow.
   pre-commit hook. Run `just --list` for the shortcuts; the scripts they call
   live in `scripts/`.
 - Check: `just test [host ...]` builds every NixOS host and pushes it to the
-  attic cache when logged in, and dry-runs the Home Manager and darwin hosts
+  attic cache when logged in, and dry-runs the darwin host
   (or only the ones named); it prints nothing on success. CI
   (`.forgejo/workflows/check.yml`) runs it plus
   `.#checks.x86_64-linux.pre-commit` on pull requests and on pushes to `main`.
@@ -62,8 +62,6 @@ for the folder layout and the Proxmox VM workflow.
   `secrets` with the other inputs. To land it sooner, run
   `nix flake update secrets` here (in its own commit). Never print or commit
   decrypted secrets.
-- **Swarm VMs** (`node-1..3`) are built by `mkSwarmHost` in `flake.nix`, which
-  also holds each VM's Proxmox shape for OpenTofu.
 - **Branches:** work on a short-lived branch off `main` named after the
   change (`attic-substituter`, `flake-bump`) and open a pull request into
   `main`. CI must pass and the branch must be up to date with `main` before it
@@ -71,7 +69,7 @@ for the folder layout and the Proxmox VM workflow.
   merge instead of building.
 - **Commits:** `<scope>: <change>`, lowercase and imperative, where scope is
   the module or host touched (`redlib: switch to luciferscircle fork`,
-  `node-3: enable redlib`, `flake: bump nixpkgs`).
+  `nas: enable redlib`, `flake: bump nixpkgs`).
   - Add a body only when the diff doesn't explain why: workarounds, pins,
     non-obvious choices.
   - One logical change per commit, since pull requests are rebased onto

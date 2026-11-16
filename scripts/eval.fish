@@ -4,13 +4,12 @@
 # which drops the dev shell's tools.
 
 # Build every NixOS host and push it to the attic cache, and dry-run build the
-# Home Manager and nix-darwin configurations, or only the hosts named as
-# arguments. Pushing is skipped when the attic client isn't logged in to a
+# nix-darwin configurations, or only the hosts named as arguments. Pushing is skipped when the attic client isn't logged in to a
 # server that has the cache.
 #
 #   just test                 # all hosts
-#   just test node-1          # just node-1
-#   just test node-1 nas      # just node-1 and nas
+#   just test nas             # just nas
+#   just test nas workstation # just nas and workstation
 
 cd (status dirname)/..
 
@@ -50,10 +49,6 @@ function queue_configs
             switch $label
                 case nixos
                     nh os build . -H $h --no-nom -d never -o $tmpdir/$id.result
-                case home
-                    # nh home also hands extra args to the `nix eval` it uses
-                    # to find the configuration, which rejects --dry-run.
-                    nix build --dry-run .#homeConfigurations.$h.activationPackage
                 case darwin
                     # nh's own --dry is ignored by `build`, so nix's is passed.
                     nh darwin build . -H $h --no-nom -d never -- --dry-run
@@ -80,9 +75,8 @@ end
 set -g requested_hosts $argv
 
 set -l nixos_hosts (list_attrs nixosConfigurations)
-set -l home_hosts (list_attrs homeConfigurations)
 set -l darwin_hosts (list_attrs darwinConfigurations)
-set -l known_hosts $nixos_hosts $home_hosts $darwin_hosts
+set -l known_hosts $nixos_hosts $darwin_hosts
 if test (count $known_hosts) -eq 0
     echo "error: found no host configurations to build" >&2
     exit 1
@@ -110,7 +104,6 @@ end
 set -l tmpdir (mktemp -d)
 
 set -l jobs (queue_configs nixos $tmpdir (filter_hosts $nixos_hosts))
-set -a jobs (queue_configs home $tmpdir (filter_hosts $home_hosts))
 set -a jobs (queue_configs darwin $tmpdir (filter_hosts $darwin_hosts))
 
 wait

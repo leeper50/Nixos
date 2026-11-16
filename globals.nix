@@ -76,18 +76,6 @@ in
         ipv4 = "10.0.0.52";
         ipv6 = "${ipv6.prefix}::52";
       };
-      node-1 = {
-        ipv4 = "10.0.0.21";
-        ipv6 = "${ipv6.prefix}::21";
-      };
-      node-2 = {
-        ipv4 = "10.0.0.22";
-        ipv6 = "${ipv6.prefix}::22";
-      };
-      node-3 = {
-        ipv4 = "10.0.0.23";
-        ipv6 = "${ipv6.prefix}::23";
-      };
       racknerd = {
         ipv4 = "107.174.237.4";
         ipv6 = null;
@@ -145,18 +133,6 @@ in
       nas = {
         ipv4 = "100.64.0.8";
         ipv6 = "fd7a:115c:a1e0::8";
-      };
-      node-1 = {
-        ipv4 = "100.64.0.5";
-        ipv6 = "fd7a:115c:a1e0::5";
-      };
-      node-2 = {
-        ipv4 = "100.64.0.6";
-        ipv6 = "fd7a:115c:a1e0::6";
-      };
-      node-3 = {
-        ipv4 = "100.64.0.7";
-        ipv6 = "fd7a:115c:a1e0::7";
       };
       racknerd = {
         ipv4 = "100.64.0.3";
