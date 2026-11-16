@@ -14,7 +14,6 @@ let
       "laptop"
       "macbook"
       "ser8"
-      "workstation"
     ];
     mobiles = [
       "moto-g"
@@ -140,6 +139,11 @@ let
 in
 {
   options.local.syncthing = {
+    enable = lib.mkOption {
+      default = true;
+      description = "Whether to run Syncthing and join the shared folders.";
+      type = lib.types.bool;
+    };
     folder_type = lib.mkOption {
       default = "sendreceive";
       type = lib.types.str;
@@ -149,92 +153,93 @@ in
       type = lib.types.str;
     };
   };
-  config = lib.mkMerge [
-    {
-      assertions = [
-        {
-          assertion = globals.hostName != null && lib.elem globals.hostName devices.all;
-          message = "local.syncthing: host '${toString globals.hostName}' is not a known syncthing device";
+  config = lib.mkIf config.local.syncthing.enable (
+    lib.mkMerge [
+      {
+        assertions = [
+          {
+            assertion = globals.hostName != null && lib.elem globals.hostName devices.all;
+            message = "local.syncthing: host '${toString globals.hostName}' is not a known syncthing device";
+          }
+        ];
+        age.secrets."user_walter_clear.age" = {
+          file = "${secrets}/user_walter_clear.age";
         }
-      ];
-      age.secrets."user_walter_clear.age" = {
-        file = "${secrets}/user_walter_clear.age";
-      }
-      // lib.optionalAttrs (systemType == "Nixos") {
-        group = "walter";
-        owner = "walter";
-      };
-      services.syncthing = {
-        enable = true;
-        guiAddress = "0.0.0.0:8384";
-        settings = {
-          devices = {
-            "laptop".id = "OO2HOLH-QXRS2H2-TMIJOF6-IJX7DHR-CX44KSR-AVQBAG5-5SRE73T-QGHATQQ";
-            "macbook".id = "MGESDGN-2WDZUXZ-2KVQYEH-X6P7F7C-5HQGBNZ-7LYP4AC-SSSCA5I-JCOTLAX";
-            "moto-g".id = "5NSRNJQ-XGLQYCX-M3ZKVYC-KDP3MMU-JJQWBBC-CSKWW6Y-FEUAHDW-YSZFQAA";
-            "nas".id = "PGRFMYY-55TDV4M-5PZK35F-OOYCALV-JM5MBXK-CQZ4JEX-2VZLFBW-AFLJPAN";
-            "phone".id = "LBLFNCY-MRGPFRW-XOIMRGV-T4Q57PM-CEA3YTC-P5YIPGG-3BBOH45-XLADQAL";
-            "ser8".id = "C4SX6CY-XCTV4RT-QYKDWN3-72ERWJ4-2BXI5VW-YDABL22-PYWQSAC-YSF7YQI";
-            "tablet".id = "PBXQVP4-BPXY3EV-U45PSLY-ZTYAEKP-L4VJKS5-SJ2B6EE-5DZOUKV-PZKFJQZ";
-            "workstation".id = "HMZTYV2-S3KY47A-SV67FII-75SN5JX-PGNLXYQ-JVKBLXB-3FKNC4J-PPV5SAZ";
+        // lib.optionalAttrs (systemType == "Nixos") {
+          group = "walter";
+          owner = "walter";
+        };
+        services.syncthing = {
+          enable = true;
+          guiAddress = "0.0.0.0:8384";
+          settings = {
+            devices = {
+              "laptop".id = "OO2HOLH-QXRS2H2-TMIJOF6-IJX7DHR-CX44KSR-AVQBAG5-5SRE73T-QGHATQQ";
+              "macbook".id = "MGESDGN-2WDZUXZ-2KVQYEH-X6P7F7C-5HQGBNZ-7LYP4AC-SSSCA5I-JCOTLAX";
+              "moto-g".id = "5NSRNJQ-XGLQYCX-M3ZKVYC-KDP3MMU-JJQWBBC-CSKWW6Y-FEUAHDW-YSZFQAA";
+              "nas".id = "PGRFMYY-55TDV4M-5PZK35F-OOYCALV-JM5MBXK-CQZ4JEX-2VZLFBW-AFLJPAN";
+              "phone".id = "LBLFNCY-MRGPFRW-XOIMRGV-T4Q57PM-CEA3YTC-P5YIPGG-3BBOH45-XLADQAL";
+              "ser8".id = "C4SX6CY-XCTV4RT-QYKDWN3-72ERWJ4-2BXI5VW-YDABL22-PYWQSAC-YSF7YQI";
+              "tablet".id = "PBXQVP4-BPXY3EV-U45PSLY-ZTYAEKP-L4VJKS5-SJ2B6EE-5DZOUKV-PZKFJQZ";
+            };
+            folders = lib.mapAttrs (_: folder: {
+              inherit (folder)
+                devices
+                id
+                path
+                type
+                ;
+            }) enabledFolders;
           };
-          folders = lib.mapAttrs (_: folder: {
-            inherit (folder)
-              devices
-              id
-              path
-              type
-              ;
-          }) enabledFolders;
         };
-      };
-    }
-    (lib.optionalAttrs (systemType == "Nixos") {
-      services.syncthing = {
-        guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
-        settings.gui.user = "walter";
-      };
-      systemd.services.build-stignore = {
-        description = "Populate .stignore files for all shares.";
-        before = [ "syncthing.service" ];
-        wantedBy = [ "syncthing.service" ];
-        serviceConfig = {
-          ExecStart = lib.getExe buildStignore;
-          Group = config.services.syncthing.group;
-          RemainAfterExit = true;
-          Type = "oneshot";
-          User = config.services.syncthing.user;
+      }
+      (lib.optionalAttrs (systemType == "Nixos") {
+        services.syncthing = {
+          guiPasswordFile = config.age.secrets."user_walter_clear.age".path;
+          settings.gui.user = "walter";
         };
-      };
-    })
-    (lib.optionalAttrs (systemType == "Standalone") {
-      systemd.user.services.build-stignore = {
-        Unit = {
-          Description = "Populate .stignore files for all shares.";
-          Before = [ "syncthing.service" ];
+        systemd.services.build-stignore = {
+          description = "Populate .stignore files for all shares.";
+          before = [ "syncthing.service" ];
+          wantedBy = [ "syncthing.service" ];
+          serviceConfig = {
+            ExecStart = lib.getExe buildStignore;
+            Group = config.services.syncthing.group;
+            RemainAfterExit = true;
+            Type = "oneshot";
+            User = config.services.syncthing.user;
+          };
         };
-        Service = {
-          ExecStart = lib.getExe buildStignore;
-          RemainAfterExit = true;
-          Type = "oneshot";
+      })
+      (lib.optionalAttrs (systemType == "Standalone") {
+        systemd.user.services.build-stignore = {
+          Unit = {
+            Description = "Populate .stignore files for all shares.";
+            Before = [ "syncthing.service" ];
+          };
+          Service = {
+            ExecStart = lib.getExe buildStignore;
+            RemainAfterExit = true;
+            Type = "oneshot";
+          };
+          Install.WantedBy = [ "default.target" ];
         };
-        Install.WantedBy = [ "default.target" ];
-      };
-    })
-    (lib.optionalAttrs (systemType == "NixDarwin") {
-      launchd.agents.build-stignore = {
-        enable = true;
-        config = {
-          ProgramArguments = [ (lib.getExe buildStignore) ];
-          RunAtLoad = true;
+      })
+      (lib.optionalAttrs (systemType == "NixDarwin") {
+        launchd.agents.build-stignore = {
+          enable = true;
+          config = {
+            ProgramArguments = [ (lib.getExe buildStignore) ];
+            RunAtLoad = true;
+          };
         };
-      };
-    })
-    (lib.optionalAttrs (systemType != "Nixos") {
-      services.syncthing.guiCredentials = {
-        passwordFile = config.age.secrets."user_walter_clear.age".path;
-        username = "walter";
-      };
-    })
-  ];
+      })
+      (lib.optionalAttrs (systemType != "Nixos") {
+        services.syncthing.guiCredentials = {
+          passwordFile = config.age.secrets."user_walter_clear.age".path;
+          username = "walter";
+        };
+      })
+    ]
+  );
 }

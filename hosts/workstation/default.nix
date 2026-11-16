@@ -25,6 +25,7 @@
     mounts.autoMount = true;
     packages.ollama.context_length = 32768;
     sunshine.enable = true;
+    syncthing.enable = false;
     users.walter.desktop = "plasma";
   };
   networking = {
