@@ -15,7 +15,7 @@
       age.secrets."restic_rustfs_env.age".file = "${secrets}/restic_rustfs_env.age";
       networking.firewall = localLib.mkFirewallRules {
         service = "rustfs";
-        sources = globals.networking.lan;
+        sources = globals.networking.lan.subnets;
         tcpPorts = [
           9000
           9001

@@ -20,7 +20,7 @@ in
         containers.redlib = {
           image = "ghcr.io/nachtalb/redlib:${version}";
           environment = {
-            ALL_PROXY = "socks5h://${globals.networking.hosts.nas.ipv4}:1080";
+            ALL_PROXY = "socks5h://${globals.networking.lan.hosts.nas.ipv4}:1080";
             REDLIB_DEFAULT_LAYOUT = "compact";
             REDLIB_DEFAULT_SHOW_NSFW = "on";
             REDLIB_DEFAULT_SUBSCRIPTIONS = lib.concatStringsSep "+" [

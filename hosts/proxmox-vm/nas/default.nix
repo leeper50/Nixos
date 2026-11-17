@@ -7,7 +7,7 @@
   ...
 }:
 let
-  hostIPv4 = globals.networking.hosts.nas.ipv4;
+  hostIPv4 = globals.networking.lan.hosts.nas.ipv4;
 in
 {
   imports = [
@@ -136,14 +136,14 @@ in
     interfaces.ens18 = {
       ipv4.addresses = lib.mkAfter [
         {
-          address = lib.head globals.networking.nameservers.local;
+          address = lib.head globals.networking.lan.dns;
           prefixLength = 8;
         }
       ];
       ipv6.addresses = lib.mkAfter [
         {
-          address = lib.elemAt globals.networking.nameservers.local 1;
-          prefixLength = lib.toIntBase10 globals.networking.ipv6.subnetMask;
+          address = lib.elemAt globals.networking.lan.dns 1;
+          prefixLength = lib.toIntBase10 globals.networking.lan.ipv6.subnetMask;
         }
       ];
     };

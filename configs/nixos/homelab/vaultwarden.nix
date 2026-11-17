@@ -46,7 +46,7 @@ in
           extraConfig = ''
             @remote_admin {
               path /admin /admin/*
-              not client_ip ${lib.strings.join " " globals.networking.lan}
+              not client_ip ${lib.strings.join " " globals.networking.lan.subnets}
             }
             abort @remote_admin
             reverse_proxy 127.0.0.1:${toString port} {
@@ -61,11 +61,7 @@ in
     (lib.mkIf (config.local.vaultwarden.enable && config.virtualisation.docker.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "vaultwarden";
-        sources = with globals.networking.docker; [
-          ipv4Subnet
-          ipv6Subnet
-          fixedv6Subnet
-        ];
+        sources = globals.networking.docker.subnets;
         tcpPorts = [ port ];
       };
       services.vaultwarden.config.ROCKET_ADDRESS = "::";

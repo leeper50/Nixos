@@ -50,7 +50,7 @@ let
     "network.proxy.autoconfig_url" = "https://c.dellhplaptop.xyz/public/proxy.pac";
     "network.proxy.type" = 2;
     "network.proxy.no_proxies_on" = lib.strings.join "," (
-      globals.networking.lan
+      globals.networking.lan.subnets
       ++ [
         "buncha.men"
         "dellhplaptop.xyz"

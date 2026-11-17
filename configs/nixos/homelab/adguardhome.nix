@@ -33,11 +33,7 @@ let
     dns = 53;
     webui = 3000;
   };
-  dnsSources = globals.networking.lan ++ [
-    globals.networking.docker.fixedv6Subnet
-    globals.networking.docker.ipv4Subnet
-    globals.networking.docker.ipv6Subnet
-  ];
+  dnsSources = globals.networking.lan.subnets ++ globals.networking.docker.subnets;
   rewrites = lib.concatLists (
     lib.mapAttrsToList (
       domain: answers:
@@ -52,7 +48,7 @@ let
           enabled = true;
         }
       ]) answers
-    ) globals.networking.dns
+    ) globals.networking.lan.dns_records
   );
   defaultClientSettings = {
     filtering_enabled = true;
@@ -160,11 +156,7 @@ in
     (lib.mkIf (config.local.adguardhome.enable && config.virtualisation.docker.enable) {
       networking.firewall = localLib.mkFirewallRules {
         service = "adguardhome webui";
-        sources = [
-          globals.networking.docker.fixedv6Subnet
-          globals.networking.docker.ipv4Subnet
-          globals.networking.docker.ipv6Subnet
-        ];
+        sources = globals.networking.docker.subnets;
         tcpPorts = [ ports.webui ];
       };
     })

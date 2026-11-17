@@ -34,14 +34,14 @@ in
     });
     networking.firewall = localLib.mkFirewallRules {
       service = "redis";
-      sources = globals.networking.swarmAddresses;
+      sources = globals.networking.lan.swarmAddresses;
       tcpPorts = lib.attrValues ports;
     };
     services.redis = {
       package = pkgs.valkey;
       servers = lib.mapAttrs (name: port: {
         enable = true;
-        bind = "127.0.0.1 ${globals.networking.hosts.${config.networking.hostName}.ipv4}";
+        bind = "127.0.0.1 ${globals.networking.lan.hosts.${config.networking.hostName}.ipv4}";
         inherit port;
         requirePassFile = config.age.secrets."redis_${name}.age".path;
       }) ports;

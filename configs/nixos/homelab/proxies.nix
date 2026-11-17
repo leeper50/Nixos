@@ -106,7 +106,7 @@
     (lib.mkIf config.local.proxies.microsocks.enable {
       services.microsocks = {
         enable = true;
-        ip = globals.networking.tailnet.${config.networking.hostName}.ipv4;
+        ip = globals.networking.tailscale.hosts.${config.networking.hostName}.ipv4;
       };
       systemd.services.microsocks = {
         after = [ "tailscaled.service" ];

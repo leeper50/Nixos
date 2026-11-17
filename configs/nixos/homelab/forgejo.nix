@@ -17,13 +17,7 @@ let
     ssh = 2222;
     sshListen = 2223;
   };
-  proxySources =
-    globals.networking.swarmAddresses
-    ++ (with globals.networking.docker; [
-      ipv4Subnet
-      ipv6Subnet
-      fixedv6Subnet
-    ]);
+  proxySources = globals.networking.lan.swarmAddresses ++ globals.networking.docker.subnets;
 in
 {
   options.local.forgejo = {
@@ -87,7 +81,7 @@ in
       services.forgejo = {
         database = {
           createDatabase = false;
-          host = globals.networking.hosts.nas.ipv4;
+          host = globals.networking.lan.hosts.nas.ipv4;
           name = "forgejo";
           passwordFile = pass."postgresql_forgejo.age".path;
           type = "postgres";

@@ -6,15 +6,11 @@
   ...
 }:
 let
-  dockerSubnets = with globals.networking.docker; [
-    ipv4Subnet
-    ipv6Subnet
-    fixedv6Subnet
-  ];
   localIps =
-    globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets;
+    globals.networking.lan.subnets
+    ++ lib.optionals config.virtualisation.docker.enable globals.networking.docker.subnets;
   cfg = config.local.caddy;
-  traefikIps = with globals.networking.hosts.nas; [
+  traefikIps = with globals.networking.lan.hosts.nas; [
     ipv4
     ipv6
   ];
@@ -82,7 +78,7 @@ in
         if cfg.traefikPassthrough.enable then
           localLib.mkFirewallRules {
             service = "caddy";
-            sources = dockerSubnets;
+            sources = globals.networking.docker.subnets;
             tcpPorts = with cfg.traefikPassthrough; [
               httpPort
               httpsPort
@@ -93,7 +89,8 @@ in
             service = "caddy";
             sources =
               if config.local.local then
-                globals.networking.lan ++ lib.optionals config.virtualisation.docker.enable dockerSubnets
+                globals.networking.lan.subnets
+                ++ lib.optionals config.virtualisation.docker.enable globals.networking.docker.subnets
               else
                 [
                   "0.0.0.0/0"
@@ -133,9 +130,9 @@ in
                 lib.strings.join " " (
                   localIps
                   ++ [
-                    globals.networking.hosts.racknerd.ipv4
-                    globals.networking.hosts.servercheap.ipv4
-                    globals.networking.hosts.servercheap.ipv6
+                    globals.networking.lan.hosts.racknerd.ipv4
+                    globals.networking.lan.hosts.servercheap.ipv4
+                    globals.networking.lan.hosts.servercheap.ipv6
                   ]
                 )
               }
@@ -149,12 +146,14 @@ in
             + lib.optionalString (config.local.local || cfg.traefikPassthrough.enable) ''
               servers {
                 ${lib.optionalString config.local.local "trusted_proxies static ${
-                  lib.strings.join " " (traefikIps ++ lib.optionals cfg.traefikPassthrough.enable dockerSubnets)
+                  lib.strings.join " " (
+                    traefikIps ++ lib.optionals cfg.traefikPassthrough.enable globals.networking.docker.subnets
+                  )
                 }"}
                 ${lib.optionalString cfg.traefikPassthrough.enable ''
                   listener_wrappers {
                     proxy_protocol {
-                      allow ${lib.strings.join " " dockerSubnets}
+                      allow ${lib.strings.join " " globals.networking.docker.subnets}
                     }
                     tls
                   }

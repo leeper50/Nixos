@@ -174,7 +174,9 @@ in
           enableDefaultConfig = false;
           settings =
             lib.recursiveUpdate
-              (lib.mapAttrs (n: _: { HostName = "${n}.${globals.domains.primary}"; }) globals.networking.hosts)
+              (lib.mapAttrs (n: _: {
+                HostName = "${n}.${globals.domains.primary}";
+              }) globals.networking.lan.hosts)
               {
                 "*" = {
                   AddKeysToAgent = "no";

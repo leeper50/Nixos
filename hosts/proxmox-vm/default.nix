@@ -21,14 +21,14 @@
     interfaces.ens18 = {
       ipv4.addresses = [
         {
-          address = globals.networking.hosts.${config.networking.hostName}.ipv4;
-          prefixLength = lib.toIntBase10 globals.networking.ipv4.subnetMask;
+          address = globals.networking.lan.hosts.${config.networking.hostName}.ipv4;
+          prefixLength = lib.toIntBase10 globals.networking.lan.ipv4.subnetMask;
         }
       ];
       ipv6.addresses = [
         {
-          address = globals.networking.hosts.${config.networking.hostName}.ipv6;
-          prefixLength = lib.toIntBase10 globals.networking.ipv6.subnetMask;
+          address = globals.networking.lan.hosts.${config.networking.hostName}.ipv6;
+          prefixLength = lib.toIntBase10 globals.networking.lan.ipv6.subnetMask;
         }
       ];
     };

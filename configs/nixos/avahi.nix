@@ -10,8 +10,8 @@
     (lib.mkIf config.local.local {
       networking.firewall = localLib.mkFirewallRules {
         service = "avahi";
-        sources = globals.networking.lan ++ [
-          globals.networking.ipv6.linkLocalSubnet
+        sources = globals.networking.lan.subnets ++ [
+          globals.networking.lan.ipv6.linkLocalSubnet
         ];
         udpPorts = [ 5353 ];
       };

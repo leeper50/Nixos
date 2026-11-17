@@ -30,7 +30,7 @@ in
   networking.firewall = lib.mkMerge [
     (localLib.mkFirewallRules {
       service = "samba";
-      sources = globals.networking.lan;
+      sources = globals.networking.lan.subnets;
       tcpPorts = [
         139 # NetBIOS session
         445 # SMB
@@ -42,7 +42,7 @@ in
     })
     (localLib.mkFirewallRules {
       service = "samba-wsdd";
-      sources = globals.networking.lan ++ [ globals.networking.ipv6.linkLocalSubnet ];
+      sources = globals.networking.lan.subnets ++ [ globals.networking.lan.ipv6.linkLocalSubnet ];
       tcpPorts = [ 5357 ]; # WSD transfer
       udpPorts = [ 3702 ]; # WS-Discovery
     })
@@ -87,8 +87,8 @@ in
     settings = {
       global = {
         "hosts allow" = lib.concatStringsSep " " (
-          globals.networking.lan
-          ++ globals.networking.tailnetSubnets
+          globals.networking.lan.subnets
+          ++ globals.networking.tailscale.subnet
           ++ [
             "127.0.0.1"
             "::1"

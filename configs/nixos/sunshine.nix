@@ -25,7 +25,7 @@ in
       # LAN only; tailscale0 is already trusted for remote play.
       networking.firewall = localLib.mkFirewallRules {
         service = "sunshine";
-        sources = globals.networking.lan;
+        sources = globals.networking.lan.subnets;
         tcpPorts = [
           47984
           47989

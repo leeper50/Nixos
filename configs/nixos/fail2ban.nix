@@ -9,12 +9,9 @@ let
     "::1"
     "127.0.0.1/8"
     "162.233.151.119/32"
-    globals.networking.docker.fixedv6Subnet
-    globals.networking.docker.ipv4Subnet
-    globals.networking.docker.ipv6Subnet
-    globals.networking.ipv6.lanSubnet
   ]
-  ++ globals.networking.lan;
+  ++ globals.networking.docker.subnets
+  ++ globals.networking.lan.subnets;
   caddyLogDir = config.services.caddy.logDir;
   caddyLine = ''^\{"level":"[^"]*",[^{]*"logger":"http\.log\.access[^"]*","msg":"handled request","request":\{"remote_ip":"<HOST>",.*'';
   caddyJail = logpath: filter: settings: {

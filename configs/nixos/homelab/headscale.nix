@@ -16,7 +16,7 @@ let
       (
         hostName: hostConfig:
         let
-          ips = globals.networking.tailnet.${hostName};
+          ips = globals.networking.tailscale.hosts.${hostName};
           suffix = ".${hostName}.${globals.domains.tailnet}";
           names = lib.filter (name: lib.hasSuffix suffix name && !lib.hasPrefix "*" name) (
             lib.attrNames hostConfig.services.caddy.virtualHosts
@@ -38,7 +38,7 @@ let
         )
       )
       (
-        lib.filterAttrs (hostName: _: globals.networking.tailnet ? ${hostName}) (
+        lib.filterAttrs (hostName: _: globals.networking.tailscale.hosts ? ${hostName}) (
           lib.mapAttrs (_: system: system.config) self.nixosConfigurations
           // {
             ${config.networking.hostName} = config;

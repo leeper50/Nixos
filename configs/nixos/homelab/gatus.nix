@@ -19,7 +19,7 @@
 let
   cfg = config.local.gatus;
   pass = config.age.secrets;
-  net = globals.networking;
+  net = globals.networking.lan;
   hostName = config.networking.hostName;
   port = 8090;
   publicDomain = "status.${globals.domains.primary}";
@@ -45,9 +45,9 @@ let
     gateway = ping net.ipv4.gateway;
     internet = "${ping "9.9.9.9"} 2>/dev/null || ${ping "1.1.1.1"}";
     upstream-dns = dig "9.9.9.9" "example.com";
-    vip-local = dig (lib.head net.nameservers.local) dnsTest;
-    vip-recursion = dig (lib.head net.nameservers.local) "example.com";
-    vip-ipv6 = dig (lib.elemAt net.nameservers.local 1) dnsTest;
+    vip-local = dig (lib.head net.dns) dnsTest;
+    vip-recursion = dig (lib.head net.dns) "example.com";
+    vip-ipv6 = dig (lib.elemAt net.dns 1) dnsTest;
     gotify = "${curl} -o /dev/null --resolve ${gotify.host}:443:${gotify.ip} https://${gotify.host}/health";
     gotify-via-vip = "${curl} -o /dev/null https://g.dellhplaptop.xyz/health";
   };

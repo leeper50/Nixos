@@ -33,7 +33,7 @@ in
         });
     networking.firewall = localLib.mkFirewallRules {
       service = "postgresql";
-      sources = globals.networking.swarmAddresses;
+      sources = globals.networking.lan.swarmAddresses;
       tcpPorts = [ ports.postgresql ];
     };
     services.postgresql = {
@@ -45,7 +45,7 @@ in
             "host  ${name}  ${name}  ${address}/${
               if lib.hasInfix ":" address then "128" else "32"
             }  scram-sha-256\n"
-          ) globals.networking.swarmAddresses
+          ) globals.networking.lan.swarmAddresses
         ) config.local.postgresql.databases
       );
       enable = true;
@@ -56,7 +56,7 @@ in
       }) config.local.postgresql.databases;
       settings = {
         listen_addresses = lib.mkForce "localhost,${
-          globals.networking.hosts.${config.networking.hostName}.ipv4
+          globals.networking.lan.hosts.${config.networking.hostName}.ipv4
         }";
       };
     };

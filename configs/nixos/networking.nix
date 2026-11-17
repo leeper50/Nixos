@@ -13,7 +13,7 @@ let
         map (ip: {
           ${ip} = domain;
         })
-      ) globals.networking.dns
+      ) globals.networking.lan.dns_records
     )
   );
 in
@@ -49,10 +49,10 @@ in
     })
     (lib.mkIf (config.local.local) {
       networking = {
-        defaultGateway.address = globals.networking.ipv4.gateway;
-        defaultGateway6.address = globals.networking.ipv6.gateway;
+        defaultGateway.address = globals.networking.lan.ipv4.gateway;
+        defaultGateway6.address = globals.networking.lan.ipv6.gateway;
         hosts = ipToDomains;
-        nameservers = globals.networking.nameservers.local ++ globals.networking.nameservers.public;
+        nameservers = globals.networking.lan.dns ++ globals.networking.nameservers.public;
       };
     })
   ];

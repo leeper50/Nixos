@@ -24,7 +24,7 @@ in
         settings = {
           "BASE_URL" = "https://m.dellhplaptop.xyz";
           "DB_ENGINE" = "postgres";
-          "POSTGRES_SERVER" = globals.networking.hosts.nas.ipv4;
+          "POSTGRES_SERVER" = globals.networking.lan.hosts.nas.ipv4;
           "TZ" = "America/Chicago";
         };
       };

@@ -43,13 +43,13 @@
     interfaces.ens3 = {
       ipv4.addresses = [
         {
-          address = globals.networking.hosts.servercheap.ipv4;
+          address = globals.networking.lan.hosts.servercheap.ipv4;
           prefixLength = 25;
         }
       ];
       ipv6.addresses = [
         {
-          address = globals.networking.hosts.servercheap.ipv6;
+          address = globals.networking.lan.hosts.servercheap.ipv6;
           prefixLength = 64;
         }
       ];

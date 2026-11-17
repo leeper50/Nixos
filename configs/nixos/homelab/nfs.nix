@@ -13,7 +13,7 @@ let
     rpcbind = 111;
     statd = 4000;
   };
-  sources = globals.networking.lan ++ globals.networking.tailnetSubnets;
+  sources = globals.networking.lan.subnets ++ globals.networking.tailscale.subnet;
   exportTo =
     path:
     "${path} " + lib.concatMapStringsSep " " (s: "${s}(rw,sync,no_subtree_check,root_squash)") sources;
@@ -50,7 +50,7 @@ in
   systemd.tmpfiles.rules = [ "f /var/lib/nfs/etab 0644 root root -" ];
   networking.firewall = localLib.mkFirewallRules {
     service = "nfs";
-    sources = globals.networking.lan;
+    sources = globals.networking.lan.subnets;
     tcpPorts = lib.attrValues ports;
     udpPorts = lib.attrValues ports;
   };

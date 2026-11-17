@@ -55,11 +55,7 @@ in
     (lib.mkIf config.local.beszel.hub.enable {
       networking.firewall = localLib.mkFirewallRules {
         service = "beszel";
-        sources = [
-          globals.networking.docker.fixedv6Subnet
-          globals.networking.docker.ipv4Subnet
-          globals.networking.docker.ipv6Subnet
-        ];
+        sources = globals.networking.docker.subnets;
         tcpPorts = [ ports.hub ];
       };
       services.beszel.hub = {

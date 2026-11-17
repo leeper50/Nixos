@@ -73,11 +73,7 @@ in
       # Allow containers to reach 443 from host's private ip
       networking.firewall = localLib.mkFirewallRules {
         service = "docker";
-        sources = [
-          globals.networking.docker.ipv4Subnet
-          globals.networking.docker.ipv6Subnet
-          globals.networking.docker.fixedv6Subnet
-        ];
+        sources = globals.networking.docker.subnets;
         tcpPorts = [ 443 ];
       };
       virtualisation.docker = {
@@ -85,21 +81,18 @@ in
         daemon.settings = {
           default-address-pools = [
             {
-              base = globals.networking.docker.ipv4Subnet;
+              base = globals.networking.docker.ipv4;
               size = 24;
             }
             {
-              base = globals.networking.docker.ipv6Subnet;
+              base = globals.networking.docker.ipv6;
               size = 120;
             }
           ];
           dns =
-            if config.local.local then
-              globals.networking.nameservers.local
-            else
-              globals.networking.nameservers.public;
+            if config.local.local then globals.networking.lan.dns else globals.networking.nameservers.public;
           experimental = true;
-          fixed-cidr-v6 = globals.networking.docker.fixedv6Subnet;
+          fixed-cidr-v6 = globals.networking.docker.fixedv6;
           ip6tables = true;
           ipv6 = true;
           labels = map (label: "${label}=true") config.local.docker.swarm.labels;
@@ -350,7 +343,7 @@ in
       ];
       networking.firewall = localLib.mkFirewallRules {
         service = "docker-swarm";
-        sources = globals.networking.swarmAddresses;
+        sources = globals.networking.lan.swarmAddresses;
         tcpPorts = [
           2377 # swarm cluster management
           7946 # container network discovery

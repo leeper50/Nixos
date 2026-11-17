@@ -27,102 +27,111 @@ in
   inherit hostName;
   locale = "en_US.UTF-8";
   inherit sshKeys;
-  networking = rec {
-    dns = {
-      "19280085.xyz" = [
-        "107.174.237.4"
+  networking = {
+    docker = rec {
+      ipv4 = "172.30.0.0/16";
+      ipv6 = "fd06:6a55:3bd2:ed3d::/64";
+      fixedv6 = "fda3:db28:76bb:e314::/64";
+      subnets = [
+        ipv4
+        ipv6
+        fixedv6
       ];
-      "buncha.men" = [
+    };
+    lan = rec {
+      dns = [
         "10.0.1.1"
         "${ipv6.prefix}::1:1"
       ];
-      "dellhplaptop.xyz" = [
-        "10.0.1.1"
-        "${ipv6.prefix}::1:1"
+      dns_records = {
+        "19280085.xyz" = [
+          "107.174.237.4"
+        ];
+        "buncha.men" = [
+          "10.0.1.1"
+          "${ipv6.prefix}::1:1"
+        ];
+        "dellhplaptop.xyz" = [
+          "10.0.1.1"
+          "${ipv6.prefix}::1:1"
+        ];
+        "tplinkwifi.net" = [
+          "10.0.0.1"
+          "${ipv6.prefix}:f2a7:31ff:fe94:abac"
+        ];
+        "${domains.primary}" = [
+          "65.75.202.6"
+          "2606:cc0:11:2351::1"
+        ];
+      }
+      // lib.mapAttrs' (
+        n: v:
+        lib.nameValuePair (n + ".${domains.primary}") (
+          lib.filter (a: a != null) [
+            v.ipv4
+            v.ipv6
+          ]
+        )
+      ) hosts;
+      hosts = {
+        action-runner = {
+          ipv4 = "10.0.0.34";
+          ipv6 = "${ipv6.prefix}::34";
+        };
+        laptop = {
+          ipv4 = "10.0.0.71";
+          ipv6 = "${ipv6.prefix}:73b7:bc38:4b1c:18ba";
+        };
+        nas = {
+          ipv4 = "10.0.0.52";
+          ipv6 = "${ipv6.prefix}::52";
+        };
+        racknerd = {
+          ipv4 = "107.174.237.4";
+          ipv6 = null;
+        };
+        ser8 = {
+          ipv4 = "10.0.0.30";
+          ipv6 = "${ipv6.prefix}::30";
+        };
+        servercheap = {
+          ipv4 = "65.75.202.6";
+          ipv6 = "2606:cc0:11:2351::1";
+        };
+        workstation = {
+          ipv4 = "10.0.0.31";
+          ipv6 = "${ipv6.prefix}::31";
+        };
+      };
+      ipv4 = rec {
+        gateway = "10.0.0.1";
+        subnet = "10.0.0.0/${subnetMask}";
+        subnetMask = "8";
+      };
+      ipv6 = rec {
+        gateway = "${prefix}:f2a7:31ff:fe94:abac";
+        subnet = "${prefix}::/${subnetMask}";
+        linkLocalSubnet = "fe80::/10";
+        prefix = "2600:1702:58c1:9acf";
+        subnetMask = "64";
+      };
+      subnets = [
+        ipv4.subnet
+        ipv6.subnet
       ];
-      "tplinkwifi.net" = [
-        "10.0.0.1"
-        "${ipv6.prefix}:f2a7:31ff:fe94:abac"
-      ];
-      "${domains.primary}" = [
-        "65.75.202.6"
-        "2606:cc0:11:2351::1"
-      ];
-    }
-    // lib.mapAttrs' (
-      n: v:
-      lib.nameValuePair (n + ".${domains.primary}") (
+      swarmNodes = [ "nas" ];
+      swarmAddresses = lib.concatMap (
+        node:
         lib.filter (a: a != null) [
-          v.ipv4
-          v.ipv6
+          hosts.${node}.ipv4
+          hosts.${node}.ipv6
         ]
-      )
-    ) hosts;
-    docker = {
-      ipv4Subnet = "172.30.0.0/16";
-      ipv6Subnet = "fd06:6a55:3bd2:ed3d::/64";
-      fixedv6Subnet = "fda3:db28:76bb:e314::/64";
+      ) swarmNodes;
     };
-    hosts = {
-      action-runner = {
-        ipv4 = "10.0.0.34";
-        ipv6 = "${ipv6.prefix}::34";
-      };
-      laptop = {
-        ipv4 = "10.0.0.71";
-        ipv6 = "${ipv6.prefix}:73b7:bc38:4b1c:18ba";
-      };
-      nas = {
-        ipv4 = "10.0.0.52";
-        ipv6 = "${ipv6.prefix}::52";
-      };
-      racknerd = {
-        ipv4 = "107.174.237.4";
-        ipv6 = null;
-      };
-      ser8 = {
-        ipv4 = "10.0.0.30";
-        ipv6 = "${ipv6.prefix}::30";
-      };
-      servercheap = {
-        ipv4 = "65.75.202.6";
-        ipv6 = "2606:cc0:11:2351::1";
-      };
-      workstation = {
-        ipv4 = "10.0.0.31";
-        ipv6 = "${ipv6.prefix}::31";
-      };
-    };
-    ipv4 = rec {
-      gateway = "10.0.0.1";
-      lanSubnet = "10.0.0.0/${subnetMask}";
-      subnetMask = "8";
-      tailnetSubnet = "100.64.0.0/10";
-    };
-    ipv6 = rec {
-      gateway = "${prefix}:f2a7:31ff:fe94:abac";
-      lanSubnet = "${prefix}::/${subnetMask}";
-      linkLocalSubnet = "fe80::/10";
-      prefix = "2600:1702:58c1:9acf";
-      subnetMask = "64";
-      tailnetSubnet = "fd7a:115c:a1e0::/48";
-    };
-    lan = [
-      ipv4.lanSubnet
-      ipv6.lanSubnet
-    ];
-    tailnetSubnets = [
-      ipv4.tailnetSubnet
-      ipv6.tailnetSubnet
-    ];
     nameservers = {
       doh = [
         "https://dns.quad9.net/dns-query"
         "https://1.1.1.1/dns-query"
-      ];
-      local = [
-        "10.0.1.1"
-        "${ipv6.prefix}::1:1"
       ];
       public = [
         "9.9.9.9"
@@ -131,44 +140,44 @@ in
         "2620:fe::fe"
       ];
     };
-    tailnet = {
-      action-runner = {
-        ipv4 = "100.64.0.12";
-        ipv6 = "fd7a:115c:a1e0::c";
+    tailscale = rec {
+      hosts = {
+        action-runner = {
+          ipv4 = "100.64.0.12";
+          ipv6 = "fd7a:115c:a1e0::c";
+        };
+        laptop = {
+          ipv4 = "100.64.0.9";
+          ipv6 = "fd7a:115c:a1e0::9";
+        };
+        nas = {
+          ipv4 = "100.64.0.8";
+          ipv6 = "fd7a:115c:a1e0::8";
+        };
+        racknerd = {
+          ipv4 = "100.64.0.3";
+          ipv6 = "fd7a:115c:a1e0::3";
+        };
+        ser8 = {
+          ipv4 = "100.64.0.13";
+          ipv6 = "fd7a:115c:a1e0::d";
+        };
+        servercheap = {
+          ipv4 = "100.64.0.2";
+          ipv6 = "fd7a:115c:a1e0::2";
+        };
+        workstation = {
+          ipv4 = "100.64.0.14";
+          ipv6 = "fd7a:115c:a1e0::e";
+        };
       };
-      laptop = {
-        ipv4 = "100.64.0.9";
-        ipv6 = "fd7a:115c:a1e0::9";
-      };
-      nas = {
-        ipv4 = "100.64.0.8";
-        ipv6 = "fd7a:115c:a1e0::8";
-      };
-      racknerd = {
-        ipv4 = "100.64.0.3";
-        ipv6 = "fd7a:115c:a1e0::3";
-      };
-      ser8 = {
-        ipv4 = "100.64.0.13";
-        ipv6 = "fd7a:115c:a1e0::d";
-      };
-      servercheap = {
-        ipv4 = "100.64.0.2";
-        ipv6 = "fd7a:115c:a1e0::2";
-      };
-      workstation = {
-        ipv4 = "100.64.0.14";
-        ipv6 = "fd7a:115c:a1e0::e";
-      };
+      ipv4 = "100.64.0.0/10";
+      ipv6 = "fd7a:115c:a1e0::/48";
+      subnet = [
+        ipv4
+        ipv6
+      ];
     };
-    swarmNodes = [ "nas" ];
-    swarmAddresses = lib.concatMap (
-      node:
-      lib.filter (a: a != null) [
-        hosts.${node}.ipv4
-        hosts.${node}.ipv6
-      ]
-    ) swarmNodes;
   };
   primaryEmail = "wleeper@mailbox.org";
   sshPort = 34146;

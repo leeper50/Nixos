@@ -12,12 +12,10 @@ let
     l: lib.concatMapStrings (domain: "*.${domain}\n") l.domains
   ) dns-lists.allowlists;
   denylists = groupByCategory (l: l.url.blocky or l.url) dns-lists.blocklists;
-  customDNSMapping = lib.mapAttrs (_: ips: lib.concatStringsSep "," ips) globals.networking.dns;
-  dnsSources = globals.networking.lan ++ [
-    globals.networking.docker.ipv4Subnet
-    globals.networking.docker.ipv6Subnet
-    globals.networking.docker.fixedv6Subnet
-  ];
+  customDNSMapping = lib.mapAttrs (
+    _: ips: lib.concatStringsSep "," ips
+  ) globals.networking.lan.dns_records;
+  dnsSources = globals.networking.lan.subnets ++ globals.networking.docker.subnets;
 in
 {
   assertions = map (category: {
