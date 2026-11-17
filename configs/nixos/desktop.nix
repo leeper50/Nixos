@@ -40,9 +40,9 @@
     caddy.enable = lib.mkDefault true;
     games.emulators.enable = lib.mkDefault true;
     local = true;
-    mounts = {
-      media = lib.mkDefault true;
-      user = lib.mkDefault true;
+    mounts.shares = {
+      media.enable = lib.mkDefault true;
+      walter.enable = lib.mkDefault true;
     };
     nix-ld.enable = lib.mkDefault true;
     packages = {

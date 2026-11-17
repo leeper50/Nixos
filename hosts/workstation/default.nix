@@ -22,9 +22,9 @@
     };
   };
   local = {
-    mounts = {
-      media = false;
-      user = false;
+    mounts.shares = {
+      media.enable = false;
+      walter.enable = false;
     };
     packages.ollama.context_length = 32768;
     sunshine.enable = true;
