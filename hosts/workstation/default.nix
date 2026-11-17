@@ -16,7 +16,7 @@
     powerdevil.AC = {
       autoSuspend = {
         action = lib.mkForce "sleep";
-        idleTimeout = 600;
+        idleTimeout = 300;
       };
       powerProfile = lib.mkForce "performance";
     };
