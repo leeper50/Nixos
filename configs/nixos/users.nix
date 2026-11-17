@@ -26,14 +26,17 @@ let
       desktop = "hyprland";
       gid = 1000;
       homeModules = [ (if profile == "gui" then ../home/gui.nix else ../home) ];
+      uid = 1000;
     };
     carrie = {
       desktop = "plasma";
       homeModules = [ familyHome ];
+      uid = 1002;
     };
     david = {
       desktop = "plasma";
       homeModules = [ familyHome ];
+      uid = 1001;
     };
   };
   enabled = lib.filterAttrs (name: _: config.local.users.${name}.enable) users;
@@ -92,6 +95,7 @@ in
           group = name;
           hashedPasswordFile = config.age.secrets."user_${name}_hash.age".path;
           isNormalUser = true;
+          inherit (user) uid;
         }
         // lib.optionalAttrs (user.admin or false) adminSettings
       ) enabled;
