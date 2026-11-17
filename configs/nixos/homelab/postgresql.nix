@@ -33,7 +33,7 @@ in
         });
     networking.firewall = localLib.mkFirewallRules {
       service = "postgresql";
-      sources = globals.networking.lan.swarmAddresses;
+      sources = globals.networking.lan.swarmAddresses ++ globals.networking.docker.subnets;
       tcpPorts = [ ports.postgresql ];
     };
     services.postgresql = {
@@ -42,10 +42,15 @@ in
           name:
           lib.concatMapStrings (
             address:
-            "host  ${name}  ${name}  ${address}/${
-              if lib.hasInfix ":" address then "128" else "32"
-            }  scram-sha-256\n"
-          ) globals.networking.lan.swarmAddresses
+            let
+              cidr =
+                if lib.hasInfix "/" address then
+                  address
+                else
+                  "${address}/${if lib.hasInfix ":" address then "128" else "32"}";
+            in
+            "host  ${name}  ${name}  ${cidr}  scram-sha-256\n"
+          ) (globals.networking.lan.swarmAddresses ++ globals.networking.docker.subnets)
         ) config.local.postgresql.databases
       );
       enable = true;
