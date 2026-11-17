@@ -135,6 +135,7 @@ in
     };
     rustfs.enable = true;
     syncthing = {
+      enable = true;
       folder_type = "receiveonly";
       home = "/mnt/data/home/walter";
     };

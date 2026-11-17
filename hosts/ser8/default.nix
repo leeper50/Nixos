@@ -57,6 +57,7 @@
       ];
       user = "root";
     };
+    syncthing.enable = true;
     users = {
       carrie.enable = true;
       david.enable = true;

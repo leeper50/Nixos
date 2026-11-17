@@ -12,6 +12,9 @@
       firefox.enable = true;
       librewolf.enable = true;
     };
-    syncthing.home = "/Users/walter";
+    syncthing = {
+      enable = true;
+      home = "/Users/walter";
+    };
   };
 }

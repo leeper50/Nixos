@@ -30,6 +30,7 @@
         "nas"
       ];
     };
+    syncthing.enable = true;
   };
   networking.networkmanager.ensureProfiles.profiles.home.ipv6.token = "::71";
   services = {

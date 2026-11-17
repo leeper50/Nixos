@@ -139,11 +139,7 @@ let
 in
 {
   options.local.syncthing = {
-    enable = lib.mkOption {
-      default = true;
-      description = "Whether to run Syncthing and join the shared folders.";
-      type = lib.types.bool;
-    };
+    enable = lib.mkEnableOption "Whether to run Syncthing and join the shared folders.";
     folder_type = lib.mkOption {
       default = "sendreceive";
       type = lib.types.str;
