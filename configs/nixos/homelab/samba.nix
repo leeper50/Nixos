@@ -86,8 +86,15 @@ in
     enable = true;
     settings = {
       global = {
-        "hosts allow" = "10. 127.0.0.1 localhost";
-        "hosts deny" = "0.0.0.0/0";
+        "hosts allow" = lib.concatStringsSep " " (
+          globals.networking.lan
+          ++ globals.networking.tailnetSubnets
+          ++ [
+            "127.0.0.1"
+            "::1"
+          ]
+        );
+        "hosts deny" = "ALL";
         "min protocol" = "SMB3";
         "security" = "user";
         "server signing" = "auto";

@@ -8,7 +8,7 @@
 }:
 let
   cfg = config.local.mounts;
-  nas = "nas.${globals.domains.primary}";
+  nas = "nas.${if cfg.tailnet then globals.domains.tailnet else globals.domains.primary}";
   credentialsDir = "/run/smb-credentials";
   passwordSecret = user: "user_${user}_clear.age";
   common_options = [
@@ -17,6 +17,7 @@ let
     "nofail"
     "rw"
   ]
+  ++ lib.optional cfg.tailnet "x-systemd.after=tailscaled.service"
   ++ (
     if cfg.autoMount then
       [
@@ -85,9 +86,18 @@ in
         description = "Nas user the ${name} share logs in as when mounted over samba.";
       };
     }) shares;
+    tailnet = lib.mkEnableOption "mounting the nas over the tailnet, so the shares work off the lan";
   };
-  config = lib.mkIf config.local.local (
+  config = lib.mkIf (config.local.local || cfg.tailnet) (
     lib.mkMerge [
+      {
+        assertions = [
+          {
+            assertion = cfg.tailnet -> config.services.tailscale.enable;
+            message = "local.mounts.tailnet needs tailscale (local.networking.tailscale.enable).";
+          }
+        ];
+      }
       {
         fileSystems = lib.mapAttrs' (
           name: share:

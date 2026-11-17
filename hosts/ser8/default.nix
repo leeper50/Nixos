@@ -36,6 +36,7 @@
     '';
   };
   local = {
+    mounts.tailnet = true;
     packages.ollama.context_length = 32768;
     restic.backups.home = {
       exclude = [

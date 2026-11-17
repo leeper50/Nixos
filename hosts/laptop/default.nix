@@ -8,7 +8,10 @@
     ./hardware-configuration.nix
   ];
   local = {
-    mounts.autoMount = true;
+    mounts = {
+      autoMount = true;
+      tailnet = true;
+    };
     restic.backups.home = {
       exclude = [
         "*cache*"

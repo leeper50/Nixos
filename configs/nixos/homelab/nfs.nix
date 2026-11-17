@@ -13,6 +13,10 @@ let
     rpcbind = 111;
     statd = 4000;
   };
+  sources = globals.networking.lan ++ globals.networking.tailnetSubnets;
+  exportTo =
+    path:
+    "${path} " + lib.concatMapStringsSep " " (s: "${s}(rw,sync,no_subtree_check,root_squash)") sources;
 in
 {
   services.nfs = {
@@ -28,12 +32,8 @@ in
       createMountPoints = true;
       enable = true;
       exports = ''
-        # Home Dir
-        /mnt/data/home/walter ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
-        /mnt/data/home/walter ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)
-        # Media Dir
-        /mnt/data/Media ${globals.networking.ipv4.lanSubnet}(rw,sync,no_subtree_check,root_squash)
-        /mnt/data/Media ${globals.networking.ipv6.lanSubnet}(rw,sync,no_subtree_check,root_squash)
+        ${exportTo "/mnt/data/home/walter"}
+        ${exportTo "/mnt/data/Media"}
       '';
       lockdPort = ports.lockd;
       mountdPort = ports.mountd;

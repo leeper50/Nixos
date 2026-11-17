@@ -97,6 +97,7 @@ in
       gateway = "10.0.0.1";
       lanSubnet = "10.0.0.0/${subnetMask}";
       subnetMask = "8";
+      tailnetSubnet = "100.64.0.0/10";
     };
     ipv6 = rec {
       gateway = "${prefix}:f2a7:31ff:fe94:abac";
@@ -104,10 +105,15 @@ in
       linkLocalSubnet = "fe80::/10";
       prefix = "2600:1702:58c1:9acf";
       subnetMask = "64";
+      tailnetSubnet = "fd7a:115c:a1e0::/48";
     };
     lan = [
       ipv4.lanSubnet
       ipv6.lanSubnet
+    ];
+    tailnetSubnets = [
+      ipv4.tailnetSubnet
+      ipv6.tailnetSubnet
     ];
     nameservers = {
       doh = [
