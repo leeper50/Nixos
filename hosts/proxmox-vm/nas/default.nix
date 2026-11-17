@@ -53,15 +53,6 @@ in
         "space_cache=v2"
       ];
     };
-    "/mnt/media" = {
-      device = "/mnt/data/Media";
-      fsType = "none";
-      options = [
-        "bind"
-        "nofail"
-        "x-systemd.requires-mounts-for=/mnt/data"
-      ];
-    };
   };
   hardware.enableRedistributableFirmware = true;
   local = {

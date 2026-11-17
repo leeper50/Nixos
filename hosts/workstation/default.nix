@@ -22,7 +22,10 @@
     };
   };
   local = {
-    mounts.autoMount = true;
+    mounts = {
+      media = false;
+      user = false;
+    };
     packages.ollama.context_length = 32768;
     sunshine.enable = true;
     users.walter.desktop = "plasma";
