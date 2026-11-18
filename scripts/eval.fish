@@ -50,8 +50,7 @@ function queue_configs
                 case nixos
                     nh os build . -H $h --no-nom -d never -o $tmpdir/$id.result
                 case darwin
-                    # nh's own --dry is ignored by `build`, so nix's is passed.
-                    nh darwin build . -H $h --no-nom -d never -- --dry-run
+                    nix build .#darwinConfigurations.$h.system --dry-run
             end >$tmpdir/$id.out 2>&1
             set -l code $status
             echo $code >$tmpdir/$id.code
