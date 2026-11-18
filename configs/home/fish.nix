@@ -364,11 +364,11 @@ in
             ];
             pairs = [
               {
-                local = "$HOME/Pictures/Wallpapers/";
+                local = "$HOME/Pictures/Tablet/";
                 remote = "Copyparty:/Tablet/";
               }
               {
-                local = "$HOME/Temp/Wallpapers/";
+                local = "$HOME/Pictures/Wallpapers/";
                 remote = "Copyparty:/Wallpapers/";
               }
             ];
