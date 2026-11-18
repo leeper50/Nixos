@@ -52,8 +52,9 @@
           keyType = "ec256";
         };
         certs = lib.mapAttrs (name: options: {
-          dnsPropagationCheck = true;
+          dnsAuthoritativePropagationCheck = true;
           dnsProvider = options.provider;
+          dnsRecursivePropagationCheck = true;
           dnsResolver = "1.1.1.1:53";
           environmentFile = config.age.secrets."acme_${options.provider}.age".path;
           extraDomainNames = lib.optional options.wildcard "*.${name}";
