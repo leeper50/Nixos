@@ -16,6 +16,12 @@ in
   config = lib.mkMerge [
     (lib.mkIf config.local.vaultwarden.enable {
       age.secrets."vaultwarden_env.age".file = "${secrets}/vaultwarden_env.age";
+      # The database lives in postgresql, which has its own dump backup.
+      local.restic.backups.services = {
+        exclude = [ "/var/lib/vaultwarden/icon_cache" ];
+        paths = [ "/var/lib/vaultwarden" ];
+        user = "root";
+      };
       services.vaultwarden = {
         config = {
           DOMAIN = "https://vault.dellhplaptop.xyz";

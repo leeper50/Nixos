@@ -29,6 +29,14 @@ in
         vpl-gpu-rt
       ];
     };
+    local.restic.backups.services = {
+      exclude = [
+        "${config.services.jellyfin.dataDir}/data/trickplay"
+        "${config.services.jellyfin.dataDir}/metadata"
+      ];
+      paths = [ config.services.jellyfin.dataDir ];
+      user = "root";
+    };
     networking.firewall = localLib.mkFirewallRules {
       service = "jellyfin";
       sources = globals.networking.lan.subnets;

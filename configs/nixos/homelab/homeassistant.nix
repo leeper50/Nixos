@@ -62,7 +62,7 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.mosquitto.enable {
-      local.restic.backups.mosquitto = {
+      local.restic.backups.services = {
         paths = [ "/var/lib/mosquitto" ];
         user = "root";
       };
@@ -88,7 +88,7 @@ in
         file = "${secrets}/zigbee2mqtt_secret.age";
         owner = "zigbee2mqtt";
       };
-      local.restic.backups.zigbee2mqtt = {
+      local.restic.backups.services = {
         exclude = [ "/var/lib/zigbee2mqtt/log" ];
         paths = [ "/var/lib/zigbee2mqtt" ];
         user = "root";

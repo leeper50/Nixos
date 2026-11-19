@@ -53,7 +53,7 @@ in
       age.secrets."forgejo_mailer_password.age".file = "${secrets}/forgejo_mailer_password.age";
       age.secrets."forgejo_secret_key.age".file = "${secrets}/forgejo_secret_key.age";
       age.secrets."postgresql_forgejo.age".file = "${secrets}/postgresql_forgejo.age";
-      local.restic.backups.forgejo = {
+      local.restic.backups.services = {
         exclude = [
           "/var/lib/forgejo/data/queues"
           "/var/lib/forgejo/data/repo-archive"
