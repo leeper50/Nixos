@@ -105,10 +105,6 @@
           dates = "weekly";
           options = "--delete-older-than 7d";
         };
-        optimise = {
-          automatic = true;
-          dates = [ "12:30" ];
-        };
         settings = {
           auto-optimise-store = true;
           connect-timeout = 5;
