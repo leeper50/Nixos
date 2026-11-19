@@ -18,6 +18,7 @@ in
     ../../../configs/nixos/homelab/forgejo.nix
     ../../../configs/nixos/homelab/gatus.nix
     ../../../configs/nixos/homelab/gotify.nix
+    ../../../configs/nixos/homelab/homeassistant.nix
     ../../../configs/nixos/homelab/jellyfin.nix
     ../../../configs/nixos/homelab/mealie.nix
     ../../../configs/nixos/homelab/nfs.nix
@@ -86,6 +87,10 @@ in
     forgejo.server.enable = true;
     gatus.reporter.enable = true;
     gotify.enable = true;
+    homeassistant = {
+      mosquitto.enable = true;
+      zigbee2mqtt.enable = true;
+    };
     jellyfin.enable = true;
     local = true;
     mealie.enable = true;

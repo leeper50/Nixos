@@ -18,5 +18,6 @@ extend-ignore-re = [
 
 [default.extend-words]
 browseable = "browseable"     # samba option
+mosquitto = "mosquitto"       # actual name of service
 ser = "ser"                   # Proxmox host ser8
 thumbnailers = "thumbnailers" # freedesktop thumbnailer spec
