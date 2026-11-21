@@ -164,5 +164,16 @@ in
         };
       };
     })
+    (forWalter (
+      lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+        xdg.mimeApps.defaultApplications = lib.genAttrs' [
+          "gale"
+          "modl"
+          "nxm"
+          "ror2mm"
+          "wabbajack"
+        ] (scheme: lib.nameValuePair "x-scheme-handler/${scheme}" "amethystmodmanager-${scheme}.desktop");
+      }
+    ))
   ];
 }
