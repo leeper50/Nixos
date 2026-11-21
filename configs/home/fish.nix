@@ -34,7 +34,9 @@ in
           functions = {
             build = ''
               git -C $NH_FLAKE pull;
-              nh ${nhTarget} build${if systemType == "Standalone" then hmBackup else " --dry"}
+              nh ${nhTarget} build${
+                if systemType == "Standalone" then hmBackup else " --dry"
+              } --out-link ~/Nix/result
             '';
             clean = if systemType == "Standalone" then "nh clean user" else "sudo nh clean all";
             fish_prompt = {
