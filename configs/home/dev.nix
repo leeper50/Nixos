@@ -39,6 +39,7 @@
     typescript-language-server
     typos-lsp
     unrar
+    uv
     vscode-css-languageserver
     vscode-json-languageserver
     yaml-language-server

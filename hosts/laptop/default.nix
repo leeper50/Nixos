@@ -53,7 +53,6 @@
     extraGroups = [ "libvirtd" ];
     packages = with pkgs; [
       asusctl
-      uv
       virt-manager
     ];
   };
