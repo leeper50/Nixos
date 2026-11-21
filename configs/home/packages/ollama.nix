@@ -19,9 +19,11 @@
         enable = true;
         environmentVariables = {
           "OLLAMA_CONTEXT_LENGTH" = toString config.local.packages.ollama.context_length;
+          "OLLAMA_FLASH_ATTENTION" = "1";
+          "OLLAMA_KV_CACHE_TYPE" = "q8_0";
           "OLLAMA_ORIGINS" = "*";
         };
-        package = pkgs.ollama-vulkan;
+        package = lib.mkDefault pkgs.ollama-vulkan;
       };
     })
     (lib.mkIf config.local.packages.ollama.enable (
@@ -29,14 +31,12 @@
         {
           home.packages = with pkgs; [
             claude-code
-            jan
           ];
         }
       else
         {
           environment.systemPackages = with pkgs; [
             claude-code
-            jan
           ];
         }
     ))

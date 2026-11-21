@@ -88,7 +88,10 @@
   ]
   ++ lib.attrNames (lib.filterAttrs (_: user: user.enable) config.local.users);
   services = {
-    ollama.environmentVariables.OLLAMA_IGPU_ENABLE = "1";
+    ollama = {
+      environmentVariables.OLLAMA_IGPU_ENABLE = "1";
+      package = pkgs.ollama-rocm;
+    };
     openssh.settings = {
       AllowUsers = [
         "root"

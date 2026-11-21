@@ -2,6 +2,7 @@
   config,
   globals,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -61,6 +62,7 @@
     gamescope.enable = true;
   };
   services = {
+    ollama.package = pkgs.ollama-rocm;
     sunshine.settings = {
       adapter_name = "/dev/dri/renderD128";
       encoder = "vaapi";
