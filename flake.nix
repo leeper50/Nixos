@@ -25,6 +25,11 @@
       url = "github:nix-community/home-manager/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Open VSX and VS Code Marketplace extensions not packaged in nixpkgs.
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nur = {
@@ -75,6 +80,7 @@
         import nixpkgs {
           inherit system;
           overlays = [
+            inputs.nix-vscode-extensions.overlays.default
             nur.overlays.default
           ];
           config.allowUnfree = true;

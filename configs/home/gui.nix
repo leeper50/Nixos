@@ -207,11 +207,12 @@ in
                 };
               };
         };
-        vscode = {
+        vscodium = {
           enable = true;
           profiles = {
             default = {
               extensions = with pkgs.vscode-extensions; [
+                pkgs.open-vsx.jeanp413.open-remote-ssh
                 anthropic.claude-code
                 arrterian.nix-env-selector
                 bradlc.vscode-tailwindcss
@@ -289,7 +290,6 @@ in
                 "prettier.tabWidth" = 4;
                 "prettier.useTabs" = true;
                 "svelte.enable-ts-plugin" = true;
-                "telemetry.telemetryLevel" = "error";
                 "terminal.integrated.initialHint" = false;
                 "update.showReleaseNotes" = false;
                 "vsicons.dontShowNewVersionMessage" = true;
@@ -425,7 +425,6 @@ in
           gimp
           mpv
           thunderbird
-          vscode
           zathura
         ];
       };
