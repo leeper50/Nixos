@@ -64,6 +64,7 @@
         busybox
         curl
         dig
+        dix
         ethtool
         git
         iperf

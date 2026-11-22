@@ -73,24 +73,27 @@ in
           remotes = [
             {
               name = "origin";
-              url = "https://fj.dellhplaptop.xyz/wleeper13/Nixos.git";
+              url = "https://${globals.forgejo.tailnetDomain}/wleeper13/Nixos.git";
               branches.main.name = "main";
             }
           ];
         };
         # The flake's `secrets` input is a private repo on Forgejo, fetched over
         # SSH by root with this host's SSH key (a read-only deploy key there).
-        # Nix runs git to fetch it, which comin's unit doesn't provide.
         systemd.services.comin.path = [ pkgs.git ];
         programs.ssh = {
           extraConfig = ''
             Match host ${globals.forgejo.domain} localuser root
+              HostName ${globals.forgejo.tailnetDomain}
               IdentityFile /etc/ssh/ssh_host_ed25519_key
               IdentitiesOnly yes
               ConnectTimeout 5
           '';
           knownHosts.forgejo = {
-            hostNames = [ "[${globals.forgejo.domain}]:${toString globals.forgejo.sshPort}" ];
+            hostNames = map (domain: "[${domain}]:${toString globals.forgejo.sshPort}") [
+              globals.forgejo.domain
+              globals.forgejo.tailnetDomain
+            ];
             publicKey = globals.forgejo.sshHostKey;
           };
         };
