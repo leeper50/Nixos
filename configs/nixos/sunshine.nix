@@ -96,6 +96,31 @@ in
           inherit (cfg) user;
         };
         sunshine = {
+          # Replaces the web UI's app list. The client's resolution comes
+          # from global_prep_cmd, so there are no per-resolution apps.
+          applications.apps = [
+            {
+              name = "Desktop";
+              image-path = "desktop.png";
+            }
+          ]
+          ++ lib.optional config.programs.steam.enable (
+            let
+              setsid = "${pkgs.util-linux}/bin/setsid";
+              steam = lib.getExe config.programs.steam.package;
+            in
+            {
+              name = "Steam Big Picture";
+              detached = [ "${setsid} ${steam} steam://open/bigpicture" ];
+              image-path = "steam.png";
+              prep-cmd = [
+                {
+                  do = "";
+                  undo = "${setsid} ${steam} steam://close/bigpicture";
+                }
+              ];
+            }
+          );
           autoStart = true;
           # Required for KMS capture.
           capSysAdmin = true;
