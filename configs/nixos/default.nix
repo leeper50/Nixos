@@ -14,9 +14,7 @@
   ...
 }:
 {
-  options.local = {
-    local = lib.mkEnableOption "Enable if the host is on the lan.";
-  };
+  options.local.lan.enable = lib.mkEnableOption "settings for hosts on the home LAN";
   imports = [
     agenix.nixosModules.default
     home-manager.nixosModules.home-manager

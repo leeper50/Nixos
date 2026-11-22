@@ -88,7 +88,7 @@ in
           localLib.mkFirewallRules {
             service = "caddy";
             sources =
-              if config.local.local then
+              if config.local.lan.enable then
                 globals.networking.lan.subnets
                 ++ lib.optionals config.virtualisation.docker.enable globals.networking.docker.subnets
               else
@@ -121,7 +121,7 @@ in
               }
             }
           ''
-          + lib.optionalString config.local.local ''
+          + lib.optionalString config.local.lan.enable ''
             (local_ips) {
               @local_ips client_ip ${lib.strings.join " " localIps}
             }
@@ -143,9 +143,9 @@ in
               http_port ${toString cfg.traefikPassthrough.httpPort}
               https_port ${toString cfg.traefikPassthrough.httpsPort}
             ''
-            + lib.optionalString (config.local.local || cfg.traefikPassthrough.enable) ''
+            + lib.optionalString (config.local.lan.enable || cfg.traefikPassthrough.enable) ''
               servers {
-                ${lib.optionalString config.local.local "trusted_proxies static ${
+                ${lib.optionalString config.local.lan.enable "trusted_proxies static ${
                   lib.strings.join " " (
                     traefikIps ++ lib.optionals cfg.traefikPassthrough.enable globals.networking.docker.subnets
                   )

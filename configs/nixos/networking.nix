@@ -47,7 +47,7 @@ in
         ];
       };
     })
-    (lib.mkIf (config.local.local) {
+    (lib.mkIf (config.local.lan.enable) {
       networking = {
         defaultGateway.address = globals.networking.lan.ipv4.gateway;
         defaultGateway6.address = globals.networking.lan.ipv6.gateway;

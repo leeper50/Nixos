@@ -88,7 +88,7 @@ in
     }) shares;
     tailnet = lib.mkEnableOption "mounting the nas over the tailnet, so the shares work off the lan";
   };
-  config = lib.mkIf (config.local.local || cfg.tailnet) (
+  config = lib.mkIf (config.local.lan.enable || cfg.tailnet) (
     lib.mkMerge [
       {
         assertions = [

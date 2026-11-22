@@ -92,7 +92,7 @@ in
       zigbee2mqtt.enable = true;
     };
     jellyfin.enable = true;
-    local = true;
+    lan.enable = true;
     mealie.enable = true;
     postgresql = {
       databases = [

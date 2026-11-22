@@ -7,7 +7,7 @@
 }:
 {
   config = lib.mkMerge [
-    (lib.mkIf config.local.local {
+    (lib.mkIf config.local.lan.enable {
       networking.firewall = localLib.mkFirewallRules {
         service = "avahi";
         sources = globals.networking.lan.subnets ++ [

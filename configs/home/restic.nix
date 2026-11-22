@@ -115,7 +115,7 @@ in
           in
           [
             {
-              assertion = nasBackups == [ ] || config.local.local || config.services.tailscale.enable;
+              assertion = nasBackups == [ ] || config.local.lan.enable || config.services.tailscale.enable;
               message = "local.restic.backups [${lib.concatStringsSep ", " nasBackups}] use the nas target, must be local or use tailscale.";
             }
           ];

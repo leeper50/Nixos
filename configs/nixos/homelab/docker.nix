@@ -90,7 +90,10 @@ in
             }
           ];
           dns =
-            if config.local.local then globals.networking.lan.dns else globals.networking.nameservers.public;
+            if config.local.lan.enable then
+              globals.networking.lan.dns
+            else
+              globals.networking.nameservers.public;
           experimental = true;
           fixed-cidr-v6 = globals.networking.docker.fixedv6;
           ip6tables = true;
