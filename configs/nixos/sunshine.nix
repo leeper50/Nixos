@@ -10,10 +10,59 @@
 }:
 let
   cfg = config.local.sunshine;
+  # Switch the output to the client's resolution and refresh rate for the
+  # stream, adding a custom mode when the EDID lacks one, and restore the
+  # previous mode afterwards. Uses Sunshine's SUNSHINE_CLIENT_* variables.
+  matchClientMode = pkgs.writeShellApplication {
+    name = "sunshine-match-client-mode";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.kdePackages.libkscreen
+    ];
+    # The single-quoted $names are jq variables, not shell ones.
+    excludeShellChecks = [ "SC2016" ];
+    text = ''
+      output=${lib.escapeShellArg cfg.output}
+      state="$XDG_RUNTIME_DIR/sunshine-previous-mode"
+      query() {
+        kscreen-doctor -j | jq -er --arg o "$output" \
+          --argjson w "''${SUNSHINE_CLIENT_WIDTH:-0}" \
+          --argjson h "''${SUNSHINE_CLIENT_HEIGHT:-0}" \
+          --argjson f "''${SUNSHINE_CLIENT_FPS:-0}" \
+          ".outputs[] | select(.name == \$o) | $1"
+      }
+      find_mode() {
+        query 'first(.modes[] | select(.size.width == $w and .size.height == $h
+          and (.refreshRate | round) == $f) | .id)'
+      }
+      case "$1" in
+        do)
+          query .currentModeId > "$state"
+          if ! id=$(find_mode); then
+            kscreen-doctor "output.$output.addCustomMode.$SUNSHINE_CLIENT_WIDTH.$SUNSHINE_CLIENT_HEIGHT.$((SUNSHINE_CLIENT_FPS * 1000)).reduced"
+            id=$(find_mode)
+          fi
+          kscreen-doctor "output.$output.mode.$id"
+          ;;
+        undo)
+          if [ -s "$state" ]; then
+            kscreen-doctor "output.$output.mode.$(cat "$state")"
+          fi
+          rm -f "$state"
+          ;;
+      esac
+    '';
+  };
 in
 {
   options.local.sunshine = {
     enable = lib.mkEnableOption "Sunshine game streaming";
+    output = lib.mkOption {
+      default = null;
+      description = "Plasma output switched to the client's resolution during a stream.";
+      example = "DP-1";
+      type = lib.types.nullOr lib.types.str;
+    };
     user = lib.mkOption {
       default = "walter";
       description = "User logged in automatically so Sunshine has a desktop to capture.";
@@ -55,12 +104,18 @@ in
             capture = lib.mkDefault "kms";
             # Plasma's idle timer ignores gamepads, so hold off sleep while a
             # stream runs. Released when the app is quit, not on disconnect.
-            global_prep_cmd = builtins.toJSON [
-              {
-                do = "${pkgs.systemd}/bin/systemctl --user start sunshine-inhibit.service";
-                undo = "${pkgs.systemd}/bin/systemctl --user stop sunshine-inhibit.service";
+            global_prep_cmd = builtins.toJSON (
+              [
+                {
+                  do = "${pkgs.systemd}/bin/systemctl --user start sunshine-inhibit.service";
+                  undo = "${pkgs.systemd}/bin/systemctl --user stop sunshine-inhibit.service";
+                }
+              ]
+              ++ lib.optional (cfg.output != null) {
+                do = "${lib.getExe matchClientMode} do";
+                undo = "${lib.getExe matchClientMode} undo";
               }
-            ];
+            );
             sunshine_name = lib.mkDefault config.networking.hostName;
           };
         };

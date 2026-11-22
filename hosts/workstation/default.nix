@@ -28,7 +28,10 @@
       walter.enable = false;
     };
     packages.ollama.context_length = 32768;
-    sunshine.enable = true;
+    sunshine = {
+      enable = true;
+      output = "DP-1";
+    };
     users.walter.desktop = "plasma";
   };
   networking = {
