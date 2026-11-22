@@ -49,11 +49,17 @@ let
   };
 in
 {
+  options.local.userDesktops = lib.mkOption {
+    type = lib.types.attrsOf lib.types.str;
+    readOnly = true;
+    description = "Desktop of each enabled user, by user name.";
+  };
   options.local.users = lib.mapAttrs (name: user: {
     desktop = lib.mkOption {
       type = lib.types.enum [
         "hyprland"
         "plasma"
+        "sway"
       ];
       default = user.desktop;
       description = "Desktop the login screen starts for ${name} on gui hosts. Hosts install every enabled user's desktop.";
@@ -63,6 +69,7 @@ in
     };
   }) users;
   config = {
+    local.userDesktops = lib.mapAttrs (name: _: config.local.users.${name}.desktop) enabled;
     age.secrets = lib.mapAttrs' (
       name: _: lib.nameValuePair "user_${name}_hash.age" { file = "${secrets}/user_${name}_hash.age"; }
     ) enabled;

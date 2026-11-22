@@ -5,11 +5,15 @@
   lib,
   nur,
   secrets,
+  stylix,
   ...
 }:
 {
   imports = [
+    ../home/games.nix
     ../home/packages
+    ../home/stylix.nix
+    ./desktop-sessions.nix
     ./nix-ld.nix
     ./power.nix
     ./sunshine.nix
@@ -17,8 +21,26 @@
     ./u2f.nix
     disko.nixosModules.disko
     nur.modules.nixos.default
+    stylix.nixosModules.stylix
   ];
-  age.secrets."wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
+  age.secrets = {
+    "wifi_home_env.age".file = "${secrets}/wifi_home_env.age";
+  }
+  # walter's rclone remotes (configs/home/rclone.nix) read these.
+  // lib.optionalAttrs config.local.users.walter.enable (
+    lib.genAttrs
+      [
+        "restic_b2_env.age"
+        "restic_password_file.age"
+        "restic_rustfs_env.age"
+        "user_walter_clear.age"
+      ]
+      (name: {
+        file = "${secrets}/${name}";
+        group = "walter";
+        owner = "walter";
+      })
+  );
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
@@ -39,7 +61,7 @@
   local = {
     caddy.enable = lib.mkDefault true;
     games.emulators.enable = lib.mkDefault true;
-    local = true;
+    lan.enable = true;
     mounts.shares = {
       media.enable = lib.mkDefault true;
       walter.enable = lib.mkDefault true;
@@ -77,15 +99,30 @@
       };
     };
   };
-  security.rtkit.enable = true;
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+  };
   services = {
     btrfs.autoScrub.enable = true;
+    flatpak.enable = true;
     fstrim.enable = true;
     mullvad-vpn = {
       enable = true;
       gui.enable = true;
     };
+    pcscd.enable = true;
+    pipewire = {
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      enable = true;
+      pulse.enable = true;
+    };
     power-profiles-daemon.enable = true;
+    printing.enable = true;
+    pulseaudio.enable = false;
+    udisks2.enable = true;
     upower.enable = true;
+    xserver.enable = true;
   };
 }

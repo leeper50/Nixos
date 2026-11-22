@@ -11,7 +11,9 @@
   ...
 }:
 let
+  isHyprland = systemType == "Nixos" && osConfig.local.users.walter.desktop == "hyprland";
   isPlasma = systemType == "Nixos" && osConfig.local.users.walter.desktop == "plasma";
+  isSway = systemType == "Nixos" && osConfig.local.users.walter.desktop == "sway";
   nixdFlake = "(builtins.getFlake \"${config.home.homeDirectory}/Nix\")";
   nixdOptions =
     if systemType == "NixDarwin" then
@@ -33,15 +35,15 @@ in
   ]
   # NixOS imports games.nix as a system module so it can set up steam.
   ++ lib.optional (systemType != "Nixos") ./games.nix
-  ++ lib.optionals (systemType != "NixDarwin" && !isPlasma) [
+  ++ lib.optionals (systemType != "NixDarwin") [
     ./audio/easyeffects.nix
     ./audio/wireplumber.nix
     ./desktops/flatpak.nix
-    ./desktops/hyprland.nix
-    ./desktops/noctalia.nix
-    ./desktops/sway.nix
   ]
-  ++ lib.optional isPlasma ./desktops/plasma.nix;
+  ++ lib.optional (isSway || isHyprland) ./desktops/noctalia.nix
+  ++ lib.optional isHyprland ./desktops/hyprland.nix
+  ++ lib.optional isPlasma ./desktops/plasma.nix
+  ++ lib.optional isSway ./desktops/sway.nix;
   config = lib.mkMerge [
     {
       fonts.fontconfig.enable = true;
