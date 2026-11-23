@@ -36,6 +36,19 @@
     syncthing.enable = true;
   };
   networking.networkmanager.ensureProfiles.profiles.home.ipv6.token = "::71";
+  powerManagement =
+    let
+      dev = "0000:05:00.6";
+      drv = "/sys/bus/pci/drivers/snd_hda_intel";
+    in
+    {
+      powerDownCommands = ''
+        if [ -e ${drv}/${dev} ]; then echo ${dev} > ${drv}/unbind; fi
+      '';
+      resumeCommands = ''
+        if [ ! -e ${drv}/${dev} ]; then echo ${dev} > ${drv}/bind; fi
+      '';
+    };
   services = {
     asusd = {
       asusdConfig.source = ./asusd.ron;
