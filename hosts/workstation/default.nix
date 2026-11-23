@@ -69,7 +69,6 @@
     sunshine.settings = {
       adapter_name = "/dev/dri/renderD128";
       encoder = "vaapi";
-      sunshine_name = "gamehost";
     };
   };
   system.stateVersion = "26.11";

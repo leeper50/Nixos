@@ -1,5 +1,4 @@
-# Sunshine game streaming host for Moonlight clients. Set the encoder and
-# render device per host under services.sunshine.settings.
+# Sunshine game streaming host for Moonlight clients.
 {
   config,
   globals,
@@ -10,6 +9,7 @@
 }:
 let
   cfg = config.local.sunshine;
+  certDir = "/var/lib/sunshine-cert";
   # Switch the output to the client's resolution and refresh rate for the
   # stream, adding a custom mode when the EDID lacks one, and restore the
   # previous mode afterwards. Uses Sunshine's SUNSHINE_CLIENT_* variables.
@@ -71,7 +71,6 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # LAN only; tailscale0 is already trusted for remote play.
       networking.firewall = localLib.mkFirewallRules {
         service = "sunshine";
         sources = globals.networking.lan.subnets;
@@ -96,8 +95,6 @@ in
           inherit (cfg) user;
         };
         sunshine = {
-          # Replaces the web UI's app list. The client's resolution comes
-          # from global_prep_cmd, so there are no per-resolution apps.
           applications.apps = [
             {
               name = "Desktop";
@@ -126,6 +123,7 @@ in
           capSysAdmin = true;
           enable = true;
           settings = {
+            address_family = "both";
             capture = lib.mkDefault "kms";
             # Plasma's idle timer ignores gamepads, so hold off sleep while a
             # stream runs. Released when the app is quit, not on disconnect.
@@ -148,6 +146,55 @@ in
       systemd.user.services.sunshine-inhibit = {
         description = "Block sleep during a Sunshine stream";
         serviceConfig.ExecStart = "${pkgs.systemd}/bin/systemd-inhibit --what=idle:sleep --who=Sunshine --why=Streaming ${pkgs.coreutils}/bin/sleep infinity";
+      };
+    })
+    (lib.mkIf (cfg.enable && config.services.caddy.enable) {
+      services = {
+        caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+          sunshine = ''
+            reverse_proxy https://127.0.0.1:47990 {
+              transport http {
+                tls_trust_pool file ${certDir}/cert.pem
+              }
+            }
+          '';
+        };
+        sunshine.settings = {
+          cert = "${certDir}/cert.pem";
+          csrf_allowed_origins = "sunshine.${globals.domains.deviceTailnet}";
+          pkey = "${certDir}/key.pem";
+        };
+      };
+      # Generate valid cert for caddy & sunshine.
+      systemd.services = {
+        caddy = {
+          after = [ "sunshine-cert.service" ];
+          wants = [ "sunshine-cert.service" ];
+        };
+        sunshine-cert = {
+          before = [ "display-manager.service" ];
+          description = "Generate Sunshine's TLS certificate";
+          path = [ pkgs.openssl ];
+          script = ''
+            if [ ! -s cert.pem ]; then
+              openssl req -x509 -newkey rsa:2048 -nodes -days 7300 \
+                -keyout key.pem -out cert.pem \
+                -subj "/CN=Sunshine Gamestream Host" \
+                -addext "subjectAltName=IP:127.0.0.1"
+              chown ${cfg.user} key.pem
+              chmod 600 key.pem
+              chmod 644 cert.pem
+            fi
+          '';
+          serviceConfig = {
+            StateDirectory = "sunshine-cert";
+            StateDirectoryMode = "0755";
+            Type = "oneshot";
+            UMask = "0077";
+            WorkingDirectory = certDir;
+          };
+          wantedBy = [ "multi-user.target" ];
+        };
       };
     })
   ];
