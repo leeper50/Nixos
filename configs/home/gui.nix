@@ -208,7 +208,7 @@ in
         };
         vscodium = {
           enable = true;
-          package = pkgs.vscodium-fhs;
+          package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.vscodium-fhs else pkgs.vscodium;
           profiles = {
             default = {
               extensions = with pkgs.vscode-extensions; [
