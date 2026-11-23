@@ -111,9 +111,11 @@ in
       environment.plasma6.excludePackages = with pkgs.kdePackages; [
         discover
         elisa
+        gwenview
         khelpcenter
         krdp
       ];
+      programs.kde-pim.enable = false;
       services.desktopManager.plasma6.enable = true;
     })
     (lib.mkIf (uses "sway") {

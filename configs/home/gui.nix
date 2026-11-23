@@ -72,7 +72,6 @@ in
           pistol
           qownnotes
           remmina
-          signal-desktop
         ];
         pointerCursor.enable = pkgs.stdenv.hostPlatform.isLinux;
       };

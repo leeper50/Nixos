@@ -62,7 +62,6 @@ in
       ]
       ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
         pkgs.amethyst-mod-manager
-        pkgs.r2modman
         pkgs.wowup-cf
       ]
       ++ lib.optionals isNixos [
