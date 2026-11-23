@@ -52,7 +52,7 @@
                 "applications:firefox.desktop"
                 "applications:org.kde.dolphin.desktop"
                 "applications:kitty.desktop"
-                "applications:code.desktop"
+                "applications:codium.desktop"
                 "applications:systemsettings.desktop"
               ];
             };

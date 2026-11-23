@@ -412,7 +412,7 @@ in
           "inode/directory" = [
             "org.kde.dolphin.desktop"
             "Helix.desktop"
-            "code.desktop"
+            "codium.desktop"
           ];
         };
         defaultApplicationPackages = with pkgs; [
