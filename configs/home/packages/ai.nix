@@ -1,3 +1,14 @@
+/*
+  AI package configuration module for managing Ollama and related AI services.
+
+  This module provides configuration for:
+  - Ollama server with Vulkan support
+  - Firewall rules to allow LAN access to Ollama
+  - Systemd service to inhibit sleep while models are loaded
+  - Caddy reverse proxy integration
+
+  Enable with: local.packages.ai.ollama.enable = true;
+*/
 {
   config,
   globals,
@@ -50,12 +61,13 @@ in
       enable = lib.mkEnableOption "ollama";
     };
   };
+
   config = lib.mkMerge [
     (lib.mkIf cfg.ollama.enable {
       networking.firewall = localLib.mkFirewallRules {
         service = "ollama";
         sources = globals.networking.lan.subnets;
-        tcpPorts = [ 11434 ];
+        tcpPorts = [ config.services.ollama.port ];
       };
       services.ollama = {
         enable = true;
@@ -79,6 +91,11 @@ in
           Restart = "always";
           RestartSec = 5;
         };
+      };
+    })
+    (lib.mkIf (cfg.ollama.enable && config.services.caddy.enable) {
+      services.caddy.virtualHosts = localLib.mkCaddyVirtualHosts {
+        ai = "reverse_proxy 127.0.0.1:${toString config.services.ollama.port}";
       };
     })
   ];
