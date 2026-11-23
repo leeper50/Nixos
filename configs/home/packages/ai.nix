@@ -7,6 +7,7 @@
   ...
 }:
 let
+  cfg = config.local.packages.ai;
   ollamaInhibit = pkgs.writeShellApplication {
     name = "ollama-inhibit";
     runtimeInputs = [
@@ -40,15 +41,17 @@ let
   };
 in
 {
-  options.local.packages.ollama = {
-    context_length = lib.mkOption {
-      type = lib.types.int;
-      default = 4096;
+  options.local.packages.ai = {
+    ollama = {
+      context_length = lib.mkOption {
+        type = lib.types.int;
+        default = 4096;
+      };
+      enable = lib.mkEnableOption "ollama";
     };
-    enable = lib.mkEnableOption "ollama";
   };
   config = lib.mkMerge [
-    (lib.mkIf config.local.packages.ollama.enable {
+    (lib.mkIf cfg.ollama.enable {
       networking.firewall = localLib.mkFirewallRules {
         service = "ollama";
         sources = globals.networking.lan.subnets;
@@ -57,7 +60,7 @@ in
       services.ollama = {
         enable = true;
         environmentVariables = {
-          "OLLAMA_CONTEXT_LENGTH" = toString config.local.packages.ollama.context_length;
+          "OLLAMA_CONTEXT_LENGTH" = toString cfg.ollama.context_length;
           "OLLAMA_FLASH_ATTENTION" = "1";
           "OLLAMA_KV_CACHE_TYPE" = "q8_0";
           "OLLAMA_ORIGINS" = "*";

@@ -27,7 +27,7 @@
       media.enable = false;
       walter.enable = false;
     };
-    packages.ollama.context_length = 32768;
+    packages.ai.ollama.context_length = 32768;
     sunshine = {
       enable = true;
       output = "DP-1";

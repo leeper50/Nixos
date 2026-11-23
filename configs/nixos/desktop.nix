@@ -68,9 +68,9 @@
     };
     nix-ld.enable = lib.mkDefault true;
     packages = {
+      ai.ollama.enable = lib.mkDefault true;
       cream-linux.enable = lib.mkDefault true;
       elegoo-slicer.enable = lib.mkDefault true;
-      ollama.enable = lib.mkDefault true;
       rimsort.enable = lib.mkDefault true;
       surge.enable = lib.mkDefault true;
       waifu2x.enable = lib.mkDefault true;
