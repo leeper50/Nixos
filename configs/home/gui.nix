@@ -208,34 +208,31 @@ in
         };
         vscodium = {
           enable = true;
+          package = pkgs.vscodium-fhs;
           profiles = {
             default = {
               extensions = with pkgs.vscode-extensions; [
-                pkgs.open-vsx.jeanp413.open-remote-ssh
-                anthropic.claude-code
                 arrterian.nix-env-selector
                 bradlc.vscode-tailwindcss
                 charliermarsh.ruff
+                continue.continue
                 dbaeumer.vscode-eslint
                 esbenp.prettier-vscode
                 golang.go
                 jnoortheen.nix-ide
-                matthewpi.caddyfile-support
                 mkhl.direnv
                 mkhl.shfmt
-                ms-azuretools.vscode-containers
-                ms-python.debugpy
-                ms-python.python
                 ndonfris.fish-lsp
+                pkgs.open-vsx.jeanp413.open-remote-ssh
                 prisma.prisma
                 rust-lang.rust-analyzer
-                saoudrizwan.claude-dev
                 svelte.svelte-vscode
                 tailscale.vscode-tailscale
                 tamasfe.even-better-toml
                 vadimcn.vscode-lldb
                 vscode-icons-team.vscode-icons
               ];
+              mutableUserSettings = true;
               userSettings = {
                 "[css]" = {
                   "editor.defaultFormatter" = "vscode.css-language-features";
@@ -259,8 +256,6 @@ in
                   "prettier.tabWidth" = 2;
                   "prettier.useTabs" = false;
                 };
-                "claudeCode.hideOnboarding" = true;
-                "claudeCode.preferredLocation" = "panel";
                 "diffEditor.ignoreTrimWhitespace" = false;
                 "editor.fontLigatures" = true;
                 "editor.formatOnSave" = false;
@@ -275,6 +270,7 @@ in
                 "git.enableSmartCommit" = true;
                 "git.fetchOnPull" = true;
                 "js/ts.updateImportsOnFileMove.enabled" = "always";
+                "lldb.suppressUpdateNotifications" = true;
                 "nix.enableLanguageServer" = true;
                 "nix.hiddenLanguageServerErrors" = [
                   "textDocument/definition"
