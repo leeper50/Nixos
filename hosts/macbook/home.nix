@@ -1,7 +1,14 @@
-{ agenix, secrets, ... }:
+{
+  agenix,
+  lib,
+  pkgs,
+  profile,
+  secrets,
+  ...
+}:
 {
   imports = [
-    ../../configs/home/gui.nix
+    (import ../../configs/home { inherit lib pkgs profile; })
     ../../configs/home/syncthing.nix
     "${secrets}/default.nix"
     agenix.homeManagerModules.default

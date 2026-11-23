@@ -25,7 +25,7 @@ let
       description = "Administrator";
       desktop = "hyprland";
       gid = 1000;
-      homeModules = [ (if profile == "gui" then ../home/gui.nix else ../home) ];
+      homeModules = [ (import ../home { inherit lib pkgs profile; }) ];
       uid = 1000;
     };
     carrie = {

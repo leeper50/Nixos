@@ -10,15 +10,15 @@
 }:
 {
   imports = [
-    ../home/games.nix
-    ../home/packages
-    ../home/stylix.nix
-    ./desktop-sessions.nix
+    ../../home/gui/games.nix
+    ../../home/gui/packages
+    ../../home/gui/stylix.nix
+    ../power.nix
+    ../syncthing.nix
+    ../u2f.nix
     ./nix-ld.nix
-    ./power.nix
+    ./sessions.nix
     ./sunshine.nix
-    ./syncthing.nix
-    ./u2f.nix
     disko.nixosModules.disko
     nur.modules.nixos.default
     stylix.nixosModules.stylix

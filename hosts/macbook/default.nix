@@ -1,14 +1,19 @@
 {
+  agenix,
   globals,
   home-manager,
   inputs,
+  lib,
+  pkgs,
+  profile,
+  secrets,
   stylix,
   ...
 }:
 {
   imports = [
     ../../configs/darwin
-    ../../configs/home/stylix.nix
+    ../../configs/home/gui/stylix.nix
   ]
   ++ [
     home-manager.darwinModules.home-manager
@@ -21,7 +26,15 @@
         };
         useGlobalPkgs = true;
         users.walter.imports = [
-          ./home.nix
+          (import ./home.nix {
+            inherit
+              agenix
+              lib
+              pkgs
+              profile
+              secrets
+              ;
+          })
         ];
         useUserPackages = true;
       };

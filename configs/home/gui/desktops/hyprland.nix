@@ -1,7 +1,7 @@
 # Docs: https://wiki.hypr.land/
 { lib, pkgs, ... }:
 let
-  cycle-audio-output = import ./cycle-audio-output.nix { inherit pkgs; };
+  cycle-audio-output = import ../audio/cycle-audio-output.nix { inherit pkgs; };
 in
 {
   home.packages = with pkgs; [

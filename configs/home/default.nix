@@ -1,6 +1,11 @@
-{ lib, pkgs, ... }:
 {
-  imports = [ ./fish.nix ];
+  lib,
+  pkgs,
+  profile,
+  ...
+}:
+{
+  imports = [ ./fish.nix ] ++ lib.optional (profile == "gui") ./gui;
   home = {
     homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/walter" else "/home/walter";
     packages =

@@ -2,7 +2,6 @@
 {
   imports = [
     ../../configs/nixos
-    ../../configs/nixos/desktop.nix
     ./disk-config.nix
     ./gpu.nix
     ./hardware-configuration.nix

@@ -8,7 +8,6 @@
 {
   imports = [
     ../../configs/nixos
-    ../../configs/nixos/desktop.nix
     ./disk-config.nix
     ./hardware-configuration.nix
   ];

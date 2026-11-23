@@ -6,7 +6,7 @@
   ...
 }:
 let
-  cycle-audio-output = import ./cycle-audio-output.nix { inherit pkgs; };
+  cycle-audio-output = import ../audio/cycle-audio-output.nix { inherit pkgs; };
   mod = config.wayland.windowManager.sway.config.modifier;
   noctalia = "exec noctalia msg";
 in

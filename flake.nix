@@ -205,6 +205,7 @@
             globals = mkGlobals "macbook";
             systemType = "NixDarwin";
             osConfig = null;
+            profile = "gui";
           };
           modules = [
             ./hosts/macbook

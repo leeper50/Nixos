@@ -45,7 +45,8 @@
         useUserPackages = true;
       };
     }
-  ];
+  ]
+  ++ lib.optional (profile == "gui") ./gui;
   config = lib.mkMerge [
     {
       _module.args.localLib = import ./lib { inherit config globals lib; };

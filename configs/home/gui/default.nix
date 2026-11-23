@@ -29,18 +29,16 @@ in
   imports = [
     ./accounts.nix
     ./browsers
-    ./default.nix
     ./dev.nix
     ./rclone.nix
   ]
-  # NixOS imports games.nix as a system module so it can set up steam.
-  ++ lib.optional (systemType != "Nixos") ./games.nix
   ++ lib.optionals (systemType != "NixDarwin") [
-    ./audio/easyeffects.nix
-    ./audio/wireplumber.nix
-    ./desktops/flatpak.nix
+    ./audio
+    ./flatpak.nix
   ]
+  # NixOS imports games.nix as a system module so it can set up steam.
   ++ lib.optional (isSway || isHyprland) ./desktops/noctalia.nix
+  ++ lib.optional (systemType != "Nixos") ./games.nix
   ++ lib.optional isHyprland ./desktops/hyprland.nix
   ++ lib.optional isPlasma ./desktops/plasma.nix
   ++ lib.optional isSway ./desktops/sway.nix;
@@ -116,7 +114,7 @@ in
           enable = true;
           publicKeys = [
             {
-              source = ../../public.asc;
+              source = ../../../public.asc;
               trust = 5;
             }
           ];
