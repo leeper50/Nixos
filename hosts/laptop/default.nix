@@ -11,6 +11,7 @@
       autoMount = true;
       tailnet = true;
     };
+    packages.nvforever.enable = true;
     restic.backups.home = {
       exclude = [
         "*cache*"
